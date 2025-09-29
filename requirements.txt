@@ -1,3 +1,10 @@
 Flask
 Flask-SQLAlchemy
 unidecode
+boto3
+python-dotenv
+PyPDF2
+reportlab
+Werkzeug
+MarkupSafe
+SQLAlchemy
