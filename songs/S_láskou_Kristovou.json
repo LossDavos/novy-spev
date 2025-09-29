@@ -1,0 +1,34 @@
+{
+  "title": "S láskou Kristovou (Thy word)",
+  "author": "A. Grant, M. W. Smith - pr. M.Wiesnerová",
+  "categories": [
+    "úvod",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "/: [G]S láskou, s láskou [D\\G]Kristovou chceme [G]niesť",
+        "rado[C\\E]stnú a [D\\F#]slávnu [G]zvesť. :/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[D\\F#]Boh sa človekom [a]stal, [e]svojho Syna nám [h7]dal,",
+        "[C]k hriešnym [D]nám prišiel [C\\G]Pá-[G]n. [D\\F#]Z tŕnia korunu [a]mal,",
+        "[e]hriech náš na seba [h7]vzal, [C]z mŕtvych [D]vstal náš [E4]Ježiš [E]Krá[D2]ľ.  [C\\D]"
+    
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Počuj, volá ťa Pán, dnes sa rozhodni sám,",
+        "môžeš byť slobodný. Z hriechu očistí ťa,",
+        "Duchom naplní ťa, môžeš mať život nový."
+      ]
+    }
+  ]
+}

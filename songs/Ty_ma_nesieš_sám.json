@@ -1,0 +1,37 @@
+{
+  "title": "Ty ma nesieš sám",
+  "author": "R. Čanaky",
+  "categories": [
+    "úvod",
+    "záver",
+    "adorácia",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Ty ma nesieš [C]sám, tebe [D]veriť [G]smiem,",
+        "ty mi pomá[C]haš, keď ma [D]láka [e]hriech.",
+        "Ty sa [D\\F#]dotýkaš [C]hviezd aj detských [G]sĺz, ty [D]pochopiť [C]vieš."
+       ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "[G] Tebe ustú[C]pia temné [D]mraky [G]s tmou,",
+        "ty utí[C]šiš búrky [D]nado [e]mnou.",
+        "Tebe [D\\F#]nemôže [C]vziať tvoju slávu [G]nik, ani [D]tvoj maje[C]stát."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ja chválu tebe [G]vzdám, pred iným sa nesklo[D]ním,",
+        "tvoje meno v srdci [e]mám, tvoje meno vyslo[C]vím.",
+        "Ja chválu tebe [G]vzdám, aby tvoj Duch prúdil [D]mnou,",
+        "aby uzdravený [e]bol, kto sa [D\\F#]skloní pred te[C]bou"
+      ]
+    }
+  ]
+}

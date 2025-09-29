@@ -1,0 +1,43 @@
+{
+  "title": "Svitá",
+  "author": "J. Hrubý - Učedníci",
+  "categories": [
+    "mariánske",
+    "záver",
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[a]Chlieb, keď ho ne[e]máme.",
+        "[F]Chlieb, keď ho ne[G]máme.",
+        "Márne je [a]skrývať prázdnotu [e]dlane.",
+        "Márne je [F]skrývať prázdnotu [G]dlane.",
+        "[a]Láska, keď je už [e]hluchá.",
+        "[F]Láska, keď je už [G]hluchá.",
+        "Márne je [a]skrývať prázdnotu [e]ducha,",
+        "márne je [F]skrývať, kto život [d]odmieta, u[G]miera."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[a]Svitá a Matka [F]žiali, tá Matka [d]žiali,",
+        "že Syna [F]jej takto [G]vzali.",
+        "[a]Svitá a Matka [F]žiali, tá Matka [d]žiali,",
+        "že prázdno [F]v rukách tak [G]páli.[a]  [e]  [F]  [G]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Oči si nezakrývaj. :]",
+        "[: Zráz je príkry, tak pozeraj. :]",
+        "[: Sám stačíš si pri páde dole, :]",
+        "spoločne však pôjdeme hore,",
+        "spoločne, aj keď už síl nám neostáva."
+      ]
+    }
+  ]
+}

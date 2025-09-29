@@ -1,0 +1,46 @@
+{
+  "title": "Kto ťa má rád ",
+  "author": "Dominik",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Kto ťa má rád? \tBoh má ťa rád.",
+        "Čo Ti ponúka?\tDáva nádej žiť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Boh má ťa rád, vždy ti dáva nádej žiť.",
+        "Ty máš svoju tvár, daj mu ju bez pretvárky.",
+        "Stále má ťa rád, veď vlastný život, vlastný za teba dal."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Má nás rád, otvára svoje dlane.",
+        "K Nemu príď len a svoje srdce otvor Mu: vojde dnu."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "On volá nás, tie deti zblúdené,",
+        "čo nevedia Ho nájsť a blúdia vo tme samé.",
+        "Deti neverné, deti zblúdené,",
+        "čo chodia v tmách a nechcú nájsť tú lásku večných krás."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Otvor mu srdce dokorán a má šancu prísť aj k nám."
+      ]
+    }
+  ]
+}

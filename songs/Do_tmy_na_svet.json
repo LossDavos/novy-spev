@@ -1,0 +1,43 @@
+{
+  "title": "Do tmy na svet",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Do tmy na [G/C]svet prišlo [d]k nám svetlo [F]sveta.",
+        "[C]Otvor môj [G]zrak nech vi[F]dím.",
+        "[C]Krásu lás[G/C]ky, v ktorej [d]srdce Ti [F]spieva.",
+        "Veď [C]sláva a [G]moc Ti pat[F]rí."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Prišli sme Ťa [C]vzývať, prišli sme sa [G]skláňať.",
+        "Prišli sme Ti [a]vyznať: Si náš [F]Boh.",
+        "Si dokonalá [C]láska, dokonale [G]svätý,",
+        "dokonale [a]nádherný ku [F]nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kráľ všetkých dní a tiež najvyšší vládca,",
+        "slávnejší nad nebesá.",
+        "Ponížil sa, prišiel dna Zem, čo stvoril,",
+        "vzdal sa slávy z lásky k nám."
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "Ja [G]nemám [C]dosť slov [F]opísať",
+        "ce[G]nu, kto[C]rú Ťa [F]môj hriech stál."
+      ]
+    }
+  ]
+}

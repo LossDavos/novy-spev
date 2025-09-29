@@ -1,0 +1,39 @@
+{
+  "title": "Bože môj, čuj môj hlas",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Bože môj, čuj môj hlas, pomáhaj,",
+        "v srdci hrej, pomôž mi pri práci,",
+        "posilni moju vieru v ľudí,",
+        "nech lásku nikdy nestratím."
+        
+      ]
+    },
+    {
+      "type": "Recitál 1",
+      "lines": [
+        "Ak Ťa niet, Pane, načo sú zákony,",
+        "prečo treba iným odpúšťať a milovať,",
+        "načo divné vášne ovládať.",
+        "Ak Ťa niet, Pane, načo sú zákony."
+       
+      ]
+    },
+    {
+      "type": "Recitál 2",
+      "lines": [
+       
+        "Ak Ťa niet, Pane, tak nechcem žiť.",
+        "Tá trocha radostí, čo zem dáva,",
+        "nemôže bolesť vyvážiť.",
+        "Ak Ťa niet, Pane, tak nemám prečo žiť."
+      ]
+    }
+  ]
+}

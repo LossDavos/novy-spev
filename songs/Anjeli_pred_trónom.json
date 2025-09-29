@@ -1,0 +1,39 @@
+{
+  "title": "Anjeli pred trónom (The angels, Lord, they sing)",
+  "author": "Matt Redman pr. Jakub Novák, Rieka Života",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+         "An[G]jeli [D]pred tró[G]nom",
+      "ti [C]spie[D]va[G]jú",
+      "svoj [G]hlas k nim [D]pridá[G]me",
+      "te[C]be na [D]chvá[G]lu"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+         "Svä[G]tý, svä[D]tý, svä[G]tý",
+    "[G]Boh, [D]náš [G]Pán",
+    "on [G]bol, on je",
+    "a [C]prí[D]de zas k [G]nám"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vždy svätých chvály sú Ti vzdávané,",
+        "my s nimi pri tróne ich refrén spievame."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď starci padajú tu pred trónom,",
+        "my srdcia pokorne skláňame pred Tebou."
+      ]
+    }
+  ]
+}

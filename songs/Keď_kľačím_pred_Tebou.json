@@ -1,0 +1,30 @@
+{
+  "title": "Keď kľačím pred Tebou",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Keď kľačím pre Tebou, v srdci svojom radosť mám.",
+        "Ó, Mária, Pani naša, svieť mi na ceste v tmách."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ave Mária, gratia plena,",
+        "dominus tecum benedicta tuum."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pani naša dobrá, Ty vieš, ako ťaží žiaľ,",
+        "horké slzy, ľudský nevďak, svieť mi na ceste v tmách."
+      ]
+    }
+  ]
+}

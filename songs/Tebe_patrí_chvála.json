@@ -1,0 +1,43 @@
+{
+  "title": "Tebe patrí chvála",
+  "author": "",
+  "categories": [
+    "poďakovanie po prijímaní",
+    "adorácia",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Tebe patrí [A]chvála a [c#]sláva,",
+        "my dví[G]hame svoje ruky,",
+        "oslavu[h]jeme tvoje [E4]meno.[E]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[: Lebo ty si [A]Pán, veľké veci robíš [f#]nám,",
+        "nikto nie je ako [h]ty, [D]nikto [E4]nie je ako [E]ty. :]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Spievame ti s láskou a úctou,",
+        "máme srdcia plné vďaky",
+        "za to, že sme tvoje deti."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chceme ti vždy slúžiť a hlásať,",
+        "že si nám dal svojho",
+        "Syna, ktorý naše hriechy sníma."
+      ]
+    }
+   
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Boli to pastieri",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Som len pastier z neveľkého mesta, mám len gajdy pod pazuchou skryté.",
+        "Piesne hnetiem z kysnutého cesta s nádejou, že med v nich uvidíte."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Som len pastier z neveľkého štátu, nemám žiadny čestný diplom v ruke.",
+        "Asi sa dnes znova opakuje, že anjel chodí k tým, čo sú na lúke."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Boli to pastieri, čo prišli prví, až potom pribehli ďalší za nimi.",
+        "Betlehem bol vodkou pre farizejov, už vtedy poslední boli prvými."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Dni Eliáša",
+  "author": "R. Mark - Rieka života",
+  "categories": [
+    "úvod",
+    "záver",
+    "advent"
+  ],
+  "song_parts": [
+    {
+      "type": null,
+      "lines": [
+        "(orig in B - capo 3)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Toto sú dni Eli[C\\G]áša, keď [G]preniká [D]svet Pánov [G]hlas.",
+        "A toto sú dni, keď tvoj [C\\G]sluha Mojžiš",
+        "[G\\D]obnovil [D]zákon tvoj [G]zas.",
+        "A [h]hoci sú dni veľkej [e]skúšky,",
+        "keď [a7]hlad, temno [a7\\G]vzpiera sa [D2]v nás,",
+        "sme [G]stále tým hlasom na [C]púšti, kričiac:",
+        "„Tak [G\\D]priprav sa, [D]prichádza [G]Pán!“"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Hľa, vchádza Pán na oblakoch [C\\G]k nám,",
+        "ako slnka [G]jas poľnica už [D]znie.",
+        "Zdvihni [G]hlas, je tu milostivý [C\\G]čas,",
+        "zo Siona [G]spása [D]príde [G]k nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "To sú dni Ezechiela, keď kosti suché ožijú.",
+        "A toto sú dni, keď tvoj sluha Dávid zaspieval pieseň novú.",
+        "To sú dni Pánovej žatvy, keď obilie čaká na nás.",
+        "A my sme tí pozvaní jemu slúžiť a ohlásiť, čo zveril nám."
+      ]
+    }
+  ]
+}

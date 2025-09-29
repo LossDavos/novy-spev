@@ -1,0 +1,43 @@
+{
+  "title": "Ty si kňaz",
+  "author": "",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Ty si kňaz podľa radu Melchizedechovho naveky."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ó, buď anjelom čistoty, ó, buď anjelom lásky,",
+        "ó, buď anjelom svetla."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ó, buď anjelom obety, ó, buď anjelom sily,",
+        "ó, buď anjelom milosti."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ó, buď anjelom pokoja, ó, buď anjelom pokory,",
+        "ó, buď anjelom zbožnosti."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Svojim kňazom na pomoci, Pane, buď,",
+        "o to prosí Teba Boží ľud."
+      ]
+    }
+  ]
+}

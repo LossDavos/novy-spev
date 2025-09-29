@@ -1,0 +1,52 @@
+{
+  "title": "Pán zastavil sa na brehu",
+  "author": "C. Gabarain",
+  "categories": [
+    "záver",
+    "advent",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Pán [G7] zastavil sa na [C]brehu, hľadal [F]ľudí, ochotných ísť [G7]za ním",
+        "a loviť [C]srdcia slov [G7]Božích [C]pravdou.[C7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ó, [F]Pane, aj na mňa si sa [C]pozrel,",
+        "tvoje [d]ústa [G7] vyriekli moje [C]meno.[C7]",
+        "Svoju [F]loďku zanechal som na [C]brehu,",
+        "spolu [d]s tebou no[G7]vý chcem začať [C]lov."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pane, úbohým som človekom, mojím venom sú ruky",
+        "ochotné pracovať s tebou i čisté srdce."
+       
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Pane, chceš mať i moje dlane, môjho srdca mladistvý",
+        "zápal, samotu duše i kvapky potu."
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Pane, ideme spolu s tebou loviť srdcia na moriach",
+        "ľudských do siete pravdy, života lásky."
+      ]
+    }
+  ]
+}

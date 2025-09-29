@@ -1,0 +1,34 @@
+{
+  "title": "Svätý Bonifác  (Messe de Saint Boniface)",
+  "author": "M.Wittal, Komunita Emmanuel",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Svätý, svätý, [d/C]svät[C]ý, [B]Pán, Boh [F]všetkých [C]svetov. 2x",
+        "[C]Plné sú [e/H]nebesia [a]i [C/G]zem [F]tvojej [B]slá[G]vy."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ho[C]sana na [F]výsos[G]tia[C]ch, ho[B]sana na [F]výsos[C]tiach. 2x"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Požehna[e/H]ný, ktorý [a]prichá[C/G]dza [F]v mene [B]Páno[G]vom,"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ho[C]sana na [F]výsos[G]tia[C]ch, ho[B]sana na [F]výsos[C]tiach. 2x"
+      ]
+    }
+  ]
+}

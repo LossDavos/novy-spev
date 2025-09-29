@@ -1,0 +1,59 @@
+{
+  "title": "Anjel",
+  "author": "R. Čanaky - Kompromis",
+  "categories": [
+    "iné",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Bolo to [C2]krásne, zostalo [D2]niečo [e]v nás,",
+        "zneli nám [C2]básne a pri tom [D2]piesní [e]pár.",
+        "Tie roky [C2]lásky v plnosti [D2]s úža[e]som,",
+        "z veže už [C2]anjel odzvonil [D]týmto [e]dvom, zvone[D2]ním..."
+        
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Občas sa pýtam, prečo to Boh dal nám,",
+        "prežiť tak krásne, čas hnaný ku hviezdam.",
+        "Dnes vidím lásku, v ktorej som vždy chcel rásť,",
+        "bolo to krásne, počuť tvoj nežný hlas, nádherný."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nech nás [C2]anjel mocný chráni,",
+        "nech nás [e7]Boh vždy drží v dlani,",
+        "nech nám [D4]voľ[D]né [D2]krí[D]dla [C2]dá.[G]",
+        "Nech [C2]naše dni sú krásne,",
+        "nech nám [e7]anjel skladá básne,",
+        "nech [D4]lás[D]ka [D2]prí[D]de [C2]k ná[G]m."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ak som bol príliš niekedy nemožný,",
+        "odpusť mi v láske, nech môžme byť voľní,",
+        "v modlitbe dávam do Božích rúk aj deň,",
+        "keď som ťa vločkou nazval a sníval sen, sníval."
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "Leto a hviezdy a nočné ticho v nás,",
+        "pamätáš dávno, prešiel už tento čas.",
+        "Len vetrík tíško popri nás stále vial,",
+        "bolo to krásne, jak sa ten príbeh dial,",
+        "pozri, už svitá."
+      ]
+    }
+  ]
+}

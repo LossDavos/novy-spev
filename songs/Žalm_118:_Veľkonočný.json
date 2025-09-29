@@ -1,0 +1,42 @@
+{
+  "title": "Žalm 118: Veľkonočný",
+  "author": "",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Toto je deň Krista Pána, radujme sa, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Oslavujte Pána, lebo je dobrý,",
+        "lebo jeho milosrdenstvo trvá naveky.",
+        "Teraz nech hovorí Izrael, že Pán je dobrý,",
+        "že jeho milosrdenstvo trvá naveky."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pánova pravica mocne zasiahla,",
+        "Pánova pravica ma zdvihla.",
+        "Ja nezomriem, budem žiť",
+        "a vyrozprávam skutky Pánove."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kameň, čo stavitelia zavrhli,",
+        "stal sa kameňom uholným.",
+        "To sa stalo na pokyn Pána,",
+        "vec v našich očiach obdivuhodná."
+      ]
+    }
+  ]
+}

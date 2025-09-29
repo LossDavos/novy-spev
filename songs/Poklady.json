@@ -1,0 +1,37 @@
+{
+  "title": "Poklady",
+  "author": "",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Hovoríš, že život, to je len náhoda, každý len seba vidí.",
+        "No všetko okolo hovorí za teba, Ježiš je tu a živý."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Máš smer, no tak mu ver. Veď Ježiš vykúpil nás.",
+        "Dávaj a nielen ber, nebudeš nikdy už sám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Dostal si do vena veliké poklady a ty ich zahrabať chceš.",
+        "Cítiš sa samotný, všetkými nechcený a stále sa ľutuješ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "No obdarovaný môže byť iba ten, ktorý je milovaný.",
+        "Prestaň sa ľutovať, Ježiš ťa miluje, ohlasuj to aj iným."
+      ]
+    }
+  ]
+}

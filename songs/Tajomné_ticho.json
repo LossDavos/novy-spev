@@ -1,0 +1,37 @@
+{
+  "title": "Tajomné ticho",
+  "author": "Gen Rosso",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Tajomné [e]ticho [C]nad Betle[D]hemom, [G]polnočná [e]chvíľa [C]zázrak ča[D]ká.",
+        "[G]Vtom jasná [e]hviezda [C]na nebi [D]skvie sa, [G]zástup ne[e]beských [C]poslov ple[D]sá."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Ježiš je [h]tu, [C]láska je [G]tu, vstávajte [e]ľudia, [A7]život je [D7]tu,",
+        "[G]Boh sám je [h]tu, [C]nechajte [G]sen, pokoj vám [e]ľudia, [D]raduj sa [G]Zem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vstaň, človek, nespi, kráčaj za svetlom, tam nájdeš Boha, lásku svoj cieľ.",
+        "Kým anjel spieva, čaká nás Ježiš, choď, oznám všetkým radostnú zvesť:"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ježiš je tu, láska je tu, sem poďte ľudia, život je tu.",
+        "Boh sám je tu, pristúpte sem, pokoj vám ľudia, raduj sa Zem."
+      ]
+    }
+  ]
+}

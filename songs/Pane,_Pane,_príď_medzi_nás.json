@@ -1,0 +1,41 @@
+{
+  "title": "Pane, Pane, príď medzi nás",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Pane, Pane, príď medzi nás.",
+        "Chceme Ti slúžiť, stále Ťa ľúbiť.",
+        "Pane, Pane, príď medzi nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pane, Pane, zostaň pri nás.",
+        "Ty si nám svetlom na ceste svetom.",
+        "Pane, Pane, zostaň pri nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pane, Pane, učiteľ náš.",
+        "Slovom nás učíš, príkladom slúžiš.",
+        "Pane, Pane, učiteľ náš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pane, Pane, ochraňuj nás.",
+        "Pred každým hriechom, buď útočišťom.",
+        "Pane, Pane, ochraňuj nás."
+      ]
+    }
+  ]
+}

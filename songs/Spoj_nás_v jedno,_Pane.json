@@ -1,0 +1,32 @@
+{
+  "title": "Spoj nás v jedno, Pane",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Spoj nás v jedno, Pane, spoj nás jedným putom,",
+        "čo nemôže byť zlámané.",
+        "Spoj nás v jedno, Pane, spoj nás jedným putom,",
+        "spoj nás v jedno, láskou spoj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Je len jeden Pán, je len jedno telo,",
+        "je len jeden Kráľ, je len jedna Cirkev."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Je len jeden cieľ, je len jedna nádej,",
+        "je len jeden kríž, je len jedna láska."
+      ]
+    }
+  ]
+}

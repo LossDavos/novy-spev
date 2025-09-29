@@ -1,0 +1,46 @@
+{
+  "title": "Abba, Otče",
+  "author": "J. Sykulski",
+  "categories": [
+    "záver",
+    "veľká noc",
+    "cez rok",
+    "úvod"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Ty si nás [F]vytrhol, [G]Pane,",
+        "z[C] pút hriechu[d] i od seba [G]sam[G7]ých",
+        "[C]a Kristus, [E]stanúc’ sa [a]bra[F]tom,",
+        "nás [C]naučil [d]denne volať [G]k te[G7]be:"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Ab[F]ba, [C]Ot[G]če, [C]Ab[F]ba, [C]Ot[G]če,",
+        "[C]Ab[E]ba, Abba, [a]Otče, [d]Abba, [C]O[G]t-[C]če, (Otče)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Cirkev je ako strom života,",
+        "ktorý má korene vo večnosti.",
+        "Ona preniká našu všednosť",
+        "a zjavuje všetkým ľuďom teba."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Boh hojným darcom je života,",
+        "on oslobodil všetkých od smrti.",
+        "On privinul si nás k sebe",
+        "a tak sme sa stali jeho deťmi."
+      ]
+    }
+  ]
+}

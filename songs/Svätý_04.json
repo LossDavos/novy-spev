@@ -1,0 +1,35 @@
+{
+  "title": "Svätý 04",
+  "author": "autor neznámy",
+  "categories": [
+    "Svätý"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[A]Svätý, [c#]svätý, [f#]svätý [D]Pán, Boh všetkých [E]svetov.",
+        "[A]Plné [c#]sú ne[f#]besia i [D]zem tvojej [E]slávy."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/: [A]Hosana, hosana, ho[c#]sana, hosana, ho[D]sana [E]na vý[A]sostiach! [E]  :/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pože[A]hnaný, [D]ktorý pri[E]chádza v mene Pánovom."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[A]Hosana, hosana, ho[c#]sana, hosana, ho[D]sana [E]na vý[A]sostiach! [E] ",
+        "[A]Hosana, hosana, ho[c#]sana, hosana, ho[D]sana [E]na vý[A]sostiach!"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Boh je tak blízko nás",
+  "author": "",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "vianoce"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[: Boh je tak [g7]blízko [C]nás, Boh je tak [a7]blízko [d]nás,",
+        "Boh je tak [Bmaj7]blízko [C]nás, [a7]Boh je [d]v nás. :]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[: [C4]Ty si ten [F]dar od Otca [C]nám,",
+        "ty si tá [a7]láska, [A7]čo prišla [d]k nám,",
+        "[d\\C]ty si nás [B]z hriechu vykúpiť [C]chcel, [a]Emanu[d]el. :]"
+      ]
+    }
+  ]
+}

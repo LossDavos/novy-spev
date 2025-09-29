@@ -1,0 +1,43 @@
+{
+  "title": "Medzi hviezdami",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Medzi hviezdami tvoje meno uložil Pán,",
+        "medzi hviezdami na nebi, kde má svoj chrám.",
+        "Medzi hviezdami život krásny chystá ti Pán,",
+        "medzi hviezdami, kde svoj raj dá ti sám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V tú noc, keď na mysli tvoj Pán ťa mal,",
+        "v tú noc, v tú noc, keď z dvoch ľudí život drahý ti dal,",
+        "v tú noc, keď nádherný ti chystal spásy plán, bol s nami",
+        "Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V ten deň, keď verný Pán miluje nás,",
+        "v ten deň, v ten deň, keď bolesť máš a trpíš sám, už zas,",
+        "v ten deň si u teba Boh postaví svoj stan, je s nami Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Večer, keď zvolá Pán k domovu nás,",
+        "večer, večer, keď staré dni odplaví nám už čas,",
+        "večer, keď otvorí sa srdca nášho chrám, buď s nami Pán."
+      ]
+    }
+  ]
+}

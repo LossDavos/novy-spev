@@ -1,0 +1,37 @@
+{
+  "title": "Je meno",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Je meno, ktoré mám tak rád, čo o ňom stále spievam.",
+        "Ono mi zvučí na perách, aj keď sa modlievam."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Mám rád Ježiša, ó, ako Ho ľúbim,",
+        "mám rád Ježiša, veď za mňa život dal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "To meno láskou znie stále a rozpráva o láske,",
+        "o krvi, ktorá očistí a hriechu pozbaví."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V tom mene nový život mám, to meno pokoj dáva,",
+        "do slávy večnej ponáhľam, môj Pán ma tam čaká."
+      ]
+    }
+  ]
+}

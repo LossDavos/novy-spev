@@ -1,0 +1,36 @@
+{
+  "title": "Akým Priateľom je Ježiš",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Akým priateľom je [G]Ježiš, [D]kríže naše nesie [A7]On.",
+        "[D]Všetky bôle, všetky [G]žiale [D]sú i [A]Jeho breme[D]nom.",
+        "[A]Pokoj hľadáš, únik z [D]biedy, [G]prečo [D]stále kríže [A7]tie?",
+        "[D]Sám sa [D7]netráp, vraví [G]Ježiš, [D]strasti [A]svoje oddaj [D]mne."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď prichodia skúšky ťažké a duša sa rozbolí.",
+        "Nádej pevnú nestrať nikdy, Boh nám pokoj udelí.",
+        "Poznáš priateľa verného, rozpovedz Mu, čo bolí.",
+        "Ježiš ťarchy nesie s nami, Ježiš bolesť zahojí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Páľa dňa, keď nás umára, úľavy keď treba nám.",
+        "Kriste, útočište naše, pokoj pravý Ty si sám.",
+        "Aj keď nás priatelia zradia, uznania keď chýba nám.",
+        "Ako bratov v kríži svojom za ruku nás vedie Pán."
+      ]
+    }
+  ]
+}

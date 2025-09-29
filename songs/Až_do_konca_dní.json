@@ -1,0 +1,56 @@
+{
+  "title": "Až do konca dní",
+  "author": "Carswell, Ahlstrom, Demus - pr. M. Jurika - Continental Singers",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "vianoce",
+    "cez rok",
+    "advent"
+  ],
+  "song_parts": [
+
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Dnes dávaš v[D]šetko, čo [e]máš,",
+        "[C]našiel si l[D]ásku a t[G]ak ju stráž.",
+        "[C]Boh klope [D]na dvere, k[e]ým svet spí.",
+        "On aj v noci [a7]bdie a [C]dnes aj ty b[D]dieš s ním."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Láska je úsmev a plač,",
+        "smútok a strach náhle zmýva dážď.",
+        "Cítiš, že Boh je tak blízko nás,",
+        "cítiš, že s ním si tak stále viac svoj."
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "Boh ti [C]práve dal to [G]znamenie tých",
+        "nových [a7]dní, [C]krásnych d[D]ní."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Až do konca [C]dní on c[D]hráni ťa l[e]áskou,",
+        "dnes ti vrátil [C]raj, tak ho [D]vnútri [G]maj.",
+        "Až do konca [C]dní má k [D]človeku [e]blízko,",
+        "s ním nikdy nie si [a7]sám až [C]do konca [D]dní, až do konca dní."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vždy príde otázok pár, čo trápia srdce a trápia tvár.",
+        "Vieš, že ťa nezlomia, kým si s ním,",
+        "neboj sa ísť, on vie, čo s tým."
+      ]
+    }
+  ]
+}

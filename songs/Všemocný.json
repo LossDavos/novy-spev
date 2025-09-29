@@ -1,0 +1,25 @@
+{
+  "title": "Všemocný",
+  "author": "ESPÉ",
+  "categories": [
+    "poďakovanie po prijímaní",
+    "záver",
+    "adorácia",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[: [e] Doko[C]nale svä[D]tý, [e] víťaz [G]bojov [D]všetkých dní,",
+        "[e] si tak [C]úžas[D]ný, [e] Ba[G]ránok [D]víťazný. :]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[: [e]Chválim [C]všemocného [D]Pána, on mi silu [e]dáva, [C]nádher[D]ný. :]"
+      ]
+    }
+  ]
+}

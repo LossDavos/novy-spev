@@ -1,0 +1,44 @@
+{
+  "title": "Prosíme načri",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Prosíme načri nám v pokladnici",
+        "Božích milostí, Mária.",
+        "Sme tu na zemi len výletníci,",
+        "dlaň sa Ti štedrá k nám otvára."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ó, Mária, Ty Matka milá, nikdy si ľudí neopustila.",
+        "My túžbu máme: vo večnej sláve Ježiša v láske",
+        "oslavovať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Volíme si vždy za veliteľku",
+        "nepoškvrnenú Máriu.",
+        "Ľuďom dal šancu v nej náš Boh veľkú,",
+        "šťastný, kto zvolil si práve ju."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prežívať mocne reč Ježišovu",
+        "chceme v mlčaní Márie.",
+        "Ľuďom dal svetlo a nádej novú,",
+        "to pre nás heslom nech stále je."
+      ]
+    }
+  ]
+}

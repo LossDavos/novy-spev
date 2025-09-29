@@ -1,0 +1,23 @@
+{
+  "title": "Ďakuj",
+  "author": "",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Ďakuj Bohu, [A]rád ťa má,",
+        "[h]ďakuj, spievaj [f#]pieseň chvál,",
+        "[G]ďakuj, pretože [D]Ježiš je tvoj [C]Pán a [A]Kráľ."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Tak [fis]ver, keď si [h]slabý silu [e]máš",
+        "a už [A]núdzu [f#]nepoznáš,",
+        "pretože [h]Pán Ježiš sa [C]dal za [A]nás."
+      ]
+    }
+  ]
+}

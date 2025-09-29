@@ -1,0 +1,31 @@
+{
+  "title": "Zvony sa nám rozjasali",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Zvony sa nám rozjasali z veží,",
+        "radostná zvesť po chalúpkach beží:",
+        "[D]Bohu [a]nech je [H]sláva, [e]ľu[H]ďom [e]mier.",
+        "[A]Bohu nech je sláva, [D]ľu[A]ďom [D]mier.",
+        "Bohu nech je sláva, [e]ľu[A]ďom [D]mier."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Počúvajte pieseň o pokoji,",
+        "všetci sme dnes Boží, všetci svoji.",
+        "[D]Ježiš[a]ko sa [H]dotkol [e]na[H]šich [e]bied.",
+        "[A]Ježiško sa dotkol [D]na[A]šich [D]bied.",
+        "Ježiško sa dotkol [e]na[A]šich [D]bied.",
+        "Ježiško sa dotkol [e]na[A]šich [G]bie[D]d."
+
+      ]
+    }
+  ]
+}

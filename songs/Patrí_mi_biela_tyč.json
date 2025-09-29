@@ -1,0 +1,32 @@
+{
+  "title": "Patrí mi biela tyč",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Patrí mi [e]biela tyč [A]a na oči [D]páska,",
+        "[h]pretože [e]nevidím, jak [A]vrúcne má Boh [D]rád.[D7]  "
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[h]Tú krásu [e]kvetov, [a]bohatstvo [D]života [D7]",
+        "i hĺbku [G]vesmíru [D]i slnka [A]jas.",
+        "[D]Miriády [D7]svetov, to všetko z [e]lásky len [D]učinil [A]Pán"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A ešte mnoho viac lásky mal k nám,",
+        "keď nám to najdrahšie zatúžil dať.",
+        "Za deti prijal nás, tak poslal Syna nám, tak nás mal rád."
+      ]
+    }
+  ]
+}

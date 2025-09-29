@@ -1,0 +1,39 @@
+{
+  "title": "Požehnané meno má Pán",
+  "author": "",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[: [C]Požehnané meno má Pán, [F]požehnané meno má Pá[G]n,",
+      "[e]požehnané meno má [a]Pán, [F]Najvy[G]šší. :]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Viem, že meno Pána [F]je môj ú[C]kryt,",
+    "v boji sa v ňom [G]môžem skryť a v[F] bezpečí ž[C]iť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svätý, svätý, svätý je Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Oslávené meno má Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš – toto meno má Pán."
+      ]
+    }
+  ]
+}

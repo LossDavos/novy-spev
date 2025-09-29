@@ -1,0 +1,35 @@
+{
+  "title": "Svätý 05",
+  "author": "S. Zibala",
+  "categories": [
+    "Svätý"
+  ],
+  "song_parts": [
+        {
+      "type": "verse",
+      "lines": [
+        "[G]Svätý, svätý, [C]svätý, [(Edim)]svätý  [G]Pán, Boh [a]všetkých [D]sve[G]tov.",
+        "[G]Plné sú [C]nebe[(Edim)]sia i zem [G]tvojej [a]sl[D]áv[G]y."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ho[D#]sa-[F]na, ho[G]sana, ho[F]sana na [C]výso[D]stiach!"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Požehnaný, [C]ktorý [(Edim)]prichádza [G]v mene [a]Pá[D]no[G]vom."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ho[D#]sa-[F]na, ho[G]sana, ho[D#]sana na [F]výso[G]stiach!"
+      ]
+    }
+   
+  ]
+}

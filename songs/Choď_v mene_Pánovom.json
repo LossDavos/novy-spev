@@ -1,0 +1,36 @@
+{
+  "title": "Choď v mene Pánovom",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[a]Pán nám [F]prisľúbil [C]moc z výsos[G]ti,",
+        "[a]mŕtvych [F]kriesiť, sle[C]pým vracať [G]zrak.",
+        "[a]Ukázal [F]cestu, ktorou [C]ísť, cestu [G]svätosti.",
+        "[a]Kráčal ňou [F]predo mnou, tak [C]čoho sa mám [G]báť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nebojte sa tých, čo môže telu ublížiť,",
+        "nad duchom moc nemajú, tam vládne Pán.",
+        "Ak túžbu v srdci máš, môžeš sa priblížiť,",
+        "chce sa stať tvojím bratom, záujem mám."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[a]Choď v mene [F]Pánovom a [C]hlásaj svetu [G]dobrú zvesť.",
+        "[a]Choď ku všetkým  [F]národom, ak nev[C]ládzeš, On ťa [G]bude niesť.",
+        "[a]Choď v mene  [F]Pánovom a Božou [C]mocou lieč [G]každý neduh.",
+        "[a]Choď ku  [F]všetkým národom, nech [C]z nebies zos[G]túpi Boží [C]Duch."
+      ]
+    }
+  ]
+}

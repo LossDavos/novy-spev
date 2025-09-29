@@ -1,0 +1,37 @@
+{
+  "title": "Sláva Bohu na výsostiach",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Sláva Bohu na výsostiach",
+        "a na zemi pokoj ľuďom dobrej vôle."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tešíme sa všetci, veď Kristus prišiel k nám,",
+        "zaplesaj celá zem, každý Boží chrám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Sláva Ti buď, Bože, za vzácne tie dary,",
+        "čo premeniť môže kňaz na oltári."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Boh sa skláňa k ľuďom, sníma naše viny,",
+        "všetkým dáva svoj dom, poďme s Ním i my."
+      ]
+    }
+  ]
+}

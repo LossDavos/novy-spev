@@ -1,0 +1,42 @@
+{
+  "title": "Počítam s Tebou, Otče",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Počítam s Tebou, Otče, rátam s láskou Tvojou.",
+        "Počítam s Tebou, Otče, chráň ma rukou svojou.",
+        "Počítam s Tebou, Otče, chcem denne s Tebou byť.",
+        "Počítam s Tebou, dúfam v Teba, nemôžem zablúdiť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Viem dobre, čím som, Pane, prachom a lístkom vo vetre.",
+        "A viem, kto si Ty, ó, veľký Bože,",
+        "tak volám deň i noc."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Budeme stále spolu, budeme všetci blízko",
+        "s Tebou, môj Pane, dokážem všetko,",
+        "získam Ti celý svet."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chcel by som ako iskra zapáliť celý svet,",
+        "chcel by som srdcom dosiahnuť nebo,",
+        "tak volám deň i noc."
+      ]
+    }
+  ]
+}

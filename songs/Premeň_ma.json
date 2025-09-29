@@ -1,0 +1,50 @@
+{
+  "title": "Premeň ma",
+  "author": "M. Juhásová (sólo + zbor - SATB)",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Spolu [E]s vínom a [g#]chlebom [A]prinášam ti, Pane, [E]seba.",
+        "Spolu [c#]s vínom a [g#]chlebom [h]túžim premeniť sa [C#]v teba.",
+        "Chcem sa [f#]dívať na svet tvojimi [H]očami",
+        "a ľuďom [E]priniesť ťa[Emaj7]  svojimi [E7]rukami.",
+        "Ó, [A]premeň ma, prosím, [C]premeň ma, "
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[B\\C]srdce [C]láskou [F]spáľ,",
+        "veď ma [D]milosťou, životom [g]neistým",
+        "ty [a]nádej [A]dávaš [d]nám.",
+        "Stačí [B\\G]vnímať denne [F\\A]hlas,",
+        "čo [B]jediný [B\\C]povedie [F]nás.[a]  [H7]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď sa [E]víno [g#]s chlebom [A]premení na tvoje [E]telo,",
+        "zrakom [c#]viery ťa [g#]vidím: [h]svoju lásku dávaš [C#]vrelo.",
+        "Chcem sa [f#]dívať na svet tvojimi [H]očami",
+        "a ľuďom [E]priniesť ťa[Emaj7]  svojimi [E7]rukami.",
+        "Ó, [A]premeň ma, prosím, [C]premeň ma," 
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C\\D]Srdce [D]láskou [G]spáľ,",
+        "veď ma [E]milosťou, životom [a]neistým",
+        "ty [h]nádej [H]dávaš [e]nám,",
+        "stačí [C\\A]vnímať denne [G\\H]hlas,",
+        "čo [C]jediný [C\\D]povedie [G]nás."
+      ]
+    }
+  ]
+}

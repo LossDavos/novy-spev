@@ -1,0 +1,41 @@
+{
+  "title": "Si môj Pán",
+  "author": "D. Ball, pr. M. Wiesnerová - Radostné srdce",
+  "categories": [
+    "cez rok",
+    "detské",
+    "prijímanie"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]   [a7]Si môj [d7]Pán, [G] Ježiš [C]Kráľ,",
+        "[a7] každý [d7]deň sa zhová[d7\\G]ram s tebou [Cmaj7]rád.   [C7]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ty si [F]stvoril strom aj [G]kvet, slnie[e7]čko a celý [a7]svet,",
+        "vysa[d7]dil si aj náš [G]sad, [(F\\G)]mám ťa [C]rád."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Ty si nebu hviezdy dal, každý hriech si zo mňa sňal,",
+        "odpustil si toľkokrát, mám ťa rád."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+      
+        "Ty si vtákom piesne dal, aby som sa radoval,",
+        "si môj verný kamarát, mám ťa rád."
+      ]
+    }
+  ]
+}

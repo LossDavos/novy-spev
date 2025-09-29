@@ -1,0 +1,27 @@
+{
+  "title": "Mikulášku, dobrý strýčku",
+  "author": "",
+  "categories": [
+    "mikulášske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Mikulášku, dobrý strýčku, modlím sa ti modlitbičku,",
+        "zlož tu svoju plnú nôšku, daj nám darov svojich trošku,",
+        "i koníčka medového, i koláčka makového,",
+        "veď ty, svätý Mikuláš, mnoho dobrých vecí máš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mikulášku, dobrý strýčku, naplň nám našu dušičku",
+        "láskou k Bohu, sestrám, bratom, šťastím žiť pre kamarátov,",
+        "i Ježiška popros za nás, aby nezabudol na nás,",
+        "veď ty, svätý Mikuláš, mocné slovo v nebi máš."
+      ]
+    }
+  ]
+}

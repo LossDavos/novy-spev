@@ -1,0 +1,25 @@
+{
+  "title": "Ešte krok",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Ešte krok, jeden krok, vieru daj pre jeden krok.",
+        "Vieru daj mi, Pane, v jeden krok, ešte jeden krok."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pomaly už cestou slabneš a deň tmavý je,",
+        "nemaj strach z noci zlej.",
+        "Keď Ti vraví Spasiteľ, som s tebou, neboj sa,",
+        "za mnou poď, stále bdej."
+      ]
+    }
+  ]
+}

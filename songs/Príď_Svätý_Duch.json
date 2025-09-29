@@ -1,0 +1,45 @@
+{
+  "title": "Príď Svätý Duch",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Príď Svätý Duch, vojdi do nás.",
+        "Príď Svätý Duch, plápolaj v nás.",
+        "Príď Svätý Duch, oživuj nás,",
+        "Duchu Svätý, príď."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Príď, Duchu, prenikni nás,",
+        "príď, Duchu, zastav sa pri nás.",
+        "Príď, Duchu, vlož život do nás,",
+        "poznať daj sa nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Príď, Ty Duch, Duch svätosti,",
+        "príď, Ty Duch, Duch múdrosti.",
+        "Príď, Ty Duch, Duch lásky,",
+        "poznať daj sa nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Príď, Duchu a zjednoť nás,",
+        "príď, Duchu a naplň nás.",
+        "Príď, Duchu a obnov nás,",
+        "poznať daj sa nám."
+      ]
+    }
+  ]
+}

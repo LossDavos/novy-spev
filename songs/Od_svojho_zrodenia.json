@@ -1,0 +1,36 @@
+{
+  "title": "Od svojho zrodenia",
+  "author": "Janko Flajžík-Manašovský, Janka Daňová ",
+  "categories": [
+    "sobášne"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Od svojho zrodenia, neve[F]diac o sebe,",
+        "kráčajú [d]ku sebe[G] ona a [C]on.",
+        "Život už [a]dozrieva,[e] pohľady [Fmaj7]nesmelé,",
+        "v ovzduší [d]náde[G4]je[G] znie lásky [C}tón[G].",
+        "Láska je [C]studňa,[e] ktorá vždy [a]dáva,[a7]",
+        "cesta [F]odo mňa smerom k i[C]ným.",
+        "Je [D]trpezlivá, nedotie[G]ravá, je [F]nekonečne [G]živý vav[C]rín.[G]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "My chceme [C]milovať takouto [F]láskou,",
+        "chceme si [d]zachovať[G] bázu ver[C]nos[G]ti.",
+        "My chceme [C}milovať takouto [F]láskou,",
+        "chceme byť [a]oázou[F] čistej ra[C]dosti."
+      ]
+    },
+    {
+      "type": "interlude",
+      "lines": [
+        "[C] [F] [d] [G] [d] [a] [Fmaj7] [B] [G]"
+      ]
+    }
+  ]
+}

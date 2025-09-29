@@ -1,0 +1,24 @@
+{
+  "title": "Milovať budeš",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:Milovať budeš Pána svojho Boha",
+        "z celého srdca, z celej duše,",
+        "z celej mysle, z celej sily.:/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:A svojho blížneho ako seba samého,",
+        "vraví náš Pán na ceste života večného.:]"
+      ]
+    }
+  ]
+}

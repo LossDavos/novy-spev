@@ -1,0 +1,36 @@
+{
+  "title": "Ave Mária, dnes zaspieva chrám",
+  "author": "",
+  "categories": [
+    "mariánske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Ave Mária, (hm[D2]m[D]m) dnes [G]zaspieva [D]chrám.",
+        "/:Zdravas, buď [h]Zdravas,:/ /:ja k Tebe [D]volám,:/",
+        "/:že duša [h]moja:/ /:sa v svete bo[D]jí,:/",
+        "že srdce [G]moje (hmm) vždy padá v bo[D]ji.[A]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ave Mária, dnes spieva môj dom,",
+        "/:so Synom svojim:/ /:Ty prebývaj v ňom.:/",
+        "/:Do Tvojich dlaní:/ /:si ukryjem tvár,:/",
+        "boľavé srdce Ti dám na oltár."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ave Mária, Ty ochráň náš svet,",
+        "/:od tmy a zimy,:/ /:Ty milosti kvet.:/",
+        "/:Nech strach a smútok:/ /:sa navždy stratia,:/",
+        "nech všetci ľudia sa k Tebe vrátia."
+      ]
+    }
+  ]
+}

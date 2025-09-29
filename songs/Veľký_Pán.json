@@ -1,0 +1,48 @@
+{
+  "title": "Veľký Pán",
+  "author": "Rieka života",
+  "categories": [
+    "poďakovanie po prijímaní",
+    "záver",
+    "adorácia",
+    "veľká noc",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[A]Veľ[A\\C#]ký   [D]Pán, [h7]on je ",
+        "[E]kráľov [C#]Kráľ, Ježiš",
+        "[f#]pánov [h7]Pán,",
+        "on je[E4]nád[E]her[A]ný[A4]."
+      ]
+    },
+     {
+      "type": "chorus",
+      "lines": [
+        "Aleluja,",
+        "aleluja,",
+        "alelu-ja",
+        "on je nádherný"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Aleluja,",
+        "je spása a sláva",
+        "úcta a sila",
+        "on je nádherný"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "On je nádherný",
+        "On je nádherný",
+        "On je nádherný"
+      ]
+    }
+  ]
+}

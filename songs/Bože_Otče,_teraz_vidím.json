@@ -1,0 +1,29 @@
+{
+  "title": "Bože Otče, teraz vidím",
+  "author": "I. Smale",
+  "categories": [
+    "poďakovanie po prijímaní",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Bože Otče, teraz vidím, [D]aký som bol slepý,",
+        "ty však [C]si môj Otec láskyplný[H7], starostlivý Pán.",
+        "[e]Teraz som tvoj syn prijatý, [D]patrím medzi tvoje deti.",
+        "[C]Samotu viac nepoznám, veď [H7]Boha Otca pri sebe mám."
+        ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[e]Budem [a]spievať chvály, [D]budem [G]spievať chvály,",
+        "[C]budem [a]spievať chvály, [H7]kým život mám.",
+        "[e]Budem [a]spievať chvály, [D]budem [G]spievať chvály,",
+        "[C]budem [a]spievať chvály, [H7]kým život [e]mám."
+      ]
+    }
+  ]
+}

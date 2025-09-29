@@ -1,0 +1,47 @@
+{
+  "title": "Boh je vždy v nás ",
+  "author": "Dominik",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Boh je vždy v nás, aj keď ho však nezbadáš.",
+        "Tvojou úlohou je v blížnych, v blížnych Ho nachádzať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Aj keď nám svieti slniečko, mňa trápi duša moja:",
+        "špinavá je od hriechov, no čistotu jej dám.",
+        "Kto pomocnú mi ruku dá, kto z vás mi radosť vráti?",
+        "Na koho sa mám obrátiť? Kde hľadať Boha mám?"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Či v kvietkoch na lúke ja môžem tiež svojho Boha nájsť?",
+        "Aj v slniečku, čo hreje nás, keď páli, štípe mráz?",
+        "A v ľuďoch, ktorých stretávam, snáď dá sa Boh tiež nájsť?",
+        "To pýtam sa vás, povedzte mi, kde ukrytý je Pán.",
+        "Vo všetkých ľuďoch Boha nájsť je náš cieľ Kristom daný.",
+        "Tak skúsme všetci spoločne ísť hľadať cieľ stratený.",
+        "Len s láskou môžeš Boha nájsť, keď si odhodlaný",
+        "a s úsmevom Ho všetkým dávaj, ak Ho sám objavíš."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:Boh je vždy v nás, aj keď ho však nezbadáš.",
+        "Tvojou úlohou je v blížnych, v blížnych Ho nachádzať.:]",
+        "[:Boh je vždy v nás, aj keď ho však nezbadáš.",
+        "Svojou láskou Ho musíš svetu, svetu Ho ukázať.:]"
+      ]
+    }
+  ]
+}

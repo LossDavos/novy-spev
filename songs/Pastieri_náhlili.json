@@ -1,0 +1,43 @@
+{
+  "title": "Pastieri náhlili",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Pastieri [A]náhlili [D]k Tebe v tú [A]noc, uznali v Dieťati [A]nadzemskú [D]moc."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Z [D]jasličiek vl[A]ádne Dieťa nevl[D]ádne.",
+        "Zrodený ostáva, [A]stále sa nám dáva v [D]sviatosti [A]Emanu[D]el.",
+        "[:[D]Ó, Spasiteľ náš, zostaň pri [A]nás, zostaň pri [D]nás.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "K stolu ťa pozýva, vezmi a jedz, život tvoj večný je najdrahšia vec."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pristúp a vezmi ten chlieb nadhviezdny,",
+        "ktorý ti pripravil, hriechu ťa pozbavil v sviatosti Emanuel.",
+        "[:Ó, Spasiteľ náš, zostaň pri nás, zostaň pri nás.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Živý je znova tu, Ježiško náš. V lámaní chleba Ho aj ty spoznáš."
+      ]
+    }
+  ]
+}

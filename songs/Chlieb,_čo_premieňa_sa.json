@@ -1,0 +1,43 @@
+{
+  "title": "Chlieb, čo premieňa sa",
+  "author": "",
+  "categories": ["obetovanie"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Chlieb, čo premieňa sa nám na Telo Pána,",
+        "z mnohých zrniek pšeničných pochádza.",
+        "Víno, čo sa krvou Ježišovou stáva,,",
+        "z mnohých kvapiek hrozna pozostáva."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ako chlieb, čo spojil zlaté klásky,",
+        "nech nás spojí sila Jeho lásky,",
+        "Ako kalich objal kvapky vína,",
+        "tak aj Cirkev svätá nás objíma."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Priveď do ovčinca svojho, dobrý Pastier,",
+        "stratené ovečky, ktoré hynú.",
+        "Zjednoť Cirkev svoju, nech do krásy rastie,,",
+        "nech sa zmení v jedinú rodinu."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vezmi na ramená svoje, dobrý Pane,",
+        "tých, čo sami prísť už nedokážu",
+        "a nech zjednotia všetkých, div sa stane,,",
+        "vyslyš, Pane, vrúcnu prosbu našu."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Svätý 02",
+   "author": "Košický",
+  "categories": [
+    "Svätý"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Svätý, [e]svätý, [h]svätý, Pane [C]Bože svetov neko[D]nečných,",
+        "si [C]sláv[h]ny a [a]skrý[e]vaš svoju [C]slávu [A]vo svojich [D]dielach."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:Ho[G]sa[D]na, ho[G]sa[D]na, ho[C]sana buď [D]Kráľovi [G]kráľov.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V mene [G]Pá[e]novom [C]k nám dnes [D]vchádzaš Ty [D7]požehnaný [G]kráľov."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:Ho[G]sa[D]na, ho[G]sa[D]na, ho[C]sana buď [D]Kráľovi [G]kráľov.:] [C] [G]"
+      ]
+    }
+  ]
+}

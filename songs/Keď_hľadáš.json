@@ -1,0 +1,43 @@
+{
+  "title": "Keď hľadáš",
+  "author": "Jaspis",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Keď hľadáš zdroj šťastia a láska zdá sa tmou,",
+        "keď si sám a nemáš svoj domov.",
+        "Keď strácaš aj pokoj, hoc veľmi túžiš snáď",
+        "byť niekým, milovať a rásť."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Neboj sa, nemaj strach, nie si sám.",
+        "Som Láska, dávno ťa hľadám.",
+        "Cítim s tebou, chápem ťa, rád ťa mám,",
+        "podaj ruku a buď môj kamarát."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď hriech a rozkoš láka, aj závisť má svoj lov,",
+        "keď pravda je len nádejou.",
+        "Keď nemáš chuť sa klamať, chceš hľadieť do očí,",
+        "len láska ti výhru zaručí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Láska príď, dvíhaj ma, nechcem byť sám,",
+        "veď dúfam v tebe šancu mám.",
+        "Daj mi cítiť, že si pri mne, keď padám,",
+        "keď sa modlím, keď plačem, aj keď hrám."
+      ]
+    }
+  ]
+}

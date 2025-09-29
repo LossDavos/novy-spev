@@ -1,0 +1,48 @@
+{
+  "title": "Náš Pán, On je kráľov Kráľ (Awesome God)",
+  "author": "R. Mullins pr. Timothy",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[e]Náš [C2]Pán, [C]On je [G]kráľov Kráľ, Jeho [D]trón bude [e]nave[D]ky [e]stáť.",
+        "On [C2]má [C]všetku [G]vládu a moc. Náš [a]Pán, On je [e/H]krá[H7/D#]ľov [e]Kráľ."
+      ]
+    },
+    {
+      "type": "interlude",
+      "lines": [
+        "[e] [a] [h] [e]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[h7]Keď ruká[e]vy si vyhŕňa, tak On vždy dôvod na to má,",
+        "náš [C]Pán, On je [D]kráľov [E]Kráľ.",
+        "On má [e]hrom vo svojich stopách",
+        "a blesk v mocných rukách, náš [C]Pán, On je [D]kráľov [E]Kráľ.",
+        "A tiež [C]Boh nežartoval, keď vyhnal preč ľudí z raja",
+        "a [h]dôvod tiež mal, keď na kríži mrel za nás.",
+        "Jeho [C]príchod sa už blíži, preto [a]mal by si už veriť,",
+        "že náš [C]Pán, On je [D]kráľov [e]Kráľ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A keď aj noc je tmavá, nevidíš jasot hviezd,",
+        "náš Pán, On je kráľov Kráľ.",
+        "Veď to On do tmy žiari, je Svetlom našich ciest,",
+        "náš Pán, On je kráľov Kráľ.",
+        "Svoj hnev a súd Boh vylial na Sodomu",
+        "a zľutovanie On dal nám na kríži",
+        "a tak teraz dúfam, že hneď nezabudneš,",
+        "že náš Pán, On je kráľov Kráľ."
+      ]
+    }
+  ]
+}

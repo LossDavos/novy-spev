@@ -1,0 +1,31 @@
+{
+  "title": "Dnes je ten čas",
+  "author": "",
+  "categories": [],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Dnes je ten čas vzdávať Bohu chválu",
+        "vo svätyni kráľa, ktorou sme my sami.",
+        "Tak otvor si srdce a začni chváliť Ho,",
+        "Jeho chvála nech naplní tento chrám."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:Chvála, česť, chváľme Ho.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Boh prebýva v chvále svojho ľudu.",
+        "On túži, aby vzýval Jeho meno.",
+        "Tak otvor si srdce a začni chváliť Ho,",
+        "Jeho chvála nech naplní tento chrám."
+      ]
+    }
+  ]
+}

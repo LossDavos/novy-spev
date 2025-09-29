@@ -1,0 +1,38 @@
+{
+  "title": "Kristus - živý chlieb",
+  "author": "Gen Verde - pr. D. Kubka, E. Kelbel",
+  "categories": [
+    "obetovanie",
+    "veľká noc",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Z tvojich štedrých [G]darov, Pane, [a] ktorými zem [e7] požehnávaš,",
+        "[F] nesieme ti [C]z lásky chlieb a [d7]víno na ol[G4]tár[G].",
+        "[C]Zhromaždení [G]v tvojom chráme, [a]kde nás všetkých [e7] povolávaš,",
+        "[F] chceme konať [C]obeť, ktorú [d7]si nám [G]priká[C]zal.[C7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/:[F] Živý [G]chlieb, ktorý [a]zostúpil [e]z neba,",
+        "je [d7]náš Ježiš [G]Kristus, Pán a [a4]Kr[a]áľ.[G]   [F]",
+        "Vo ví[G]ne a v kúsku [a]chleba ťa prijí[e7]mam,",
+        "tak [d7]verím, že [G]život večný [C]mám.[(C7)]     :/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Z tvojich štedrých darov, Pane, ktorými zem požehnávaš,",
+        "nesieme ti z lásky chlieb a víno na oltár.",
+        "V srdci veľkú radosť máme, že sa nám za pokrm dávaš;",
+        "svojim deťom, ktoré túžia prísť pred tvoju tvár."
+      ]
+    }
+  ]
+}

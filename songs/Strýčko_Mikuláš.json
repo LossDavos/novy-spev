@@ -1,0 +1,44 @@
+{
+  "title": "Strýčko Mikuláš",
+  "author": "",
+  "categories": [
+    "mikulášske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Strýčko Mikuláš, prišiel z neba k nám, mnoho darčekov on doniesol nám,",
+        "plný kôš dobrôt, darov nebeských nadelí deťom Brezovickým."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prosíme teba, strýčko Mikuláš, daj nám z darčekov, ktoré v koši máš,",
+        "rozdaj cukríky, sladké jabĺčka, poteš nimi naše srdiečka."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Strýčko Mikuláš, sľubujeme ti, že my budeme vždy dobré deti,",
+        "poslúchať otcov, mamičky naše, to je pre nás len to najľahšie."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiška pozdrav, takto mu odkáž, že ho čakáme na Vianoce zas,",
+        "chystať sa chceme k Jeho príchodu, zo srdca vyniesť hriech a zlobu."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ďakujeme ti, dobrý strýčko náš, že si zavítal dnes tu medzi nás.",
+        "Ďalej už ideš deti potešiť, dobrých odmeniť, zlým pohroziť."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Narodil sa Ježiško",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Narodil sa Ježiško, veseľme sa deti,",
+        "tejto noci v Betleme, poďme k nemu všetci."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ježiško náš maličký, my Ťa radi máme,",
+        "naše verné srdiečka do daru Ti dáme."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prichádzame ku Tebe, my slovenské deti,",
+        "vieme, že nás všetkých tu veľmi ľúbiš aj Ty."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Hlávky žltej ľalie",
+  "author": "",
+  "categories": [
+    "mariánske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Hlávky žltej ľalie (Maria-ma),",
+        "to sú kvety Márie (Maria-ma),",
+        "dávam jej ich aj ja na oltár (Maria-ria-ria).",
+        "Včielky na ne sadajú (Maria-ma),",
+        "Márii česť vzdávajú (Maria-ma),",
+        "aj ja chcem jej ďakovať."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Preto aj my spievajme, s Máriou sa radujme,",
+        "že tie kvety získajú duše neverné.",
+        "Ona nás vždy vedie tmou.",
+        "Pod jej stálou ochranou nemusíš sa nikdy báť,",
+        "veď s ňou strach prekonáš.",
+        "Tak sa ku nej znova vráť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď nadíde tmavá noc (Maria-ma),",
+        "volám: Príď mi na pomoc (Maria-ma),",
+        "vždy Ťa čakám s veľkou úzkosťou (Maria-ria-ria).",
+        "Pán Ježiš mi pomáha (Maria-ma),",
+        "hriech, to je tá výstraha (Maria-ma),",
+        "ktorá kričí, jej sa musíš báť."
+      ]
+    }
+  ]
+}

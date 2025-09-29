@@ -1,0 +1,30 @@
+{
+  "title": "Tvoja láska dvíha ma",
+  "author": "",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Tvoja [F]láska dvíha ma [C], keď k Tebe [a]volám, si pri mne [G]blízko.",
+        "Tvoj [F]duch napĺňa ma [C], po Tvojich [a]cestách ma vedie [G]isto.",
+        "Tvoj [F] dotyk premieňa ma [C], na moje [a] rúno rosa [G]padá."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Dnes [C]viem, že [G]Ty zostaneš [F]verný až na ve[G]ky,",
+        "už [C]nie som zem bez vo[G]dy, vytryskla [F]voda zo ska[G][(C)]ly"
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+         "B: [:Si [C]nekonečný, [G]jedinečný, [a]stále nový, ako [F]skala pevný.:] [C]Pán"
+      ]
+    }
+  ]
+}

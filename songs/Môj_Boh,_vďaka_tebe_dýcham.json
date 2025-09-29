@@ -1,0 +1,28 @@
+{
+  "title": "Môj Boh, vďaka tebe dýcham",
+  "author": "M. Ewing",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[A] Môj [h]Boh, [G] vďaka [D]tebe dýcham, [A] pre te[h]ba tu [G]som.",
+        "[A] A [h]viem, [G] láskou [D]si ma získal, [A] k sebe [h]privie[G]dol.",
+        "[A]Smútok je [h]preč, [G] šťastím [D]ma napĺňaš, [A]učíš ma [h]láskou [G]žiť."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Tvoja [D]láska [G]je [e]silnejšia než [A]vietor,",
+        "ona [D]vyššia [G]je [e]než najvyšší [A]štít,",
+        "[D]hlbšia [G]je [e]než dno oce[A]ánov,",
+        "(ona) [e]zmenila môj [G]svet."
+      ]
+    }
+  ]
+}

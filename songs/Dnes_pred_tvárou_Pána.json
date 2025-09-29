@@ -1,0 +1,44 @@
+{
+  "title": "Dnes pred tvárou Pána",
+  "author": "B. Hudson (zbor - ST)",
+  "categories": [
+    "úvod",
+    "cez rok",
+    "pôst",
+    "záver",
+    "advent"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[: [e]Dnes pred tvárou Pána po[D]korme [e]sa. :]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pán [C]sám po[D]výši [e]nás, [G]jeho je [D]vesmír a [C]čas,",
+        "Pán sám po[D]výši [e]nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Všetky svoje bôle oddajme mu. :]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Oslavujme ho po všetky dni.  :]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Zaspievajme Pánovi ešte raz. :]"
+      ]
+    }
+  ]
+}

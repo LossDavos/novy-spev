@@ -1,0 +1,38 @@
+{
+  "title": "Každý deň je veľký dar",
+  "author": "P. Štefčík",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Každý [C]deň je veľký dar, každý [d]deň dar k obeti,",
+        "o tvojej [G]láske, Pane, rozjímam, ktorá všetko dobré posvä[C]tí.",
+        "Deň prináša radosti, ale aj [d]smútok, trápenie.",
+        "Keď všetko [G]s Pánom prežívam, pripájam sa k jeho obe[C]ti.[C7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pridajme [F]všetci na ol[G]tár k vínu a [C]chlebu ten svoj [a]dar -",
+        "každú [d]snahu, príko[G]rie, ale aj [C]to čo pote[C7]ší.",
+        "Premieňaš [F]tajomne tento [G]chlieb,",
+        "víno a [C]vchádzaš doňho [a]sám,",
+        "spoj nás [d]v jedno, Pane [G]náš, spoj nás [C]v svätej [F] o[G]be[C]ti."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Každý deň je veľký dar, každý deň dar k obeti,",
+        "o tvojej láske, Pane, rozjímam, ktorá všetko dobré posvätí.",
+        "Nič nie je samé od seba, ako víno tak aj chlieb,",
+        "všetko máme od teba, za všetko ti, Bože, ďakujem."
+      ]
+    }
+  ]
+}

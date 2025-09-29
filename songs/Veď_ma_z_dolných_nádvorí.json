@@ -1,0 +1,33 @@
+{
+  "title": "Veď ma z dolných nádvorí",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Veď ma z [e]dolných nádvorí [C]ďalej za oltár,",
+        "[D]tam na sväté miesto, kde [e]uvidím Tvoju [h]tvár.",
+        "Vzácnu [e]chvíľu s Tebou samým [C]túžim mať aj dnes,",
+        "kde [D]mlčí ľudská múdrosť a tvoj [e]hlas ticho [h]znie."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Veď ma [e]tam, do ticha svätyne [a]svätých,",
+        "veď ma [C]tam skrze [h]krv Barán[e]ka.",
+        "Veď ma [e]tam, do ticha svätyne [a]svätých,",
+        "veď ma [C]tam, tu sto[h]jím, veď ma [e]sám."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "veď ma [C]tam, tu sto[D]jím, veď ma [e]sám."
+      ]
+    }
+  ]
+}

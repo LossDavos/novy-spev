@@ -1,0 +1,41 @@
+{
+  "title": "Dnes pieseň hrám (I have a song)",
+  "author": "Mickey Finn, pr. Bohuš Živčák,  Rieka Života",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[D] [A] [h] [A] [G]",
+        "[D] [A]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Dnes [A]pieseň [h]hrám a [A]nie som [G]sám",
+        "tebe, [D]Ježiš, môj [A]majster",
+        "A s[A]tále [h]viac ťa [A]túžim [G]mať",
+        "ty si [D]najhlbšou [A]túžbou"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Nech tečie rieka tvojho [h]života v [A]nás",
+        "[e]Chcel by som prežiť dnes tvoj [A]vodopád",
+        "[e]Daj sa mi napiť z tvojho [h]prameňa [A]krás",
+        "[G]Znovu chcem v [D/F#]úžase [G]stáť"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nechcem bez teba žiť [D] [f#] [G]",
+        "Nechcem bez teba [A]žiť"
+      ]
+    }
+  ]
+}

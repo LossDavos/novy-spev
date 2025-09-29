@@ -1,0 +1,29 @@
+{
+  "title": "Nech najsvätejšia obeť Pána",
+  "author": "",
+  "categories": ["obetovanie", "pôst"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Nech najsvä[C]tejšia obeť Pá[F]na, vždy hodná [G]chvály, poklo[C][(e)]ny.",
+        "[:Tá obeť [a][(C)]večne požehna[F]ná, nech si nás [G]k láske naklo[C]ní.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tak vrúcne kľakám v odovzdaní, zo srdca Pánu ďakujúc.",
+        "[:Za túžbu žiť s Ním v každom dianí,",
+        "za milosť slova pracujúc.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mária, Matka, ktorá bdela nad mojim žitím jednostaj.",
+        "[:Keď odpojí sa duša z tela, Ty ju zas Bohu odovzdaj.:]"
+      ]
+    }
+  ]
+}

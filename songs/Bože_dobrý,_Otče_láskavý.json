@@ -1,0 +1,39 @@
+{
+  "title": "Bože dobrý, Otče láskavý",
+  "author": "F. Fedor",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": null,
+      "lines": [
+        "(orig in A)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Bože dobrý, [C]Otče láska[D]vý, [G]prinášame [C]ti tieto da[D]ry.",
+        "[G]Chlieb, [C]ktorým si  nás [D]obdaril, [G]víno i [C]život odda[D]ný, i život odda[G]ný."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Prijmi [C]od nás tieto [D]dary...  od nás tieto dary; tak",
+        "[G]prijmi [C]od nás život [D]celý...  od nás život celý; tak",
+        "[G]prijmi [C]život plný [D]snahy...  život plný snahy,",
+        "[C]ú, ten [D]život vese[G]lý...  (ú-á-á, veselý.)"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "[C]živej [D]lásky a vie[G]ry,  (ú-á-á, a viery,)",
+        "[C]plný, [D]plný náde[C]jí.  [G]   (ú-á-á, nádejí.)"
+      ]
+    }
+  ]
+}

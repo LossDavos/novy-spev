@@ -1,0 +1,41 @@
+{
+  "title": "Čakajú ťa nástrahy",
+  "author": "Š. Gužík",
+  "categories": [
+    "mariánske",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Čakajú ťa [a]nástrahy [F]tohoto sve[G]ta,",
+        "[C]Mária ťa [a]volá: [F]Poď, moje die[G]ťa."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[F]Mária ma [G]ochraňuje, [C]ja sa nebo[a]jím,",
+        "[F]vrhnem sa pod [G]jej ochranný [C]pl[C7]ášť.",
+        "[F]Ona podá [G]ruku a ja [C]smelo kráčam [a]s ňou,",
+        "[F]Mária je [G]Matkou najdrah[C]šou."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Matka moja láskavá, ja ťa milujem,",
+        "svoje srdce mladé tebe darujem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Matka moja láskavá, ja ťa milujem,",
+        "svoje srdce mladé tebe darujem."
+      ]
+    }
+  ]
+}

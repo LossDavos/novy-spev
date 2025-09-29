@@ -1,0 +1,44 @@
+{
+  "title": "Šiel kadiaľ ja chodím",
+  "author": "",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[:[C]Šiel kadiaľ ja chodím,:] [:[a]stál tam, kde ja stojím.:]",
+        "[:[C][(F)]Cítil, čo ja cítim,:] [:[G]rozumie mi.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+
+        "[:Krehkosť moju pozná,:] [:žil v tele ako ja:]",
+        "[:diabol Ho pokúšal,:] [:On neprehral.:]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[a]Boh [e]je s na[a]mi, tak [e][(G])]blízko [a][(Fmaj7)]nás, Boh[e][(G)] je s na[a][(Fmaj7)]mi, [e][(G)]Imanu[a][(d7)]el.[a]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[:Ľudia Ho zavrhli,:]  [:predčasne súdili.:]",
+        "[:Trpel to neprávom,:] [:odpúšťa nám.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[:Ľudia Ho zavrhli,:]  [:predčasne súdili.:]",
+        "[:Trpel to neprávom,:] [:odpúšťa nám.:]"
+      ]
+    }
+  ]
+}

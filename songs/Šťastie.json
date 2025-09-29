@@ -1,0 +1,45 @@
+{
+  "title": "Šťastie",
+  "author": "Prešovčatá, A. Šoltýsová",
+  "categories": [
+    "mariánske",
+    "záver",
+    "cez rok",
+    "detské"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Je dnes taký [D]zvláštne krásny [e]deň,",
+        "[C]ktorý zmení všetko na do[D]bré",
+        "a [C]naše úmy[D]sly [H]trochu rozja[e]sní,",
+        "[C]skúsme sa za[D]myslieť o šťa[G]stí.",
+        "[G]Šťastie – to je [D]úsmev na tvá[e]ri,",
+        "[C]šťastie je byť tu pri oltá[D]ri,",
+        "tak [C]blízko pri Ma[D]tke, [H]ktorá pote[e]ší,",
+        "[C]s Máriou je [D]život najlep[G]ší."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Stále medzi nami[D]  [C]žije Mári[G]a,",
+        "stále medzi nami[D]  [C]Matka Mári[G]a."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Všetko je z lásky a pre lásku,",
+        "všetko to nám dáva otázku,",
+        "že prečo je človek taký strašne zlý,",
+        "skúsme sa zamyslieť, čo robí.",
+        "Hľadá šťastie, ktoré nenájde,",
+        "preto, lebo šťastie nerastie.",
+        "On musí pochopiť, že s Máriou byť",
+        "to je - tváre druhých rozjasniť."
+      ]
+    }
+  ]
+}

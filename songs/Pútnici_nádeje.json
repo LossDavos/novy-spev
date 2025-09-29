@@ -1,0 +1,40 @@
+{
+  "title": "Pútnici nádeje (Hymna Jubilea)",
+  "author": "Pierangelo Sequeri, Francesco Meneghello, pr. Ľuboš Gabčo",
+  "categories": [
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Moja nádej živým ohňom planie, túto pieseň počuj, dobrý Pane.",
+        "Večné lono - Život nehynúci, v teba dúfa hriešnik putujúci."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "",
+        "Každý národ k tebe vrúcne volá, nachádzajúc svetlo tvojho Slova.",
+        "Roztratené, krehké Božie deti láska Syna naspäť prinavráti."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "",
+        "Boží pohľad plný láskavosti tvorí úsvit novej budúcnosti.",
+        "Nové nebo, stvorená zem nová, aj cez múry Duch života koná."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "",
+        "Zdvihni zrak svoj, hýb sa s prudkým vetrom, zrýchli krok, Boh prichádza v tom všetkom.",
+        "Hľaď na Syna, on človekom stal sa, v ňom pre mnohých zjavila sa spása."
+      ]
+    }
+  ]
+}

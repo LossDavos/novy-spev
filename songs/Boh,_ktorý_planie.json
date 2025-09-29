@@ -1,0 +1,24 @@
+{
+  "title": "Boh, ktorý planie",
+  "author": "B. Živčák - Rieka života",
+  "categories": [
+    "k Duchu Svätému",
+    "adorácia",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "/: [E]Ty si ten Boh, [E4]ktorý planie,[E]  [E4]    [A]zošli oheň [H]na nás, [E]Pane. :/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[H]Ty si ten Boh, ktorý horí, [A]ty si ten, čo rany hojí,",
+        "[H]počuť krídla holubice, [A]bude ako na Turíce.[H]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "title": "Mária, sťa včera",
+  "author": "",
+  "categories": [
+    "mariánske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[h]Mária, sťa včera som [e]uzrel jasot [e7]tvoj,",
+        "[A]Maria, zaskvel sa v sl[D]zavom údo[F]lí.",
+        "[h]Mária, pokorne ťa [e]prosím, pri mne [e7]stoj,",
+        "[A]Mária, tvoja láska [D]všetko zaho[F]jí."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[d]Matka, vzhliadni k nám, voláme, [h]Matka, zachráň nás,",
+        "voláme, [e]svätá, vypros [G]nám [A]milosti  [D]u Syna"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mária, dnes tu kľačím svetom strápený, Mária, slzy bránia hľadieť na oltár.",
+        "Mária, do dlaní som ukryl pohľad svoj, Mária, nie som hoden uzrieť tvoju tvár."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ach, mama[D], som v strachu bied [G],",
+        "ach, mama[D], som v tieni múk[A],",
+        "dôstojnosť[D] navrátiť príď [G] [g],",
+        "Mária[D], do mojich rúk[A]."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Šťastie dnes, postretlo ma kráčať súmrakom,",
+        "noc a tma sú už niečim celkom neznámym.",
+        "Povstal som opäť vďaka Matke s Ježišom,",
+        "Mária, slová vďaky šepkať nestačím."
+      ]
+    }
+  ]
+}

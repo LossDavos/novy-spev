@@ -1,0 +1,48 @@
+{
+  "title": "Slovensko moje",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Slovensko moje, otčina moja,",
+        "krásna si ako raj, ako raj.",
+        "Na tvojich holiach nádhery trónia,",
+        "v údolí šumí ľúbezný háj.",
+        "Na tvojich holiach si spievali,",
+        "otcovia naši pracovali, robili.",
+        "Slovensko moje, otčina moja,",
+        "krásna si ako raj, ako raj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Hej, mám otčinu ja ešte inú,",
+        "kde večne vládne môj Boh a Pán.",
+        "Tam si povolá, tam si privedie",
+        "Pán Ježiš svojich zo všetkých strán.",
+        "Tam zmiznú žiale a náreky,",
+        "tam budeš bývať až na veky, na veky.",
+        "Hej, mám otčinu ja ešte inú,",
+        "kde večne vládne môj Boh a Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kým ten čas príde, že sa to stane,",
+        "chcem Bohu v láske žiť oddane.",
+        "Blížnemu slúžiť a pravdu hájiť,",
+        "to heslom mladých vždy musí byť.",
+        "Vypočítavosť a strach zdolať,",
+        "lásku a radosť vyžarovať a žiariť.",
+        "Kým ten čas príde, že sa to stane,",
+        "chcem Bohu v láske žiť oddane."
+      ]
+    }
+  ]
+}

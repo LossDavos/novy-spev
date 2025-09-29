@@ -1,0 +1,41 @@
+{
+  "title": "Nekonečný Pán",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Bože, Ty si nekonečná LÁSKA."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nekonečnú milosť nám daj, nám daj, v pochybnosti nás nenechaj, nenechaj.",
+        "Ježiš, naroď sa v nás, Ježiš, prišiel náš čas,",
+        "Ježiš obráť nás k sebe, Ježiš veríme Tebe. Nekonečný Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "…NÁDEJ"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "…MÚDROSŤ"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Nekonečný Pán. 3x"
+      ]
+    }
+  ]
+}

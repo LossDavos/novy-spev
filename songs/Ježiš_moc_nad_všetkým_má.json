@@ -1,0 +1,34 @@
+{
+  "title": "Ježiš moc nad všetkým má",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:Ježiš moc nad všetkým má,:/",
+        "/:všetkých vládcov On je Pán.:/",
+        "/:Bude vládnuť navždy nám.:/",
+        "/:Od končín zeme ku hviezdam.:/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ježiš, Ježiš, kráľov Kráľ, kráľov Kráľ.",
+        "Ježiš, Ježiš, pánov Pán, pánov Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Jeho meno v boji znie,:/",
+        "/:spravodlivým Kráľom je.:/",
+        "/:Po Kristu viac túžime,:/",
+        "/:pre neho my žijeme.:/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "title": "Spievaj so mnou",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Spievaj so mnou aleluja,",
+        "spievaj ďakovania žalm.",
+        "Z piesne vďačnej sily prúdia,",
+        "chválu ďakovaním vzdám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za ten dažďosivý čas, za slniečka úsmev, jas,",
+        "za ten vzduch, čo zdarma dýchať smiem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za lúč lásky – priateľa, čo ma denne ohrieva.",
+        "za tú milosť, ktorá nekončí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za ten zázrak vďačný som, tam na kríži golgotskom",
+        "umrel Ježiš a ja život mám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za to, že dnes žije Pán, aby vždycky pri mne stál,",
+        "z veľkej lásky nado mnou že bdie."
+      ]
+    }
+  ]
+}

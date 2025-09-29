@@ -1,0 +1,36 @@
+{
+  "title": "Muž múdry",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:Muž múdry staval dom svoj na skale:/,",
+        "potom prišiel prudký dážď.",
+        "/:Dážď padal a voda stúpala:/,",
+        "dom na skale pevne stál."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Muž hlúpy staval dom svoj na piesku:/,",
+        "potom prišiel prudký dážď.",
+        "/:Dážď padal a voda stúpala:/,",
+        "dom na piesku zobrala."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Čo vraví Písmo, na to pamätaj:/,",
+        "dom na piesku nestavaj.",
+        "/:Nech dom tvoj základy v Bohu má:/,",
+        "potom bude pevne stáť."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Stretol ma dnes Pán",
+  "author": "",
+  "categories": [
+    "poďakovanie po prijímaní",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Stretol [F]ma dnes [C]Pán",
+        "a [F]novú ra[C]dosť mi do [C]srdca [F]vlial, ó, [F]ale[G]luja.",
+        "[C]Z tej ra[F]dosti [C]chcem",
+        "[F]spievať a [C]tlieskať [F]Páno[C]vi."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        
+        "/: Tak [F]všet[G]ci [C]spolu [F]chváľme [C]ho,",
+        "[F]za to, že [C]drží nás [F]v náru[C]čí. :/"
+      ]
+    }
+  ]
+}

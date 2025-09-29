@@ -1,0 +1,27 @@
+{
+  "title": "Eccomi Gesú",
+  "author": "Gen Verde",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Eccomi Gesú, anche oggi davanti a te",
+        "tutto rinnovato, proprio come tu mi vuoi.",
+        "Io saró la rispósta al tuo perché",
+        "un frutto degno del tuo abbandono.",
+        "Eccomi."
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "(Tu som, Ježiš. Aj dnes pred Tebou,",
+        "všetko je obnovené práve tak, ako ma Ty chceš mať.",
+        "Ja budem Tvojou odpoveďou,",
+        "pretože som hodným ovocím Tvojho odovzdania sa.",
+        "Hľa, tu som.)"
+      ]
+    }
+  ]
+}

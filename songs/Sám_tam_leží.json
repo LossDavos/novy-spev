@@ -1,0 +1,44 @@
+{
+  "title": "Sám tam leží",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Sám tam leží v tmavej noci, má len biedne jasličky.",
+        "Lásku nesie pre svet celý, nás tam čaká maličký."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Dá nám šťastia priehršť plnú, dá nám lásky moc, dá nám lásky moc,",
+        "dá nám úsmev svojej Matky, ktorý zmení na deň noc."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Sám tam leží, čaká teba, v nočnom tichu čaká ťa.",
+        "Zhoď zo seba hriešnu pýchu, choď tam s dušou dieťaťa."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Dá ti šťastia priehršť plnú, dá ti lásky moc, dá ti lásky moc,",
+        "dá ti úsmev svojej Matky, ktorý zmení na deň noc."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Tak už poď a neváhaj, bude nám tam s Ním fajn.",
+        "Ak sa k Nemu vyberieš, spoznáš, čo je to raj."
+      ]
+    }
+  ]
+}

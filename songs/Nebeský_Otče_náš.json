@@ -1,0 +1,35 @@
+{
+  "title": "Nebeský Otče náš",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Nebeský Otče náš si mocný a večný,",
+        "my Ti dávame všetko, čo máme.",
+        "By si Ty dával nám stály život viery."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+      
+        "Prinášame Ti svoj chlieb, víno a lásku,",
+        "všetko Ti dnes obetujeme.",
+        "Svoje životné prostredie, úspech i prácu,",
+        "všetko Ti dnes obetujeme.",
+        "Svoje schopnosti, nadšenie i radosť,",
+        "všetko Ti dnes obetujeme.",
+        "Svoju úbohosť, námahu a bolesť,",
+        "všetko Ti dnes obetujeme.",
+        "Svoju odvahu, ochotu a plány,",
+        "všetko Ti dnes obetujeme.",
+        "Tento celý deň, celý život a večnosť,",
+        "všetko Ti dnes obetujeme."
+      ]
+    }
+  ]
+}

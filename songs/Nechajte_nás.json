@@ -1,0 +1,36 @@
+{
+  "title": "Nechajte nás",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Láska Božia jasným svetlom žiari",
+        "v malých deťoch, čo sú pri oltári,",
+        "keď v ich duši prebýva Duch Boží,",
+        "keď sa Ježiš v chlebe do nich vloží."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nechajte nás, nebráňte nám,",
+        "chceme byť s Ježišom,",
+        "veď iba On má lásky trón,",
+        "nech je nám životom."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Láska detí je milá Pánovi,",
+        "chce im dávať stále život nový.",
+        "Poďme deti, Kristus ten nám svieti,",
+        "On nás vedie – pravdu vždy povie ti."
+      ]
+    }
+  ]
+}

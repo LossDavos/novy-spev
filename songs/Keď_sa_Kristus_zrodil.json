@@ -1,0 +1,37 @@
+{
+  "title": "Keď sa Kristus zrodil",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Keď sa [F]Kristus [C]zrodil [a]a na [d]svet pri[G]cho[C]dil,",
+        "[C]tmavá [F]noc v jas[C]nosti, [a]Boh v svo[d]jej mi[G]los[C]ti."
+        ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:[G]Anjeli si [C]prespevujú. „[G]Sláva Bohu!“ [C]ohlasujú.",
+        "Glória, [F]glória, [G7]glória [C]in ex[F]celsis [G]Deo[C].:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Hovoria pastierom, ktorí stráže mali,",
+        "aby do Betléma čím prv utekali."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/:Boh sa zrodil, Vykupiteľ, celého sveta Spasiteľ.",
+        "Glória, glória, glória in excelsis Deo.:/"
+      ]
+    }
+  ]
+}

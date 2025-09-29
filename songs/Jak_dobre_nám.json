@@ -1,0 +1,36 @@
+{
+  "title": "Jak dobre nám",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Jak dobre nám prírodou blúdiť a voňať čerstvú zeleň hôr,",
+        "počúvať radosť a šum lesa, tešiť sa kráse navôkol.",
+        "/:Mať v ušiach šum len lesa, spev a šťastný smiech",
+        "a zurkot potokov a riek.:/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Hejže hej, hejže háj,",
+        "mladosť svoju vždy si chráň.",
+        "Ona je, ona je,",
+        "vždy žitia nášho krásny čas."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Jak dobre nám mestami kráčať, naslúchať pulzu života,",
+        "nenávisť boriť, lásku šíriť, šťastie, smiech Božieho decka.",
+        "/:Mať v srdci všetkých ľudí, hlavne trpiacich",
+        "a slúžiť im bez oddychu.:/"
+      ]
+    }
+  ]
+}

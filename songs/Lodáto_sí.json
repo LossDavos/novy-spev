@@ -1,0 +1,47 @@
+{
+  "title": "Lodáto sí",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Lodáto sí, o mi Signore.",
+        "Lodáto sí, o mi Signore.",
+        "Lodáto sí, o mi Signore."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za to, že nám všetko dávaš,",
+        "že nás v zdraví zachovávaš,",
+        "že sa našim Bratom stávaš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za to, že si stvoril more,",
+        "mesiac, hviezdy, ranné zore,",
+        "že Ty liečiš všetko choré."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za to, že si stvoril kvety,",
+        "za to, že nám slnko svieti,",
+        "za to, že sme Tvoje deti."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Lodáto sí."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Nech naša pieseň zaznieva",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[A]Nech naša [D]pieseň [A]zaznieva, ako [f#]zvony [D]sve[A]ta [E]tmou,",
+        "že [A]Ježiš [D]Kristus [A]zvíťazil, nech to [f#]zvučí [h]kra[E7]ji[A]nou."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "I[E7]ba [A]Ježiš [D]pokoj duši dá[A]va, iba On dá pravý cieľ i [E]smer.",
+        "Ver [A]tvojmu [D]žitiu [A]plnosť dá iba [H7]Ježiš [E7]Spasi[A]teľ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nech v každej duši úbohej naša pieseň zazneje,",
+        "nech spiacich mocne burcuje, mŕtvym zjaví vzkriesenie."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "My chceme za Ním kráčať len, pre Neho len žiť a mrieť,",
+        "tak premôžeme dobrým zlé, zbudujeme nový svet."
+      ]
+    }
+  ]
+}

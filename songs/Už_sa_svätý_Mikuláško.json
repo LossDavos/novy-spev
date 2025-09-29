@@ -1,0 +1,44 @@
+{
+  "title": "Už sa svätý Mikuláško",
+  "author": "",
+  "categories": [
+    "mikulášske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Už sa svätý Mikuláško na vandrovku chystá,",
+        "/:hej, nejedna topánočka svieti v okne čistá:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V topánočke striebro, zlato a v tom zlate čosi,",
+        "/:čo už svätý Mikuláško dobrým deťom nosí:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A keď svätý Mikuláško do oblôčka kukne,",
+        "/:hej, nejedno srdiečko sa od radosti pohne:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Z čokolády husle, basa, sláčik, bubon, trúby,",
+        "/:dobre to vie Mikuláško, čo sa komu ľúbi:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A včas ráno už srdiečko Janíčkovi bije:",
+        "/:“Hej, nechže ti Mikuláško večná sláva žije.“:/"
+      ]
+    }
+  ]
+}

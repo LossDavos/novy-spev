@@ -1,0 +1,38 @@
+{
+  "title": "El Shaddai",
+  "author": "M. Card, J. Thompson - M. Wiesnerová",
+  "categories": [
+    "úvod",
+    "prijímanie",
+    "vianoce"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "El Shad[d7]dai, El shad[d7\\G]dai, El El[Cmaj7]jona Ado[Fmaj7]nai,",
+        "večné [B]meno, Pane, [E7]máš, ku nám [a7]v sláve [G\\H]prichá[A\\C#]dzaš.",
+        "El Shad[d7]dai, El shad[d7\\G]dai, El El[Cmaj7]jona Ado[Fmaj7]nai,",
+        "od ve[B]kov až nave[G]ky, El Shad[C]dai."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Viem, že [d7]ty si Syna [d7\\G]dal, on hrie[Cmaj7]chy na kríži [Fmaj7]sňal,",
+        "obe[B]tu dal za nás [E7]sám, život [a7]večný [G\\H]je náš [A\\C#]Pán.",
+        "Ty si [d7]Pán Boh, ktorý [d7\\G]vie, poznáš [Cmaj7]srdce úpri[Fmaj7]mné,",
+        "[B]z pút našich [G]oslobodíš [C]nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "To, čo Otec zasľúbil, v Synovi sám naplnil.",
+        "Nikto z ľudí netuší, že sa Mesiáš zjavil.",
+        "Veľká je moc Pánova, veľká láska Kristova,",
+        "doko[B]nané je pre [G]nás, doko[B]nané je pre [G]nás."
+      ]
+    }
+  ]
+}

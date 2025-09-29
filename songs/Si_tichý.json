@@ -1,0 +1,28 @@
+{
+  "title": "Si tichý",
+  "author": "",
+  "categories": [],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Si tichý a predsa voláš všetkých k sebe, domov.",
+        "Prišli sme aj dnes s nami rátať smieš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tak, ako v časoch starých, zástupy pravdy chtivé,",
+        "schádza sa Tvoj ľud znova, chce počuť slovo živé."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tu nieto žiadnych ulíc, máme len jeden stolík,",
+        "lásku a Tvoje telo, čo všetkých v jedno spojí."
+      ]
+    }
+  ]
+}

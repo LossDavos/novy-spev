@@ -1,0 +1,51 @@
+{
+  "title": "Ku Tebe, Bože",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Ku Tebe, Bože, prichádzame,",
+        "veď v tomto svete nič nemáme."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Patrí Ti, Bože, ja to viem,",
+        "každučký kvietok, táto zem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "To, čo nám dáva pravé šťastie",
+        "a to, v čom naša láska rastie."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ty sa nám dávaš na oltári,",
+        "s Tebou sa nám tak dobre darí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vždy každé ráno, vždy každý deň",
+        "o Tvojej láske spievať chcem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Len Tebe, Bože, len Tebe dám",
+        "srdce i seba, to, čo mám."
+      ]
+    }
+  ]
+}

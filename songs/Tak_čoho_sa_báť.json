@@ -1,0 +1,46 @@
+{
+  "title": "Tak čoho sa báť",
+  "author": "",
+  "categories": ["nevhodné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Tak čoho sa báť, veď Boh s nami stále je,",
+        "On pozná radosť i každé trápenie.",
+        "Tak čoho sa báť, veď Boh nás má veľmi rád,",
+        "On poslal Syna, odpúšťa množstvo zrád."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "On pozná každého z nás, dobrý Pán pozná, čo nás trápi."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tak čoho sa báť, veď Mária chráni nás,",
+        "Ona nám dáva, čo nedá nikto z nás.",
+        "Tak čoho sa báť, veď Boh s nami stále je,",
+        "On pozná radosť i každé trápenie."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "On pozná každého z nás, dobrý Pán pozná, čo nás trápi.",
+        "Múdry Pán vie každému z nás nájsť",
+        "cestu tú, čo nás k nemu vráti."
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "Pane Bože, poslal si nám Ježiša,",
+        "my sme poznali, Pane, kto si Ty."
+      ]
+    }
+  ]
+}

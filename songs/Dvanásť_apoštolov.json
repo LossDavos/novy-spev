@@ -1,0 +1,27 @@
+{
+  "title": "Dvanásť apoštolov",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Dvanásť apoštolov: Peter, Ondrej, Filip,",
+        "Bartolomej, Matej, Tomáš, Jakub, Ján,",
+        "Tadeáš a Šimon, Alfejov syn Jakub,",
+        "Matúš, ten tiež vstáva, keď ho volá Pán."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ježiš volá zas vážne všetkých nás.",
+        "Vstaň aj ty, poď za mnou, tak znie Jeho hlas.",
+        "Ježiš volá zas vážne všetkých nás,",
+        "zbierať zlaté klasy, kým je žatvy čas."
+      ]
+    }
+  ]
+}

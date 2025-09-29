@@ -1,0 +1,53 @@
+{
+  "title": "Vínom a chlebom ťa vítam (Premena)",
+  "author": "O. Štyrák - Impro",
+  "categories": [
+    "obetovanie",
+    "veľká noc",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[D]  [C2]    [D]  [C2]    [D]  [C2]    [D]  [C2]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Vínom a [C2]chlebom ťa [D]vítam[C2]    [D]s nádejou, [C2]že do nich [D]vstúpiš[C2].",
+        "Chlieb – to je posolstvo klíčkov, víno je nápojom lásky.",
+        "[h]Lásku sej [A]do našich [D]dní, buď [D7/9]víťaz!"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Kries krehké [D\\F#]plamienky [e]sŕdc, [G]stále tam [D\\F#]v nás láske [e]steľ.",
+        "Tak [C2]útly, tak [D]vznešený [C2]zmeň, čo si [D]premeniť [e]chcel."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vínom a chlebom nás vítaš, sám seba podávaš ústam.",
+        "Spájaš, čo nevie sa zblížiť, kriesiš, čo podľahlo krížom.",
+        "Lásku si naučil rásť a dýchať!"
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       " Kries krehké plamienky sŕdc, stále tam v nás láske steľ.",
+        "Tak blízky, tak vzdialený zmeň, čo si v nás zmeniť chcel."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+       "(záver) [D]Vínom a [C2]chlebom nás [D]núkaš[C2],   [D]daj vieru, [C2]že do nás [D]vstúpiš..."
+      ]
+    }
+  ]
+}

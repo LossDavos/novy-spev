@@ -1,0 +1,36 @@
+{
+  "title": "Rozhodol som sa",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Rozhodol som sa ísť za Ježišom.",
+        "Rozhodol som sa ísť za Ježišom.",
+        "Rozhodol som sa ísť za Ježišom,",
+        "nehľadím späť, nehľadím späť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svet som opustil, idem ku krížu.",
+        "Svet som opustil, idem ku krížu.",
+        "Svet som opustil, idem ku krížu,",
+        "nehľadím späť, nehľadím späť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Sám hoci budem, ja pôjdem za Ním.",
+        "Sám hoci budem, ja pôjdem za Ním.",
+        "Sám hoci budem, ja pôjdem za Ním,",
+        "nehľadím späť, nehľadím späť."
+      ]
+    }
+  ]
+}

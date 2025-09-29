@@ -1,0 +1,41 @@
+{
+  "title": "Duch nášho Pána",
+  "author": "J. M. Talbot (zbor - SATB)",
+  "categories": [
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Duch [G]nášho Pána [C/G]vznáša sa [G]nado mnou,[C/G]",
+        "preto [C]ma [Cmaj7]Pán   [a]po[a7]ma[D]zal,",
+        "priniesť [a]všetkým [D]nám",
+        "rados[G]tnú zvesť [D]úbo[e]hým,",
+        "uzdraviť [a]srdcia [a7]zlome[D]ných [D7]",
+        "a [G]hlásať návrat [C\\G]slobody otrokom [G]väzneným,[C\\G]",
+        "[G] prepus[C]tiť [Cmaj7]u   -   [a]tlá[a7]ča[D]ných,",
+        "hlásať [a]Pá[D]nov milo[G]sti[D]vý [e]rok,",
+        "utíšiť [a]smútok [a7]strápe[D]ných,",
+        "smútok strápe[G]ných."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Vždy sprevádza [C]ma svätý [G]Pánov hlas,",
+        "svojím Duchom [C]ma sám Pán [G]pomazal",
+        "a káže mi [C]ísť k srdciam [G]úbohým, Pánov [D]hlas volá",
+        "do sveta [C4]krá[C]s."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+
+        "Duch [G]nášho Pána [C/G]vznáša sa [G]nado mnou."
+      ]
+    }
+  ]
+}

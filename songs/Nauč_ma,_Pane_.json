@@ -1,0 +1,37 @@
+{
+  "title": "Nauč ma, Pane ",
+  "author": "Dominik",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Nauč ma, Pane, spievať pieseň chvál,",
+        "pieseň, ktorá spojí všetkých nás.",
+        "Spoj nás, Pane, v každý čas piesňou, ktorá zneje v nás,",
+        "v každom z nás, to je tá pieseň lásky v nás."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nádej dnes prichádza v piesni včas.",
+        "Zem zjednotená ju spieva nám.",
+        "Jej rytmus sa skrýva v každom z nás,",
+        "spoznaj ho a spievaj aj ty sám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Spievaj si aj ty s nami pieseň chvál,",
+        "pieseň lásky, rytmus jej zvoľ si sám.",
+        "Zobuď hneď všetkých, čo spia spánkom zlým,",
+        "piesňou tou nádhernou, čo túži volať za všetkých.",
+        "Spievaj rád."
+      ]
+    }
+  ]
+}

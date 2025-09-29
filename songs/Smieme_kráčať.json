@@ -1,0 +1,35 @@
+{
+  "title": "Smieme kráčať",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "/:Smieme [D]kráčať vo svetle Božom,",
+        "smieme [A]kráčať vo svetle Bo[D]žom.:/[D7]",
+        "/:Smieme [G]kráčať, kráčať, smieme [D]kráčať, ó,",
+        "smieme [A]kráčať vo svetle Bo[D]žom.[D7]:/"
+      ]
+    },
+    
+    {
+      "type": "chorus",
+      "lines": [
+        "/:Božiu lásku smieme prežívať,",
+        "Božiu lásku smieme prežívať.:/",
+        "Ref 2: /:Božiu lásku, lásku, Božiu lásku, ó,",
+        "Božiu lásku smieme prežívať.:/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/:Smieme kráčať, kráčať, smieme kráčať, ó,",
+        "smieme kráčať vo svetle Božom.:/"
+      ]
+    }
+  ]
+}

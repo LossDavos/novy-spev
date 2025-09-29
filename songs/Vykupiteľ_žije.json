@@ -1,0 +1,37 @@
+{
+  "title": "Vykupiteľ žije",
+  "author": "Mária Viznerová",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Vyku[A]p[D]iteľ [G]ži[D]je, [A]Je[D]žiš, [G]Bo[A]ží [D]Sy[A]n,",
+        "[D]Bará[A]nok [D]Bo[G]ží, Me[D]siáš, [e]Svätý jedi[A]ný [D]Boh."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Ďakujem Ti, [G]Ot[D]če, že [G]si nám svoj[A]ho [D]Syna [A]dal",
+        "a [D]zane[A]chal [D]si [G]svojho [D]Ducha, čo [e]Tvoje dielo v [A]nás ko[D]ná."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš, Spasiteľ môj, drahé meno máš,",
+        "Baránok Boží, Mesiáš, zabitý pre hriešnikov."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď raz vstanem v sláve, uzriem Tvoju tvár,",
+        "tam budem slúžiť Tebe, Pane, na veky vekov, amen."
+      ]
+    }
+  ]
+}

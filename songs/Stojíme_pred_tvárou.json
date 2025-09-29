@@ -1,0 +1,24 @@
+{
+  "title": "Stojíme pred tvárou",
+  "author": "M. Tóth - Tretí deň",
+  "categories": [
+    "úvod",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Stojíme [G]pred tvárou [a]živého [F]Kráľa [G]kráľov.",
+        "Dnes [C]spievame a [G]hlásame: [a]Ježiš je [F]Pán!"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Náš [C]Pán dáva život [F]radost[G]ný, [F]radost[G]ný, [F]radost[G]ný.",
+        "Náš [C]Pán dáva život [F]radost[G]ný, [F]voľnosť [G]dáva [C]nám."
+      ]
+    }
+  ]
+}

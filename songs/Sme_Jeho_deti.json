@@ -1,0 +1,50 @@
+{
+  "title": "Sme Jeho deti",
+  "author": "",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Sme jeho [G]deti pre [A]obeť na [D]kríži, obmyl nás [G]krvou svo[A4]jou.[A]",
+        "[D]Zvaní byť [G]svätí a [A]svetlo ná[D]rodom, [G]mocou Ducha[A],",
+        "[G]Jeho lásk[A4]ou.[A]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[h]Choď [A]vpred [G]v mene tom! A [h]hlá[A]saj: [G]On je [h]Kráľ!",
+        "[e]Teraz je [A]čas pre Cir[D]kev jeho [h]vstať, hlásať,",
+        "[G]kto [D]je [G]Je[D]žiš, [G]Spasiteľ, [e]Záchranca, [D]Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Množstvo je duší, čo potkýna sa v tme,",
+        "prečo spíme vo svetle.",
+        "Ježiš prikázal činiť učeníkov, to je náš cieľ, to je náš boj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Počuješ vanutie Svätého Ducha, koniec vekov je blízko.",
+        "Mocnosti zeme i neba sa hýbu, Ježiš náš Pán, príde skoro."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+
+        "[A]Ježiš je [D]P[h]á[G]n.",
+        "[A]Ježiš je [D]P[h]á[G]n.",
+        "[A]Ježiš je [D]P[h]á[G]n.",
+        "[A]Ježiš je [D]Pán."
+      ]
+    }
+  ]
+}

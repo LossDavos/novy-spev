@@ -1,0 +1,43 @@
+{
+  "title": "Srdce chvály",
+  "author": "M. Redman - Rieka života",
+  "categories": [
+    "úvod",
+    "prijímanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D] Hudba dohrá[A]va, všetko stíši [e]sa, a ja prichá[A]dzam,",
+        "[D] priniesť niečo [A]snáď, čo pravú cenu [e]má, čo by si mal [A4]rád.[A]"
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "[e7] Viac ako [D\\F#]pieseň ti [A4]dám, lebo to, čo žiadaš,",
+        "[e7]nie je len [D\\F#]pieseň sa[A4]ma.[A]  [e7] Ak niečo [D\\F#]iné sa [A4]zdá,",
+        "ty vieš, čo je pravda, [e7] ty vidíš, [D\\F#]čo v srdci [A4]mám.[A]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Túžim sa vrátiť do [A\\C#]srdca chvály,",
+        "kde si [e7]jedine ty, [G]jedine [A7/4]ty, Je[D]žiš.",
+        "Odpusť mi, Pane, že [A\\C#]neverný som,",
+        "si to [e]jedine ty, [G]jedine [A\\C#]ty, Je[D]žiš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nekonečný Kráľ, nik nevysloví,",
+        "čo ti patriť má, aj keď slabý som,",
+        "všetko to, čo mám, každý dych je tvoj."
+      ]
+    }
+  ]
+}

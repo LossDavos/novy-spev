@@ -1,0 +1,52 @@
+{
+  "title": "Spievaj aleluja",
+  "author": "M. Wiesnerová",
+  "categories": [
+    "detské",
+    "úvod",
+    "poďakovanie po prijímaní",
+    "záver",
+    "veľká noc"
+  ],
+  "song_parts": [
+
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Spievaj aleluja s rados[G]ťou,",
+        "[D]spievaj aleluja s rados[A]ťou,",
+        "[D]spievaj aleluja[D7] s rados[G]ťou,[g]",
+        "s rados[D]ťou Páno[A]vi celá [D]zem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+      
+        "Krič aleluja..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Tancuj aleluja..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Tlieskaj..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Slúž mu..."
+      ]
+    }
+
+  ]
+}

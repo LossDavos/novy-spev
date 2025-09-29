@@ -1,0 +1,40 @@
+{
+  "title": "Prišiel na zem",
+  "author": "zb. CHPJ - Južania",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Prišiel na zem [G]konať dielo [a]spásy[E]",
+        "a [a]ľuďom biednym [a7]s láskou pomá[d]hal,[d7]",
+        "ku [G]slobode zval zotročených [C]hriechom, môj [G]Pán.",
+        "[C]Svetom šiel a [G]ľudskú niesol [a]biedu,[E]",
+        "chcel [a]z lásky splniť [a7]Otcov spásy [d]plán.[d7]",
+        "Na [G]kríži mrel, však tretí deň vstal [C]z hrobu, môj [G]Pán."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Môj [C]Pán Je[G]žiš ma [a]milo[e]val, až [F]na smrť šiel, svoj [C]život [G]dal,",
+        "môj [C]Pán Je[G]žiš dnes [a]teba [F]zve: Poď [C]domov, [G]vráť sa [C]späť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Jeho láska stále rany hojí",
+        "a ku spáse nám náruč otvára,",
+        "dnes ako predtým búrku upokojí, môj Pán.",
+        "Jeho milosť stále ešte trvá,",
+        "chce zmieriť ľudí s Otcom nebeským",
+        "a krvou splatiť mzdu za vykúpených, môj Pán."
+      ]
+    }
+  ]
+}

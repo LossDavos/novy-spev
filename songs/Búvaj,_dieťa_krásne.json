@@ -1,0 +1,41 @@
+{
+  "title": "Búvaj, dieťa krásne",
+  "author": "JKS 39 - koleda",
+  "categories": [
+    "vianoce",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Búvaj, Dieťa [e7]krás[A7]ne, [D]uložené [e7]v jas[A7]le;",
+        "[D]búvaj, [D9\\maj7]búvaj, [G\\D]Pacho[A]ľa; [D]milo[D9\\maj7]stivé    [G\\D]Jezu[A]ľa!",
+        "[D]Bude[D7]me ťa [G]kolí[A]sať, [D]abys' [Cdim]mo - [e]hol [A]dobre [D]spať,",
+        "Ježišku náš [G\\D]mi - [g6\\D]lý,   [D]aby [D\\C]sa ti [e7]sni[A7]li",
+        "[D]veľmi [e7]krásne [D\\F#]sny,[A]   [D]veľ[D#dim]mi     [e]krás[A7]ne [D]sny."
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       "Drozdy a hrdličky, chystajte pesničky,",
+        "nech sa Dieťa poteší na tom našom salaši.",
+        "Spev škovránka, slávika, k tomu pekná muzika;",
+        "my budeme s vami spievať za jasľami",
+        "Synu milému, Synu milému."
+        
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Hory, ticho buďte, Dieťa nezobuďte,",
+        "nech si ono podrieme na slame a na sene.",
+        "Aj vy, milé fialky, zaváňajte do diaľky,",
+        "zavejte mu vône, Pánovi na tróne,",
+        "ticho, sladúčko, ticho, sladúčko."
+        ]
+    }
+  ]
+}

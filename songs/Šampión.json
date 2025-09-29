@@ -1,0 +1,34 @@
+{
+  "title": "Šampión",
+  "author": "",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[d]Nech je [B]vyvýšené [C]meno nášho [F]Pána nad touto [d]zemou,",
+        "nech je [B]Jeho vláda [C]upevne[F]ná.",
+        "A nech [B]príde vietor [C]Jeho Ducha k [a]nám od štyroch [d]strán,",
+        "nech je [B]Jeho sláva [g]viditeľ[C]ná."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Veď On je [F]Pánom všetkých [a]pánov,",
+        "vlajka [B]víťazstva sa [g]dvíha.",
+        "Trón [B]Boží bude [g]naveky [C]stáť.",
+        "A On je [F]šampión, čo v [a]boji duchov [B]skončil ako [g]víťaz,",
+        "nech [B]každý skloní [g]pred Ním svoje [C]kolená. [B]On [C]je [F]Pán."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "[d]Ježiš je [Ab]Pán. [B]On [C]je [F]Pán. [d]Ježiš je [Ab]Pán. [B]On [C]je [F]Pán."
+      ]
+    }
+  ]
+}

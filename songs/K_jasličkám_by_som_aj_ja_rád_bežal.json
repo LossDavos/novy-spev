@@ -1,0 +1,37 @@
+{
+  "title": "K jasličkám by som aj ja rád bežal",
+  "author": " Jozef Halmo, Anton Hlinka, Jozef Strečanský",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[:[E]K jasličkám by som aj [D]ja rád be[E]žal,",
+        "nepoznám cestu, ach, [F#]aký [H}to [E]žiaľ!:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[H]Tam, kde šťastná zvesť [E]Nového zákona, [H7]tam sú dnes jasle, [E]tam je aj On,",
+        "tam je Boh slávy, [H]tam sa ti zjaví, [E]tam je dnes [H]Ježiškov [E]trón."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tam, kde veriaci zídu s ak večeri, tam sú dnes jasle, tam je aj On,",
+        "tam vo sviatosti, tam ho dosiahneš, tam je nes Ježiškov trón."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tam, kde chudobní, trpiaci, väznení, tam sú dnes jasle, tam je aj On,",
+        "tam ho vyhľadaj, tam sa mu oddaj, tam je dnes Ježiškov trón."
+      ]
+    }
+  ]
+}

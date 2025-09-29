@@ -1,0 +1,42 @@
+{
+  "title": "Zvony svadobné",
+  "author": "Zbor sv. Jakuba",
+  "categories": [
+    "sobášne"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[a] [F] [C] [G] [a] [F] [C] [G]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[a]Je to tak [F]krásne dnes[C] vedľa teba [G]stáť,",
+        "[a]prišla tá [F]chvíľa, keď [C]život chcem ti [G]dať.",
+        "Tak [C]vezmi moje [F]srdce, ukry[G] ho do dlaní[C],",
+        "a [a]chráň ho svojou [F]láskou, nech sa [d]pádom nezra[G]ní."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Je to tak krásne Ty si moja, ja som Tvoj,",
+        "chcem Ťa láska chrániť po celý život svoj.",
+        "Teraz naše cesty v jednu sú už navždy spojené-",
+        "v slzách dažďa, v lúčoch slnka, spolu po nej pôjdeme."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Už [C]zvony svadob[F]né nám [G]pieseň lásky [C]hrajú,",
+        "nech [a]Božie ruky [F]dnes našu [G]lásku požeh[C]najú,",
+        "nech [C]Boh je stále v [F]nás prí[G]tomný v každej [C]chvíli",
+        "a [F]upevňuje [C]vieru nám, aby [F]podľa [G]nej sme [C]žili."
+      ]
+    }
+  ]
+}

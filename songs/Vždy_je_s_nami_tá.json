@@ -1,0 +1,49 @@
+{
+  "title": "Vždy je s nami tá",
+  "author": "M. Čekovský st., E. Čekovská st.",
+  "categories": [
+    "mariánske",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[F] Vždy je s nami tá, čo viem, že [B]ľúbi",
+        "[g] moje srdce, [C]ruky, moju [F]tv[C7]ár.",
+        "[F]Vždy je blízko tá, čo viem, že [B]chráni",
+        "[g] každý úsmev, [C]čo mi život [F]dal.[C7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[F] Ty nás vítaš v chráme plnom [B]lásky",
+        "[g] na tom tvojom [C]tichom nádvo[F]rí.[C7]",
+        "[F] Čakáme ťa [F7]každú chvíľu, [B] prosíme ťa,",
+        "[b]daj nám silu, [F]Mária, [A] ty naša Kráľo[d]vn[G]á,",
+        "[F]Mária, [C] ty naša Kráľo[F]vná."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[C#7] [F#] Spojme svoje hlasy v jednu [H]pieseň,",
+        "[g#] ktorá všetkým [C#]srdcia otvo[F#]rí. [C#7]",
+        "[F#] Silu viery mladosť naša [H]nesie",
+        "[g#] a s ňou naše [C#]pevné názo[F#]ry.[D7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G] Ty nás vítaš v chráme plnom [C]lásky",
+        "[a] na tom tvojom [D]tichom nádvo[G]rí.[D7]",
+        "[G] Čakáme ťa [G7]každú chvíľu, [C] prosíme ťa,",
+        "[c]daj nám silu, [G]Mária, [H] ty naša Kráľo[e]vn[A]á,",
+        "[G]Mária, [D] ty naša Kráľo[G]vná."
+      ]
+    }
+  ]
+}

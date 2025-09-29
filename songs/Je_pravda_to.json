@@ -1,0 +1,36 @@
+{
+  "title": "Je pravda to",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Je pravda to, čo vravia o Tebe,",
+        "že si žil tu, prinášal obete?",
+        "Cítil si v práci, v bôli, v radostiach.",
+        "A smieme nájsť zas cestu k nebesiam."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kráčal si sám po ceste Golgoty,",
+        "náš veľký dlh si z lásky zaplatil,",
+        "na zemi ducha raj si zanechal,",
+        "aby aj mňa si k sebe povolal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Je pravda to, čo sme Ti spravili?",
+        "Smrť, hanbu, znoj, potupu na kríži.",
+        "Môj Pane, aj to, že si zvíťazil,",
+        "je to možné, že si tak učinil?"
+      ]
+    }
+  ]
+}

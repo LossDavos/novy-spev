@@ -1,0 +1,44 @@
+{
+  "title": "Dnes (Teraz ja a môj dom)",
+  "author": "B. Doerksen, S. Gage - Rieka života",
+  "categories": [
+    "úvod",
+    "poďakovanie po prijímaní",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Dnes [A]viem, že [D\\F#]chcem [E4] za tebou [A]ísť.",
+        "Dnes viem, že [D\\F#]chcem [E4] počuť tvoj hlas[A] a žiť.",
+        "Dnes viem, že [D\\F#]chcem [E4] ti svoje „[A]Áno“ dať.",
+        "Dnes viem, že [D\\F#]chcem [E4]za tebou [A]ísť."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[E] Teraz [h]ja a môj dom [D] chceme [A4]slúžiť.[A]",
+        "[E]Teraz [h]ja a môj dom [D] chceme [E4]len pre teba [E]žiť. 2x Už [A]dnes!"
+        ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+       "[h]Nádherný, [A\\C#]Radca náš, [D]Otec neko[E]nečný.",
+        "Pán [h]zástupov, [A\\C#]mocný Kráľ, [D]za tebou chceme [E4]krá[E]čať."
+        ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Dnes [H]viem, že [E\\G#]chcem [F#] za tebou [H]ísť.",
+        "Dnes viem, že [E\\G#]chcem [F#] počuť tvoj hlas[H] a žiť.",
+        "Dnes viem, že [E\\G#]chcem [F#] ti svoje „[H]Áno“ dať.",
+        "Dnes viem, že [E\\G#]chcem [F#]za tebou [H]ísť."
+      ]
+    }
+  ]
+}

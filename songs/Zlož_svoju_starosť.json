@@ -1,0 +1,25 @@
+{
+  "title": "Zlož svoju starosť",
+  "author": "sr. Eliška Bielková",
+  "categories": [
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/: [G]Zlož svoju starosť [e]na Pána :/",
+        "a [C]on sa už [D]postará. :/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+
+        "/: Nebudem sa [G]báť, lebo ty si [e]so mnou,",
+        "nebudem sa [C]báť,[a] Pane [D]môj. :/"
+      ]
+    }
+  ]
+}

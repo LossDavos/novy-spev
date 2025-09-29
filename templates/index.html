@@ -1,0 +1,4402 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+</head>
+<body>
+    <div class="header text-center mb-4">
+        <h1>📚 Nový Spevník</h1>
+        <p class="lead mb-3">Pomôž <strong>Dávidovi</strong> postaviť nový spevník</p>
+        
+        <!-- Collapsible Instructions -->
+        <div class="instructions-container">
+          <button class="btn btn-outline-info btn-sm rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#instructionsCollapse" aria-expanded="false" aria-controls="instructionsCollapse">
+            <i class="bi bi-info-circle me-1"></i>
+            <span class="instructions-toggle-text">Zobraziť návod</span>
+            <i class="bi bi-chevron-down ms-1 instructions-chevron"></i>
+          </button>
+          
+          <div class="collapse mt-3" id="instructionsCollapse">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                  <i class="bi bi-book me-2"></i>
+                  Návod pre staviteľov spevníka
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="intro text-muted mb-3 fst-italic">
+                  Postupuj podľa týchto krokov pre správne spracovanie piesní:
+                </div>
+
+                <ol class="steps">
+                  <li class="step">
+                    <span class="emoji">💾</span> Keď je všetko skontrolované, a už si klikol na <span class="btn btn-success btn-sm btn-demo">Uložiť</span>.
+                  </li>
+                  <li class="step">
+                    <div class="mt-2">
+                      <strong>Následne postupuj v tomto poradí:</strong>
+                      <ol class="mt-2">
+                        <li>Klikni <span class="btn btn-warning btn-sm btn-demo" style="background-color: #f39c12; border-color: #f39c12; color: white;">Vygeneruj TeX</span> (<strong>vždy najprv</strong>)</li>
+                        <li>Potom <span class="btn btn-primary btn-sm btn-demo" style="background-color: #9b59b6; border-color: #9b59b6;">Vygeneruj PDF</span></li>
+                      </ol>
+                    </div>
+                  </li>
+                  <li class="step">
+                    <span class="emoji">📄</span> Skontroluj vygenerované PDF súbory (<em>Lyrics</em> a <em>Lyrics Chords</em>), či vyzerajú správne.
+                  </li>
+                </ol>
+
+                <div class="footer text-center mt-4 pt-3 border-top">
+                  <p class="mb-0"><span class="emoji">🙏</span> <em>Ďakujem za pomoc!</em> <span class="emoji">😊</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+<!--<a href="{{ url_for('backup') }}" class="btn btn-primary">Zálohovať databázu</a>-->
+
+
+<style>
+.bg-success-light {
+  background-color:rgb(127, 202, 145);
+}
+
+
+
+/* Enhanced table styling */
+.song-table {
+  font-size: 0.9rem;
+}
+
+.song-table thead th {
+  background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+  border: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.song-table tbody tr {
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.song-table tbody tr:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-left-color: #0d6efd;
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Song info styling */
+.song-info .badge {
+  font-size: 0.7rem;
+  padding: 0.25em 0.5em;
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.author-info {
+  min-width: 120px;
+}
+
+/* Status indicators */
+.status-indicator .badge {
+  font-size: 0.75rem;
+  padding: 0.5em 0.75em;
+  border-radius: 0.5rem;
+}
+
+/* Pulse animation for unchecked items */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Filter buttons */
+.search-filters .btn {
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.search-filters .btn:hover,
+.search-filters .btn.active {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.5);
+  transform: translateY(-1px);
+}
+
+/* Button group enhancements */
+.btn-group-vertical .btn {
+  border-radius: 0.375rem !important;
+  margin-bottom: 0.25rem;
+}
+
+.btn-group-vertical .btn:last-child {
+  margin-bottom: 0;
+}
+
+
+
+/* Progress bars enhancement */
+.progress {
+  border-radius: 1rem;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .song-table {
+    font-size: 0.8rem;
+  }
+  
+
+  
+  .btn-group-vertical {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+  }
+  
+  .btn-group-vertical .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0;
+  }
+}
+
+/* Table responsiveness */
+@media (max-width: 992px) {
+  .song-info .badge {
+    display: none;
+  }
+  
+  .author-info small {
+    display: none;
+  }
+}
+
+/* Loading state for buttons */
+.btn.loading {
+  position: relative;
+  color: transparent !important;
+}
+
+.btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  margin-left: -6px;
+  margin-top: -6px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-right-color: transparent;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Enhanced badge colors */
+.badge.bg-light {
+  color: #495057 !important;
+  background-color: #f8f9fa !important;
+  border: 1px solid #dee2e6;
+}
+
+/* Instructions styling */
+.instructions-container {
+  margin-bottom: 2rem;
+}
+
+.instructions-toggle-text {
+  transition: all 0.3s ease;
+}
+
+.instructions-chevron {
+  transition: transform 0.3s ease;
+}
+
+.instructions-container button[aria-expanded="true"] .instructions-chevron {
+  transform: rotate(180deg);
+}
+
+.instructions-container button[aria-expanded="true"] .instructions-toggle-text::after {
+  content: " návod";
+}
+
+.instructions-container button[aria-expanded="false"] .instructions-toggle-text::after {
+  content: " návod";
+}
+
+.steps {
+  padding-left: 1.2rem;
+}
+
+.step {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.emoji {
+  font-size: 1.2em;
+  margin-right: 0.5rem;
+}
+
+.btn-demo {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Smooth collapse animation */
+.collapsing {
+  transition: height 0.35s ease;
+}
+
+.collapse.show {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Card styling for instructions */
+.instructions-container .card {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.instructions-container .card-header {
+  background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+}
+
+/* Category Filter Styling */
+.category-filter-section .card {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.category-filter-btn {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 2px solid #e9ecef;
+  color: #495057;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.category-filter-btn:hover {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-color: #2196f3;
+  color: #1976d2;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+}
+
+.category-filter-btn.active {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  border-color: #1976d2;
+  color: white;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+}
+
+.category-filter-btn.active .category-count {
+  background-color: rgba(255,255,255,0.9) !important;
+  color: #1976d2 !important;
+}
+
+.category-filter-btn:active {
+  transform: scale(0.98);
+}
+
+/* Category count badges */
+.category-count {
+  font-size: 0.7rem;
+  padding: 0.1em 0.4em;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  min-width: 1.5em;
+  text-align: center;
+}
+
+/* Hover effect with shimmer */
+.category-filter-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+  z-index: 1;
+}
+
+.category-filter-btn:hover::before {
+  left: 100%;
+}
+
+/* Special styling for specific categories */
+
+/* Adorácia - Deep Navy Blue with Burning Match Animation */
+.category-filter-btn[data-category="adorácia"] {
+  background: linear-gradient(135deg, rgba(0, 0, 128, 0.2) 0%, rgba(25, 25, 112, 0.25) 50%, rgba(0, 0, 139, 0.2) 100%);
+  border-color: #000080;
+  color: #000080;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-filter-btn[data-category="adorácia"]:hover {
+  background: linear-gradient(135deg, rgba(0, 0, 128, 0.35) 0%, rgba(25, 25, 112, 0.4) 50%, rgba(0, 0, 139, 0.35) 100%);
+  border-color: #00008b;
+  color: #00008b;
+}
+
+.category-filter-btn[data-category="adorácia"].active {
+  background: linear-gradient(135deg, #000080 0%, #191970 50%, #00008b 100%);
+  border-color: #000033;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 128, 0.5);
+}
+
+/* Adorácia Flame Animation using your provided system */
+.category-filter-btn[data-category="adorácia"] {
+  position: relative;
+  overflow: hidden;
+}
+
+.category-filter-btn[data-category="adorácia"] > * {
+  position: relative;
+  z-index: 1;
+}
+
+.category-filter-btn[data-category="adorácia"] .mo-fire {
+  width: 80px;
+  height: auto;
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  filter: blur(0.5px);
+}
+
+.category-filter-btn[data-category="adorácia"] .mo-fire svg {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+/* Remove match stick for SVG flame */
+.category-filter-btn[data-category="adorácia"]::after {
+  display: none;
+}
+
+/* Advent - Purple */
+.category-filter-btn[data-category="advent"] {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.15) 0%, rgba(243, 229, 245, 0.3) 100%);
+  border-color: #9c27b0;
+  color: #7b1fa2;
+}
+
+.category-filter-btn[data-category="advent"]:hover {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.25) 0%, rgba(243, 229, 245, 0.5) 100%);
+  border-color: #8e24aa;
+  color: #6a1b9a;
+}
+
+.category-filter-btn[data-category="advent"].active {
+  background: linear-gradient(135deg, #9c27b0 0%, #8e24aa 100%);
+  border-color: #7b1fa2;
+  color: white;
+}
+
+/* Vianoce - Christmas Red & Green (Two Colors) with Blue Snow */
+.category-filter-btn[data-category="vianoce"] {
+  background: linear-gradient(135deg, rgba(220, 20, 60, 0.2) 0%, rgba(34, 139, 34, 0.2) 100%);
+  border: 2px solid #ffd700;
+  color: #b8860b;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(220, 20, 60, 0.2);
+  font-weight: 600;
+}
+
+.category-filter-btn[data-category="vianoce"] > * {
+  position: relative;
+  z-index: 2;
+}
+
+.category-filter-btn[data-category="vianoce"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.category-filter-btn[data-category="vianoce"]:hover {
+  background: linear-gradient(135deg, rgba(220, 20, 60, 0.3) 0%, rgba(34, 139, 34, 0.3) 100%);
+  border-color: #ffed4a;
+  color: #daa520;
+  box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+}
+
+.category-filter-btn[data-category="vianoce"]:hover::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.25) 50%, transparent 100%);
+  height: 35%;
+}
+
+.category-filter-btn[data-category="vianoce"].active {
+  background: linear-gradient(135deg, #dc143c 0%, #228b22 100%);
+  border-color: #ffd700;
+  color: #ffd700;
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+.category-filter-btn[data-category="vianoce"].active::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  height: 40%;
+}
+
+/* Falling White Snow Effect for Vianoce - Bigger Snowflakes */
+.category-filter-btn[data-category="vianoce"]::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 4px),
+              radial-gradient(circle at 30% 10%, rgba(255, 255, 255, 0.8) 0%, transparent 3px),
+              radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 5px),
+              radial-gradient(circle at 70% 15%, rgba(255, 255, 255, 0.7) 0%, transparent 2.5px),
+              radial-gradient(circle at 90% 25%, rgba(255, 255, 255, 0.8) 0%, transparent 3.5px),
+              radial-gradient(circle at 20% 60%, rgba(255, 255, 255, 0.8) 0%, transparent 3px),
+              radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.9) 0%, transparent 4.5px),
+              radial-gradient(circle at 60% 50%, rgba(255, 255, 255, 0.7) 0%, transparent 2px),
+              radial-gradient(circle at 80% 65%, rgba(255, 255, 255, 0.8) 0%, transparent 3.5px),
+              radial-gradient(circle at 15% 90%, rgba(255, 255, 255, 0.8) 0%, transparent 4px);
+  animation: snowfall 6s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Second layer of white snow for more density - Bigger Snowflakes */
+.category-filter-btn[data-category="vianoce"]::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle at 25% 5%, rgba(255, 255, 255, 0.6) 0%, transparent 2.5px),
+              radial-gradient(circle at 45% 35%, rgba(255, 255, 255, 0.7) 0%, transparent 3.5px),
+              radial-gradient(circle at 65% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 2px),
+              radial-gradient(circle at 85% 40%, rgba(255, 255, 255, 0.6) 0%, transparent 3px),
+              radial-gradient(circle at 35% 75%, rgba(255, 255, 255, 0.7) 0%, transparent 2.5px),
+              radial-gradient(circle at 55% 85%, rgba(255, 255, 255, 0.8) 0%, transparent 4px),
+              radial-gradient(circle at 75% 55%, rgba(255, 255, 255, 0.6) 0%, transparent 2.5px);
+  animation: snowfall 8s linear infinite 2s;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Pôst - Deep Purple (Solemn) */
+.category-filter-btn[data-category="pôst"] {
+  background: linear-gradient(135deg, rgba(74, 20, 140, 0.2) 0%, rgba(98, 0, 234, 0.15) 50%, rgba(55, 0, 179, 0.25) 100%);
+  border-color: #4a148c;
+  color: #4a148c;
+}
+
+.category-filter-btn[data-category="pôst"]:hover {
+  background: linear-gradient(135deg, rgba(74, 20, 140, 0.35) 0%, rgba(98, 0, 234, 0.25) 50%, rgba(55, 0, 179, 0.4) 100%);
+  border-color: #3700b3;
+  color: #3700b3;
+}
+
+.category-filter-btn[data-category="pôst"].active {
+  background: linear-gradient(135deg, #4a148c 0%, #6200ea 50%, #3700b3 100%);
+  border-color: #1a0e42;
+  color: white;
+  box-shadow: 0 4px 15px rgba(74, 20, 140, 0.4);
+}
+
+/* Veľká noc - White with Gentle Breathing Sunrise */
+.category-filter-btn[data-category="veľká noc"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.3) 50%, rgba(248, 249, 250, 0.8) 100%);
+  border-color: #ffd700;
+  color: #495057;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2), 0 0 15px rgba(255, 215, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  animation: smooth-breathing 16s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+.category-filter-btn[data-category="veľká noc"]:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 248, 220, 0.5) 50%, rgba(248, 249, 250, 0.9) 100%);
+  border-color: #daa520;
+  color: #343a40;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+.category-filter-btn[data-category="veľká noc"].active {
+  background: linear-gradient(135deg, #ffffff 0%, #fff8dc 50%, #f8f9fa 100%);
+  border-color: #b8860b;
+  color: #212529;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.2);
+}
+
+/* Realistic cave opening for Veľká noc (Resurrection) */
+.category-filter-btn[data-category="veľká noc"]::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: -5%;
+  width: 70px;
+  height: 65px;
+  background: 
+    /* Nature inside cave - grass and flowers */
+    radial-gradient(ellipse 30% 20% at 45% 75%, rgba(34, 139, 34, 0.6) 0%, rgba(46, 125, 50, 0.4) 40%, transparent 60%),
+    radial-gradient(ellipse 20% 15% at 35% 80%, rgba(76, 175, 80, 0.5) 0%, rgba(102, 187, 106, 0.3) 50%, transparent 70%),
+    radial-gradient(ellipse 15% 10% at 55% 82%, rgba(129, 199, 132, 0.4) 0%, transparent 40%),
+    /* Small flowers */
+    radial-gradient(circle 3px at 40% 78%, rgba(255, 193, 203, 0.8) 0%, transparent 50%),
+    radial-gradient(circle 2px at 50% 75%, rgba(255, 235, 238, 0.7) 0%, transparent 50%),
+    radial-gradient(circle 2.5px at 35% 82%, rgba(255, 224, 178, 0.6) 0%, transparent 50%),
+    /* Inner cave darkness (reduced to show nature) */
+    radial-gradient(ellipse 70% 60% at 60% 40%, rgba(25, 25, 25, 0.3) 0%, rgba(40, 40, 40, 0.2) 20%, transparent 35%),
+    /* Rock formations and textures */
+    radial-gradient(ellipse 40% 30% at 15% 85%, rgba(101, 67, 33, 0.8) 0%, transparent 40%),
+    radial-gradient(ellipse 35% 45% at 85% 15%, rgba(139, 69, 19, 0.7) 0%, transparent 35%),
+    radial-gradient(ellipse 40% 30% at 35% 8%, rgba(160, 82, 45, 0.6) 0%, transparent 30%),
+    radial-gradient(ellipse 30% 40% at 95% 75%, rgba(101, 67, 33, 0.5) 0%, transparent 25%),
+    /* Main cave structure */
+    radial-gradient(ellipse 85% 75% at 50% 50%, transparent 35%, rgba(83, 53, 27, 0.9) 40%, rgba(139, 69, 19, 0.8) 55%, rgba(160, 82, 45, 0.6) 70%, transparent 80%);
+  border-radius: 65% 35% 45% 75% / 45% 65% 35% 55%;
+  transform: rotate(-12deg);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* Rising sun glimpse through the cave */
+.category-filter-btn[data-category="veľká noc"]::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 15%;
+  width: 22px;
+  height: 22px;
+  background: 
+    /* Realistic sun with orange core */
+    radial-gradient(circle at 50% 50%, 
+      rgba(255, 255, 255, 0.6) 0%, 
+      rgba(255, 255, 224, 0.55) 15%, 
+      rgba(255, 223, 0, 0.5) 30%, 
+      rgba(255, 165, 0, 0.4) 50%,
+      rgba(255, 140, 0, 0.3) 65%,
+      rgba(255, 193, 7, 0.2) 80%,
+      rgba(255, 69, 0, 0.1) 90%,
+      transparent 100%);
+  border-radius: 50%;
+  animation: soft-breathing 16s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(0.4px);
+  box-shadow: 0 0 6px rgba(255, 165, 0, 0.1), 0 0 3px rgba(255, 223, 0, 0.15);
+}
+
+/* Enhanced breathing on hover */
+.category-filter-btn[data-category="veľká noc"]:hover {
+  animation: smooth-breathing 12s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+.category-filter-btn[data-category="veľká noc"]:hover::after {
+  animation: soft-breathing 12s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+/* Soft breathing sun animation - like gentle inhale/exhale */
+@keyframes soft-breathing {
+  0% { 
+    opacity: 0.5;
+    transform: translateY(2px) scale(0.96);
+    background: radial-gradient(circle at 50% 50%, 
+      rgba(255, 255, 255, 0.58) 0%, 
+      rgba(255, 255, 224, 0.53) 15%, 
+      rgba(255, 223, 0, 0.48) 30%, 
+      rgba(255, 165, 0, 0.38) 50%,
+      rgba(255, 140, 0, 0.28) 65%,
+      rgba(255, 193, 7, 0.18) 80%,
+      rgba(255, 69, 0, 0.08) 90%,
+      transparent 100%);
+    box-shadow: 0 0 5px rgba(255, 165, 0, 0.08);
+  }
+  25% {
+    opacity: 0.6;
+    transform: translateY(1px) scale(0.98);
+    background: radial-gradient(circle at 50% 50%, 
+      rgba(255, 255, 255, 0.59) 0%, 
+      rgba(255, 255, 224, 0.54) 15%, 
+      rgba(255, 223, 0, 0.49) 30%, 
+      rgba(255, 165, 0, 0.39) 50%,
+      rgba(255, 140, 0, 0.29) 65%,
+      rgba(255, 193, 7, 0.19) 80%,
+      rgba(255, 69, 0, 0.09) 90%,
+      transparent 100%);
+    box-shadow: 0 0 6px rgba(255, 165, 0, 0.09);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: translateY(0px) scale(1.0);
+    background: radial-gradient(circle at 50% 50%, 
+      rgba(255, 255, 255, 0.6) 0%, 
+      rgba(255, 255, 224, 0.55) 15%, 
+      rgba(255, 223, 0, 0.5) 30%, 
+      rgba(255, 165, 0, 0.4) 50%,
+      rgba(255, 140, 0, 0.3) 65%,
+      rgba(255, 193, 7, 0.2) 80%,
+      rgba(255, 69, 0, 0.1) 90%,
+      transparent 100%);
+    box-shadow: 0 0 6px rgba(255, 165, 0, 0.1), 0 0 3px rgba(255, 223, 0, 0.15);
+  }
+  75% {
+    opacity: 0.6;
+    transform: translateY(-1px) scale(0.98);
+    background: radial-gradient(circle at 50% 50%, 
+      rgba(255, 255, 255, 0.59) 0%, 
+      rgba(255, 255, 224, 0.54) 15%, 
+      rgba(255, 223, 0, 0.49) 30%, 
+      rgba(255, 165, 0, 0.39) 50%,
+      rgba(255, 140, 0, 0.29) 65%,
+      rgba(255, 193, 7, 0.19) 80%,
+      rgba(255, 69, 0, 0.09) 90%,
+      transparent 100%);
+    box-shadow: 0 0 6px rgba(255, 165, 0, 0.09);
+  }
+  100% { 
+    opacity: 0.5;
+    transform: translateY(-2px) scale(0.96);
+    background: radial-gradient(circle at 50% 50%, 
+      rgba(255, 255, 255, 0.58) 0%, 
+      rgba(255, 255, 224, 0.53) 15%, 
+      rgba(255, 223, 0, 0.48) 30%, 
+      rgba(255, 165, 0, 0.38) 50%,
+      rgba(255, 140, 0, 0.28) 65%,
+      rgba(255, 193, 7, 0.18) 80%,
+      rgba(255, 69, 0, 0.08) 90%,
+      transparent 100%);
+    box-shadow: 0 0 5px rgba(255, 165, 0, 0.08);
+  }
+}
+
+/* Smooth breathing button animation - very subtle changes */
+@keyframes smooth-breathing {
+  0% {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.28) 50%, rgba(248, 249, 250, 0.8) 100%);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.18), 0 0 13px rgba(255, 215, 0, 0.07);
+  }
+  25% {
+    background: linear-gradient(135deg, rgba(255, 253, 248, 0.955) 0%, rgba(255, 242, 200, 0.31) 50%, rgba(250, 248, 243, 0.81) 100%);
+    box-shadow: 0 2.2px 8.5px rgba(255, 200, 0, 0.19), 0 0 13.5px rgba(255, 190, 0, 0.075);
+  }
+  50% {
+    background: linear-gradient(135deg, rgba(255, 251, 240, 0.96) 0%, rgba(255, 235, 180, 0.33) 50%, rgba(252, 247, 235, 0.82) 100%);
+    box-shadow: 0 2.5px 9px rgba(255, 185, 0, 0.2), 0 0 14px rgba(255, 180, 0, 0.08);
+  }
+  75% {
+    background: linear-gradient(135deg, rgba(255, 253, 248, 0.955) 0%, rgba(255, 242, 200, 0.31) 50%, rgba(250, 248, 243, 0.81) 100%);
+    box-shadow: 0 2.2px 8.5px rgba(255, 200, 0, 0.19), 0 0 13.5px rgba(255, 190, 0, 0.075);
+  }
+  100% {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.28) 50%, rgba(248, 249, 250, 0.8) 100%);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.18), 0 0 13px rgba(255, 215, 0, 0.07);
+  }
+}
+
+/* Ensure button text appears on top of all animations */
+.category-filter-btn[data-category="veľká noc"] {
+  position: relative;
+}
+
+.category-filter-btn[data-category="veľká noc"] > .bi,
+.category-filter-btn[data-category="veľká noc"] > span,
+.category-filter-btn[data-category="veľká noc"] > .category-count {
+  position: relative;
+  z-index: 10;
+}
+
+/* Standing man inside cave opening */
+.category-filter-btn[data-category="veľká noc"] .cave-man {
+  position: absolute;
+  top: 30%;
+  left: 1%;
+  width: 40px;
+  height: 50px;
+  pointer-events: none;
+  z-index: 4;
+  transform: scale(0.7);
+  opacity: 0.75;
+}
+
+/* Growing plant inside cave animation */
+.category-filter-btn[data-category="veľká noc"] .cave-plant {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120px;
+  height: 90px;
+  pointer-events: none;
+  z-index: 3;
+  transform: scale(1.2) rotate(5deg);
+  opacity: 0.9;
+}
+
+/* Risen figure animation */
+.cave-man .risen-figure {
+  animation: gentle-glow 6s ease-in-out infinite;
+}
+
+.cave-man .halo {
+  animation: halo-pulse 4s ease-in-out infinite;
+}
+
+@keyframes gentle-glow {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes halo-pulse {
+  0%, 100% { opacity: 0.2; stroke-width: 0.5; }
+  50% { opacity: 0.4; stroke-width: 1.2; }
+}
+
+.cave-plant svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+/* Plant animation styles - Clean structured version with looping */
+.cave-plant .stem {
+  stroke-dasharray: 450;
+  stroke-dashoffset: -450;
+  stroke-width: 4px;
+  animation: draw 8s ease-in-out infinite;
+}
+
+@keyframes draw {
+  0% {
+    stroke-dashoffset: -450;
+    stroke-width: 4px;
+  }
+  40% {
+    stroke-dashoffset: 0;
+    stroke-width: 5px;
+  }
+  60% {
+    stroke-dashoffset: 0;
+    stroke-width: 5px;
+  }
+  100% {
+    stroke-dashoffset: -450;
+    stroke-width: 4px;
+  }
+}
+
+.cave-plant .st0 {
+  transform-box: fill-box;
+  fill: #157425;
+  opacity: 0;
+  animation: leafs 8s ease-in-out infinite;
+}
+
+@keyframes leafs {
+  0% { transform: scale(0, 0); opacity: 0; }
+  30% { transform: scale(0, 0); opacity: 0; }
+  40% { transform: scale(0, 0); opacity: 1; }
+  60% { transform: scale(2.5, -1.5); opacity: 1; }
+  80% { transform: scale(2.5, -1.5); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st0a {
+  transform-box: fill-box;
+  fill: #157425;
+  opacity: 0;
+  animation: leafa 8s ease-in-out infinite;
+}
+
+@keyframes leafa {
+  0% { transform: scale(0, 0); opacity: 0; }
+  30% { transform: scale(0, 0); opacity: 0; }
+  40% { transform: scale(0, 0); opacity: 1; }
+  60% { transform: scale(1.5, -1.5); opacity: 1; }
+  80% { transform: scale(1.5, -1.5); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st0b {
+  transform-box: fill-box;
+  fill: #10a128;
+  opacity: 0;
+  animation: leafb 8s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes leafb {
+  0% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0, 0); opacity: 0; }
+  45% { transform: scale(0, 0); opacity: 1; }
+  65% { transform: scale(1, -1); opacity: 1; }
+  80% { transform: scale(1, -1); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st0l {
+  transform-box: fill-box;
+  fill: #16a72e;
+  opacity: 0;
+  animation: leafc 8s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes leafc {
+  0% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0, 0); opacity: 0; }
+  45% { transform: scale(0, 0); opacity: 1; }
+  65% { transform: scale(1.05, -1.03); opacity: 1; }
+  80% { transform: scale(1.05, -1.03); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st1 {
+  transform-box: fill-box;
+  fill: #157425;
+  opacity: 0;
+  animation: leaf1 8s ease-in-out infinite;
+}
+
+@keyframes leaf1 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  30% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0.2, 0.2); opacity: 1; }
+  60% { transform: scale(2, 2); opacity: 1; }
+  80% { transform: scale(2, 2); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st2 {
+  transform-box: fill-box;
+  opacity: 0;
+  fill: #157425;
+  animation: leaf2 8s ease-in-out infinite;
+}
+
+@keyframes leaf2 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  30% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0.2, 0.2); opacity: 1; }
+  60% { transform: scale(1.5, 1.5); opacity: 1; }
+  80% { transform: scale(1.5, 1.5); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st3 {
+  transform-box: fill-box;
+  fill: #09721b;
+  animation: leaf3 8s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes leaf3 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  30% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0.2, 0.2); opacity: 1; }
+  60% { transform: scale(-1, -2); opacity: 1; }
+  80% { transform: scale(-1, -2); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st4 {
+  transform-box: fill-box;
+  fill: #16a72e;
+  animation: leaf4 8s ease-in-out infinite;
+  opacity: 0;
+  animation-delay: 1s;
+}
+
+@keyframes leaf4 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0, 0); opacity: 0; }
+  45% { transform: scale(0.2, 0.2); opacity: 1; }
+  65% { transform: scale(1, 1); opacity: 1; }
+  80% { transform: scale(1, 1); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st5 {
+  transform-box: fill-box;
+  fill: #157425;
+  animation: leaf5 8s ease-in-out infinite;
+  opacity: 0;
+  animation-delay: 0.3s;
+}
+
+@keyframes leaf5 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  32% { transform: scale(0, 0); opacity: 0; }
+  37% { transform: scale(0.2, 0.2); opacity: 1; }
+  62% { transform: scale(1.4, 1.4); opacity: 1; }
+  80% { transform: scale(1.4, 1.4); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+
+
+/* Cez rok - Green */
+.category-filter-btn[data-category="cez rok"] {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(232, 245, 233, 0.3) 100%);
+  border-color: #4caf50;
+  color: #388e3c;
+}
+
+.category-filter-btn[data-category="cez rok"]:hover {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.25) 0%, rgba(232, 245, 233, 0.5) 100%);
+  border-color: #43a047;
+  color: #2e7d32;
+}
+
+.category-filter-btn[data-category="cez rok"].active {
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  border-color: #388e3c;
+  color: white;
+}
+
+/* Mariánske - Blue */
+.category-filter-btn[data-category="mariánske"] {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.15) 0%, rgba(227, 242, 253, 0.3) 100%);
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+.category-filter-btn[data-category="mariánske"]:hover {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.25) 0%, rgba(227, 242, 253, 0.5) 100%);
+  border-color: #1e88e5;
+  color: #1565c0;
+}
+
+.category-filter-btn[data-category="mariánske"].active {
+  background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
+  border-color: #1976d2;
+  color: white;
+}
+
+/* Krížová cesta - Deep Purple (Solemn) */
+.category-filter-btn[data-category="krížová cesta"] {
+  background: linear-gradient(135deg, rgba(56, 17, 119, 0.25) 0%, rgba(74, 20, 140, 0.2) 50%, rgba(33, 0, 93, 0.3) 100%);
+  border-color: #381777;
+  color: #381777;
+}
+
+.category-filter-btn[data-category="krížová cesta"]:hover {
+  background: linear-gradient(135deg, rgba(56, 17, 119, 0.4) 0%, rgba(74, 20, 140, 0.35) 50%, rgba(33, 0, 93, 0.45) 100%);
+  border-color: #21005d;
+  color: #21005d;
+}
+
+.category-filter-btn[data-category="krížová cesta"].active {
+  background: linear-gradient(135deg, #381777 0%, #4a148c 50%, #21005d 100%);
+  border-color: #0d0028;
+  color: white;
+  box-shadow: 0 4px 15px rgba(56, 17, 119, 0.5);
+}
+
+/* Taizé - Orange with Burning Match Animation */
+.category-filter-btn[data-category="Taizé"] {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 243, 224, 0.3) 100%);
+  border-color: #ff9800;
+  color: #f57c00;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-filter-btn[data-category="Taizé"]:hover {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.25) 0%, rgba(255, 243, 224, 0.5) 100%);
+  border-color: #fb8c00;
+  color: #ef6c00;
+}
+
+.category-filter-btn[data-category="Taizé"].active {
+  background: linear-gradient(135deg, #ff9800 0%, #fb8c00 100%);
+  border-color: #f57c00;
+  color: white;
+}
+
+/* Taizé Flame Animation using your provided system */
+.category-filter-btn[data-category="Taizé"] {
+  position: relative;
+  overflow: hidden;
+}
+
+.category-filter-btn[data-category="Taizé"] > * {
+  position: relative;
+  z-index: 1;
+}
+
+.category-filter-btn[data-category="Taizé"] .mo-fire {
+  width: 80px;
+  height: auto;
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  filter: blur(0.5px);
+}
+
+.category-filter-btn[data-category="Taizé"] .mo-fire svg {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+/* Remove match stick for SVG flame */
+.category-filter-btn[data-category="Taizé"]::after {
+  display: none;
+}
+
+/* Your provided flame animation system */
+.flame {
+  animation-name: flamefly;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0;
+  transform-origin: 50% 50% 0;
+}
+.flame.one {
+  animation-delay: 1s;
+  animation-duration: 3s;
+}
+.flame.two{
+  animation-duration: 5s;
+  animation-delay: 1s;
+}
+
+.flame-main {
+  animation-name: flameWobble;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.flame-main.one {
+  animation-duration: 4s;
+  animation-delay: 1s;
+}
+.flame-main.two {
+  animation-duration: 3s;
+  animation-delay: 2s;
+}
+.flame-main.three {
+  animation-duration: 2.1s;
+  animation-delay: 3s;
+}
+.flame-main.four {
+  animation-duration: 3.2s;
+  animation-delay: 4s;
+}
+.flame-main.five {
+  animation-duration: 2.5s;
+  animation-delay: 5s;
+}
+
+@keyframes flameWobble {
+  50% {
+    transform: scale(1,1.2) translate(0, -30px) rotate(-2deg);
+  }
+}
+
+@keyframes flamefly {
+  0%{
+    transform: translate(0, 20px) rotate(180deg);
+  }
+   50% {
+     opacity: 1;
+  }
+  100% {
+    transform: translate(-20px, -80px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* Clear filters button animation */
+#clearCategoryFilters {
+  transition: all 0.3s ease;
+}
+
+#clearCategoryFilters:hover {
+  transform: scale(1.05);
+}
+
+/* Status Filter Styling */
+.status-filter-section .card {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 193, 7, 0.1);
+}
+
+.status-filter-btn {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+  border: 2px solid #f0e68c;
+  color: #8b7355;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  min-width: 180px;
+}
+
+.status-filter-btn:hover {
+  background: linear-gradient(135deg, #fff3cd 0%, #fef9e7 100%);
+  border-color: #ffc107;
+  color: #856404;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.25);
+}
+
+.status-filter-btn.active {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  border-color: #fd7e14;
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+}
+
+.status-filter-btn.active .status-count {
+  background-color: rgba(255,255,255,0.9) !important;
+  color: #fd7e14 !important;
+  font-weight: 700;
+}
+
+.status-filter-btn:active {
+  transform: scale(0.98);
+}
+
+/* Status count badges */
+.status-count {
+  font-size: 0.7rem;
+  padding: 0.1em 0.4em;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  min-width: 1.5em;
+  text-align: center;
+}
+
+/* Specific styling for unchecked status */
+.status-filter-btn[data-status="unchecked"] {
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+  border-color: #ffc9c9;
+  color: #721c24;
+}
+
+.status-filter-btn[data-status="unchecked"]:hover {
+  background: linear-gradient(135deg, #fee 0%, #fff5f5 100%);
+  border-color: #dc3545;
+  color: #721c24;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+}
+
+.status-filter-btn[data-status="unchecked"].active {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  border-color: #bd2130;
+  color: white;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Specific styling for unprinted status */
+.status-filter-btn[data-status="unprinted"] {
+  background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
+  border-color: #b3d9ff;
+  color: #004085;
+}
+
+.status-filter-btn[data-status="unprinted"]:hover {
+  background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%);
+  border-color: #007bff;
+  color: #004085;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+}
+
+.status-filter-btn[data-status="unprinted"].active {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  border-color: #004085;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Clear status filters button */
+#clearStatusFilters {
+  transition: all 0.3s ease;
+}
+
+#clearStatusFilters:hover {
+  transform: scale(1.05);
+}
+
+/* Category filter info */
+.category-filter-info {
+  background: rgba(13, 110, 253, 0.05);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Search Modal Styles */
+.search-modal-section .btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.search-modal-section .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.search-modal-section .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.search-modal-section .btn:hover::before {
+  left: 100%;
+}
+
+/* Virtual Scrolling Results Container */
+.virtual-scroll-container {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  background: #f8f9fa;
+  position: relative;
+}
+
+#scrollableContent {
+  position: relative;
+}
+
+#visibleResults {
+  padding: 0.75rem;
+}
+
+#scrollLoadingIndicator {
+  background: rgba(248, 249, 250, 0.9);
+  border-top: 1px solid #dee2e6;
+  backdrop-filter: blur(4px);
+}
+
+.search-result-title {
+  font-size: 1rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-result-meta {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.search-result-badges {
+  overflow: hidden;
+  height: 2rem;
+}
+
+.search-result-badges .badge {
+  font-size: 0.7rem;
+}
+
+.search-result-item {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  min-height: 120px;
+  max-height: 120px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.search-result-item:hover {
+  border-color: #007bff;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.15);
+  transform: translateY(-1px);
+}
+
+.search-result-item.selected {
+  border-color: #28a745;
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+}
+
+.search-result-checkbox {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  transform: scale(1.2);
+}
+
+.search-result-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.search-result-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.search-result-id {
+  background: #6c757d;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.search-result-author {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.search-result-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.search-result-badges .badge {
+  font-size: 0.75rem;
+  padding: 0.25em 0.5em;
+}
+
+/* Category filter grid in modal */
+.category-filter-grid .form-check {
+  margin-bottom: 0.5rem;
+}
+
+.category-filter-grid .form-check-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+/* Modal enhancements */
+.modal-dialog {
+  margin: 1rem auto;
+  max-width: 900px;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 1.5rem;
+  box-shadow: 0 25px 80px rgba(102, 126, 234, 0.15), 0 10px 40px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+#searchModal .modal-header {
+  border-radius: 1.5rem 1.5rem 0 0;
+  padding: 1.5rem 2rem;
+  border: none;
+}
+
+#searchModal .modal-body {
+  padding: 0;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#searchModal .modal-footer {
+  border-radius: 0 0 1.5rem 1.5rem;
+  border: none;
+}
+
+/* Enhanced search input styling */
+#searchModal .input-group-lg .form-control {
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  border: 2px solid #e9ecef;
+}
+
+#searchModal .input-group-lg .form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+  transform: translateY(-1px);
+}
+
+#searchModal .input-group-lg .input-group-text {
+  border-radius: 0.75rem 0 0 0.75rem;
+  border: 2px solid #e9ecef;
+  border-right: none;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+#searchModal .input-group:focus-within .input-group-text {
+  border-color: #667eea;
+}
+
+#searchModal .input-group-lg .btn {
+  border-radius: 0 0.75rem 0.75rem 0;
+  border: 2px solid #e9ecef;
+  border-left: none;
+  transition: all 0.3s ease;
+}
+
+#searchModal .input-group:focus-within .btn {
+  border-color: #667eea;
+}
+
+/* Results container styling */
+#searchModal .virtual-scroll-container {
+  height: 400px;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+#searchModal .search-result-item {
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid #f0f0f0;
+  padding: 1.25rem;
+  min-height: 240px;
+  background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+#searchModal .search-result-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.15);
+  border-color: #667eea;
+}
+
+#searchModal .search-result-item.selected {
+  background: linear-gradient(135deg, #e8f4fd 0%, #f1f8ff 100%);
+  border-color: #667eea;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
+}
+
+/* New search result styling */
+.search-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.song-id {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.song-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2d3748;
+  flex: 1;
+}
+
+.song-author {
+  color: #718096;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.song-content-preview {
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  background: rgba(248, 250, 252, 0.8);
+  border-radius: 0.75rem;
+  border-left: 3px solid #e2e8f0;
+  flex: 1;
+  overflow: visible;
+  min-height: 60px;
+}
+
+.verse-preview, .chorus-preview {
+  color: #4a5568;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  display: block;
+  white-space: normal;
+}
+
+.verse-preview:last-child, .chorus-preview:last-child {
+  margin-bottom: 0;
+}
+
+.preview-label {
+  font-weight: 700;
+  color: #667eea;
+  margin-right: 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.search-result-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.result-badges {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.result-categories {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.result-categories .badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Search input enhancements */
+#searchInput {
+  border-radius: 0.5rem;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+/* Loading states */
+.loading-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 0.5rem;
+    max-width: none;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+    max-height: 80vh;
+  }
+  
+  .search-results-container {
+    max-height: 300px;
+  }
+  
+  .search-result-item {
+    padding: 0.75rem;
+  }
+  
+  .search-result-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+</style>
+
+{% set categories = [
+  "stále omšové spevy",
+  "úvod", 
+  "medzispevy (žalmy; aleluja)",
+  "obetovanie",
+  "prijímanie", 
+  "poďakovanie po prijímaní",
+  "záver",
+  "adorácia",
+  "advent",
+  "vianoce",
+  "pôst", 
+  "veľká noc",
+  "cez rok",
+  "k Duchu Svätému",
+  "mariánske",
+  "k svätcom",
+  "detské",
+  "iné",
+  "liturgia hodín",
+  "sobášne", 
+  "Taizé",
+  "krížová cesta",
+  "nevhodné"
+] %}
+
+{% set total = total_songs %}
+{% set admin_checked = total_admin_checked %}
+{% set printed = total_printed %}
+
+<div class="mb-4">
+  <h5 class="mb-2">🛠️ Kontrola piesní</h5>
+  <div class="progress position-relative" style="height: 30px;">
+    <!-- Admin checked progress -->
+    <div class="progress-bar bg-success"
+         role="progressbar"
+         style="width: {{ (admin_checked / total * 100) if total else 0 }}%; height: 100%;">
+    </div>
+
+    <!-- Text overlay -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center fw-bold text-white" style="z-index: 1;">
+      ✅ {{ admin_checked}}/{{ total }} skontrolovaných
+      </div>
+  </div>
+</div>
+
+<div class="mb-4">
+  <h5 class="mb-2">🖨️ Tlač piesní</h5>
+  <div class="progress position-relative" style="height: 30px;">
+    <!-- Foreground: Admin checked (darker blue, smaller width) -->
+    <div class="progress-bar bg-info position-absolute top-0 start-0"
+         role="progressbar"
+         style="width: {{ (printed / total * 100) if total else 0 }}%; height: 100%;">
+    </div>
+
+    <!-- Text overlay -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center fw-bold {% if printed/total > 0.6 %} text-white {% else %} text-dark{% endif %}" style="z-index: 1;">
+      ✅ {{ printed }}/{{ total }} vytlačených
+      </div>
+  </div>
+</div>
+
+<!--<a href="{{ url_for('load_songs') }}" class="btn btn-primary mb-3">Načítaj z JSON (nestláčať)</a>-->
+
+<a href="{{ url_for('add_song') }}" class="btn btn-primary mb-3">+ Pridaj novú pieseň</a>
+
+<!-- 🏷️ Category Filter Section -->
+<div class="category-filter-section mb-4">
+  <div class="card border-0 shadow-sm rounded-4" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h5 class="mb-0 fw-bold text-dark">
+          <i class="bi bi-tags-fill text-primary me-2"></i>
+          Kategórie
+        </h5>
+        <button id="clearCategoryFilters" class="btn btn-outline-secondary btn-sm rounded-pill" style="display: none;">
+          <i class="bi bi-x-circle me-1"></i>
+          Vyčistiť filtre
+        </button>
+      </div>
+      
+      <div class="category-buttons d-flex flex-wrap gap-2" id="categoryFilters">
+        {% for category in categories %}
+        <button class="category-filter-btn btn btn-sm rounded-pill" 
+                data-category="{{ category }}"
+                title="Filtrovať piesne v kategórii '{{ category }}'">
+          <i class="bi bi-tag me-1"></i>
+          {{ category }}
+          <span class="category-count badge bg-light text-dark ms-1" data-category="{{ category }}">0</span>
+          
+          {% if category == 'adorácia' %}
+          <div class="mo-fire">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="125px" height="189.864px" viewBox="0 0 125 189.864">
+              <path class="flame-main" fill="#F36E21" d="M76.553,186.09c0,0-10.178-2.976-15.325-8.226s-9.278-16.82-9.278-16.82s-0.241-6.647-4.136-18.465c0,0,3.357,4.969,5.103,9.938c0,0-5.305-21.086,1.712-30.418c7.017-9.333,0.571-35.654-2.25-37.534c0,0,13.07,5.64,19.875,47.54c6.806,41.899,16.831,45.301,6.088,53.985"/>
+              <path class="flame-main one" fill="#F6891F" d="M61.693,122.257c4.117-15.4,12.097-14.487-11.589-60.872c0,0,32.016,10.223,52.601,63.123c20.585,52.899-19.848,61.045-19.643,61.582c0.206,0.537-19.401-0.269-14.835-18.532S57.576,137.656,61.693,122.257z"/>
+              <path class="flame-main two" fill="#FFD04A" d="M81.657,79.192c0,0,11.549,24.845,3.626,40.02c-7.924,15.175-21.126,41.899-0.425,64.998C84.858,184.21,125.705,150.905,81.657,79.192z"/>
+              <path class="flame-main three" fill="#FDBA16" d="M99.92,101.754c0,0-23.208,47.027-12.043,80.072c0,0,32.741-16.073,20.108-45.79C95.354,106.319,99.92,114.108,99.92,101.754z"/>
+              <path class="flame-main four" fill="#F36E21" d="M103.143,105.917c0,0,8.927,30.753-1.043,46.868c-9.969,16.115-14.799,29.041-14.799,29.041S134.387,164.603,103.143,105.917z"/>
+              <path class="flame-main five" fill="#FDBA16" d="M62.049,104.171c0,0-15.645,67.588,10.529,77.655C98.753,191.894,69.033,130.761,62.049,104.171z"/>
+              <path class="flame" fill="#F36E21" d="M101.011,112.926c0,0,8.973,10.519,4.556,16.543C99.37,129.735,106.752,117.406,101.011,112.926z"/>
+              <path class="flame one" fill="#F36E21" d="M55.592,126.854c0,0-3.819,13.29,2.699,16.945C64.038,141.48,55.907,132.263,55.592,126.854z"/>
+              <path class="flame two" fill="#F36E21" d="M54.918,104.595c0,0-3.959,6.109-1.24,8.949C56.93,113.256,52.228,107.329,54.918,104.595z"/>
+            </svg>
+          </div>
+          {% endif %}
+          
+          {% if category == 'Taizé' %}
+          <div class="mo-fire">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="125px" height="189.864px" viewBox="0 0 125 189.864">
+              <path class="flame-main" fill="#F36E21" d="M76.553,186.09c0,0-10.178-2.976-15.325-8.226s-9.278-16.82-9.278-16.82s-0.241-6.647-4.136-18.465c0,0,3.357,4.969,5.103,9.938c0,0-5.305-21.086,1.712-30.418c7.017-9.333,0.571-35.654-2.25-37.534c0,0,13.07,5.64,19.875,47.54c6.806,41.899,16.831,45.301,6.088,53.985"/>
+              <path class="flame-main one" fill="#F6891F" d="M61.693,122.257c4.117-15.4,12.097-14.487-11.589-60.872c0,0,32.016,10.223,52.601,63.123c20.585,52.899-19.848,61.045-19.643,61.582c0.206,0.537-19.401-0.269-14.835-18.532S57.576,137.656,61.693,122.257z"/>
+              <path class="flame-main two" fill="#FFD04A" d="M81.657,79.192c0,0,11.549,24.845,3.626,40.02c-7.924,15.175-21.126,41.899-0.425,64.998C84.858,184.21,125.705,150.905,81.657,79.192z"/>
+              <path class="flame-main three" fill="#FDBA16" d="M99.92,101.754c0,0-23.208,47.027-12.043,80.072c0,0,32.741-16.073,20.108-45.79C95.354,106.319,99.92,114.108,99.92,101.754z"/>
+              <path class="flame-main four" fill="#F36E21" d="M103.143,105.917c0,0,8.927,30.753-1.043,46.868c-9.969,16.115-14.799,29.041-14.799,29.041S134.387,164.603,103.143,105.917z"/>
+              <path class="flame-main five" fill="#FDBA16" d="M62.049,104.171c0,0-15.645,67.588,10.529,77.655C98.753,191.894,69.033,130.761,62.049,104.171z"/>
+              <path class="flame" fill="#F36E21" d="M101.011,112.926c0,0,8.973,10.519,4.556,16.543C99.37,129.735,106.752,117.406,101.011,112.926z"/>
+              <path class="flame one" fill="#F36E21" d="M55.592,126.854c0,0-3.819,13.29,2.699,16.945C64.038,141.48,55.907,132.263,55.592,126.854z"/>
+              <path class="flame two" fill="#F36E21" d="M54.918,104.595c0,0-3.959,6.109-1.24,8.949C56.93,113.256,52.228,107.329,54.918,104.595z"/>
+            </svg>
+          </div>
+          {% endif %}
+          
+          {% if category == 'veľká noc' %}
+          <div class="cave-man">
+            <svg viewBox="0 0 100 120" width="100%" height="100%">
+              <!-- Standing man figure -->
+              <g class="risen-figure">
+                <!-- Head -->
+                <circle cx="50" cy="20" r="8" fill="#f4c2a1" opacity="0.9"/>
+                
+                <!-- Hair -->
+                <path d="M42,12 Q50,8 58,12 Q56,18 50,20 Q44,18 42,12" fill="#8B4513" opacity="0.8"/>
+                
+                <!-- Body (robe) -->
+                <path d="M50,28 L45,35 L43,55 L40,80 L42,110 L58,110 L60,80 L57,55 L55,35 Z" fill="#ffffff" opacity="0.85" stroke="#e0e0e0" stroke-width="0.5"/>
+                
+                <!-- Arms (raised slightly) -->
+                <path d="M45,35 Q40,32 35,38 L38,45 Q42,42 45,45" fill="#f4c2a1" opacity="0.8"/>
+                <path d="M55,35 Q60,32 65,38 L62,45 Q58,42 55,45" fill="#f4c2a1" opacity="0.8"/>
+                
+                <!-- Feet -->
+                <ellipse cx="45" cy="110" rx="4" ry="2" fill="#8B4513" opacity="0.7"/>
+                <ellipse cx="55" cy="110" rx="4" ry="2" fill="#8B4513" opacity="0.7"/>
+                
+                <!-- Subtle glow/halo effect -->
+                <circle cx="50" cy="20" r="12" fill="none" stroke="#ffeb3b" stroke-width="1" opacity="0.3" class="halo"/>
+              </g>
+            </svg>
+          </div>
+          
+          <div class="cave-plant">
+            <svg viewBox="0 0 350 400" width="100%" height="100%">
+              <g>
+                <path class="stem" d="M 0,150 C 180,80 170,80 350,150" stroke="#6b5b1a" stroke-width="4" fill="transparent" />
+              </g>
+              <g transform="translate(-10,20)">
+                <g class="st1">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(-1,1)" transform-origin="center" />
+                </g>
+              </g>
+              <g transform="rotate(20 50 0) translate(-20,-15)">
+                <g class="st2">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(-1,1)" transform-origin="center" />
+                </g>
+              </g>
+              <g transform="rotate(70 50 0) translate(-20,-105)">
+                <g class="st5">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(-1,1)" transform-origin="center" />
+                </g>
+              </g>
+              <g transform="rotate(50 50 0) translate(-35,-20)">
+                <g class="st4">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(-1,1)" transform-origin="center" />
+                </g>
+              </g>
+              <g transform="rotate(15 15 -15) translate(-54,-1)">
+                <g class="st3">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(-1,1)" transform-origin="center" />
+                </g>
+              </g>
+              <g transform="translate(95,-178)">
+                <g class="st0">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(1,-1)" transform-origin="center" />
+                </g>
+              </g>
+              <g transform="rotate(-15 -50 20) translate(24,-128)">
+                <g class="st0a">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(1,-1)" transform-origin="center" />
+                </g>
+              </g>
+              <g transform="rotate(-80 10 60) translate(-140,-140)">
+                <g class="st0b">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(1,-1)" transform-origin="center" />
+                </g>
+              </g>
+              <g transform="rotate(-165 3 120) translate(-160,-140)">
+                <g class="st0l">
+                  <path d="M97.77,124.89c0,0,12.42-45.97,56.71-46.98C154.48,77.91,160.18,98.71,97.77,124.89z" transform="scale(1,-1)" transform-origin="center" />
+                </g>
+              </g>
+            </svg>
+          </div>
+          {% endif %}
+        </button>
+        {% endfor %}
+      </div>
+      
+      <div class="category-filter-info mt-3 pt-2 border-top">
+        <small class="text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          <span id="categoryFilterStatus">Kliknite na kategóriu pre filtrovanie. Môžete vybrať viacero kategórií naraz.</span>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Status Filter Section -->
+<div class="status-filter-section mb-4">
+  <div class="card border-0 shadow-sm rounded-4" style="background: linear-gradient(135deg, #fff8f0 0%, #ffffff 100%);">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h5 class="mb-0 fw-bold text-dark">
+          <i class="bi bi-funnel-fill text-warning me-2"></i>
+          Status filtre
+        </h5>
+        <button id="clearStatusFilters" class="btn btn-outline-secondary btn-sm rounded-pill" style="display: none;">
+          <i class="bi bi-x-circle me-1"></i>
+          Vyčistiť status filtre
+        </button>
+      </div>
+      
+      <div class="status-buttons d-flex flex-wrap gap-2" id="statusFilters">
+        <button class="status-filter-btn btn btn-sm rounded-pill" 
+                data-status="unchecked"
+                title="Zobraziť len neskontrolované piesne">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          Neskontrolované
+          <span class="status-count badge bg-light text-dark ms-2" id="uncheckedCount">0</span>
+        </button>
+        
+        <button class="status-filter-btn btn btn-sm rounded-pill" 
+                data-status="unprinted"
+                title="Zobraziť len nevytlačené piesne">
+          <i class="bi bi-printer me-2"></i>
+          Nevytlačené
+          <span class="status-count badge bg-light text-dark ms-2" id="unprintedCount">0</span>
+        </button>
+      </div>
+      
+      <div class="status-filter-info mt-3 pt-2 border-top">
+        <small class="text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          <span id="statusFilterStatus">Filtrujte piesne podľa ich stavu kontroly a tlače.</span>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search Modal Button -->
+<div class="search-modal-section mb-4">
+  <div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-lg btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#searchModal" style="border-radius: 25px; padding: 0.75rem 2rem;">
+      <i class="bi bi-search me-2"></i>
+      <span>Vyhľadať v {{ total_songs }} piesňach</span>
+      <i class="bi bi-funnel ms-2"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Advanced Search Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+        <h5 class="modal-title text-white fw-bold" id="searchModalLabel">
+          <i class="bi bi-search me-2"></i>
+          Vyhľadávanie piesní
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 2rem;">
+        <!-- Search Form -->
+        <form id="searchForm" class="mb-4">
+          <div class="mb-4">
+            <label for="searchInput" class="form-label fw-bold fs-5 text-dark mb-3">
+              <i class="bi bi-search text-primary me-2"></i>Čo hľadáte?
+            </label>
+            <div class="input-group input-group-lg shadow-sm">
+              <span class="input-group-text border-0 bg-white">
+                <i class="bi bi-search text-muted"></i>
+              </span>
+              <input type="text" class="form-control border-0 fs-4" id="searchInput" 
+                     placeholder="Zadajte názov piesne, autora alebo text..." 
+                     autocomplete="off"
+                     style="padding: 1rem; font-size: 1.1rem !important;">
+              <button type="submit" class="btn btn-primary border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <i class="bi bi-search me-1"></i>Vyhľadať
+              </button>
+            </div>
+            <div class="form-text mt-2 text-muted">
+              <i class="bi bi-info-circle me-1"></i>
+              Môžete hľadať podľa názvu, autora alebo textu piesne
+            </div>
+          </div>
+        </form>
+        
+        <!-- Search Results -->
+        <div id="searchResults" style="display: none;">
+          <div class="results-divider my-4">
+            <hr style="border: none; height: 2px; background: linear-gradient(90deg, transparent, #667eea, transparent);">
+          </div>
+          
+          <div class="results-header mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <div class="results-info">
+                <h6 class="mb-1 text-dark fw-bold">
+                  <i class="bi bi-music-note-list text-primary me-2"></i>
+                  Výsledky vyhľadávania
+                </h6>
+                <p class="mb-0 text-muted small">
+                  Nájdených <span id="resultCount" class="fw-bold text-primary">0</span> piesní
+                </p>
+              </div>
+
+            </div>
+          </div>
+          
+          <!-- Virtual Scrolling Results Container -->
+          <div id="resultsContainer" class="virtual-scroll-container rounded-3 shadow-sm" style="border: 1px solid #e9ecef; background: white;">
+            <div id="scrollableContent">
+              <div id="topSpacer" style="height: 0px;"></div>
+              <div id="visibleResults"></div>
+              <div id="bottomSpacer" style="height: 0px;"></div>
+            </div>
+            <!-- Loading indicator -->
+            <div id="scrollLoadingIndicator" class="text-center py-4" style="display: none; background: rgba(248, 249, 250, 0.9);">
+              <div class="loading-spinner me-2"></div>
+              <span class="text-muted">Načítavajú sa ďalšie výsledky...</span>
+            </div>
+          </div>
+          
+          <!-- Search Progress -->
+          <div class="search-progress mt-3 text-center" id="searchProgress" style="display: none;">
+            <small class="text-muted p-2 rounded-pill" style="background: rgba(102, 126, 234, 0.1);">
+              <i class="bi bi-info-circle me-1"></i>
+              Zobrazených <span id="visibleCount" class="fw-bold">0</span> z <span id="totalFound" class="fw-bold">0</span> piesní
+              <span id="loadingMore" style="display: none;"> • <i class="bi bi-arrow-repeat"></i> Načítavajú sa ďalšie...</span>
+            </small>
+          </div>
+          
+          <!-- No Results -->
+          <div id="noResults" style="display: none;" class="text-center py-5">
+            <div class="mb-4">
+              <i class="bi bi-music-note-beamed text-muted opacity-50" style="font-size: 4rem;"></i>
+            </div>
+            <h5 class="text-muted fw-bold mb-2">Žiadne piesne nenájdené</h5>
+            <p class="text-muted mb-4">Skúste zmeniť vyhľadávaný výraz alebo použite iné kľúčové slová</p>
+            <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('searchInput').focus()">
+                <i class="bi bi-search me-1"></i>Skúsiť znova
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-0" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem 2rem;">
+        <button type="button" class="btn btn-lg btn-outline-secondary px-4" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-2"></i>Zavrieť
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-success mt-3">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %}
+<!-- Desktop table view -->
+<div class="table-responsive songs-table-container shadow-sm rounded-4 overflow-hidden d-none d-lg-block" id="mainSongsTable">
+  <table class="table table-hover mb-0 song-table">
+    <thead class="table-dark">
+        <tr>
+            <th class="px-3 py-3">
+              <i class="bi bi-hash me-1"></i>ID
+            </th>
+            <th class="px-3 py-3">
+              <i class="bi bi-music-note me-1"></i>Názov
+            </th>
+            <th class="px-3 py-3">
+              <i class="bi bi-person me-1"></i>Autor
+            </th>
+            <th class="text-center px-3 py-3">
+              <i class="bi bi-music-note-list me-1"></i>Audio súbory
+            </th>
+            <th class="text-center px-3 py-3">
+              <i class="bi bi-download me-1"></i>Súbory & Status
+            </th>
+            <th class="text-center px-3 py-3">
+              <i class="bi bi-tools me-1"></i>Funkcie
+            </th>
+        </tr>
+    </thead>
+    <tbody id="songsTableBody">
+        <!-- Songs will be loaded dynamically via JavaScript -->
+    </tbody>
+  </table>
+  
+  <!-- Loading indicator for desktop -->
+  <div id="tableLoadingIndicator" class="text-center py-4" style="display: none;">
+    <div class="loading-spinner me-2"></div>
+    <span>Načítavajú sa ďalšie piesne...</span>
+  </div>
+</div>
+
+<!-- Mobile Card Layout (hidden by default, shown on mobile) -->
+<div class="mobile-songs-container d-block d-lg-none" id="mobileSongsContainer">
+  <!-- Loading indicator for mobile -->
+  <div id="mobileLoadingIndicator" class="text-center py-4" style="display: none;">
+    <div class="loading-spinner me-2"></div>
+    <span>Načítavajú sa ďalšie piesne...</span>
+  </div>
+</div>
+
+<!-- Songs loading status -->
+<div class="songs-status mt-3 text-center">
+  <small class="text-muted">
+    Zobrazených <span id="loadedSongsCount">{{ songs|length }}</span> z <span id="totalSongsCount">{{ total_songs }}</span> piesní
+    <span id="allSongsLoaded" style="display: {% if songs|length >= total_songs %}block{% else %}none{% endif %};">
+      • Všetky piesne načítané ✓
+    </span>
+  </small>
+  <!-- Mobile cards will be loaded dynamically via JavaScript -->
+</div>
+
+<style>
+.badge {
+    font-size: 0.75rem;
+    padding: 0.25em 0.5em;
+    border-radius: 0.5rem;
+}
+
+/* Enhanced status badges */
+.badge-checked {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.badge-pending {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.badge-printed {
+    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%) !important;
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Make bootstrap icons in badges more visible */
+.badge-checked i, .badge-pending i, .badge-printed i {
+    font-size: 1rem;
+}
+
+/* Emoji icon styling for better visibility */
+.badge-checked, .badge-pending, .badge-printed {
+    line-height: 1.4;
+}
+
+/* Subtle pulse animation for pending badges */
+.pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.5);
+    }
+}
+
+/* Audio dropdown styles */
+.audio-files .dropdown-menu {
+    min-width: 200px;
+    max-width: 300px;
+    font-size: 0.875rem;
+}
+
+.audio-files .dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.audio-files .dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(2px);
+}
+
+.audio-files .dropdown-item .text-truncate {
+    max-width: 180px;
+}
+
+.audio-files .dropdown-header {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #495057;
+    padding: 0.5rem 1rem 0.25rem;
+}
+
+.audio-files .btn {
+    transition: all 0.2s ease;
+}
+
+.audio-files .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Single audio button pulse animation */
+.audio-files .btn-success:hover,
+.audio-files .btn-info:hover {
+    animation: pulse-audio 1s ease-in-out infinite;
+}
+
+@keyframes pulse-audio {
+    0% { transform: scale(1) translateY(-1px); }
+    50% { transform: scale(1.05) translateY(-1px); }
+    100% { transform: scale(1) translateY(-1px); }
+}
+
+/* Mobile responsive styles */
+@media (max-width: 991px) {
+    /* Hide table on mobile and show card layout instead */
+    .songs-table-container {
+        display: none !important;
+    }
+    
+    /* Show mobile card layout */
+    .mobile-songs-container {
+        display: block !important;
+        padding: 0.75rem;
+    }
+    
+    /* Enhanced mobile card styling */
+    .mobile-song-card {
+        margin-bottom: 1.25rem;
+        padding: 1rem;
+    }
+    
+    .mobile-song-title {
+        font-size: 1.15rem;
+    }
+    
+    .mobile-song-actions .btn {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    /* Improved touch targets */
+    .mobile-expand-toggle {
+        min-height: 48px;
+        font-size: 0.85rem;
+    }
+    
+    .mobile-files-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.6rem;
+    }
+    
+    /* Mobile actions grid responsive - Override massive mobile fonts */
+    .mobile-song-actions-grid {
+        gap: 0.5rem;
+    }
+    
+    .mobile-song-actions-grid .btn {
+        min-height: 65px !important;
+        font-size: 2.2rem !important;
+        padding: 0.7rem !important;
+    }
+    
+    .mobile-song-actions-grid .btn i {
+        font-size: 2.8rem !important;
+    }
+    
+    .mobile-song-actions-grid .btn span {
+        font-size: 2.1rem !important;
+        font-weight: 700 !important;
+    }
+}
+    
+    /* Override layout.html constraints for mobile-optimized layout */
+    body {
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 1rem !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        font-size: 1.6rem !important;
+    }
+    
+    body.container {
+        max-width: none !important;
+        padding: 1rem !important;
+    }
+    
+    /* Mobile-optimized font sizes */
+    .mobile-song-card {
+        margin-bottom: 1.5rem !important;
+        padding: 1.2rem !important;
+        border-radius: 16px !important;
+        font-size: 1rem !important;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.12) !important;
+    }
+    
+    .mobile-song-card:hover {
+        transform: translateY(-6px) scale(1.03) !important;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.18) !important;
+    }
+    
+    .mobile-song-title {
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+        line-height: 1.2 !important;
+        margin-bottom: 0.8rem !important;
+    }
+    
+    .mobile-song-id {
+        font-size: 2rem !important;
+        font-weight: 900 !important;
+    }
+    
+    .mobile-song-author {
+        font-size: 1.7rem !important;
+        font-weight: 600 !important;
+    }
+    
+    /* MASSIVE badges for mobile readability */
+    .mobile-song-card .badge {
+        font-size: 1.5rem !important;
+        padding: 1rem 1.4rem !important;
+        font-weight: 700 !important;
+        margin: 0.4rem !important;
+    }
+    
+    /* Category badges specifically - HUGE */
+    .mobile-song-card .category-badge {
+        font-size: 1.4rem !important;
+        padding: 0.9rem 1.3rem !important;
+    }
+    
+    /* MUCH larger buttons for touch */
+    .mobile-song-card .btn {
+        font-size: 1.6rem !important;
+        padding: 1.2rem 1.8rem !important;
+        min-height: 60px !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Status text and other info - BIGGER */
+    .mobile-song-card .text-muted,
+    .mobile-song-card .small {
+        font-size: 1.4rem !important;
+    }
+    
+    /* Header responsive sizing */
+    .header h1 {
+        font-size: 2rem !important;
+    }
+    
+    .header p {
+        font-size: 1.1rem !important;
+    }
+    
+    /* Search and filter elements - MASSIVE fonts for mobile */
+    .search-container input,
+    .search-container select,
+    .search-container .btn {
+        font-size: 1.8rem !important;
+        padding: 1.5rem 1.8rem !important;
+        min-height: 65px !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Category filter buttons - HUGE */
+    .category-filters .btn {
+        font-size: 1.6rem !important;
+        padding: 1.3rem 1.8rem !important;
+        min-height: 60px !important;
+        font-weight: 700 !important;
+        margin: 0.5rem !important;
+    }
+    
+
+    
+    /* Make category count numbers MUCH bigger on mobile */
+    .category-count {
+        font-size: 1.3rem !important;
+        padding: 0.4rem 0.8rem !important;
+        font-weight: 800 !important;
+        min-width: 2.5rem !important;
+        text-align: center !important;
+    }
+    
+    /* Active category count */
+    .category-filter-btn.active .category-count {
+        font-size: 1.4rem !important;
+        font-weight: 900 !important;
+    }
+    
+    /* Make flame effects MASSIVE on mobile ONLY */
+    .category-filter-btn[data-category="Taizé"]::before {
+        width: 50px !important;
+        height: 70px !important;
+        top: 5% !important;
+        left: 8% !important;
+    }
+    
+    .category-filter-btn[data-category="Taizé"]::after {
+        width: 35px !important;
+        height: 50px !important;
+        top: 8% !important;
+        left: 72% !important;
+    }
+    
+    .category-filter-btn[data-category="adorácia"]::before {
+        width: 50px !important;
+        height: 70px !important;
+        top: 5% !important;
+        left: 10% !important;
+    }
+    
+    /* Make Vianoce snowflakes MUCH bigger on mobile */
+    .category-filter-btn[data-category="vianoce"]::before {
+        background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 8px),
+                    radial-gradient(circle at 30% 10%, rgba(255, 255, 255, 0.8) 0%, transparent 6px),
+                    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 10px),
+                    radial-gradient(circle at 70% 15%, rgba(255, 255, 255, 0.7) 0%, transparent 5px),
+                    radial-gradient(circle at 90% 25%, rgba(255, 255, 255, 0.8) 0%, transparent 7px),
+                    radial-gradient(circle at 20% 60%, rgba(255, 255, 255, 0.8) 0%, transparent 6px),
+                    radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.9) 0%, transparent 9px),
+                    radial-gradient(circle at 60% 50%, rgba(255, 255, 255, 0.7) 0%, transparent 4px),
+                    radial-gradient(circle at 80% 65%, rgba(255, 255, 255, 0.8) 0%, transparent 7px),
+                    radial-gradient(circle at 15% 90%, rgba(255, 255, 255, 0.8) 0%, transparent 8px) !important;
+    }
+    
+    .category-filter-btn[data-category="vianoce"]::after {
+        background: radial-gradient(circle at 25% 5%, rgba(255, 255, 255, 0.6) 0%, transparent 5px),
+                    radial-gradient(circle at 45% 35%, rgba(255, 255, 255, 0.7) 0%, transparent 7px),
+                    radial-gradient(circle at 65% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 4px),
+                    radial-gradient(circle at 85% 40%, rgba(255, 255, 255, 0.6) 0%, transparent 6px),
+                    radial-gradient(circle at 35% 75%, rgba(255, 255, 255, 0.7) 0%, transparent 5px),
+                    radial-gradient(circle at 55% 85%, rgba(255, 255, 255, 0.8) 0%, transparent 8px),
+                    radial-gradient(circle at 75% 55%, rgba(255, 255, 255, 0.6) 0%, transparent 5px) !important;
+    }
+    
+    /* Make "Viac možností" text much bigger on mobile */
+    .mobile-expand-toggle {
+        font-size: 1.4rem !important;
+        font-weight: 600 !important;
+        padding: 1rem 1.5rem !important;
+        min-height: 50px !important;
+    }
+    
+    /* Icon in the expand toggle */
+    .mobile-expand-toggle i {
+        font-size: 1.2rem !important;
+    }
+    
+    /* Fix dropdown font sizes - make dropdown items consistent */
+    .mobile-song-card .dropdown-item {
+        font-size: 1.2rem !important;
+        padding: 0.8rem 1rem !important;
+        font-weight: 500 !important;
+    }
+    
+    /* PDF dropdown headers (filenames) should be smaller */
+    .mobile-song-card .dropdown-header {
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        padding: 0.5rem 1rem !important;
+    }
+    
+    /* MP3 filenames - truncate long names and make bigger */
+    .mobile-song-card .dropdown-item {
+        font-size: 1.2rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 250px !important;
+    }
+    
+    /* Search input specifically - MASSIVE */
+    #search {
+        font-size: 2rem !important;
+        padding: 1.5rem !important;
+        min-height: 70px !important;
+    }
+    
+    /* Filter dropdowns - HUGE */
+    #categoryFilter,
+    #printedFilter,
+    #checkedFilter {
+        font-size: 1.8rem !important;
+        padding: 1.4rem !important;
+        min-height: 65px !important;
+    }
+    
+    /* Clear filters button - BIG */
+    .clear-filters-btn {
+        font-size: 1.7rem !important;
+        padding: 1.3rem 2rem !important;
+        min-height: 65px !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Filter section headers - LARGE */
+    .filter-section h5,
+    .filter-section label {
+        font-size: 1.8rem !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Force ALL headings to be HUGE on mobile */
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 2.6rem !important;
+        font-weight: 800 !important;
+    }
+    
+    /* Specifically target the text content - MASSIVE */
+    .card-body h5,
+    .d-flex h5 {
+        font-size: 3rem !important;
+        font-weight: 900 !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* Specific filter category header - EVEN MORE MASSIVE - Multiple selectors to override Bootstrap */
+    .category-filter-section h5,
+    .category-filter-section h5.mb-0,
+    .category-filter-section h5.fw-bold,
+    .category-filter-section .card-body h5 {
+        font-size: 2.8rem !important;
+        font-weight: 900 !important;
+    }
+    
+    /* All h5 headings in cards - LARGER */
+    .card h5,
+    h5.mb-0,
+    h5.fw-bold {
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+    }
+    
+    /* Clear button in filter section */
+    .category-filter-section button {
+        font-size: 1.6rem !important;
+        padding: 1rem 1.5rem !important;
+    }
+}
+
+/* Mobile card layout styles */
+.mobile-songs-container {
+    display: none; /* Hidden by default, shown on mobile */
+    padding: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.mobile-song-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: visible;
+}
+
+/* Remove gradient border effect - too distracting */
+
+.mobile-song-card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+/* Status indicator stripe */
+.mobile-song-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #28a745 0%, #20c997 100%);
+    border-radius: 0 16px 16px 0;
+    opacity: 0.8;
+}
+
+.mobile-song-card[data-checked="false"]::after {
+    background: linear-gradient(180deg, #ffc107 0%, #fd7e14 100%);
+}
+
+.mobile-song-card[data-printed="true"]::after {
+    background: linear-gradient(180deg, #007bff 0%, #6f42c1 100%);
+}
+
+.mobile-song-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.mobile-song-info {
+    flex-grow: 1;
+    padding-right: 0.5rem;
+    width: 100%;
+}
+
+.mobile-song-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.mobile-song-author {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.mobile-song-author i {
+    color: #007bff;
+    font-size: 0.9rem;
+}
+
+.mobile-song-id {
+    background: #6c757d;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    align-self: flex-start;
+}
+
+.mobile-song-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.mobile-song-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.mobile-song-actions-grid .btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.6rem !important;
+    font-size: 2rem !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    text-align: center;
+    min-height: 60px;
+    justify-content: center;
+}
+
+.mobile-song-actions-grid .btn i {
+    font-size: 2.5rem !important;
+}
+
+.mobile-song-actions-grid .btn span {
+    font-size: 2rem !important;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-weight: 600;
+}
+
+.mobile-song-actions-grid .btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.mobile-song-actions-grid .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.mobile-song-actions .btn {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.mobile-song-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Status badges with modern styling */
+.mobile-song-card .badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    font-weight: 600;
+    margin: 0.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.mobile-song-card .badge.bg-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+}
+
+.mobile-song-card .badge.bg-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+    color: white !important;
+}
+
+.mobile-song-card .badge.bg-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #6610f2 100%) !important;
+}
+
+.mobile-expandable {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 1rem -0.25rem 0;
+}
+
+.mobile-expand-toggle {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    color: #6c757d;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border-radius: 25px;
+    font-weight: 500;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.mobile-expand-toggle:hover {
+    background: #f8f9fa;
+    color: #495057;
+    border-color: #dee2e6;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.mobile-expand-toggle.expanded {
+    background: #f1f3f4;
+    color: #495057;
+    border-color: #d1ecf1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.mobile-expand-toggle .bi-chevron-down {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+}
+
+.mobile-expand-toggle.expanded .bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+.mobile-expanded-content {
+    padding-top: 1rem;
+    display: none;
+    animation: fadeInUp 0.3s ease-out;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    border: 1px solid #f0f0f0;
+}
+
+.mobile-expanded-content.show {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.mobile-files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.mobile-files-grid .btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.6rem;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.mobile-status-badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.mobile-mp3-section {
+    border-top: 2px solid rgba(0,0,0,0.05);
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.mobile-mp3-section .btn {
+    max-width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Improved dropdown styling for mobile */
+.mobile-song-actions .dropdown-menu {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    z-index: 9999 !important;
+    position: absolute !important;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.mobile-song-actions .dropdown-item {
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    margin: 0 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.mobile-song-actions .dropdown-item:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    transform: translateX(4px);
+}
+
+/* Fix dropdown positioning in mobile cards */
+.mobile-song-actions .dropdown {
+    position: relative;
+    z-index: 10000;
+}
+
+.mobile-song-actions .btn-group.dropup .dropdown-menu {
+    top: auto;
+    bottom: 100%;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+    z-index: 10001 !important;
+}
+
+/* Ensure dropdowns appear above all other cards */
+.mobile-song-card .dropdown-menu.show {
+    z-index: 10002 !important;
+    position: fixed !important;
+}
+
+/* When dropdown is open, increase card's z-index */
+.mobile-song-card:has(.dropdown-menu.show) {
+    z-index: 10000;
+    position: relative;
+}
+
+/* Mobile status icons */
+.mobile-status-icons {
+    margin-left: auto;
+}
+
+.mobile-status-badges {
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.mobile-audio-icons {
+    margin-left: auto;
+}
+
+/* Status badges in top right corner */
+.mobile-status-badges-corner {
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.3rem;
+    z-index: 10;
+}
+
+/* Larger status icons for top right corner */
+.mobile-status-badges-corner .status-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+/* Smaller status icons for mobile badges under song ID */
+.mobile-status-badges .status-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 0.9rem;
+}
+
+/* Audio icons can be slightly larger */
+.mobile-audio-icons .status-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+}
+
+.status-icon:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    z-index: 10;
+}
+
+/* Enhanced status icon colors with gradients */
+.status-printed {
+    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(23, 162, 184, 0.3);
+}
+
+.status-not-printed {
+    background: linear-gradient(135deg, #ff3007ff 0%, #fd7e14 100%);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+}
+
+.status-checked {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.status-unchecked {
+    background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    animation: pulse-subtle-red 3s ease-in-out infinite;
+}
+
+@keyframes pulse-subtle-red {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5);
+    }
+}
+
+
+
+.status-has-chords {
+    background: #fff2cc;
+    color: #856404;
+    border-color: #ffe69c;
+}
+
+.status-has-audio {
+    background: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+/* Enhanced visual hierarchy */
+.mobile-song-title {
+    position: relative;
+}
+
+.mobile-song-title::before {
+    content: '🎵';
+    position: absolute;
+    left: -1.5rem;
+    opacity: 0.6;
+    font-size: 0.9rem;
+}
+
+/* Song ID before title styling */
+.mobile-song-header .mobile-song-id {
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+    margin: 0;
+}
+
+.mobile-song-separator {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Microinteractions */
+.mobile-song-card:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+/* Loading state for buttons */
+.mobile-song-actions .btn.loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.mobile-song-actions .btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    border-right-color: transparent;
+    animation: spin 0.75s linear infinite;
+}
+
+/* Horizontal scroll for very wide content */
+@media (max-width: 480px) {
+    .table-responsive {
+        border: none;
+    }
+    
+    /* Allow horizontal scroll if needed */
+    .songs-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table {
+        min-width: 600px; /* Minimum width to maintain readability */
+    }
+    
+    /* Add scroll indicator */
+    .songs-table-container::after {
+        content: "← Scroll horizontally →";
+        display: block;
+        text-align: center;
+        font-size: 0.75rem;
+        color: #6c757d;
+        padding: 0.5rem;
+        background: rgba(248, 249, 250, 0.9);
+        border-top: 1px solid #dee2e6;
+    }
+}
+
+/* Touch-friendly interactions */
+@media (pointer: coarse) {
+    .btn-sm {
+        min-height: 44px; /* Apple's recommended minimum touch target */
+        min-width: 44px;
+    }
+    
+    .audio-files .btn {
+        min-height: 40px;
+        min-width: 40px;
+    }
+    
+    .dropdown-toggle {
+        min-height: 44px;
+    }
+}
+</style>
+
+<script>
+// Hash scroll functionality
+window.onload = function () {
+  const hash = window.location.hash;
+  if (hash) {
+    const row = document.querySelector(hash);
+    if (row) {
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      row.querySelectorAll('td').forEach(cell => {
+        cell.style.backgroundColor = '#fff3cd';
+        setTimeout(() => {
+          cell.style.backgroundColor = '';
+        }, 2000);
+      });
+    }
+  }
+};
+
+// Pass category counts from server to client
+window.categoryCounts = {{ category_counts|tojson }};
+
+// Pass status counts from server to client
+window.statusCounts = {
+  unchecked: {{ total_songs - total_admin_checked }},
+  unprinted: {{ total_songs - total_printed }}
+};
+</script>
+
+<!-- Load the category filter script -->
+<script src="{{ url_for('static', filename='js/fast_search.js') }}"></script>
+
+<script>
+// Mobile expand/collapse functionality
+document.addEventListener("DOMContentLoaded", function () {
+  
+
+  
+  // Mobile expand/collapse functionality
+  document.querySelectorAll('.mobile-expand-toggle').forEach(toggle => {
+    toggle.addEventListener('click', function() {
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      this.classList.toggle('expanded', !isExpanded);
+    });
+  });
+  
+  // Handle collapse events for mobile cards
+  document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(trigger => {
+    const targetId = trigger.getAttribute('data-bs-target');
+    const target = document.querySelector(targetId);
+    
+    if (target) {
+      target.addEventListener('show.bs.collapse', () => {
+        trigger.classList.add('expanded');
+        trigger.setAttribute('aria-expanded', 'true');
+      });
+      
+      target.addEventListener('hide.bs.collapse', () => {
+        trigger.classList.remove('expanded');
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+  
+  // Initialize Bootstrap tooltips for status icons
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+  
+  // Search Modal Functionality
+  initializeSearchModal();
+  
+  // Initialize main page lazy loading
+  initializeMainPageLazyLoading();
+
+  // Add auto-focus to search input when modal opens
+  const searchModal = document.getElementById('searchModal');
+  if (searchModal) {
+    searchModal.addEventListener('shown.bs.modal', function () {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.focus();
+      }
+    });
+  }
+});
+
+// Virtual Scrolling Search Modal Implementation
+function initializeSearchModal() {
+  const searchForm = document.getElementById('searchForm');
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+  const virtualContainer = document.getElementById('resultsContainer');
+  const visibleResults = document.getElementById('visibleResults');
+  const topSpacer = document.getElementById('topSpacer');
+  const bottomSpacer = document.getElementById('bottomSpacer');
+  const noResults = document.getElementById('noResults');
+  const scrollLoadingIndicator = document.getElementById('scrollLoadingIndicator');
+  // clearAllBtn is not needed in search modal - commenting out for now
+  const clearAllBtn = null; 
+  
+  // Virtual scrolling configuration
+  const ITEM_HEIGHT = 260; // Approximate height of each search result item
+  const BUFFER_SIZE = 5; // Extra items to render outside viewport
+  const BATCH_SIZE = 25; // How many results to fetch at once
+  
+  // State management
+  let allResults = [];
+  let selectedSongs = new Set();
+  let totalResults = 0;
+  let isLoading = false;
+  let hasMoreData = true;
+  let currentSearchParams = null;
+  
+  // Search functionality
+  searchForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await performSearch();
+  });
+  
+  // Real-time search with debouncing
+  let searchTimeout;
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(async () => {
+      if (searchInput.value.trim().length > 2) {
+        await performSearch();
+      } else if (searchInput.value.trim().length === 0) {
+        clearResults();
+      }
+    }, 400);
+  });
+  
+
+  
+  // Clear all filters
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      
+      // Check if filter elements exist before accessing them
+      const uncheckedFilter = document.getElementById('filterUnchecked');
+      if (uncheckedFilter) uncheckedFilter.checked = false;
+      
+      const printedFilter = document.getElementById('filterPrinted');
+      if (printedFilter) printedFilter.checked = false;
+      
+      document.querySelectorAll('.category-checkbox').forEach(cb => cb.checked = false);
+      clearResults();
+    });
+  }
+  
+  // Virtual scrolling event listener
+  virtualContainer.addEventListener('scroll', throttle(handleScroll, 100));
+  
+
+  
+  // Perform search request
+  async function performSearch() {
+    if (isLoading) return;
+    
+    // Reset state for new search
+    allResults = [];
+    selectedSongs.clear();
+    hasMoreData = true;
+    clearResults();
+    
+    // Build search parameters
+    currentSearchParams = new URLSearchParams();
+    
+    const searchText = searchInput.value.trim();
+    if (searchText) {
+      currentSearchParams.append('q', searchText);
+    }
+    
+    // Check if filter elements exist before accessing them
+    const uncheckedFilter = document.getElementById('filterUnchecked');
+    if (uncheckedFilter && uncheckedFilter.checked) {
+      currentSearchParams.append('unchecked', 'true');
+    }
+    
+    const printedFilter = document.getElementById('filterPrinted');
+    if (printedFilter && printedFilter.checked) {
+      currentSearchParams.append('printed', 'true');
+    }
+    
+    const selectedCategories = [];
+    document.querySelectorAll('.category-checkbox:checked').forEach(cb => {
+      selectedCategories.push(cb.value);
+    });
+    if (selectedCategories.length > 0) {
+      currentSearchParams.append('categories', selectedCategories.join(','));
+    }
+    
+    // Load first batch
+    await loadBatch(0);
+  }
+  
+  // Load batch of results
+  async function loadBatch(offset) {
+    if (isLoading || !hasMoreData) return;
+    
+    isLoading = true;
+
+    
+    try {
+      const params = new URLSearchParams(currentSearchParams);
+      params.append('limit', BATCH_SIZE.toString());
+      params.append('offset', offset.toString());
+      
+      const response = await fetch(`/api/search?${params}`);
+      const data = await response.json();
+      
+      if (offset === 0) {
+        totalResults = data.total_found;
+        allResults = data.results;
+      } else {
+        allResults = [...allResults, ...data.results];
+      }
+      
+      hasMoreData = data.has_more;
+      
+      if (allResults.length === 0 && offset === 0) {
+        showNoResults();
+      } else {
+        showResults();
+        renderVisibleItems();
+      }
+      
+
+      
+    } catch (error) {
+      console.error('Search error:', error);
+
+    } finally {
+      isLoading = false;
+      scrollLoadingIndicator.style.display = 'none';
+    }
+  }
+  
+  // Handle scroll events for virtual scrolling
+  function handleScroll() {
+    if (!allResults.length) return;
+    
+    // Render visible items
+    renderVisibleItems();
+    
+    // Check if need to load more data
+    const container = virtualContainer;
+    const scrollTop = container.scrollTop;
+    const containerHeight = container.clientHeight;
+    const totalHeight = allResults.length * ITEM_HEIGHT;
+    
+    // Load more when scrolled 80% down
+    if (hasMoreData && !isLoading && 
+        scrollTop + containerHeight > totalHeight * 0.8) {
+      scrollLoadingIndicator.style.display = 'block';
+      loadBatch(allResults.length);
+    }
+  }
+  
+  // Virtual rendering - only render visible items
+  function renderVisibleItems() {
+    if (!allResults.length) return;
+    
+    const container = virtualContainer;
+    const scrollTop = container.scrollTop;
+    const containerHeight = container.clientHeight;
+    
+    // Calculate which items should be visible
+    const startIndex = Math.max(0, Math.floor(scrollTop / ITEM_HEIGHT) - BUFFER_SIZE);
+    const endIndex = Math.min(
+      allResults.length - 1,
+      Math.floor((scrollTop + containerHeight) / ITEM_HEIGHT) + BUFFER_SIZE
+    );
+    
+    // Update spacers
+    topSpacer.style.height = `${startIndex * ITEM_HEIGHT}px`;
+    bottomSpacer.style.height = `${(allResults.length - endIndex - 1) * ITEM_HEIGHT}px`;
+    
+    // Clear current visible results
+    visibleResults.innerHTML = '';
+    
+    // Render visible items
+    for (let i = startIndex; i <= endIndex; i++) {
+      const song = allResults[i];
+      if (song) {
+        const resultItem = createResultItem(song, i);
+        visibleResults.appendChild(resultItem);
+      }
+    }
+    
+    updateResultCount();
+    updateSelectedCount();
+  }
+  
+  // Show results container
+  function showResults() {
+    searchResults.style.display = 'block';
+    noResults.style.display = 'none';
+    document.getElementById('searchProgress').style.display = 'block';
+  }
+  
+  // Show no results message
+  function showNoResults() {
+    searchResults.style.display = 'none';
+    noResults.style.display = 'block';
+    document.getElementById('searchProgress').style.display = 'none';
+  }
+  
+  // Create result item HTML
+  function createResultItem(song, index) {
+    const item = document.createElement('div');
+    item.className = 'search-result-item';
+    item.style.minHeight = `${ITEM_HEIGHT}px`;
+    item.dataset.songId = song.song_id;
+    
+    const statusBadges = [];
+    if (!song.admin_checked) {
+      statusBadges.push('<span class="badge bg-warning">⏳ Neskontrolované</span>');
+    }
+    if (song.printed) {
+      statusBadges.push('<span class="badge bg-info">🖨️ Vytlačené</span>');
+    }
+    
+    const categories = song.categories ? song.categories.split(';;').filter(c => c.trim()).map(c => 
+      `<span class="badge bg-light text-dark border">${escapeHtml(c.trim())}</span>`
+    ).join(' ') : '';
+    
+    // Prepare author display (Slovak first, then English if available)
+    let authorDisplay = '';
+    if (song.author) {
+      authorDisplay = escapeHtml(song.author);
+      if (song.author_original && song.author_original !== song.author) {
+        authorDisplay += ` (${escapeHtml(song.author_original)})`;
+      }
+    } else if (song.author_original) {
+      authorDisplay = escapeHtml(song.author_original);
+    }
+    
+    item.innerHTML = `
+      <div class="search-result-header">
+        <span class="song-id">${escapeHtml(song.song_id)}</span>
+        <span class="song-title">${escapeHtml(song.title)}</span>
+      </div>
+      ${authorDisplay ? `<div class="song-author"><i class="bi bi-person-fill me-1"></i>${authorDisplay}</div>` : ''}
+      <div class="song-content-preview">
+        ${song.verse1_preview ? `<div class="verse-preview"><span class="preview-label">Sloha:</span> ${escapeHtml(song.verse1_preview)}...</div>` : ''}
+        ${song.chorus_preview ? `<div class="chorus-preview"><span class="preview-label">Refrén:</span> ${escapeHtml(song.chorus_preview)}...</div>` : ''}
+      </div>
+      <div class="search-result-footer">
+        <div class="result-badges">
+          ${statusBadges.join(' ')}
+          ${song.version_name ? `<span class="badge bg-secondary">${escapeHtml(song.version_name)}</span>` : ''}
+        </div>
+        <div class="result-categories">
+          ${categories}
+        </div>
+      </div>
+    `;
+    
+    // Add click handler to navigate to song detail page
+    item.addEventListener('click', () => {
+      window.location.href = `/song/${song.id}/view`;
+    });
+    
+    return item;
+  }
+  
+  // Handle song selection
+
+  
+  // Update UI functions
+  function updateResultCount() {
+    document.getElementById('resultCount').textContent = allResults.length;
+    document.getElementById('visibleCount').textContent = allResults.length;
+    document.getElementById('totalFound').textContent = totalResults;
+  }
+  
+  function updateSelectedCount() {
+    // No-op function since selection UI was removed
+  }
+  
+
+  
+  function clearResults() {
+    searchResults.style.display = 'none';
+    noResults.style.display = 'none';
+    document.getElementById('searchProgress').style.display = 'none';
+    visibleResults.innerHTML = '';
+    topSpacer.style.height = '0px';
+    bottomSpacer.style.height = '0px';
+    virtualContainer.scrollTop = 0;
+    allResults = [];
+    selectedSongs.clear();
+    totalResults = 0;
+    hasMoreData = true;
+    updateSelectedCount();
+  }
+  
+  // Utility functions
+  function throttle(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func.apply(this, args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+  
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+}
+
+// Main Page Lazy Loading Implementation
+function initializeMainPageLazyLoading() {
+  const tableBody = document.getElementById('songsTableBody');
+  const mobileContainer = document.getElementById('mobileSongsContainer');
+  const tableLoadingIndicator = document.getElementById('tableLoadingIndicator');
+  const mobileLoadingIndicator = document.getElementById('mobileLoadingIndicator');
+  const loadedSongsCount = document.getElementById('loadedSongsCount');
+  const totalSongsCount = document.getElementById('totalSongsCount');
+  const allSongsLoaded = document.getElementById('allSongsLoaded');
+  
+  const initialBatchSize = {{ initial_batch_size }};
+  const totalSongs = {{ total_songs }};
+  let currentlyLoadedSongs = {{ songs|length }};
+  let isLoading = false;
+  let allLoaded = currentlyLoadedSongs >= totalSongs;
+  let activeFilters = new Set(); // Track active category filters
+  let totalFilteredSongs = totalSongs; // Track total songs with current filters
+  
+  // Debug initial state
+  console.log('Pagination initialized:', {
+    initialBatchSize,
+    totalSongs,
+    currentlyLoadedSongs,
+    allLoaded
+  });
+  
+  // Load initial batch from server data
+  const initialSongs = {{ songs|tojson }};
+  if (initialSongs && initialSongs.length > 0) {
+    renderInitialSongs(initialSongs);
+  }
+  
+  // Listen for category filter changes
+  setupCategoryFilterListener();
+  
+  // Set up scroll listeners for both desktop and mobile
+  const mainTable = document.getElementById('mainSongsTable');
+  const mobileContainerEl = document.getElementById('mobileSongsContainer');
+  
+  // Desktop scroll listener - use window scroll instead of table scroll
+  window.addEventListener('scroll', throttle(() => {
+    if (window.innerWidth > 991) { // Desktop breakpoint
+      if (shouldLoadMoreWindow()) {
+        loadMoreSongs();
+      }
+    } else { // Mobile breakpoint
+      if (shouldLoadMoreWindow()) {
+        loadMoreSongs();
+      }
+    }
+  }, 200));
+  
+  // Additional check for table container scroll (in case the table itself is scrollable)
+  if (mainTable) {
+    mainTable.addEventListener('scroll', throttle(() => {
+      if (window.innerWidth > 991 && shouldLoadMore(mainTable)) {
+        loadMoreSongs();
+      }
+    }, 200));
+  }
+  
+  // Render initial songs from server
+  function renderInitialSongs(songs) {
+    songs.forEach(song => {
+      renderDesktopSong(song);
+      renderMobileSong(song);
+    });
+    updateLoadedCount();
+  }
+  
+  // Check if should load more (desktop table)
+  function shouldLoadMore(container) {
+    if (isLoading || allLoaded) return false;
+    const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight;
+    const clientHeight = container.clientHeight;
+    return scrollTop + clientHeight >= scrollHeight - 300; // Load when 300px from bottom
+  }
+  
+  // Check if should load more (window scroll)
+  function shouldLoadMoreWindow() {
+    if (isLoading || allLoaded) return false;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+    const windowHeight = window.innerHeight;
+    
+    // More aggressive loading - start loading when 800px from bottom
+    const threshold = 800;
+    const shouldLoad = scrollTop + windowHeight >= documentHeight - threshold;
+    
+    // Debug logging
+    if (shouldLoad) {
+      const displayTotal = activeFilters.size > 0 ? totalFilteredSongs : totalSongs;
+      console.log('Scroll trigger:', {
+        scrollTop,
+        windowHeight,
+        documentHeight,
+        threshold,
+        distanceFromBottom: documentHeight - (scrollTop + windowHeight),
+        currentlyLoaded: currentlyLoadedSongs,
+        totalSongs: displayTotal,
+        activeFilters: Array.from(activeFilters),
+        allLoaded
+      });
+    }
+    
+    return shouldLoad;
+  }
+  
+  // Setup category and status filter listeners
+  function setupCategoryFilterListener() {
+    // Get reference to the category filter buttons from the fast_search.js module
+    const categoryButtons = document.querySelectorAll('.category-filter-btn');
+    const statusButtons = document.querySelectorAll('.status-filter-btn');
+    
+    // Listen for clicks on category buttons
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Small delay to let the fast_search.js handle the filtering first
+        setTimeout(() => {
+          updateActiveFilters();
+          resetPaginationForFilters();
+        }, 100);
+      });
+    });
+    
+    // Listen for clicks on status buttons
+    statusButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Small delay to let the fast_search.js handle the filtering first
+        setTimeout(() => {
+          updateActiveFilters();
+          resetPaginationForFilters();
+        }, 100);
+      });
+    });
+    
+    // Listen for clear category filters button
+    const clearButton = document.getElementById('clearCategoryFilters');
+    if (clearButton) {
+      clearButton.addEventListener('click', function() {
+        setTimeout(() => {
+          updateActiveFilters();
+          resetPaginationForFilters();
+        }, 100);
+      });
+    }
+    
+    // Listen for clear status filters button
+    const clearStatusButton = document.getElementById('clearStatusFilters');
+    if (clearStatusButton) {
+      clearStatusButton.addEventListener('click', function() {
+        setTimeout(() => {
+          updateActiveFilters();
+          resetPaginationForFilters();
+        }, 100);
+      });
+    }
+  }
+  
+  // Update active filters based on UI state
+  function updateActiveFilters() {
+    const activeCategoryBtns = document.querySelectorAll('.category-filter-btn.active');
+    const activeStatusBtns = document.querySelectorAll('.status-filter-btn.active');
+    
+    activeFilters.clear();
+    activeCategoryBtns.forEach(btn => {
+      activeFilters.add(btn.dataset.category);
+    });
+    
+    // Also track status filters for pagination
+    window.activeStatusFilters = new Set();
+    activeStatusBtns.forEach(btn => {
+      window.activeStatusFilters.add(btn.dataset.status);
+    });
+    
+    console.log('Active filters updated:', Array.from(activeFilters));
+    console.log('Active status filters updated:', Array.from(window.activeStatusFilters));
+  }
+  
+  // Reset pagination when filters change
+  function resetPaginationForFilters() {
+    // If we have active filters, we need to clear the loaded songs and reload with filters
+    const hasStatusFilters = window.activeStatusFilters && window.activeStatusFilters.size > 0;
+    if (activeFilters.size > 0 || hasStatusFilters) {
+      console.log('Resetting pagination due to active filters');
+      
+      // Clear currently rendered songs
+      tableBody.innerHTML = '';
+      mobileContainer.innerHTML = '';
+      
+      // Reset pagination state
+      currentlyLoadedSongs = 0;
+      allLoaded = false;
+      totalFilteredSongs = 0;
+      
+      // Load first batch with filters
+      loadMoreSongs();
+      
+      // Update category counts with server data after a short delay
+      setTimeout(() => {
+        if (typeof window.fetchUpdatedCounts === 'function') {
+          window.fetchUpdatedCounts();
+        }
+      }, 500);
+      
+    } else {
+      console.log('No active filters, keeping current pagination');
+      // No filters - restore original pagination state
+      totalFilteredSongs = totalSongs;
+      // Check if we need to reset
+      if (currentlyLoadedSongs > initialBatchSize) {
+        // We've loaded extra filtered songs, need to reload
+        location.reload(); // Simple reload to restore original state
+      }
+    }
+  }
+
+  // Load more songs from server
+  async function loadMoreSongs() {
+    if (isLoading || allLoaded) {
+      console.log('Skipping load more - isLoading:', isLoading, 'allLoaded:', allLoaded);
+      return;
+    }
+    
+    console.log('Loading more songs - currentlyLoaded:', currentlyLoadedSongs, 'totalFiltered:', totalFilteredSongs, 'activeFilters:', Array.from(activeFilters));
+    
+    isLoading = true;
+    showLoadingIndicators();
+    
+    try {
+      let url, response, data;
+      
+      // Use different API depending on whether we have active filters
+      if (activeFilters.size > 0 || (window.activeStatusFilters && window.activeStatusFilters.size > 0)) {
+        // Use search API with category and status filters
+        const params = new URLSearchParams();
+        if (activeFilters.size > 0) {
+          params.append('categories', Array.from(activeFilters).join(','));
+        }
+        if (window.activeStatusFilters && window.activeStatusFilters.has('unchecked')) {
+          params.append('unchecked', 'true');
+        }
+        if (window.activeStatusFilters && window.activeStatusFilters.has('unprinted')) {
+          params.append('printed', 'false');
+        }
+        params.append('offset', currentlyLoadedSongs.toString());
+        params.append('limit', '25');
+        
+        url = `/api/search?${params}`;
+        console.log('Fetching with filters:', url);
+        
+        response = await fetch(url);
+        const searchData = await response.json();
+        
+        // Convert search API response to match songs API format
+        data = {
+          songs: searchData.results || [],
+          total_songs: searchData.total_found || 0,
+          has_more: searchData.has_more || false
+        };
+        
+        // Update total filtered songs count
+        if (currentlyLoadedSongs === 0) {
+          totalFilteredSongs = searchData.total_found || 0;
+        }
+        
+      } else {
+        // Use regular songs API
+        url = `/api/songs?offset=${currentlyLoadedSongs}&limit=25`;
+        console.log('Fetching without filters:', url);
+        
+        response = await fetch(url);
+        data = await response.json();
+        totalFilteredSongs = data.total_songs;
+      }
+      
+      console.log('API response:', data);
+      
+      if (data.songs && data.songs.length > 0) {
+        console.log('Adding', data.songs.length, 'new songs');
+        
+        data.songs.forEach(song => {
+          renderDesktopSong(song);
+          renderMobileSong(song);
+        });
+        
+        currentlyLoadedSongs += data.songs.length;
+        allLoaded = !data.has_more || currentlyLoadedSongs >= totalFilteredSongs;
+        
+        console.log('Updated counts - currentlyLoaded:', currentlyLoadedSongs, 'allLoaded:', allLoaded);
+        
+        updateLoadedCount();
+        
+        // Update category counts after loading new songs
+        // For filtered loads, we don't need to update counts since they're server-based
+        // Only update for non-filtered loads
+        if (typeof updateCounts === 'function' && activeFilters.size === 0) {
+          updateCounts();
+        }
+      } else {
+        console.log('No more songs returned');
+        allLoaded = true;
+      }
+      
+    } catch (error) {
+      console.error('Error loading more songs:', error);
+      allLoaded = true; // Stop trying to load more on error
+    } finally {
+      isLoading = false;
+      hideLoadingIndicators();
+    }
+  }
+  
+  // Render desktop table row
+  function renderDesktopSong(song) {
+    const row = document.createElement('tr');
+    row.id = `song-${song.id}`;
+    row.className = 'song-row align-middle';
+    row.setAttribute('data-categories', (song.categories || '').toLowerCase());
+    row.setAttribute('data-printed', song.printed ? 'true' : 'false');
+    row.setAttribute('data-checked', song.admin_checked ? 'true' : 'false');
+    
+    // Build alternative titles display
+    let alternativeTitlesHtml = '';
+    if (song.alternative_titles) {
+      const altTitles = song.alternative_titles.split(';;').filter(t => t.trim());
+      if (altTitles.length > 0) {
+        alternativeTitlesHtml = `
+          <div class="text-muted small">
+            <i class="bi bi-arrow-repeat me-1"></i>
+            ${altTitles.map(title => `<span class="badge bg-light text-dark me-1">${escapeHtml(title.trim())}</span>`).join('')}
+          </div>`;
+      }
+    }
+    
+    // Build MP3 files display
+    let mp3Html = '';
+    if (song.mp3_paths && song.mp3_paths.length > 0) {
+      if (song.mp3_paths.length === 1) {
+        const mp3File = song.mp3_paths[0];
+        const filename = mp3File.split('/').pop();
+        mp3Html = `
+          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+             class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-1" 
+             title="Prehrať MP3: ${escapeHtml(filename)}"
+             target="_blank">
+            <i class="bi bi-play-circle-fill"></i>
+            <span class="small">MP3</span>
+          </a>`;
+      } else {
+        const mp3List = song.mp3_paths.map(mp3File => {
+          const filename = mp3File.split('/').pop();
+          return `
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-2" 
+                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+                 target="_blank"
+                 title="Prehrať ${escapeHtml(filename)}">
+                <i class="bi bi-play-circle-fill text-success"></i>
+                <span class="text-truncate">${escapeHtml(filename)}</span>
+              </a>
+            </li>`;
+        }).join('');
+        
+        mp3Html = `
+          <div class="btn-group">
+            <button type="button" class="btn btn-success btn-sm dropdown-toggle d-flex align-items-center gap-1" 
+                    data-bs-toggle="dropdown" aria-expanded="false"
+                    title="${song.mp3_paths.length} MP3 súborov">
+              <i class="bi bi-music-note-list"></i>
+              <span class="small">${song.mp3_paths.length}× MP3</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><h6 class="dropdown-header"><i class="bi bi-file-music text-success me-1"></i>MP3 Súbory</h6></li>
+              ${mp3List}
+            </ul>
+          </div>`;
+      }
+    } else {
+      mp3Html = `
+        <span class="text-muted small">
+          <i class="bi bi-volume-mute"></i><br>Žiadne MP3
+        </span>`;
+    }
+    
+    // Build status badges
+    const statusBadges = [];
+    if (song.admin_checked) {
+      statusBadges.push(`
+        <span class="badge badge-checked px-3 py-2 shadow-sm" title="Pieseň je skontrolovaná">
+          <i class="bi bi-check-circle-fill me-2"></i>✅ Skontr.
+        </span>`);
+    } else {
+      statusBadges.push(`
+        <span class="badge badge-pending px-3 py-2 shadow-sm pulse-subtle" title="Pieseň čaká na kontrolu">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>⏳ Čaká kontr.
+        </span>`);
+    }
+    if (song.printed) {
+      statusBadges.push(`
+        <span class="badge badge-printed px-3 py-2 shadow-sm" title="Pieseň je už vytlačená">
+          <i class="bi bi-printer-fill me-2"></i>🖨️
+        </span>`);
+    }
+    
+    // Build file download buttons
+    let fileDownloadsHtml = '';
+    if (song.pdf_lyrics_path || song.pdf_chords_path) {
+      const lyricsBtn = song.pdf_lyrics_path ? 
+        `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" 
+           class="btn btn-outline-primary btn-sm" 
+           title="Stiahnuť text piesne">
+          <i class="bi bi-file-text"></i> Text
+        </a>` : '';
+      
+      const chordsBtn = song.pdf_chords_path ? 
+        `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" 
+           class="btn btn-outline-warning btn-sm" 
+           title="Stiahnuť akordy">
+          <i class="bi bi-music-note-beamed"></i> Akordy
+        </a>` : '';
+      
+      if (lyricsBtn || chordsBtn) {
+        fileDownloadsHtml = `
+          <div class="btn-group btn-group-sm" role="group">
+            ${lyricsBtn}${chordsBtn}
+          </div>`;
+      }
+    }
+    
+    if (!song.pdf_lyrics_path && !song.pdf_chords_path) {
+      fileDownloadsHtml = `
+        <span class="text-muted small">
+          <i class="bi bi-x-circle"></i> Žiadne PDF súbory
+        </span>`;
+    }
+    
+    row.innerHTML = `
+      <td class="px-3 py-3">
+        <div class="d-flex align-items-center">
+          <span class="fw-bold text-primary fs-6">${escapeHtml(song.song_id || '')}</span>
+          ${!song.admin_checked ? '<span class="badge bg-warning ms-2 pulse-animation" title="Potrebuje kontrolu"><i class="bi bi-exclamation-triangle"></i></span>' : ''}
+        </div>
+      </td>
+      
+      <td class="px-3 py-3">
+        <div class="song-info">
+          <div class="fw-bold text-dark mb-1">${escapeHtml(song.title || '')}</div>
+          ${song.version_name ? `<div class="text-muted small mb-1"><i class="bi bi-tag me-1"></i>${escapeHtml(song.version_name)}</div>` : ''}
+          ${alternativeTitlesHtml}
+        </div>
+      </td>
+      
+      <td class="px-3 py-3">
+        <div class="author-info">
+          ${song.author ? `<div class="fw-semibold text-dark">${escapeHtml(song.author)}</div>` : ''}
+          ${song.author_original && song.author_original !== song.author ? 
+            `<small class="text-muted"><i class="bi bi-globe me-1"></i>${escapeHtml(song.author_original)}</small>` : ''}
+          ${!song.author && !song.author_original ? '<span class="text-muted fst-italic">Neznámy</span>' : ''}
+        </div>
+      </td>
+      
+      <td class="text-center px-3 py-3">
+        <div class="audio-files">
+          ${mp3Html}
+        </div>
+      </td>
+      
+      <td class="text-center px-3 py-3">
+        <div class="d-flex flex-column gap-1 align-items-center">
+          <div class="mb-2 d-flex flex-wrap justify-content-center gap-1">
+            ${statusBadges.join('')}
+          </div>
+          ${fileDownloadsHtml}
+        </div>
+      </td>
+
+      <td class="text-center px-3 py-3">
+        <div class="btn-group-vertical btn-group-sm" role="group">
+          <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm mb-1">
+            <i class="bi bi-eye me-1"></i>Detaily
+          </a>
+          
+          <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm mb-1">
+            <i class="bi bi-pencil-square me-1"></i>Upraviť
+          </a>
+
+          <div class="btn-group btn-group-sm" role="group">
+            <form method="POST" action="/song/${song.id}/generate_tex#song-${song.id}" class="d-inline">
+              <button type="submit" class="btn btn-outline-warning btn-sm ${song.admin_checked ? 'disabled' : ''}"
+                      ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+                <i class="bi bi-file-code"></i>TeX
+              </button>
+            </form>
+
+            <form method="GET" action="/generate_pdfs/${song.id}#song-${song.id}" class="d-inline">
+              <button type="submit" class="btn btn-primary btn-sm ${!song.tex_path || song.admin_checked ? 'disabled' : ''}"
+                      style="background-color: #9b59b6; border-color: #9b59b6;"
+                      ${!song.tex_path ? 'title="First generate TeX files"' : ''}
+                      ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+                <i class="bi bi-file-pdf"></i>PDF
+              </button>
+            </form>
+          </div>
+        </div>
+      </td>
+    `;
+    
+    tableBody.appendChild(row);
+  }
+  
+  // Render mobile card (similar layout to the example provided)
+  function renderMobileSong(song) {
+    const card = document.createElement('div');
+    card.className = 'mobile-song-card song-row';
+    card.id = `mobile-song-${song.id}`;
+    card.setAttribute('data-categories', (song.categories || '').toLowerCase());
+    card.setAttribute('data-printed', song.printed ? 'true' : 'false');
+    card.setAttribute('data-checked', song.admin_checked ? 'true' : 'false');
+    card.setAttribute('data-search-content', song.title ? song.title.toLowerCase() : '');
+    
+    const mp3Count = song.mp3_paths ? song.mp3_paths.length : 0;
+    const audioIcon = mp3Count > 0 ? 
+      `<span class="status-icon status-has-audio" data-bs-toggle="tooltip" data-bs-placement="top" title="${mp3Count} MP3 súborov">
+        <i class="bi bi-volume-up-fill"></i>
+      </span>` :
+      `<span class="status-icon status-no-audio" data-bs-toggle="tooltip" data-bs-placement="top" title="Žiadne MP3">
+        <i class="bi bi-volume-mute"></i>
+      </span>`;
+    
+    // Build categories for the expanded section
+    let categoriesHtml = '';
+    if (song.categories) {
+      const categories = song.categories.split(';;').filter(c => c.trim());
+      if (categories.length > 0) {
+        categoriesHtml = `
+          <div class="mobile-status-badges">
+            <small class="text-muted">Kategórie:</small>
+            ${categories.map(cat => `<span class="badge bg-light text-dark">${escapeHtml(cat.trim())}</span>`).join('')}
+          </div>
+        `;
+      }
+    }
+    
+    // Build MP3 buttons/dropdowns for actions grid
+    let mp3Button = '';
+    if (mp3Count > 0) {
+      if (mp3Count === 1) {
+        const mp3File = song.mp3_paths[0];
+        mp3Button = `
+          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+             class="btn btn-success btn-sm" 
+             title="Prehrať MP3: ${escapeHtml(mp3File.split('/').pop())}"
+             target="_blank">
+            <i class="bi bi-play-circle-fill"></i>
+            <span>MP3</span>
+          </a>
+        `;
+      } else {
+        const mp3List = song.mp3_paths.map(mp3File => {
+          const filename = mp3File.split('/').pop();
+          return `
+            <li>
+              <a class="dropdown-item" 
+                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+                 target="_blank">
+                <i class="bi bi-play-circle-fill text-success me-2"></i>${escapeHtml(filename)}
+              </a>
+            </li>
+          `;
+        }).join('');
+        
+        mp3Button = `
+          <div class="btn-group w-100">
+            <button type="button" class="btn btn-success btn-sm dropdown-toggle" 
+                    data-bs-toggle="dropdown" aria-expanded="false"
+                    title="${mp3Count} MP3 súborov">
+              <i class="bi bi-music-note-list"></i>
+              <span>${mp3Count}× MP3</span>
+            </button>
+            <ul class="dropdown-menu w-100">
+              <li><h6 class="dropdown-header">MP3 Súbory</h6></li>
+              ${mp3List}
+            </ul>
+          </div>
+        `;
+      }
+    } else {
+      mp3Button = `
+        <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
+          <i class="bi bi-volume-mute"></i>
+          <span>Žiadne MP3</span>
+        </button>
+      `;
+    }
+    
+    // Build sheet music button
+    let sheetButton = '';
+    if (song.sheet_pdf_paths && song.sheet_pdf_paths.length > 0) {
+      if (song.sheet_pdf_paths.length === 1) {
+        sheetButton = `
+          <a href="/song/${song.id}/download_sheet/${song.sheet_pdf_paths[0].split('/').pop()}" 
+             class="btn btn-outline-danger btn-sm" 
+             title="Stiahnuť noty"
+             target="_blank">
+            <i class="bi bi-file-earmark-music"></i>
+            <span>Noty</span>
+          </a>
+        `;
+      } else {
+        const sheetList = song.sheet_pdf_paths.map(sheet => {
+          const filename = sheet.split('/').pop();
+          return `
+            <li>
+              <a href="/song/${song.id}/download_sheet/${filename}" 
+                 class="dropdown-item"
+                 target="_blank">
+                <i class="bi bi-file-earmark-music text-danger me-2"></i>${escapeHtml(filename)}
+              </a>
+            </li>
+          `;
+        }).join('');
+        
+        sheetButton = `
+          <div class="btn-group w-100">
+            <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-file-earmark-music"></i>
+              <span>${song.sheet_pdf_paths.length}× Noty</span>
+            </button>
+            <ul class="dropdown-menu w-100">
+              <li><h6 class="dropdown-header">Noty súbory</h6></li>
+              ${sheetList}
+            </ul>
+          </div>
+        `;
+      }
+    } else {
+      sheetButton = `
+        <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
+          <i class="bi bi-file-earmark-music"></i>
+          <span>Žiadne noty</span>
+        </button>
+      `;
+    }
+    
+    card.innerHTML = `
+      <!-- Main Song Info -->
+      <div class="mobile-song-header">
+        <!-- Status badges in top right corner -->
+        <div class="mobile-status-badges-corner position-absolute">
+          ${song.printed ? 
+            '<span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="🖨️ Vytlačené">🖨️</span>' : ''
+          }
+          ${song.admin_checked ? 
+            '<span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="✅ Skontrolované administrátorom">✅</span>' : ''
+          }
+        </div>
+
+        <div class="mobile-song-info">
+          <div class="d-flex align-items-start gap-2 mb-2 flex-wrap">
+            <span class="mobile-song-id">${escapeHtml(song.song_id || '')}</span>
+            <div class="mobile-song-title">${escapeHtml(song.title || '')}</div>
+
+            <!-- Audio status icons on the right -->
+            <div class="mobile-audio-icons d-flex gap-1 ms-auto">
+              ${audioIcon}
+            </div>
+          </div>
+          
+          ${song.author ? `<div class="mobile-song-author text-secondary mb-1"><i class="bi bi-person me-1"></i>${escapeHtml(song.author)}</div>` : ''}
+          ${song.version_name ? `<div class="text-muted small"><i class="bi bi-tag me-1"></i>${escapeHtml(song.version_name)}</div>` : ''}
+        </div>
+      </div>
+
+      <!-- Essential Actions (Always Visible) - 4 evenly spaced buttons -->
+      <div class="mobile-song-actions-grid">
+        <!-- 1. Slová (Lyrics) -->
+        ${song.pdf_lyrics_path ? 
+          `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
+            <i class="bi bi-file-text"></i>
+            <span>Slová</span>
+          </a>` : 
+          `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
+            <i class="bi bi-file-text"></i>
+            <span>Žiadne slová</span>
+          </button>`
+        }
+
+        <!-- 2. Akordy (Chords) -->
+        ${song.pdf_chords_path ? 
+          `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
+            <i class="bi bi-music-note-beamed"></i>
+            <span>Akordy</span>
+          </a>` : 
+          `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
+            <i class="bi bi-music-note-beamed"></i>
+            <span>Žiadne akordy</span>
+          </button>`
+        }
+
+        <!-- 3. Noty (Sheet Music) -->
+        ${sheetButton}
+
+        <!-- 4. MP3 -->
+        ${mp3Button}
+      </div>
+
+      <!-- Expandable Section for Additional Functionality -->
+      <div class="mobile-expandable">
+        <button class="mobile-expand-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-collapse-${song.id}" aria-expanded="false">
+          <i class="bi bi-chevron-down"></i>
+          Viac možností
+        </button>
+
+        <div class="collapse mobile-expanded-content" id="mobile-collapse-${song.id}">
+          <!-- Action Buttons -->
+          <div class="mobile-files-grid">
+            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm">
+              <i class="bi bi-eye me-1"></i>Detaily
+            </a>
+
+            <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-pencil-square me-1"></i>Upraviť
+            </a>
+
+            <!-- Generate TeX Button - Same as table -->
+            <form method="POST" action="/song/${song.id}/generate_tex#mobile-song-${song.id}" class="d-inline">
+              <button type="submit" class="btn btn-outline-warning btn-sm ${song.admin_checked ? 'disabled' : ''}" ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+                <i class="bi bi-file-code"></i>TeX
+              </button>
+            </form>
+
+            <!-- Generate PDF Button - Same as table -->
+            <form method="GET" action="/generate_pdfs/${song.id}#mobile-song-${song.id}" class="d-inline">
+              <button type="submit" class="btn btn-primary btn-sm ${!song.tex_path || song.admin_checked ? 'disabled' : ''}" style="background-color: #9b59b6; border-color: #9b59b6;" ${!song.tex_path ? 'title="First generate TeX files"' : ''} ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+                <i class="bi bi-file-pdf"></i>PDF
+              </button>
+            </form>
+          </div>
+
+          <!-- Categories -->
+          ${categoriesHtml}
+        </div>
+      </div>
+    `;
+    
+    mobileContainer.appendChild(card);
+  }
+  
+  // Show loading indicators
+  function showLoadingIndicators() {
+    if (tableLoadingIndicator) tableLoadingIndicator.style.display = 'block';
+    if (mobileLoadingIndicator) mobileLoadingIndicator.style.display = 'block';
+  }
+  
+  // Hide loading indicators
+  function hideLoadingIndicators() {
+    if (tableLoadingIndicator) tableLoadingIndicator.style.display = 'none';
+    if (mobileLoadingIndicator) mobileLoadingIndicator.style.display = 'none';
+  }
+  
+  // Update loaded count display
+  function updateLoadedCount() {
+    if (loadedSongsCount) loadedSongsCount.textContent = currentlyLoadedSongs;
+    if (totalSongsCount) {
+      // Show filtered count if we have active filters, otherwise show total
+      const displayTotal = activeFilters.size > 0 ? totalFilteredSongs : totalSongs;
+      totalSongsCount.textContent = displayTotal;
+    }
+    if (allSongsLoaded) {
+      allSongsLoaded.style.display = allLoaded ? 'inline' : 'none';
+      if (allLoaded && activeFilters.size > 0) {
+        allSongsLoaded.textContent = ' • Všetky filtrované piesne načítané ✓';
+      } else if (allLoaded) {
+        allSongsLoaded.textContent = ' • Všetky piesne načítané ✓';
+      }
+    }
+  }
+  
+  // Throttle function for scroll events
+  function throttle(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func.apply(this, args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+  
+  // Helper function to escape HTML
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text || '';
+    return div.innerHTML;
+  }
+}
+</script>
+
+
+{% endblock %}

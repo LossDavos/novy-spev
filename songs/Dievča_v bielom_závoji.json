@@ -1,0 +1,33 @@
+{
+  "title": "Dievča v bielom závoji",
+  "author": "Jerichove trúby",
+  "categories": [
+    "sobášne"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Keď dievča v [D]bielom [A]závo[D]ji stane si [G]s tebou [A]pred ol[D]tár,",
+        "jej nežné [G]„áno“  zazvo[h]ní, dáte si [G]seba [A]ako [D]dar, ó, ",
+        "dáte si [G]seba [A]ako [D]dar."
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       "A potom spolu životom po ceste, ktorá svietiť má,",
+        "pôjdete spolu v dobrom zlom až kdesi hore do neba, ó",
+        "až kdesi hore do neba."
+      ]
+    },
+    
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Nech Boh stále bdie nad vami, nech vám [e]svoju [A]milosť [D]dá.",
+        "Aby ste [D]kráčali vždy jeho cestami, tam je [e]láska [A]úprim[D]ná."
+      ]
+    }
+  ]
+}

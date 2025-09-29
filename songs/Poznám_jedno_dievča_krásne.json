@@ -1,0 +1,36 @@
+{
+  "title": "Poznám jedno dievča krásne",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Poznám jedno dievča krásne",
+        "s očami, jak hviezdy jasné, Mária, kvet zázračný.",
+        "Snehobielym rúchom čistým",
+        "prináša našim dňom hmlistým vôňu kvetov v deň jesenný."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Mária – Panna čarovná,",
+        "Mária – nebies Kráľovná,",
+        "Mária – žena jediná, o ktorej spievam,",
+        "keď som strápený."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "O tebe tak často snívam,",
+        "keď som sám a keď sa dívam do ulíc, prázdnych ulíc.",
+        "Moja pieseň k tebe kráča",
+        "vo vozíku zametača, ktorý tlačím do smutných ulíc."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "title": "Kráľovná, Matka naša",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Kráľovná, Matka naša, Mária,",
+        "nebeská čnosť i krásna ľalia.",
+        "/:Ku Tebe prichádzam, vôľu Ti porúčam,",
+        "prosím Ťa, neopusť ma.",
+        "Mária, Matka naša, stoj vždy pri nás.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Bez poškvrny počatá, Mária.",
+        "Matka Boha i naša spanilá.",
+        "/:Ku Tebe prichádzam, vôľu Ti porúčam,",
+        "prosím Ťa, neopusť ma.",
+        "Mária, Matka naša, Dcéra Boha.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ty čnostná nebies Pani, Mária.",
+        "Buď velebená nami, Kráľovná.",
+        "/:Ku Tebe prichádzam, vôľu Ti porúčam,",
+        "prosím Ťa, neopusť ma.",
+        "Mária, Matka naša, zostaň s nami.:/"
+      ]
+    }
+  ]
+}

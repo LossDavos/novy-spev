@@ -1,0 +1,43 @@
+{
+  "title": "Náš Boh",
+  "author": "Ch. Tomlin - ESPÉ",
+  "categories": [
+    "poďakovanie po prijímaní",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[a] Vodu na [F]víno me[C]níš,[a] otváraš [F]oči sle[C]pým,",
+        "nikto [d7]nie je ako [G]ty.",
+        "[a] Zasvietiš [F]v tmách živo[C]tom,[a] z prachu nás [F]dvíhaš slo[C]vom,",
+        "nikto [d7]nie je ako [G]ty."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[a]Náš Boh je väčší, [F]on je silnejší.",
+        "[C]Pane, si viac, než čo [G\\H]tento svet dáva.",
+        "[a]Rany nám liečiš, [F]mocný a slávny, [C]náš Boh, si náš [G]Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[a] Zasvietiš [F]v tmách živo[C]tom,[a] z prachu nás [F]dvíhaš slo[C]vom,",
+        "nikto [d7]nie je ako [G]ty."
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "[a]Veď keď náš Boh je za nás, [F]nemôže vládnuť strach.",
+        "[C]Keď náš Boh je s nami, [G\\H]kto môže stáť proti nám?",
+        "[a]Veď keď náš Boh je za nás, [F]nemôže vládnuť strach.",
+        "[C]Keď náš Boh je s nami, [G]kto môže stáť proti nám?"
+      ]
+    }
+  ]
+}

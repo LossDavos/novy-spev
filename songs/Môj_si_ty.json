@@ -1,0 +1,57 @@
+{
+  "title": "Môj si ty",
+  "author": "Helena Šinková",
+  "categories": [],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[D] [D2] [G/D] [h7] [A] [D] [D2] [h7]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[A]Môj si [D]ty, dieťa, [Gmaj7]mám ťa rád,",
+        "v mojom [g6]náručí môžeš [D]spať.[G/A]",
+        "[A]Môj si [D]Ty, tak mi [Gmaj7]dôveruj,",
+        "ja ťa [g7]uzdravím z tvojich [h7]rán.[b7] [a7] [Dmaj7] [G]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Chcem, aby si [D/F#]vedel, že [F#/G#]milujem ťa [h7]stále,",
+        "každý [G/E]úder môjho [D/F#]srdca o tom [G]hovorí, [G/A]že môj si ty."
+      ]
+    },
+    {
+      "type": "interlude",
+      "lines": [
+        "[D] [D2] [G/D] [h7] [A] [D] [D2] [h7]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Môj si ty, dieťa, mám ťa rád,",
+        "v mojom náručí môžeš spať.",
+        "Môj si ty, idem pred tebou,",
+        "ja som verný Boh, mám ťa rád."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:[G]Chcem, aby si [D/F#]vedel, že [F#/G#]milujem ťa [h7]stále,",
+        "každý [G/E]úder môjho [D/F#]srdca o tom [G]hovorí :] [G/A]že môj si ty."
+      ]
+    },
+    {
+      "type": "outro",
+      "lines": [
+        "[D] [D2] [G/D] [h7] [A] [D] [D2] [h7]"
+      ]
+    }
+  ]
+}

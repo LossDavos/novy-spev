@@ -1,0 +1,44 @@
+{
+  "title": "Vidíš len",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Vidíš len schmúrenú tvár, všade je bolesť a žiaľ,",
+        "pozri sa, pozri na nás, aká to radosť je v nás.",
+        "Smútok zahoď a pridaj sa k nám,",
+        "s Ježišom nikdy nie si tak sám."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Boh je Pán, Boh je Pán, my sme Jeho deti,",
+        "Boh je Pán, Boh je Pán, radujme sa všetci.",
+        "Aha, aha, aha jéé."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Máme liek na všetky problémy, uvidíš, tvoj život sa zmení.",
+        "Celý deň sa usmievaj len, veď predsa šťastný chceš byť.",
+        "Radosť úsmev vždy každému daj, na problémy viac",
+        "nespomínaj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pozri sa, veď život je krásny, usmej sa a niet tu prekážky.",
+        "Radosti je na svete dosť, nemrač sa a nechoď smutný.",
+        "Pri nás život nie je nudný, tak poď k nám, spolu s nami",
+        "spievaj."
+      ]
+    }
+  ]
+}

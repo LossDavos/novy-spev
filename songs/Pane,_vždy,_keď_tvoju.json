@@ -1,0 +1,31 @@
+{
+  "title": "Pane, vždy, keď tvoju",
+  "author": "W. Perrin, C. Perrin",
+  "categories": [
+    "úvod",
+    "prijímanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Pane, [C]vždy, keď tvoju svätosť [F]zriem,",
+        "vždy, keď [C]vidieť tvoju krásu [F]smiem",
+        "a keď [C]okolo mňa veci [d]šednú, ty svietiš [G4]sám.[G]",
+        "Keď ma [C]dotyk tvojho srdca [F]teší,",
+        "a keď [C]láskou moju vôľu [F]meníš,",
+        "a keď [C]okolo mňa veci [d]šednú, ty svietiš [G4]sám.[G]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Život ti [F]d[G]ám, život ti [e]d[a]ám, veď [d]preto ho mám,",
+        "[G]aby bol tvoj [C]chr[C7]ám.",
+        "Život ti [F]dá[G]m, život ti [e]dá[a]m, veď [d]preto ho mám,",
+        "[G]aby bol tvoj [C]chrám."
+      ]
+    }
+  ]
+}

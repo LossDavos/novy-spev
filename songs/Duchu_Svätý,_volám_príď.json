@@ -1,0 +1,25 @@
+{
+  "title": "Duchu Svätý, volám príď",
+  "author": "E. Szymczykowska",
+  "categories": [
+    "k Duchu Svätému",
+    "adorácia"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/: [D]Duchu Svätý, volám: „Príď, :/",
+        "/: [a\\D]oheň mojej duši daj, :/",
+        "/: [G\\D]oheň môjmu telu daj, :/ /: [D]rozpáľ ma!\" :/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Všemo[a]húci [G]Boh tu s nami [D]je, neko[a]nečne [G]milostivý [D]je,",
+        "uka[a]zuje [G]dobrotivú [D]tvár voči [a]tý[G]m, ktorí milovať ho [D]chcú."
+      ]
+    }
+  ]
+}

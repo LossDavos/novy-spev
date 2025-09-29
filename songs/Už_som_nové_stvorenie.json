@@ -1,0 +1,27 @@
+{
+  "title": "Už som nové stvorenie",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Už som nové stvorenie, už viac niet odsúdenie,",
+        "Boh mi dal milosť pred Ním stáť.",
+        "Srdce mi pretekáva, môj lásky cit sa vzmáha,",
+        "Boh mi dal milosť pred Ním stáť."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/:Preto vždy – chválim Ťa, áno vždy – chválim Ťa,",
+        "preto vždy spievam, všetko v Tebe mám.",
+        "Radosť, ktorá nekončí, s radosťou duch môj svedčí,",
+        "Boh mi dal milosť pred Ním stáť.:/"
+      ]
+    }
+  ]
+}

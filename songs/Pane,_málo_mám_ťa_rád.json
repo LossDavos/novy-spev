@@ -1,0 +1,28 @@
+{
+  "title": "Pane, málo mám ťa rád",
+  "author": "M. O´Shields - The Continental Singers",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Pane, [B]m[(F)]álo mám ťa [C]rád, [B]",
+        "[C]sklamal [B]som ťa toľko[C]krát, [B]",
+        "[C]Preto [B]chcem ti [C]dať niečo [B]na oltár. [C]",
+        "(namiesto B je možné hrať F)"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Tak [F]prij[C]mi aj to [F]málo, čo my [C]máme,",
+        "no s vďa[F]kou ti všetko [C]dáme, aj svoj [G4]ži - [G]vot.",
+        "Tak [F]prij[C]mi aj to [F]málo, čo my [C]máme,",
+        "no s vďa[F]kou ti všetko [C]dáme, aj svoj [G4]ži - [C]vot."
+      ]
+    }
+  ]
+}

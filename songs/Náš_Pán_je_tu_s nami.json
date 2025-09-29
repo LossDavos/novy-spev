@@ -1,0 +1,29 @@
+{
+  "title": "Náš Pán je tu s nami",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Náš Pán je tu s nami,",
+        "máme radosť v srdci a nie sme sami.",
+        "Ty spievaj s nami,",
+        "nebuď smutný a teš sa s nami,",
+        "spievaj a tlieskaj, veď Ježiš prišiel k nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Náš Pán je tu s nami,",
+        "máme radosť v srdci a nie sme sami.",
+        "Ty spievaj s nami,",
+        "nebuď smutný a teš sa s nami,",
+        "spievaj a tlieskaj, veď Ježiš je náš Pán."
+      ]
+    }
+  ]
+}

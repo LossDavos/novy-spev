@@ -1,0 +1,42 @@
+{
+  "title": "Ku koncu chýli sa deň ",
+  "author": "Richard Čanaky",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+       "[D]Ku koncu chýli sa deň, [f#]pred Bohom stojím sám,",
+      "tak [G]sám. S Ním sa tíško [D]rozprávam",
+      "[A]o tom, že Slnko za[G#]pa[G]dá, [A]o tom, že deň sa roz[G#]pa[G]dá na tisíc [D]mien."
+    ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Stretol som mnoho ľudí dnes, skrížil som mnoho ľudských ciest,",
+      "tak sám o tom Bohu rozprávam.",
+      "Dal som dnes niekoľkým žiaľ, iným zas úsmev som vzal v dne[D]šný[d] deň."
+    ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[d]Odpoveď počú[B]vam, [A]do ticha znie pár [d]viet,",
+      "[d]hovorí ku mne [Bmaj7]Pán [A]prísnu a karhavú [d]reč,",
+      "[g]že či som prišiel na svet [d]bojovať, [g]alebo sa chcem [d]iba hrať,",
+      "[g]či sa chcem iným ľuďom [d]darovať, [g]alebo lásku iba [d]brať [A]a nedá[D]vať."
+   ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+         "Ku koncu chýli sa deň, pred Bohom stojím sám,",
+      "tak sám. S Ním sa tíško rozprávam.",
+      "Sľubujem, že celý deň prežijem zajtra preň a pre ľudí."
+    ]
+    }
+  ]
+}

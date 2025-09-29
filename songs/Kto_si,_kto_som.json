@@ -1,0 +1,75 @@
+{
+  "title": "Kto si, kto som",
+  "author": "Janais",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Kto ma chápe, keď nie ty hore?",
+        "[C9] Kto ma dvíha, keď padám dole?",
+        "[G] Kto ma nájde [D]tam, kde nikto už [C9]nehľadá?",
+        "[G] Kto je blízko vždy na pomoci?",
+        "[C9] Kto mi svieti v najtmavšej noci?",
+        "[G] Kto ma chráni [D]a nič za to [C9]nežiada?"
+        
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Kto si [G]ty, že ma [D]máš, nado [C]mnou držíš [G]stráž?",
+        "Kto si [G]ty, že vždy [D]vieš, kedy [C]prísť? Zostaneš (zostaneš)?"
+        
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kto si, že ťa nevidím vchádzať?",
+        "Kto si, že už nechcem ťa strácať?",
+        "Kto si, že vždy zlomené zacelíš?",
+        "Kto si, že ma hladíš a dvíhaš,",
+        "s láskou moje modlitby prijímaš?",
+        "Kto si, že ti na mne, na mne tak záleží?"
+        ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Kto si [G]ty, že ma [D]máš, nado [C]mnou držíš [G]stráž?",
+        "Kto si [G]ty, že vždy [D]vieš, kedy [C]prísť? Zostaneš (zostaneš)?"
+        
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Kto si [G]ty, že ťa [D]mám? Kto som [C]ja? Biedny [G]chrám.",
+        "Kto si [G]ty? Mi rozu[D]mieš, navždy [C]so mnou zostaneš."
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "(ž: R1, R2; m: Br.)",
+        "Kto si [G]ty, kto som ja, ty si [D]svetlo, ja tma.",
+        "Daj, nech [C]stanem sa dňom, svetlo [G]vrátiš [D]doň.",
+        "Ty si [G]vánok aj dážď, moje [D]zlé stopy zmaž.",
+        "Veď aj [C]tma mizne napokon [G]nadrá[D]nom."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "[G] Kto ma ľúbi, keď nie ty hore?",
+        "[C9] Kto ma dvíha, nech vidím zore?",
+        "[G] Kto ma láskou [D]najväčšou [C]naplní?"
+      ]
+    }
+  ]
+}

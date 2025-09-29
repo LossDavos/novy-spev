@@ -1,0 +1,42 @@
+{
+  "title": "Slávny Boh ",
+  "author": "BCC worship",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Slávny [D]Bo[A]h, všemoc[h]ný[G], majest[D]á[A]t Ti pat[G]rí."
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "S [D]vďakou dvíham ruky k ne[G]besám,",
+        "k Tebe, Pane [h]môj[D], naveky som Tv[G]oj.",
+        "Z [D]hĺbky srdca Tebe vyzná[G]vam,",
+        "celý život [h]svoj[D] Ti dávam.[G]"
+        ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "Všetko, čo [D/F#]viem,[G]",
+        "všetko, čo [A]chcem, ",
+        "je Teba [c#]len, ",
+        "Všetko, čo [D/F#]mám[G]",
+        "tebe odovz[A]dám"
+      ]
+    },
+     {
+      "type": "bridge",
+      "lines": [
+        "Všetko, čo [G]chcem, je Teba len,",
+        "všetko, čo [A]chcem, je Teba [h]len,",
+        "všetko čo [D/F#]chcem, je Teba [G]len, v srdci mi [A]vládni."
+      ]
+    }
+  ]
+}

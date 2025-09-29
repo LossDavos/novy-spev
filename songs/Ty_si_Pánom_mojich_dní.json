@@ -1,0 +1,28 @@
+{
+  "title": "Ty si Pánom mojich dní",
+  "author": "J. Hrubovčák - Tretí deň",
+  "categories": [
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Ty si [G]Pánom [C]mojich [D]dní, ty [e]napĺ[C]ňaš ma [D]láskou.",
+        "Ty si [G]Pánom [C]mojich [D]dní, po svojich [C]cestách vedieš [D]ma.",
+        "Ty si [G]Pánom [C]mojich [D]dní, keď ťa [e]volám, [C]vždy si [D]blízko.",
+        "Ty si [e]Pánom [C]mojich [D]dní, tebe [C]patrím so [D]všetkým, čo [G]mám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[a] Príliš dlho [G]som už slúžil [a] pánom [G]falošným,",
+        "[a] príliš dlho [G]som bol spúta[D]ný.",
+        "[a] Ty si mi [G]putá zlámal, [a] ty si ma [G]oslobodil,",
+        "[a] ty si ma [h]vyviedol [F]do víťazných [H]dní."
+      ]
+    }
+  ]
+}

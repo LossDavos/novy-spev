@@ -1,0 +1,39 @@
+{
+  "title": "Mlaď Bohu verná",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Mlaď Bohu verná, Kristove čaty, zástavu našu zdobí kríž.",
+        "Smer ti ukážu vodcovia svätí, hore sa srdcia k Bohu blíž."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Len smelo vpred, nech vidí svet",
+        "mládež vernú Kristovi.",
+        "Len výš a výš zdvihnime kríž,",
+        "svet sa v Kristu obnoví."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Oddanosť Cirkvi, národu, vlasti burcuje v srdciach našich plam.",
+        "Nás nepremôžu nijaké strasti, z cesty nezláka dar a klam."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nech pieseň naša voľne sa vznáša, nech sa ozýva celý svet.",
+        "Na našej tvári len šťastie žiari, tam, kde je Kristus, žiaľu niet."
+      ]
+    }
+  ]
+}

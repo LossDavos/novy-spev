@@ -1,0 +1,36 @@
+{
+  "title": "Jak úžasná",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Jak úžasná musí tá Láska byť,",
+        "keď prišla k nám s rajom sa rozdeliť.",
+        "Dať novú vlahu púšti spálenej,",
+        "priblížiť nám nebo tak vzdialené."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Neba krásy opúšťaš kvôli nám,",
+        "nemusel si a predsa chceš to sám.",
+        "Tvár priateľská tu súcit nejaví,",
+        "keď nesieš kríž na miesto popravy."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tam miesto nás život si položil,",
+        "vraciaš sa zas, aby som večne žil.",
+        "Viem, Pane, dávaš sa Ty nám i dnes,",
+        "preto si chcel na Golgotu kríž niesť."
+      ]
+    }
+  ]
+}

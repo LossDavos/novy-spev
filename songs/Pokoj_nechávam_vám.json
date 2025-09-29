@@ -1,0 +1,43 @@
+{
+  "title": "Pokoj nechávam vám",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Každým dňom nepokoj vládne,",
+        "vojny, rozbroje sa množia,",
+        "na zemi niet chvíľu mieru,",
+        "krik a hnev so všetkým zmieta."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pokoj nechávam vám, svoj pokoj dávam vám,",
+        "nie, ako ho chce dávať svet, povedal nám náš Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Aj vo mne nepokoj býva,",
+        "hluk a zhon, zábavy prázdne.",
+        "Utekám do víru sveta,",
+        "hádam tak umĺkne bieda."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Dnes pokoj v duši chcem tvoriť,",
+        "vždy znovu doma i v práci.",
+        "Keď klesám, hnev dušu vzbúri,",
+        "Tvoj sľub mi dodáva sily."
+      ]
+    }
+  ]
+}

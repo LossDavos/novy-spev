@@ -1,0 +1,25 @@
+{
+  "title": "Zídení, ako rodina",
+  "author": "S. Hampton",
+  "categories": [
+    "úvod",
+    "adorácia",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[A6]Zíde[A2]ní [A6]ako rodi[A2]na sme spolu [E]pred te[H\\E]bou. [E]   [H\\E]       [E\\G#]",
+        "[A6]Jedno[A2]tní [A6]spievame zo srdca Kráľo[E]vi krá[H\\E]ľov."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[E] Nech [E\\G#]znie: [c#7]Abba, [g#7]Otče, [Amaj7]vzácny [A]si [H] pre [E]nás.  [E\\G#]",
+        "[c#7]Abba, [g#7]Otče, [Amaj7]sväté [A]me[H]no [E]máš."
+      ]
+    }
+  ]
+}

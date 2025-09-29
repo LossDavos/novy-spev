@@ -1,0 +1,43 @@
+{
+  "title": "Keď máme žiť vo svete",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Keď máme žiť vo svete, chváľme Boha,",
+        "všade v každom momente chváľme Boha.",
+        "Život nemá prázdnych dní, každá chvíľa vzácny dar,",
+        "v každej spoznaj Božiu tvár."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Veď náš Boh je Otcom, vždy má pre nás čas.",
+        "Ukázal nám cestu a sám sprevádza nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď nás teší krása hôr, chváľme Boha,",
+        "keď čakané príde skôr, chváľme Boha.",
+        "Keď nemáme v srdci žiaľ, za radosti Pána chváľ,",
+        "ktoré nám On z lásky dal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď nadíde skúšky čas, chváľme Boha,",
+        "keď už všetko hnevá nás, chváľme Boha.",
+        "Keď nás trápi veľa rán, berme aj to ako dar,",
+        "ktorý nám pripravil Pán."
+      ]
+    }
+  ]
+}

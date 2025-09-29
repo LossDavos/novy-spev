@@ -1,0 +1,37 @@
+{
+  "title": "Spí Mária",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Po krásnej tvári blúdi sen, keď k lícam túli si dieťa.",
+        "To býva krásna chvíľa žien, keď v tráve kropaje svietia."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Spí Mária s dieťaťom a anjel im spieva z výšky.",
+        "Spí Mária s dieťaťom a neznámi sú si dnes blízki."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Dnes líha líška k vtáčatám, baránka zlý vlk dnes chránil.",
+        "Dnes žiaden zúfalec nie je sám a máme dokorán brány."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Hľa, zástup hviezdny stráži ju a krásne piesne jej hrá noc.",
+        "Tak skús tiež nájsť Máriu a nájdeš kľúče od Vianoc."
+      ]
+    }
+  ]
+}

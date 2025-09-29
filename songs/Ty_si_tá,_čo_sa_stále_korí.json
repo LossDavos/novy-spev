@@ -1,0 +1,36 @@
+{
+  "title": "Ty si tá, čo sa stále korí",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Ty si tá, čo sa stále korí a Ty vieš aj, čo je bieda.",
+        "Spávaš v tráve, prijímaš strasti, až na smrť si poslušná.",
+        "Pred Tebou sa i štáty trasú a ľudia i mrú pre Teba.",
+        "Zhliadni aj na nás, ó, Panna neba, zeme Kráľovná."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Si krásna, keď kráčaš, hviezdny prach Ti svieti v diaľ.",
+        "A tíško sa usmievaš, tíšiš každý žiaľ.",
+        "Ty vieš, čo je nám treba, azda právo k radostiam.",
+        "A Ty, slávna Matka chleba tlieskaš vtedy nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svetlá dvoch tvojich očú dávajú svetu vôľu žiť.",
+        "A slzy Tvoje pomôžu nám náš kalich piť.",
+        "Vznášaš sa nad oblaky, z motýľov máš baldachýn",
+        "a že nás spasil, Tebe vďaky, Tvoj a Boží Syn."
+      ]
+    }
+  ]
+}

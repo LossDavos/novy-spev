@@ -1,0 +1,63 @@
+{
+  "title": "Som váš Boh",
+  "author": "",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Koľko zla a [Fmaj] koľko dobra",
+        "[G]v tomto svete [C]je.",
+        "[C]Sú v ňom slzy, [Fmaj]bláznovstvá, no [G]aj kus náde[C]je.",
+        "Stačí [C] chcieť a zloba [E]tá,",
+        "dobrom [a]prevá[(C)]žiť sa [Fmaj]dá.",
+        "Avšak [d]nestále je [F] srdce [G4] človeka."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tento zbiera, ten sa ženie len za vidinou,",
+        "zabúda na moje slová: Nechaj, poď za mnou.",
+        "Žena slzy v očiach má, na svoj kríž si narieka,",
+        "Avšak svojich plánov, tých sa nezrieka."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G] Som váš [C] Boh, vidím [G]vás,",
+        "chcem vám [a]pomôcť, chcem vás [Fmaj] nájsť.",
+        "Koľkým z [d] vás chýba [F] čas,",
+        "chýba [d]viera, aj chuť [G] rásť.",
+        "Vedzte [C] len, majte [G] čas,",
+        "ja chcem [a]žiť uprostred [Fmaj]vás,",
+        "skúste [C]chcieť, uká[G4]žem [G]vám mnoho [C]krás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Jeden prosí, druhý nevie, ako prosiť má.",
+        "Žiaden z nich však neverí,",
+        "že zázrak vykonám.",
+        "Tak to všetko márne je,",
+        "keď sám človek nechápe,",
+        "že čo má to všetko len od Boha je."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Človek často nevie zlo od dobra rozoznať,",
+        "planý strom však ťažko môže",
+        "dobré plody mať.",
+        "K slnku cestu vie si nájsť všetko,",
+        "čo chce žiť a rásť.",
+        "Mňa však poznajú len máloktorí z vás."
+      ]
+    }
+  ]
+}

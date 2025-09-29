@@ -1,0 +1,37 @@
+{
+  "title": "Poďme všetci rýchlo k jasliam (Pójdźmy wszyscy do stajenki)",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Poďme všetci rýchlo k jasliam do jaskyne krásy, šťastia",
+        "[:[a]vítať [D]Dieťa, [G]nášho [e]Kráľa, [a]ktorý [D]jedným [G]z nás sa stáva:]."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vitaj, Ježiš, nádej biednych po šťastí a láske smädných.",
+        "[:Národy Ťa dávno túžia prijať do sŕdc, aj keď blúdia.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vitaj, malé „Dieťa v žlebe“, spievajú na chválu Tebe",
+        "[:králi, ale aj pastieri, chóry anjelov na nebi:]."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vitaj, Ježiš, knieža lásky, zažeň z duší chmáry, vrásky.",
+        "[:Prijmi naše vrúcne chvály, nech v nás svetlo viery žiari.:]"
+      ]
+    }
+  ]
+}

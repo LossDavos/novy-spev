@@ -1,0 +1,37 @@
+{
+  "title": "Znej zvonček",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Znej zvonček, cingi lingi cin,",
+        "znej zvonček, znej."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pustite ma dietky do svojej izbietky,",
+        "bo ukrutná zima celkom premrazí ma."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Otvorte mi dvere, nesiem v hojnej miere",
+        "dary vám k radosti, srdcia blaženosti."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Otvorte mi chytro srdca svojho vnútro,",
+        "chcel by som tam bývať, šťastie, pokoj dávať."
+      ]
+    }
+  ]
+}

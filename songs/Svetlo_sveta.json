@@ -1,0 +1,71 @@
+{
+  "title": "Svetlo sveta",
+  "author": "R. Lebel - Hymna 2002",
+  "categories": [
+    "záver",
+    "vianoce",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Ten, [A]ktorého sme [A2]uzreli, bol [D2]Pán,",
+        "ten, [E4]ktorý sa nás [E]dotkol, cí[A]til ho každý [A2]z nás.",
+        "Ten, [A]ktorého sme [A2]počuli, bol [D2]Pán,",
+        "ten, [E4]s ktorým sme sa [E]stretli [A]v hĺbke [h]svojich [c#]sŕdc.",
+        "[D2]Práve o ňom svedčíme aj [c#]vám,",
+        "jeho [f#]slávny maje[D2]stát nad [h]svetom žiari [E4]nám[E]."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Koľ[A]kí si zakrý[A2]vajú svoju [D2]tvár,",
+        "[E4]koľkí žijú [E]v tmách, [A]blúdia v prázdno[A2]tách.",
+        "Nech [A]môžu opus[A2]tiť beznádej [D2]dní,",
+        "tak [E4]poďme bratia, [E]sestry, nech sme [A]všetci [h]priateľ[c#]mi.",
+        "[D2]Spolu môžeme stáť proti [c#]búrkam",
+        "a [f#]do sŕdc plných [D2]tmy povo[h]láme svetlo [E4]dní[E]."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[A]Svieť svetlo [A2]tmám, [f#]soľ zeme daj nám,",
+        "mrač[h]ná sa rozplynú, keď [G]príde láska [E4]k ná[E]m.",
+        "[A]Svieť svetlo [A2]tmám, [f#]Pán je ním sám,",
+        "[h]z nás Božou žiarou jeho [A\\C#]svetlo",
+        "[D]svieti [h]každý [D\\E]deň aj [D2]vám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Koľkí sa cítia prázdni, hľadajú,",
+        "no pravý zmysel ciest stále strácajú.",
+        "Stačí iba chvíľku s nimi ísť,",
+        "ponúknuť zopár slov na príbeh o zranení.",
+        "Možno by v tých slovách plných lásky",
+        "o chleba lámaní boli hneď zachránení."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Soľ bez chuti je prázdna, bezmocná",
+        "a lampa zhasnutá je moci zbavená.",
+        "Nech naše srdcia požehnané sú,",
+        "nech nám v modlitbách dá Boh silu víťaznú.",
+        "Nech v pravde stojí dielo našich rúk,",
+        "nech vládne láska nám, nech obnoví svet náš Pán."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "jeho [A\\C#]svetlo [D]svieti [h]každý [D\\E]deň aj [D2]vám."
+      ]
+    }
+  ]
+}

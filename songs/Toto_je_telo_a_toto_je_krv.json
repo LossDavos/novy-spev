@@ -1,0 +1,55 @@
+{
+  "title": "Toto je telo a toto je krv (Voici le corps et le sang du Seigneur)",
+  "author": "Komunita Emmanuel",
+  "categories": [
+    "cez rok",
+    "obetovanie"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Toto je telo a [A]toto je [e]krv,",
+        "[H]čo [e]dávaš za mňa na oltár, [h]Spasiteľ môj,",
+        "[G]pravý Boh za pokrm [D]ľuďom sa [h]dal,",
+        "[e]aby večný život v [A]nás zacho[G]va[D]l."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď už [D]poslanie [h]spásy vr[A]cholí,",
+        "Ježiš [h]pozdvihol [G]7víno a [A4]chli[A]eb.",
+        "Ono [h]krvou a [G]telom sa [h]stáva,",
+        "aby [D]do svetla [h]mohli sme [A4]pre[A]ejsť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Na zem zostúpil, v chlebe sa delí,",
+        "v sebe dedičstvo nám daroval,",
+        "aby nikto z nás neminul cieľ,",
+        "aby nikto z nás nehladoval."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Iba vo viere rozpoznať musím,",
+        "že si skutočne tu prítomný,",
+        "v tomto posvätnom chlebe a víne,",
+        "Vykupiteľ môj oslávený."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Naše ústa nech vždy ohlasujú",
+        "veľký zázrak čo urobil Pán,",
+        "že nás zapálil ohnivou láskou,",
+        "že sa ponúka svetu i nám."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Môj Bože, som tu sám",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Môj Bože, som tu sám, len sám, Pane, zmiluj sa.",
+        "Kde inde pomoc hľadať mám? Pane, zmiluj sa."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pozri na nás, jak hriechy mnohých trápia.",
+        "Volám, Pane, Pane, zmiluj sa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tvoj hlas je balzam láskavý, Pane, zmiluj sa.",
+        "Strápenej duši uľaví, Pane, zmiluj sa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ty, ktorý šťastie rozdávaš, Pane, zmiluj sa,",
+        "priateľsky k sebe pritúľ nás, Pane, zmiluj sa."
+      ]
+    }
+  ]
+}

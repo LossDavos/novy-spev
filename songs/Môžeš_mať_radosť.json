@@ -1,0 +1,38 @@
+{
+  "title": "Môžeš mať radosť",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[: Môžeš mať [C]radosť vo svojom [d]srdci každú [C]hodinu a[G7] každý [C]deň. :]",
+      "[C]Radosť, ktorú [Fmaj7]svet ne[C]môže [Fmaj7]dať, [C]radosť, ktorú [G7]svet ne[C]môže [G7]vziať, [G7]",
+      "Môžeš mať [C]radosť vo svojom [d]srdci každú [C]hodinu a[G7] každý [C]deň."
+   ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "...pokoj"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "...lásku"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Nádherný život, po ktorom túžiš, dá nám Ježiš, pôjdeme s Ním. :]",
+      "To všetko ti svet nemôže dať, to všetko ti svet nemôže vziať,",
+      "nádherný život, po ktorom túžiš, dá nám Ježiš, pôjdeme s Ním."
+    
+      ]
+    }
+  ]
+}

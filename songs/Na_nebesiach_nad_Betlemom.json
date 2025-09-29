@@ -1,0 +1,31 @@
+{
+  "title": "Na nebesiach nad Betlemom",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Na nebesiach nad Betlemom svieti krásna hviezdička",
+        "a v jasličkách, hľa, uspáva Jezuliatko mamička."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Spi len sladko, Jezuliatko,",
+        "spi len sladko, spi len sladko,",
+        "Jezuliatko, spi."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svätá Matka Synáčkovi krásnu pieseň spievala,",
+        "na tváričku Božské Dieťa Jezuliatko ľúbala."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "title": "Prijmi dnes, Pane môj",
+  "author": "",
+  "categories": ["obetovanie"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Prijmi dnes, Pane môj, tento skromný dar,",
+        "čo s veľkou úctou kladiem Tebe na oltár.",
+        "Nie je to zlato ani žiaden drahokam.",
+        "Lepším sa stať ja túžim – to je ten môj dar."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Každý deň mať Ťa rád, s láskou k všetkým prichádzať.",
+        "Úsmev dať, pokoj nájsť, všetkým Ťa vždy rozdávať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V pokore slúžiť Tebe je môj veľký plán,",
+        "prijímať Ťa v chlebe, víne, stále s Tebou rásť.",
+        "Len v Tebe, môj drahý Ježiš, nájdem veľký dar,",
+        "Ty pomôžeš mi v biede, nádej v Teba mám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Otvorme svoje srdcia, oči i dlane,",
+        "Pán núka večný život v chlebe a víne.",
+        "On je ten, ktorý skúma, všetko o Tebe vie,",
+        "či trpíš, či sa smeješ, vždy Ti pomôcť chce."
+      ]
+    }
+  ]
+}

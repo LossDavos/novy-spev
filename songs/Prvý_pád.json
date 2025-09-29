@@ -1,0 +1,44 @@
+{
+  "title": "Prvý pád",
+  "author": "Janko Flajžík-Manašovský, Janka Daňová",
+  "categories": [
+    "pôstne"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Cesta plná prachu, špiny, samé blato, kaluže.",
+        "Je to cesta ľudskej viny, kde ja padnúť nemôžem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nemyslel som, že tak rýchlo ocitnem sa na ceste.",
+        "Moje srdce už si zvyklo stáť nad všetko nečisté."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nestačím sa ani pohnúť a už padám do prachu.",
+        "Ako som sa dostal do pút ľudskej biedy, do hriechu?"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pri páde sa zrážam s Kristom, nohy sa mu podlomia,",
+        "kto Ťa zradil hneď za mestom? Odpusť, Pane, to som ja."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:Vinný vedľa nevinného pre mňa padol Pán Ježiš.",
+        "Čo mám robiť? Hľaď na Neho, vstal a ďalej berie kríž.:]"
+      ]
+    }
+  ]
+}

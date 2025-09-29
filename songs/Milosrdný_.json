@@ -1,0 +1,48 @@
+{
+  "title": "Milosrdný ",
+  "author": "Sion",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Slávny Kráľ, liek môjho hriechu,",
+        "[G]pokoj náš, čo dáva sa svetu,",
+        "[h]príď, prebývaj v [G]nás.",
+        "[D]Darca slov, čo vedú k spáse,",
+        "[G]srdca kľúč, čo prichádza v láske,",
+        "[h]príď, prebývaj v [G]nás!"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Veríme, že s Tebou [D]nemáme sa čoho [A]báť.",
+        "[e]Vieme, že dávaš nám [D]viac, než si môžeme [A]priať.",
+        "[G]Nekonečný, [D]večný a láskavý [A]Pán,",
+        "si [G]milosrdný."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Len [D]Láska vie odpúšťať,",
+        "[A]pozná smiech, pozná aj [G]plač,",
+        "nech [D]Láskou sa každý z nás",
+        "[A]milosrdným môže [G]stať.",
+        "Si [D]jedinou nádejou,",
+        "[A]všetkým čo môžeme [G]mať,",
+        "[h]prebývaj v nás,",
+        "nech [A]môžeme vo viere [G]rásť."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Milosrd[h]n[A][G]ý."
+      ]
+    }
+  ]
+}

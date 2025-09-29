@@ -1,0 +1,48 @@
+{
+  "title": "S Petrom a Ondrejom",
+  "author": "P. Jančík",
+  "categories": [
+    "úvod",
+    "prijímanie",
+    "cez rok",
+    "k svätcom",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "S Petrom a [C]Ondrejom, Jánom a [a]Jakubom",
+        "chceš mať aj [d]z nás rybárov [G]ľudí.",
+        "Siete nám [C]podávaš, do sveta [a]posielaš,",
+        "chceš, aby [d]bol rybolov [G]bohatý, [C]bohatý.[C7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Aleluja, ale[F]luja,[G] s tebou svet dobývať [C]chcem[C7].",
+        "Aleluja, ale[F]luja,[G] s tebou svet dobývať [C]chcem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chceš v našich srdciach žiť a medzi nami byť",
+        "a ľudskú nenávisť odplácať láskou.",
+        "Na seba spoliehať nemôže nikto z nás,",
+        "preto nám Ducha daj a ním nás sprevádzaj, sprevádzaj."
+      ]
+    },
+        {
+      "type": "verse",
+      "lines": [
+
+        "Vďaka, že každý deň v bratovi ťa nájdem,",
+        "že i ten najmenší k tebe je bránou.",
+        "Vďaka, že v bolestiach môžem ťa nachádzať,",
+        "vstúpil si do každej a tam sa s nami stretávaš."
+      ]
+    }
+  ]
+}

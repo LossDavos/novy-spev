@@ -1,0 +1,19 @@
+{
+  "title": "Sanctus",
+  "author": "autor neznámy",
+  "categories": [
+    "Svätý"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Sanctus, sanctus, sanctus dominus Deus Sabaoth.",
+        "[:Pleni sunt caeli et terra gloria tua.:]",
+        "[:Hosanna, hosanna, hosanna in excelsis.:]",
+        "[:Benedictus qui venit in nomine Domini.:]",
+        "[:Hosanna, hosanna, hosanna in excelsis.:]"
+      ]
+    }
+  ]
+}

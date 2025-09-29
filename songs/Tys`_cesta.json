@@ -1,0 +1,38 @@
+{
+  "title": "Tys` cesta",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Tys` cesta, ktorá vedie nás, aleluja,",
+        "ku cieľu, kde sa končí čas, aleluja."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Po boku Tvojom kráčať chcem",
+        "a volám: Bože, Ty ma veď!",
+        "Aleluja, aleluja, aleluja, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A keď sa valí mrákava, aleluja,",
+        "to Tvoja láska sily dá, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď svetlo v duši zahorí, aleluja,",
+        "to Tvoja láska hovorí, aleluja."
+      ]
+    }
+  ]
+}

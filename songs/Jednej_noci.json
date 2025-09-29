@@ -1,0 +1,36 @@
+{
+  "title": "Jednej noci",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Jednej noci slzy moje zotrel z očú mi Ježiš",
+        "a povedal mi: netráp sa, ja pri tebe stojím.",
+        "Ja som prišiel na tento svet priniesť svetlo a lásku,",
+        "ukázať cestu k Otcovi, dať vám nový život."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Povedz ľuďom, že mám ich rád,",
+        "že sa o nich vždy starám",
+        "a keď zablúdia vo svete,",
+        "povedz, že ich hľadám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nezabudnem na tú chvíľu, keď ma našiel môj Ježiš",
+        "a povedal mi: poď ku mne, ja som pravý život.",
+        "Zachránil som vás z moci tmy, keď som zomrel na kríži,",
+        "aby ste žili vo svetle, v láske môjho Otca."
+      ]
+    }
+  ]
+}

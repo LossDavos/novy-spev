@@ -1,0 +1,33 @@
+{
+  "title": "Súcit nekonečný",
+  "author": "K. Scott - Rieka života",
+  "categories": [
+    "obetovanie",
+    "prijímanie",
+    "záver",
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Súcit nekonečný, [C2] milosťou si ty,[G] sladkým odpustením,",
+        "[C2] vernosť bez hraníc [a7]vo mne [G\\H]príto[C2]mná."
+      ]
+    },
+        {
+      "type": "verse",
+      "lines": [
+        "[G] Ty si Otec mocný, [C2] Kráľ, čo lieči nás. [G] Spasiteľ si nežný,",
+        "[C2] obeť prečistá [a7] za mňa [G\\H]sláve[C2]ná."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Dnes sa [G]dávam[C2] ce[D]lý, všetko, [G]čím som,[C2] do tvojich [G]rúk vkla[G\\A]dám.",
+        "Ty si [G\\H]získal [C2] život [D]môj, svoje [e7]áno [C2]dnes ti [D]dá[G]vam."
+      ]
+    }
+  ]
+}

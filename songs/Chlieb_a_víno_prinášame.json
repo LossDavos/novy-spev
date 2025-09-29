@@ -1,0 +1,48 @@
+{
+  "title": "Chlieb a víno prinášame",
+  "author": "P. Eben",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[d]Chlieb [C] a [d]ví[C]no [d]priná[g]ša[A]me,",
+        "[d] prijmi tie [B]dary,[F] pro[g7]sí [a7]– [d]me."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[g]Mám prázdne [C]ruky, [C7]Pane,",
+        "[F] že [d]skutkom [g]som [a]ich [B]nena[C]plnil,",
+        "[g]mám ťažké [C]nohy, [C7]Pane,",
+        "[F] k blíž[d]nemu [g]som [F]sa [B]nepri[g]blí[A]žil."
+        
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Mám nemé ústa, Pane,",
+        "veď súcit svoj som nevyslovil,",
+        "mám choré oči, Pane,",
+        "pred biednym som ich neotvoril."
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+      
+        "Mám v srdci bolesť, Pane,",
+        "že som ťa v blížnych neobjavil,",
+        "mám veľkú túžbu, Pane,",
+        "bys´ láskou srdcia nám naplnil."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "title": "Vravíš, že lásku ťažko nájsť",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Vravíš, že lásku ťažko nájsť, všade len bolesť vládu má.",
+        "Vravíš o smútku na perách, o očiach, v ktorých je strach.",
+        "Jedna je cesta, kto lásku hľadá, kto po nej túži, ňou sa má",
+        "dať.",
+        "Je jedna cesta, kto lásku hľadá, kto po nej túži, musí mať",
+        "rád."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Miluj a nepýtaj sa nič, miluj a všetko pochopíš.",
+        "Miluj a bolesť odíde, v láske sa stratí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Láskou Pán Boh nás miloval, lásku večnú nám daroval.",
+        "Život svoj za nás poručil, by nás láske naučil.",
+        "Už som pochopil, čo je to láska, prečo mám trpieť a prečo",
+        "žiť.",
+        "Chcem všetkým slúžiť, všetkých milovať,",
+        "láskou chcem život svoj naplniť."
+      ]
+    }
+  ]
+}

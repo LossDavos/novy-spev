@@ -1,0 +1,27 @@
+{
+  "title": "Zvonia zvony vianočné",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Zvonia zvony vianočné: bim, bam, bom,",
+        "nesú zvesti radostné v každý dom.",
+        "K tmavým srdciam svetla lúč preniká,",
+        "prišiel Ježiš vykúpiť hriešnika."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Hviezdička to hviezdičke rozpráva,",
+        "prišiel už deň čakaný oddávna.",
+        "Ľudstvo voľnosť, nový rod našlo v ňom,",
+        "srdcia bijú radostne ako zvon."
+      ]
+    }
+  ]
+}

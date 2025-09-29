@@ -1,0 +1,24 @@
+{
+  "title": "Chváľ Ho",
+  "author": "",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Chváľ Ho, chváľ Ho, Ježiš radosti Pán,",
+        "chváľ Ho, chváľ Ho, v ňom víťazstvo už mám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pán Ježiš náš oslávený, Záchrancu naveky chváľ.",
+        "Pán Ježiš náš Baránok víťazný, nebeský Kráľ.",
+        "Ja chválu Mu vzdám."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "title": "Aj ty si jeho brat",
+  "author": "J. F. Manašovský, M. Bojničan - Nitra 93",
+  "categories": [
+    "úvod",
+    "prijímanie",
+    "cez rok",
+    "pôst",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Aj [C]ty si občas už [e]zblúdil, [a]nenašiel si svoje [Fmaj7]miesto,",
+        "Pán [C]hľadá zblúdených [a]ľudí, [F]Ježiš [G]je najlepšou [C]cestou."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Aj ty si jeho brat, [Fmaj7]aj ty si jeho sestra.",
+        "On [e]dáva, ty smieš brať, tak [F]už sa toľko [G]netráp.",
+        "Máš [a]blízko tento zdroj, z[e]droj živej vody zdravej.",
+        "[F]Srdce s jeho spoj a [G]lásku, lásku dávaj [C]ďalej."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Každý dnes šťastie si hľadá, denne však vstať musí z pádov,",
+        "Pán zaňho výkupné skladá, Ježiš je najkrajšou pravdou.",
+        "Na cestách tohoto sveta, tak ľahko sa stúpi krivo,",
+        "neboj sa, mládež, byť svätá, jediný Ježiš je život."
+      ]
+    }
+  ]
+}

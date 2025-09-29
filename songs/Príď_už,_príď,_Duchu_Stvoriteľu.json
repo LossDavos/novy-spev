@@ -1,0 +1,39 @@
+{
+  "title": "Príď už, príď, Duchu Stvoriteľu",
+  "author": "M. Rejchrt",
+  "categories": [
+    "k Duchu Svätému",
+    "úvod"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Príď už, [D]príď, Duchu [e]Stvori[C]teľu, [G]Duchu [D]zmiere[G]nia.[D]",
+        "[G]Príď už[D] a premeň [e]ľudstvo [C]celé [G]v nové [D] stvorenia."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Duchu [D]Svätý, [e]svojou [h]mocou [C]v láske [D]obnov [G]ná[D]s,",
+        "[G]nene[D]chaj nás [e]kráčať [h]nocou, [C]osvieť [D]rozum [G]náš.[D]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prebuď nás svojím Duchom Svätým, zažeň temnotu.",
+        "Navráť zblúdilých, prebuď hluchých, žehnaj životu."
+        
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "Prebuď svedomie otupených, zbližuj národy.",
+        "Zavej a priveď zotročených v ríšu slobody."
+      ]
+    }
+  ]
+}

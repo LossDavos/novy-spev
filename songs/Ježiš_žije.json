@@ -1,0 +1,46 @@
+{
+  "title": "Ježiš žije",
+  "author": "spirituál, arr.: Dušan Bill (zbor - SATB)",
+  "categories": [
+    "veľká noc",
+    "úvod",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Ježiš [C]žije, [C7]Ježiš [F]žije,",
+        "všetci [C]ľudia nech to [a]vedia, Ježiš [G]žije.",
+        "Ježiš [C]žije, [C7]Ježiš [F]žije,[D7]",
+        "všetci [C]ľudia nech to [G]vedia, Ježiš [C]ži[F] - [C]je."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Všetci z mŕtvych vstaneme, [F]všetci z mŕtvych vstaneme,",
+        "[C]všetci z mŕtvych vstaneme jak [G]on, aleluja, bratia.",
+        "[C]Vtedy, až sa [C7]skončí čas, [F]Ježiš Kristus [D7]príde zas",
+        "[C]a my všetci [G]z mŕtvych vstane[C]me [F]jak [C]on."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+      
+        "A on s nami zostane, 3x náš Pán, aleluja, bratia,",
+        "nech sa každý pridá k nám, nikto nemusí byť sám,",
+        "Ježiš s nami zostane, jak sľúbil nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "On je veľký pomocník, 3x i tvoj, aleluja, bratia,",
+        "Otázniky, ktoré mám, nemusím už riešiť sám,",
+        "Ježiš chce byť pomocníkom všetkým nám."
+      ]
+    }
+  ]
+}

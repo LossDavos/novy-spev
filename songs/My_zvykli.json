@@ -1,0 +1,38 @@
+{
+  "title": "My zvykli",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "My zvykli sme si dobre žiť a málo premýšľať,",
+        "ako má dobrý kresťan žiť, ako má milovať."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Preto premýšľaj, preto vďaky vzdaj,",
+        "všetkým ľuďom pomôž rád,",
+        "tak skús raz vážne vieru brať a človekom sa stať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "My Boha sme si spravili len presne na náš vkus.",
+        "A zmysel pravý stratili, tak pokoriť sa skús."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kto o Bohu len rozpráva a dlh mu nespláca,",
+        "ten dobrý príklad nedáva a lásku vytráca."
+      ]
+    }
+  ]
+}

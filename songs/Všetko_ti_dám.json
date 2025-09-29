@@ -1,0 +1,41 @@
+{
+  "title": "Všetko ti dám",
+  "author": "S. Demská, F. Tkáč",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[E] Všetko ti [H]dávam, Najvyš[c#]ší, všetko [A]ponúkam, môj [E]Pán,",
+        "z lásky [H]dary priná[c#]šam, s láskou [A]kladiem na ol[E]tá[H] - [c#]r,",
+        "[A] kladiem na ol[E]tá[H] - [c#]r."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Môj Boh si [E]ty, môj Pán [H]večný,",
+        "chcem ťa [f#]chváliť, tvojim [A]byť.",
+        "Ty síl mi [E]daj, tvoj pokrm [H]lieči,",
+        "ostaň vždy [f#]so mnou, môj [A]Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[E] Tajomstvo [H]lásky, spásy [c#]dar v chlebe, [A]víne podá[E]vaš,",
+        "za to, [H]Otče, vďačí[c#]me, žehnaj [A]celý život [E]ná[H] - [c#]š,",
+        "[A] celý život [E]ná[H] - [c#]š."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        " Môj Boh si [E]ty."
+      ]
+    }
+  ]
+}

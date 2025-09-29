@@ -1,0 +1,33 @@
+{
+  "title": "Nech dobrý Boh",
+  "author": "Juraj Vidéky",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C7]Nech dobrý [F]Boh je stále [G]s nami, život [C]náš nech napl[a]ní,",
+      "upok[d]ojí naše [G]srdcia, pokoj [C]dá.[C7]",
+      "[C7]Nech dobrý [F]Boh je stále s [G]nami, všetko [C]zlé nech premá[a]ha,",
+      "medzi [d]nami mier a [G]lásku rozdá[C]va."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[: [F]S lás[G]kou, ó, s [e]lás[a7]kou, [d]Ježiš [G]príde k [C]nám. [C7] :]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+          "Otvára brány nám väzneným, všetky putá pretrhá,",
+         "kde bol plač, tam slzy smútku utiera.",
+         "Do každej tmy a temných tôní príde vždy a svieti nám,",
+          "v Jeho mene nový život môžme nájsť."
+      ]
+    }
+  ]
+}

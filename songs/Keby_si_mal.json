@@ -1,0 +1,22 @@
+{
+  "title": "Keby si mal",
+  "author": "autor neznámy",
+  "categories": [
+    "detské",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "/: Keby si [e]mal takúto malú [H7]vieru, vrchy by si prená[e]šal. :/",
+        "Povedal [a]by si tomuto [e]vrchu: Presuň [H7]sa, presuň [e]sa![E]",
+        "Povedal [a]by si tomuto [e]vrchu: Presuň [H7]sa, presuň [e]sa!",
+        "/: A vrch by sa presu[H7]nul, a vrch by sa presu[e]nul :/",
+        "/: V mene Pána Ježi[H7]ša vrch by sa ti presu[e]nul. :/",
+        "/: [e]Vanie, [H7]vanie, Duch Svätý [e]vanie. :/"
+      ]
+    }
+  ]
+}

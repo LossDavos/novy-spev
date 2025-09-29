@@ -1,0 +1,53 @@
+{
+  "title": "Boh - Láska",
+  "author": "M. Milučký (zbor - SAB)",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Víťaz ľudských sĺz a [D\\G]teplo detských hviezd,",
+        "[C]nežnosť dobrých rúk a [D4]pokoj všetkých ci[D]est.",
+        "[G]Stále mladý Boh cez [D\\G]veky, čo má zem,",
+        "v [C]nich si nazval [a9]sám seba [D4]Lás[D]ka."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Objímaš nás [C]spá[e]sou, [C]poblúde[G]ných [C]do našich [D]bied,",
+        "d[G]céry, synov, čo si v[F]nies[e]ol",
+        "[C]Duchom Svät[G]ým [C]do svojich [D]brán zas s[G]päť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Každý svoj má čas a v ňom si skrýva svet,",
+        "priateľstvo a sny, úprimnosť a smiech.",
+        "Vložil si svoj čas do tejto ríše sŕdc,",
+        "a ty si v nej Boh, živá Láska."]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       "[E7]S[A]kúsme všetci dať [E]ten kúsok vlastných síl,",
+        "n[D]ech je lepší svet a [E4]my sme menej zl[E]í.",
+        "N[A]ech je Kristus v nás tak b[E]lízko ako brat,",
+        "v [D]ňom sa dáva B[h9]oh, živá [E4]Lás[E]ka."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[A]Objímaš nás [D]spás[f#]ou, [D]poblúden[A]ých d[D]o našich b[E]ied,",
+        "d[A]céry, synov, čo si [G]vnies[f#]ol",
+        "[D]Duchom Svät[A]ým d[D]o svojich b[E]rán zas s[A]päť."
+      ]
+    }
+  ]
+}

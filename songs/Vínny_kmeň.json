@@ -1,0 +1,47 @@
+{
+  "title": "Vínny kmeň",
+  "author": "B. Fliedr",
+  "categories": [
+    "obetovanie",
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Prijmi, Pane, [h]z našich polí [C]chlieb[D7],   [G]prijmi, Pane, [h]z našich viníc [C]víno,[D7]",
+        "[e]z našich polí [A]chlieb, [e]z našich viníc [A]víno, [C]chlieb a víno – [(a)]spásy zname[D]nia.[D7]"
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prijmi, Pane, z tvojich polí chlieb, prijmi, Pane, z tvojich viníc víno,",
+        "z tvojich polí chlieb, z tvojich viníc víno, nech nás tvojou mocou premenia."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ty si Pane [G]sá[C]m [D]pravý vínny [G]kmeň,",
+        "[e7]v plodoch máme [H7]šťastie, [C]ktoré z teba [D7]len vyrastie",
+        "[G]sá[C]m [D]pravý vínny [G]kmeň,",
+        "[e7]v plodoch máme [H7]šťastie, [C]ktoré z teba [D]len vyrastie [G]nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vďaka, Pane, za krv preliatu, vďaka za tú obeť, Pane, vďaka.",
+        "Veď len pre tvoj kríž sme ti, Bože, blíž. Vďaka, že nám seba vyjavíš."
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vďaka, že si prijal Otcov plán, že si plnil vôľu Otca svojho.",
+        "Z ľudí, že tvoj čin zobral ťarchu vín, každý z ľudí je už Boží syn."
+      ]
+    }
+  ]
+}

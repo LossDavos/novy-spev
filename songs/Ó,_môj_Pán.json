@@ -1,0 +1,44 @@
+{
+  "title": "Ó, môj Pán",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Ó, môj Pán, ó môj Pán,",
+        "Pán dobrotivý, podá nám svoju dlaň."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď ma smútky pokoria, podá nám svoju dlaň.",
+        "Ty si moja opora, podá nám svoju dlaň."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Všade vládne nepokoj, podá nám svoju dlaň.",
+        "Pomôcť môže len Pán môj, podá nám svoju dlaň."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svet si núdznych nevšíma, podá nám svoju dlaň.",
+        "Len Boh s každým súcit má, podá nám svoju dlaň."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď z nás mnohí poblúdia, podá nám svoju dlaň.",
+        "On nám pravý smer udá, podá nám svoju dlaň."
+      ]
+    }
+  ]
+}

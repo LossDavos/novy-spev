@@ -1,0 +1,40 @@
+{
+  "title": "Ty si nás stvoril (Nový Jeruzalem) ",
+  "author": "Adriel",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Ty si nás stvoril, dal si nám [C]život,",
+        "[D]dal si slnko, hviezdy [C]nad hlav[G]ou.",
+        "[G]Si náš [G7]Pán, dávaš [C]lásku,[A] [G]chceme [D]ísť za Te[G]bou. [C] [D]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Alelu[C]ja, [D]ale-ale[C]lu[G]ja, [G]ale-ale[C]luja[A], ale[G]luja,[D]alelu[G]ja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mal si nás rád, dal si nám všetko,",
+        "potom si videl náš hrozný pád.",
+        "Videl si nás blúdiť v tmách, však Ty nás máš stále rád."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vďaka Ti, Pane, za nový život,",
+        "za nové mesto, nový Jeruzalem.",
+        "Vojdú tam tí, čo vrátili sa späť.",
+        "Aj ja tam tiež bývať chcem."
+      ]
+    }
+  ]
+}

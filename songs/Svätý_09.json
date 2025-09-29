@@ -1,0 +1,36 @@
+{
+  "title": "Svätý 09",
+  "author": "A., L. Trtalové",
+  "categories": [
+    "Svätý"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[f#]Svätý, [D]svätý, [f#]svätý, [D]svätý, [f#]svätý[D], [A] Pán,    Boh [E]všetkých sve[A]tov.[E]",
+        "[D] Plné [h]sú nebe[D]sia [h]i zem tvojej [E]slávy."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:[A] Hosana, [E]hosana na [D]výsostiach! (na výsostiach) :]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[f#]Pože[D]hnaný, ktorý [f#] prichá[D]dza [A]v mene [E]Páno[A]vom.[E]"
+              ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+          "[A] Hosana, [E]hosana na [D]výsostiach! (na výsostiach)",
+          "[A] Hosana, [E]hosana na [D]výsostiach! Na výso[F#]stiach."
+      ]
+    }
+   
+  ]
+}

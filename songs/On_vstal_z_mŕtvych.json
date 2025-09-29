@@ -1,0 +1,39 @@
+{
+  "title": "On vstal z mŕtvych",
+  "author": "Ch. Rolinson",
+  "categories": [
+    "veľká noc",
+    "úvod"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]On [D\\G]vstal [C\\G]z mŕt[G]vych, [e]aleluja, [Cmaj7]alelu-[D]ja.",
+        "[G]On [D\\G]vstal [C\\G]z mŕt[G]vych, [e]Kristus náš Pán, ale[D]lu[G]ja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Ó, Láska, [G\\H]tvoj [C]skončil sa [C\\H]boj, [a7]stratila [D7]smrť svoju [G]moc.",
+        "[B]On znovu [Es]vstal, [B]by kraľo[Es]val, [B]Ježiš, náš [g7]víťazný [a7]Kráľ ([C\\D]víťazný [D]Kráľ)."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Pán nad hriechom, Pán nad smrťou, satan mu padol k nohám.",
+        "Nech pokľakne a každý vyzná: Ježiš je nad všetkým Pán!"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Dnes ráno vstal Ježiš, náš Pán. Kričte, nech každý to vie!",
+        "Vyjdime z tmy a v radosti prinesme obetu chvál."
+      ]
+    }
+  ]
+}

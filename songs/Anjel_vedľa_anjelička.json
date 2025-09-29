@@ -1,0 +1,27 @@
+{
+  "title": "Anjel vedľa anjelička",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Anjel vedľa anjelička, od spevu im žiaria líčka.",
+        "Čože sa to len deje?",
+        "/:Ach, my deti, my to vieme, Božie dieťa kdesi drieme.",
+        "Hľadajte že ho, kde je, hľadajte že ho, kde je.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Betlehem a maštaľôčka, nad ním nebo, hviezdne očká.",
+        "Je to sen, či skutočnosť?",
+        "/:Tu i k veľkým pokoj zletí, šťastní sú dnes ako deti.",
+        "Je tu dieťa, Boží hosť, je tu dieťa, Boží hosť.:/"
+      ]
+    }
+  ]
+}

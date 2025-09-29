@@ -1,0 +1,69 @@
+{
+  "title": "Kto raz stál už tam",
+  "author": "",
+  "categories": ["pôstne"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Kto raz stál už tam, kde [D]víťaz stáva,",
+        "[e]no svoj vavrín [C]už stratil,",
+        "k [G]tomu Panna hľ[D]adí a [C]vraví ([G] vraví).",
+        "[G]Každú starosť vezme za[D]ňho, kto už [e]na kríži bol [C]pribitý.",
+        "[G]Ten žiaľ na Gol[D]gote sám zho[C]rí (sám zho[G]rí) ."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+       "[G]Žiaľ zho[e]rí, žiaľ zho[D]rí, žiaľ zho[C]rí, žiaľ zho[G]rí, ten žiaľ na Gol[D]gote sám zho[C]rí (sám zho[G]rí)."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď na viečka ťažké smrť sa vkráda, to je čas, keď naplní",
+        "Matka príkaz dávny: [:Hľa, tvoj syn:].",
+        "V dobách ťažkých ľudstvo stráda, preto",
+        "ťažko dýcha a hreší.",
+        "Z kríža Boh ti vraví: [:Hľa, tvoj syn:]."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Hľa, tvoj syn (4x). Z kríža Boh ti vraví: [:Hľa, tvoj syn:]."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A keď zlo už stále viac sa vzmáha, čas zlý telá zohýba,",
+        "kŕč ten vzlyku Matky [:dá nám síl:].",
+        "Aj keď sám sa v hriechu často zrútim,",
+        "na cestu späť sa vrátim, ak len slza Matky [:dá mi síl:]." 
+           ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "Dá nám síl (4x). Ak len slza Matky [:dá mi síl:]."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Preto v týchto slovách nech sa vraví: táto chvíľa je dobrá,",
+        "keď nám Panna vraví [:to som ja:].",
+        "Preto odteraz už navždy vieme, kto vždy plače za teba,",
+        "meno má tak prosté [:Mária:]."
+            ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mária (4x). Meno má tak prosté: [:Mária:]."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "title": "Otče Ťa chválim",
+  "author": "Donna Adkins",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Otče Ťa [d7]chválim [G]a vzývam Tvoje [C]meno,",
+        "[a7]slávny si môj [F]Boh, Ty si môj [G4]Pán[G7]."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Slávny si môj [F]Boh, [E]slávny si môj [a]Boh,",
+        "[F]slávny si môj [G]Boh, Ty si môj [C]Kráľ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš, Ťa chválim..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Duchu, Ťa chválim..."
+      ]
+    }
+  ]
+}

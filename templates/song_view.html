@@ -1,0 +1,1395 @@
+{% extends "layout.html" %}
+{% block content %}
+{% set part_types = ["verse", "chorus", "bridge", "intro", "interlude", "coda", "outro", "prechorus", "comment"] %}
+{% set options = [
+      "stále omšové spevy",
+      "úvod",
+      "medzispevy (žalmy; aleluja)",
+      "obetovanie",
+      "prijímanie",
+      "poďakovanie po prijímaní",
+      "záver",
+      "adorácia",
+      "advent",
+      "vianoce",
+      "pôst",
+      "veľká noc",
+      "cez rok",
+      "k Duchu Svätému",
+      "mariánske",
+      "k svätcom",
+      "detské",
+      "iné",
+      "liturgia hodín",
+      "sobášne",
+      "Taizé",
+      "krížová cesta",
+      "nevhodné"
+    ] %}
+
+<!-- Header Section -->
+<div class="song-view-header mb-4">
+  <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
+    <!-- Navigation Buttons -->
+    <div class="d-flex align-items-center gap-2 flex-wrap order-2 order-md-1">
+      <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm btn-md-normal">
+        <i class="bi bi-arrow-left me-1"></i>
+        <span class="d-none d-sm-inline">Späť na zoznam</span>
+        <span class="d-sm-none">Späť</span>
+      </a>
+      <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-primary btn-sm btn-md-normal">
+        <i class="bi bi-pencil-square me-1"></i>
+        <span class="d-none d-sm-inline">Upraviť pieseň</span>
+        <span class="d-sm-none">Upraviť</span>
+      </a>
+    </div>
+    
+    <!-- Song Status Badges -->
+    <div class="d-flex gap-1 flex-wrap justify-content-center order-1 order-md-2 w-100 w-md-auto mb-2 mb-md-0">
+      {% if song.printed %}
+      <span class="badge bg-success px-2 py-1 fs-7 fs-md-6">
+        <i class="bi bi-printer-fill me-1"></i>
+        <span class="d-none d-sm-inline">Vytlačené</span>
+        <span class="d-sm-none">✓</span>
+      </span>
+      {% else %}
+      <span class="badge bg-warning px-2 py-1 fs-7 fs-md-6">
+        <i class="bi bi-printer me-1"></i>
+        <span class="d-none d-sm-inline">Nevytlačené</span>
+        <span class="d-sm-none">⚠</span>
+      </span>
+      {% endif %}
+      
+      {% if song.admin_checked %}
+      <span class="badge bg-success px-2 py-1 fs-7 fs-md-6">
+        <i class="bi bi-check-circle-fill me-1"></i>
+        <span class="d-none d-sm-inline">Skontrolované</span>
+        <span class="d-sm-none">✓</span>
+      </span>
+      {% else %}
+      <span class="badge bg-warning px-2 py-1 fs-7 fs-md-6">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        <span class="d-none d-sm-inline">Čaká na kontrolu</span>
+        <span class="d-sm-none">⏳</span>
+      </span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Song Basic Information -->
+<div class="song-info-section card border-0 shadow-lg rounded-4 mb-4" 
+     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  
+  <div class="card-header border-0 text-white p-4" style="background: transparent;">
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <h2 class="mb-1 fw-bold">
+          <span class="badge bg-white text-primary me-2 fs-6">{{ song.song_id }}</span>
+          {{ song.title }}
+        </h2>
+        {% if song.version_name %}
+        <h5 class="mb-0 opacity-75">{{ song.version_name }}</h5>
+        {% endif %}
+      </div>
+      <div class="song-id-large">
+        <span class="display-4 fw-bold opacity-25">{{ song.song_id }}</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card-body bg-white p-4">
+    
+    <!-- Authors Section -->
+    <div class="row mb-4 g-3">
+      <div class="col-md-6 col-12">
+        <div class="info-card p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+          <label class="fw-bold text-muted small mb-1">AUTOR (SLOVENSKEJ VERZIE)</label>
+          <div class="fs-5 fs-sm-6 text-dark text-break">
+            {{ song.author if song.author else "Neznámy" }}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="info-card p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+          <label class="fw-bold text-muted small mb-1">ORIGINÁLNY AUTOR</label>
+          <div class="fs-5 fs-sm-6 text-dark text-break">
+            {{ song.author_original if song.author_original else "Neznámy" }}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Titles Section -->
+    <div class="row mb-4 g-3">
+      <div class="col-md-6 col-12">
+        <div class="info-card p-3 rounded-3" style="background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);">
+          <label class="fw-bold text-muted small mb-1">ORIGINÁLNY NÁZOV</label>
+          <div class="fs-5 fs-sm-6 text-dark text-break">
+            {{ song.title_original if song.title_original else "Rovnaký ako slovenský" }}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="info-card p-3 rounded-3" style="background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%);">
+          <label class="fw-bold text-muted small mb-1">ALTERNATÍVNE NÁZVY</label>
+          <div class="fs-6 fs-sm-7">
+            {% if song.alternative_titles %}
+              {% for alt_title in song.alternative_titles.split(';;') %}
+                {% if alt_title.strip() %}
+                  <span class="badge bg-light text-dark me-1 mb-1 text-wrap">{{ alt_title.strip() }}</span>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              <span class="text-muted fst-italic">Žiadne alternatívne názvy</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Categories Section -->
+    <div class="categories-display mb-4">
+      <label class="fw-bold text-muted small mb-2 d-block">
+        <i class="bi bi-tags-fill text-primary me-1"></i>KATEGÓRIE
+      </label>
+      <div class="categories-container p-3 rounded-3 border" 
+           style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
+        {% if song.categories %}
+          {% for category in song.categories.split(';;') %}
+            {% if category.strip() %}
+              <span class="category-display-badge badge me-2 mb-2" data-category="{{ category.strip() }}">
+                <i class="bi bi-tag me-1"></i>{{ category.strip() }}
+              </span>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <span class="text-muted fst-italic">Žiadne kategórie priradené</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% set file_count = (sheet_pdfs|length) + (mp3s|length) + (midis|length) + (sheet_mscz|length) + (1 if song.pdf_lyrics_path else 0) + (1 if song.pdf_chords_path else 0) %}
+{% if file_count > 0 %}
+<!-- File Management Section (Read-Only) -->
+<div class="file-management-section card border-0 shadow-lg rounded-4 overflow-hidden mb-4" 
+     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  
+  <div class="card-header border-0 text-white p-4" style="background: transparent;">
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <h4 class="mb-1 fw-bold">
+          <i class="bi bi-folder-open me-2"></i>
+          Súbory piesne
+        </h4>
+        <small class="opacity-75">Všetky dostupné súbory pre túto pieseň</small>
+      </div>
+      <div class="file-stats">
+        <span class="badge bg-white text-primary fs-6">
+          <i class="bi bi-files"></i> 
+          {{ file_count }} súborov
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card-body bg-white p-4">
+
+    {% if song.pdf_lyrics_path or song.pdf_chords_path %}
+    <!-- PDF Files (Read-Only) -->
+    <div class="pdf-files-section mb-4">
+      <h5 class="d-flex align-items-center gap-2 mb-3">
+        <span class="badge bg-danger">📄</span>
+        PDF Súbory
+      </h5>
+
+      <!-- Lyrics PDF -->
+      {% if song.pdf_lyrics_path %}
+      <div class="file-card mb-3 p-3 border rounded-3 position-relative" 
+           style="background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%); border-color: #fecaca !important;">
+        
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-3">
+            <div class="file-type-icon p-2 rounded-circle" style="background-color: rgba(220, 38, 38, 0.1);">
+              <i class="bi bi-file-text fs-4" style="color: #dc2626;"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark">PDF (Lyrics)</div>
+              <small class="text-muted">Slová bez akordov</small>
+            </div>
+          </div>
+          
+          <div class="file-actions">
+            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}" 
+               class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" target="_blank">
+              <i class="bi bi-download"></i>
+              Stiahnuť
+            </a>
+          </div>
+        </div>
+        
+        <div class="print-info mt-3 p-2 rounded-2 bg-light bg-opacity-50">
+          <small class="text-muted d-block">
+            <i class="bi bi-printer text-primary me-1"></i>
+            <strong>Tlač:</strong> Obojstranne, 
+            <span class="fw-bold text-primary">10× (normálne)</span> alebo 
+            <span class="fw-bold">3× (neznáme piesne)</span>
+          </small>
+        </div>
+        
+        <div class="position-absolute top-0 end-0 p-2">
+          <span class="badge bg-success"><i class="bi bi-check-circle"></i></span>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Lyrics + Chords PDF -->
+      {% if song.pdf_chords_path %}
+      <div class="file-card mb-3 p-3 border rounded-3 position-relative" 
+           style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #bbf7d0 !important;">
+        
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-3">
+            <div class="file-type-icon p-2 rounded-circle" style="background-color: rgba(34, 197, 94, 0.1);">
+              <i class="bi bi-file-music fs-4" style="color: #22c55e;"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark">PDF (Chords)</div>
+              <small class="text-muted">Slová s akordami</small>
+            </div>
+          </div>
+          
+          <div class="file-actions">
+            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}" 
+               class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" target="_blank">
+              <i class="bi bi-download"></i>
+              Stiahnuť
+            </a>
+          </div>
+        </div>
+        
+        <div class="print-info mt-3 p-2 rounded-2 bg-light bg-opacity-50">
+          <small class="d-block">
+            <i class="bi bi-printer text-success me-1"></i>
+            <strong class="text-success">Tlač:</strong> 
+            <span class="fw-bold text-success">5× (normálne)</span> alebo 
+            <span class="fw-bold">2× (neznáme)</span>
+          </small>
+          <div class="mt-1">
+            <small class="text-danger">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              <strong>Pozor:</strong> Bez akordov = NETLAČ! • Nie obojstranne!
+            </small>
+          </div>
+        </div>
+        
+        <div class="position-absolute top-0 end-0 p-2">
+          <span class="badge bg-success"><i class="bi bi-check-circle"></i></span>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if mp3s %}
+    <!-- MP3 Files (Read-Only) -->
+    <div class="mp3-files-section mb-4">
+      <h5 class="d-flex align-items-center gap-2 mb-3">
+        <span class="badge bg-success">🎵</span>
+        MP3 Súbory
+      </h5>
+      <div class="audio-files-container">
+        <div class="mb-3">
+          <span class="badge bg-success">{{ mp3s|length }}</span>
+          <small class="text-muted">audio súborov</small>
+        </div>
+        
+        {% for path in mp3s %}
+        <div class="audio-card mb-2 p-3 border rounded-3 position-relative" 
+             style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #bbf7d0 !important;">
+          
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <div class="audio-icon p-2 rounded-circle" style="background-color: rgba(34, 197, 94, 0.1);">
+                <i class="bi bi-file-earmark-music fs-4" style="color: #22c55e;"></i>
+              </div>
+              <div>
+                <div class="fw-bold text-dark">{{ path.split('/')[-1] }}</div>
+                <small class="text-muted">
+                  <i class="bi bi-speaker"></i> MP3 Audio súbor
+                </small>
+              </div>
+            </div>
+            
+            <div class="audio-actions">
+              <a href="{{ path | presigned_url }}" 
+                 class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" 
+                 target="_blank" title="Prehrať/Stiahnuť">
+                <i class="bi bi-play-circle"></i>
+                Prehrať
+              </a>
+            </div>
+          </div>
+          
+          <div class="mt-2 px-2">
+            <div class="audio-viz d-flex align-items-end gap-1" style="height: 20px;">
+              {% for i in range(20) %}
+              <div class="viz-bar bg-success bg-opacity-30 rounded-top" 
+                   style="width: 3px; height: {{ (loop.index % 4 + 1) * 5 }}px;"></div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if midis %}
+    <!-- MIDI Files (Read-Only) -->
+    <div class="midi-files-section mb-4">
+      <h5 class="d-flex align-items-center gap-2 mb-3">
+        <span class="badge bg-warning">🎹</span>
+        MIDI Súbory
+      </h5>
+      <div class="midi-files-container">
+        <div class="mb-3">
+          <span class="badge bg-warning">{{ midis|length }}</span>
+          <small class="text-muted">MIDI súborov</small>
+        </div>
+        
+        {% for path in midis %}
+        <div class="midi-card mb-2 p-3 border rounded-3 position-relative" 
+             style="background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); border-color: #fde68a !important;">
+          
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <div class="midi-icon p-2 rounded-circle" style="background-color: rgba(245, 158, 11, 0.1);">
+                <i class="bi bi-file-earmark-binary fs-4" style="color: #f59e0b;"></i>
+              </div>
+              <div>
+                <div class="fw-bold text-dark">{{ path.split('/')[-1] }}</div>
+                <small class="text-muted">
+                  <i class="bi bi-keyboard"></i> MIDI sekvencia
+                </small>
+              </div>
+            </div>
+            
+            <div class="midi-actions">
+              <a href="{{ path | presigned_url }}" 
+                 class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1" 
+                 target="_blank" title="Stiahnuť MIDI súbor">
+                <i class="bi bi-download"></i>
+                Stiahnuť
+              </a>
+            </div>
+          </div>
+          
+          <div class="mt-2 px-2">
+            <div class="midi-tracks d-flex gap-1" style="height: 16px;">
+              {% for i in range(8) %}
+              <div class="track-line bg-warning bg-opacity-40 rounded" 
+                   style="flex: 1; height: {{ (loop.index % 3 + 1) * 4 }}px; margin-top: auto;"></div>
+              {% endfor %}
+            </div>
+            <small class="text-muted">
+              <i class="bi bi-info-circle me-1"></i>
+              Inštrumentálny záznam pre playback
+            </small>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if sheet_pdfs %}
+    <!-- Sheet PDF Files (Read-Only) -->
+    <div class="mb-4">
+      <h5 class="d-flex align-items-center gap-2 mb-3">
+        <span class="badge bg-primary">📋</span>
+        Noty (PDF Files)
+      </h5>
+      <div class="sheets-container">
+        <div class="mb-3">
+          <span class="badge bg-primary">{{ sheet_pdfs|length }}</span>
+          <small class="text-muted">súborov nôt</small>
+        </div>
+        
+        {% for path in sheet_pdfs %}
+        <div class="sheet-card mb-3 p-4 border rounded-4 position-relative overflow-hidden" 
+             style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%); 
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+          
+          <div class="d-flex align-items-start justify-content-between mb-3">
+            <div class="file-info d-flex align-items-center gap-3">
+              <div class="file-icon p-2 rounded-circle bg-primary bg-opacity-10">
+                <i class="bi bi-file-earmark-music fs-4 text-primary"></i>
+              </div>
+              <div>
+                <div class="fw-bold text-primary fs-6">{{ path.split('/')[-1] }}</div>
+                <small class="text-muted">
+                  <i class="bi bi-file-earmark"></i> PDF súbor nôt
+                </small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="download-actions">
+            <div class="mb-2">
+              <small class="text-muted fw-semibold">
+                <i class="bi bi-download"></i> Možnosti stiahnutia:
+              </small>
+            </div>
+
+            <div class="btn-group dropup">
+              <button type="button" class="btn btn-primary btn-sm dropdown-toggle d-flex align-items-center gap-1" 
+                      data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
+                <i class="bi bi-download"></i>
+                Stiahnuť noty
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" 
+                     href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}" 
+                     target="_blank" title="Pôvodný súbor bez pečiatky">
+                    <i class="bi bi-file-earmark-pdf text-primary me-2"></i>
+                    Originál
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" 
+                     href="{{ url_for('download_stamped_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}" 
+                     target="_blank" title="Súbor s pečiatkou">
+                    <i class="bi bi-file-earmark-check text-success me-2"></i>
+                    S pečiatkou
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" 
+                     href="{{ url_for('download_blank_stamped', song_id=song.id) }}" 
+                     target="_blank" title="Prázdna stránka len s pečiatkou">
+                    <i class="bi bi-file-earmark-blank text-info me-2"></i>
+                    Prázdna s pečiatkou
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="info-panel mt-3 p-2 rounded-2 bg-light bg-opacity-50">
+            <small class="text-muted d-block">
+              <i class="bi bi-lightbulb text-warning me-1"></i>
+              <strong>Info:</strong> Originál = bez zmien, S pečiatkou = s ID piesne, Prázdna = len pečiatka
+            </small>
+          </div>
+          
+          <div class="position-absolute top-0 end-0 p-2">
+            <div class="bg-primary bg-opacity-10 rounded-circle p-1" style="width: 40px; height: 40px;">
+              <i class="bi bi-music-note-beamed text-primary d-flex align-items-center justify-content-center h-100"></i>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if sheet_mscz %}
+    <!-- Sheet MSCZ Files (Read-Only) -->
+    <div class="mscz-files-section mb-4">
+      <h5 class="d-flex align-items-center gap-2 mb-3">
+        <span class="badge bg-info">🎼</span>
+        Noty (MuseScore)
+      </h5>
+      <div class="mscz-files-container">
+        <div class="mb-3">
+          <span class="badge bg-info">{{ sheet_mscz|length }}</span>
+          <small class="text-muted">MuseScore súborov</small>
+        </div>
+        
+        {% for path in sheet_mscz %}
+        <div class="mscz-card mb-2 p-3 border rounded-3 position-relative" 
+             style="background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%); border-color: #bae6fd !important;">
+          
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <div class="mscz-icon p-2 rounded-circle" style="background-color: rgba(6, 182, 212, 0.1);">
+                <i class="bi bi-file-earmark-music fs-4" style="color: #06b6d4;"></i>
+              </div>
+              <div>
+                <div class="fw-bold text-dark">{{ path.split('/')[-1] }}</div>
+                <small class="text-muted">
+                  <i class="bi bi-app"></i> MuseScore súbor
+                </small>
+              </div>
+            </div>
+            
+            <div class="mscz-actions">
+              <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + path.split('/')[-1]) }}" 
+                 class="btn btn-outline-info btn-sm d-flex align-items-center gap-1" 
+                 target="_blank" title="Stiahnuť MuseScore súbor">
+                <i class="bi bi-download"></i>
+                Stiahnuť
+              </a>
+            </div>
+          </div>
+          
+          <div class="mt-2 px-2">
+            <div class="staff-lines" style="position: relative; height: 20px;">
+              {% for i in range(5) %}
+              <div style="position: absolute; top: {{ i * 4 }}px; left: 0; right: 0; height: 1px; background: #06b6d4; opacity: 0.3;"></div>
+              {% endfor %}
+              <div class="d-flex justify-content-start gap-3 mt-1">
+                <span style="color: #06b6d4; font-size: 12px;">♪</span>
+                <span style="color: #06b6d4; font-size: 10px;">♫</span>
+                <span style="color: #06b6d4; font-size: 12px;">♪</span>
+              </div>
+            </div>
+            <small class="text-muted">
+              <i class="bi bi-info-circle me-1"></i>
+              Upraviteľný v MuseScore
+            </small>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Song Parts Section (Read-Only) -->
+<div class="parts-section card border-0 shadow-lg rounded-4 p-4 mb-4" 
+     style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h4 class="text-white fw-bold mb-1">
+        <i class="bi bi-music-note-list me-2"></i>
+        Časti piesne
+      </h4>
+      <small class="d-block text-white opacity-75">Zoradené časti piesne s textom a akordami</small>
+    </div>
+    <span class="badge bg-white text-primary fs-6">
+      {{ data|length }} častí
+    </span>
+  </div>
+</div>
+
+<div id="parts-display" class="mb-4">
+  {% if data %}
+    {% for part in data %}
+    <div class="card p-4 mb-3 part-display part-{{ part.type | lower | replace(' ', '-') }}" 
+         data-part-index="{{ loop.index0 }}">
+      
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="part-type-display">
+          <span class="badge fs-6 px-3 py-2 part-type-badge">
+            <i class="bi bi-music-note me-1"></i>
+            {{ part.type }}
+          </span>
+          <small class="text-muted ms-2">Časť {{ loop.index }}</small>
+        </div>
+        
+        <div class="part-position text-muted">
+          <small><i class="bi bi-list-ol me-1"></i>{{ loop.index }}/{{ data|length }}</small>
+        </div>
+      </div>
+
+      <!-- Song Text with Chords -->
+      <div class="part-content mb-3">
+        <div class="rendered-block p-3 rounded-3" 
+             style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); font-family: 'Courier New', monospace; line-height: 1.8;">
+          {% for line in part.lines %}
+            <div class="song-line">{{ line | replace_chords | safe }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      
+      <!-- Raw Text Display (Collapsed) -->
+      <div class="raw-text-section">
+        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#raw-text-{{ loop.index0 }}" aria-expanded="false">
+          <i class="bi bi-code-square me-1"></i>Zobraziť surový text
+        </button>
+        
+        <div class="collapse mt-2" id="raw-text-{{ loop.index0 }}">
+          <div class="card card-body bg-light">
+            <pre class="mb-0 small text-muted">{% for line in part.lines %}{{ line }}
+{% endfor %}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="no-parts-placeholder text-center py-5">
+      <i class="bi bi-music-note-list fs-1 text-muted"></i>
+      <h5 class="text-muted mt-3">Žiadne časti piesne</h5>
+      <p class="text-muted">Text piesne ešte nebol zadaný alebo spracovaný.</p>
+    </div>
+  {% endif %}
+</div>
+
+<!-- Action Buttons -->
+<div class="action-buttons text-center mt-5 mb-4">
+  <div class="d-flex gap-3 justify-content-center flex-wrap">
+    <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill shadow-lg">
+      <i class="bi bi-pencil-square me-2"></i>
+      Upraviť pieseň
+    </a>
+    
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg px-4 py-3 rounded-pill">
+      <i class="bi bi-arrow-left me-2"></i>
+      Späť na zoznam
+    </a>
+  </div>
+  
+  <div class="mt-3">
+    <small class="text-muted">
+      <i class="bi bi-info-circle me-1"></i>
+      Toto je iba náhľad. Pre úpravy použite tlačidlo "Upraviť pieseň".
+    </small>
+  </div>
+</div>
+
+<style>
+/* Clip long MP3 and file names */
+.audio-card .fw-bold,
+.sheet-card .fw-bold,
+.midi-card .fw-bold,
+.file-card .fw-bold {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
+/* For mobile, make it even more compact */
+@media (max-width: 991px) {
+    .audio-card .fw-bold,
+    .sheet-card .fw-bold,
+    .midi-card .fw-bold,
+    .file-card .fw-bold {
+        max-width: 200px;
+    }
+}
+
+/* Mobile-specific utility classes */
+.btn-md-normal {
+    font-size: 0.875rem;
+}
+
+.fs-7 {
+    font-size: 0.75rem;
+}
+
+.fs-sm-6 {
+    font-size: 1rem;
+}
+
+.fs-sm-7 {
+    font-size: 0.8rem;
+}
+
+.text-break {
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.min-w-0 {
+    min-width: 0;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+/* Enhanced category display badges with same styling as filter buttons */
+.category-display-badge {
+    font-size: 0.8rem;
+    padding: 0.5em 0.75em;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid #e9ecef;
+    color: #495057;
+    transition: all 0.3s ease;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Specific category colors for display badges (matching filter buttons) */
+.category-display-badge[data-category*="advent"] {
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.15) 0%, rgba(243, 229, 245, 0.3) 100%);
+    border-color: #9c27b0;
+    color: #7b1fa2;
+}
+
+.category-display-badge[data-category*="vianoce"] {
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.2) 0%, rgba(34, 139, 34, 0.2) 100%);
+    border-color: #dc143c;
+    color: #8b0000;
+}
+
+.category-display-badge[data-category*="pôst"] {
+    background: linear-gradient(135deg, rgba(74, 20, 140, 0.2) 0%, rgba(98, 0, 234, 0.15) 50%, rgba(55, 0, 179, 0.25) 100%);
+    border-color: #4a148c;
+    color: #4a148c;
+}
+
+.category-display-badge[data-category*="veľká noc"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.3) 50%, rgba(248, 249, 250, 0.8) 100%);
+    border-color: #ffd700;
+    color: #495057;
+}
+
+.category-display-badge[data-category*="cez rok"] {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(232, 245, 233, 0.3) 100%);
+    border-color: #4caf50;
+    color: #388e3c;
+}
+
+.category-display-badge[data-category*="mariánske"] {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.15) 0%, rgba(227, 242, 253, 0.3) 100%);
+    border-color: #2196f3;
+    color: #1976d2;
+}
+
+.category-display-badge[data-category*="adorácia"] {
+    background: linear-gradient(135deg, rgba(0, 0, 128, 0.2) 0%, rgba(25, 25, 112, 0.25) 50%, rgba(0, 0, 139, 0.2) 100%);
+    border-color: #000080;
+    color: #000080;
+}
+
+.category-display-badge[data-category*="Taizé"] {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 243, 224, 0.3) 100%);
+    border-color: #ff9800;
+    color: #f57c00;
+}
+
+.category-display-badge[data-category*="krížová cesta"] {
+    background: linear-gradient(135deg, rgba(56, 17, 119, 0.25) 0%, rgba(74, 20, 140, 0.2) 50%, rgba(33, 0, 93, 0.3) 100%);
+    border-color: #381777;
+    color: #381777;
+}
+
+/* Enhanced part display cards */
+.part-display {
+    border-left: 5px solid transparent;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.part-display:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+/* Part type specific styling (same as edit view) */
+.part-verse {
+    border-left-color: #3e5ed4;
+    background: linear-gradient(135deg, rgba(62, 94, 212, 0.1) 0%, rgba(62, 94, 212, 0.05) 100%);
+    border: 1px solid rgba(62, 94, 212, 0.2);
+}
+
+.part-verse .part-type-badge {
+    background-color: #3e5ed4;
+    color: white;
+}
+
+.part-chorus {
+    border-left-color: #cf2222;
+    background: linear-gradient(135deg, rgba(207, 34, 34, 0.15) 0%, rgba(207, 34, 34, 0.08) 100%);
+    border: 1px solid rgba(207, 34, 34, 0.2);
+    font-weight: bold;
+}
+
+.part-chorus .part-type-badge {
+    background-color: #cf2222;
+    color: white;
+}
+
+.part-bridge {
+    border-left-color: #20c997;
+    background: linear-gradient(135deg, rgba(32, 201, 151, 0.15) 0%, rgba(32, 201, 151, 0.08) 100%);
+    border: 1px solid rgba(32, 201, 151, 0.2);
+    font-style: italic;
+}
+
+.part-bridge .part-type-badge {
+    background-color: #20c997;
+    color: white;
+}
+
+.part-intro {
+    border-left-color: #ffc107;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 193, 7, 0.08) 100%);
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    font-style: italic;
+}
+
+.part-intro .part-type-badge {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.part-outro {
+    border-left-color: #fd7e14;
+    background: linear-gradient(135deg, rgba(253, 126, 20, 0.15) 0%, rgba(253, 126, 20, 0.08) 100%);
+    border: 1px solid rgba(253, 126, 20, 0.2);
+}
+
+.part-outro .part-type-badge {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.part-coda {
+    border-left-color: #44c142;
+    background: linear-gradient(135deg, rgba(68, 193, 66, 0.15) 0%, rgba(68, 193, 66, 0.08) 100%);
+    border: 1px solid rgba(68, 193, 66, 0.2);
+    font-style: italic;
+}
+
+.part-coda .part-type-badge {
+    background-color: #44c142;
+    color: white;
+}
+
+.part-interlude {
+    border-left-color: #6610f2;
+    background: linear-gradient(135deg, rgba(102, 16, 242, 0.15) 0%, rgba(102, 16, 242, 0.08) 100%);
+    border: 1px solid rgba(102, 16, 242, 0.2);
+}
+
+.part-interlude .part-type-badge {
+    background-color: #6610f2;
+    color: white;
+}
+
+.part-prechorus {
+    border-left-color: #d63384;
+    background: linear-gradient(135deg, rgba(214, 51, 132, 0.15) 0%, rgba(214, 51, 132, 0.08) 100%);
+    border: 1px solid rgba(214, 51, 132, 0.2);
+}
+
+.part-prechorus .part-type-badge {
+    background-color: #d63384;
+    color: white;
+}
+
+.part-comment {
+    border-left-color: #6c757d;
+    background: linear-gradient(135deg, rgba(108, 117, 125, 0.15) 0%, rgba(108, 117, 125, 0.08) 100%);
+    border: 1px solid rgba(108, 117, 125, 0.2);
+    font-style: italic;
+}
+
+.part-comment .part-type-badge {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Chord styling */
+.rendered-block sup {
+    color: #ff6b35 !important;
+    font-weight: bold;
+    font-size: 1.2em !important;
+}
+
+/* Info cards styling */
+.info-card {
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* File cards styling */
+.file-card, .audio-card, .midi-card, .sheet-card, .mscz-card {
+    transition: all 0.3s ease;
+}
+
+.file-card:hover, .audio-card:hover, .midi-card:hover, .sheet-card:hover, .mscz-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+}
+
+/* Enhanced buttons */
+.btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Enhanced dropdown styling */
+.download-actions .dropdown-menu {
+    min-width: 180px !important;
+    width: 180px !important;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 0.25rem 0;
+    font-size: 0.875rem;
+}
+
+.download-actions .dropdown-header {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #495057;
+    padding: 0.5rem 1rem 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.download-actions .dropdown-item {
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    margin: 0.125rem 0.5rem;
+}
+
+.download-actions .dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(2px);
+}
+
+.download-actions .dropdown-item:active {
+    background-color: #e9ecef;
+}
+
+.download-actions .dropdown-divider {
+    margin: 0.5rem 0;
+    border-color: #dee2e6;
+}
+
+/* No files placeholder */
+.no-files-placeholder, .no-parts-placeholder {
+    border: 2px dashed #dee2e6;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+/* Page entrance animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.song-info-section {
+    animation: slideInUp 0.6s ease-out;
+}
+
+.file-management-section {
+    animation: slideInUp 0.8s ease-out;
+}
+
+.parts-section {
+    animation: slideInUp 1s ease-out;
+}
+
+.part-display {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.part-display:nth-child(even) {
+    animation-delay: 0.1s;
+}
+
+.part-display:nth-child(odd) {
+    animation-delay: 0.05s;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    /* Header improvements */
+    .song-view-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .song-view-header .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .song-view-header .d-flex:first-child {
+        flex-direction: column-reverse;
+    }
+    
+    /* Song info section mobile */
+    .song-info-section .card-header {
+        padding: 1.5rem !important;
+    }
+    
+    .song-info-section .card-header .d-flex {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .song-info-section h2 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+    
+    .song-id-large {
+        display: none; /* Hide decorative large ID on mobile */
+    }
+    
+    /* Authors and titles - stack vertically */
+    .song-info-section .row .col-md-6 {
+        margin-bottom: 1rem;
+    }
+    
+    .info-card {
+        padding: 1rem !important;
+        margin-bottom: 0.75rem;
+    }
+    
+    .info-card .fs-5 {
+        font-size: 1.1rem !important;
+    }
+    
+    /* Categories display mobile */
+    .categories-container {
+        padding: 1rem !important;
+    }
+    
+    .category-display-badge {
+        font-size: 0.75rem;
+        padding: 0.4em 0.6em;
+        margin: 0.2rem;
+    }
+    
+    /* File management mobile */
+    .file-management-section .card-header {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .file-management-section .card-header .d-flex {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .file-management-section .card-body {
+        padding: 1rem !important;
+    }
+    
+    /* File cards mobile */
+    .file-card, .audio-card, .midi-card, .sheet-card, .mscz-card {
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .file-card .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch !important;
+    }
+    
+    .file-info {
+        text-align: center;
+    }
+    
+    .file-actions, .audio-actions, .midi-actions, .mscz-actions {
+        width: 100%;
+        justify-content: center !important;
+    }
+    
+    .download-actions .btn-group {
+        width: 100%;
+    }
+    
+    .download-actions .btn {
+        width: 100%;
+        justify-content: center !important;
+    }
+    
+    /* Fix dropdown cutoff issues */
+    .btn-group {
+        position: static !important;
+    }
+    
+    .dropdown-menu {
+        position: absolute !important;
+        z-index: 1055 !important;
+    }
+    
+    /* Ensure all containers allow dropdown overflow */
+    .card, .card-body, .row, .col-12, .d-flex, .mb-3, .download-actions {
+        overflow: visible !important;
+    }
+    
+    /* Dropdown sizing and spacing */
+    .download-actions .btn-group .dropdown-menu {
+        min-width: 180px;
+        max-width: none;
+    }
+    
+    /* On mobile, switch to dropdown below */
+    @media (max-width: 768px) {
+        .download-actions .btn-group {
+            position: relative;
+        }
+        .download-actions .btn-group.dropend {
+            /* Remove dropend on mobile, use regular dropdown */
+        }
+    }
+    
+    /* Parts section mobile */
+    .parts-section {
+        padding: 1.5rem !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    .parts-section .d-flex {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .part-display {
+        padding: 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .part-display .d-flex:first-child {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .part-type-badge {
+        align-self: center;
+    }
+    
+    .rendered-block {
+        font-size: 0.9rem;
+        padding: 1rem !important;
+        line-height: 1.6 !important;
+    }
+    
+    /* Raw text collapsible */
+    .raw-text-section {
+        text-align: center;
+    }
+    
+    /* Action buttons mobile */
+    .action-buttons .d-flex {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .btn-lg {
+        width: 100%;
+        max-width: 280px;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    /* Touch-friendly improvements */
+    .btn {
+        min-height: 44px; /* Apple's recommended minimum touch target */
+        padding: 0.5rem 1rem;
+    }
+    
+    .btn-sm {
+        min-height: 38px;
+        padding: 0.375rem 0.75rem;
+    }
+    
+    /* Spacing improvements */
+    .mb-4 {
+        margin-bottom: 2rem !important;
+    }
+    
+    .mb-3 {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    /* Headers mobile */
+    h4 {
+        font-size: 1.3rem;
+    }
+    
+    h5 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+    /* Even more compact */
+    .song-info-section .card-header {
+        padding: 1rem !important;
+    }
+    
+    .song-info-section h2 {
+        font-size: 1.3rem;
+    }
+    
+    .song-info-section h5 {
+        font-size: 1rem;
+    }
+    
+    .info-card {
+        padding: 0.75rem !important;
+    }
+    
+    .file-management-section .card-header {
+        padding: 1rem !important;
+    }
+    
+    .file-card, .audio-card, .midi-card, .sheet-card, .mscz-card {
+        padding: 0.75rem !important;
+    }
+    
+    .part-display {
+        padding: 0.75rem !important;
+    }
+    
+    .rendered-block {
+        font-size: 0.85rem;
+        padding: 0.75rem !important;
+    }
+    
+    .btn-lg {
+        font-size: 0.9rem;
+        padding: 0.625rem 1.25rem;
+    }
+    
+    /* Category badges smaller */
+    .category-display-badge {
+        font-size: 0.7rem;
+        padding: 0.3em 0.5em;
+    }
+    
+    /* Horizontal scroll for very long content */
+    .rendered-block {
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+}
+
+/* Print styles */
+@media print {
+    .song-view-header, .action-buttons {
+        display: none;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        break-inside: avoid;
+    }
+    
+    .part-display {
+        page-break-inside: avoid;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scroll to sections
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Add entrance animations on scroll (for better UX)
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements that should animate on scroll
+    document.querySelectorAll('.part-display, .file-card, .info-card').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+    
+    // Enhanced button click feedback
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 100);
+        });
+    });
+    
+    // Copy to clipboard for raw text
+    document.querySelectorAll('pre').forEach(pre => {
+        pre.addEventListener('click', function() {
+            navigator.clipboard.writeText(this.textContent).then(() => {
+                // Brief visual feedback
+                const originalBg = this.style.backgroundColor;
+                this.style.backgroundColor = '#d4edda';
+                setTimeout(() => {
+                    this.style.backgroundColor = originalBg;
+                }, 300);
+            });
+        });
+        
+        // Add hover hint
+        pre.title = 'Kliknite pre kopírovanie do schránky';
+        pre.style.cursor = 'pointer';
+    });
+});
+</script>
+
+{% endblock %}

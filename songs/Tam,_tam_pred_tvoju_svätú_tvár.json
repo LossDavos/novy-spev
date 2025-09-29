@@ -1,0 +1,53 @@
+{
+  "title": "Tam, tam pred tvoju svätú tvár",
+  "author": "A. Ficiková - Južania",
+  "categories": [
+    "adorácia",
+    "cez rok",
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Tam, tam pred tvoju svätú [a]tvár, kde mi vravíš:",
+        "„Mám ťa [d]rád“, tam sa [G]večer ponáh[C]ľam.",
+        "Tam, keď tam stojím v tichu [a]sám",
+        "a tvoj pokrm prijí[d]mam, tam sa [G]často modlie[C]vam."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[d]Odpusť, že zrádzam [G]tvoje slová,",
+        "[C]odpusť, že nepo[a]dávam pohár,",
+        "[d]odpusť, že som dnes [G]brata ura[C]zil.",
+        "[d]Odpusť, že zabú[G]dam na teba,",
+        "[C]odpusť, že nedú[a]fal som v teba,",
+        "[d]odpusť mi, Pane, [G]lásku never[C]nú."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vďaka, že odpúšťaš mi znova,",
+        "vďaka, že poznám tvoje slová,",
+        "vďaka, že môžem znova začínať.",
+        "Vďaka za bratov a za sestry,",
+        "vďaka, že poznám koniec cesty,",
+        "vďaka, že som sa vôbec narodil."
+
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+
+        "Tam, tam pred tvoju svätú tvár, kde mi vravíš:",
+        "„Mám ťa rád“, tam sa večer ponáhľam.",
+        "Tam, som tak šťastný a nie sám,",
+        "veď k nám všetkým prichádzaš, láskou všetkých objímaš."
+      ]
+    }
+  ]
+}

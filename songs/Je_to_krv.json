@@ -1,0 +1,32 @@
+{
+  "title": "Je to krv",
+  "author": "M. Christ - pr. M. Wiesnerová",
+  "categories": [
+    "prijímanie",
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Je to [A]krv či[c#]stá, svä[f#]tá,",
+        "krv [D]tvoja, čo život nám [E]dá.",
+        "Je to [D]krv, čo oči[E]stí,",
+        "ako [A]sneh bel[c#]ších nás [f#]učiní, posvä[D]tí.[d]",
+        "Je to tvoja [A]krv svä[c#]tá, predi[f#]vná,",
+        "môj [h]Ježiš, si [D]seba [E]za nás [A]dal."
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "Je to [A]krv moc[c#]ná, svä[f#]tá,",
+        "krv [D]tvoja, čo víťazstvo [E]má.",
+        "Je to [D]krv, krv Kristo[E]va,",
+        "ktorej [A]moc nad [c#]zlým sa [f#]skrýva, víťa[D]zí.[d]",
+        "Je to tvoja [A]krv mo[c#]cná, predi[f#]vná,",
+        "môj [h]Ježiš, si [D]seba [E]za nás [A]dal."
+      ]
+    }
+  ]
+}

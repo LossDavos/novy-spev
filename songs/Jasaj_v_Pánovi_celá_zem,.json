@@ -1,0 +1,41 @@
+{
+  "title": "Jasaj v Pánovi celá zem,",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[: [D]Jasaj v Pánovi [G]celá [D]zem, [G]toto je veľký [A]Hospodinov [D]deň.:]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[: [D]Jasaj (jasaj, jasaj) v Páno[G]vi (v Páno[(A)]vi) :]."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Chváľme Pána - On je prítomný,",
+        "on je našich chvál hodný. :]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Toto je deň, ktorý dal nám Pán",
+        "radujme sa, zaznej pieseň chvál. :]"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "[D]Jasaj v Pánovi [C]celá [D]zem"
+      ]
+    }
+  ]
+}

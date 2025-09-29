@@ -1,0 +1,55 @@
+{
+  "title": "Lásky málo je v nás",
+  "author": "Dominik (Ty a Boží svet)",
+  "categories": ["pôstne"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Nezmys[a]lom pre jedných, bláznovs[d]tvom pre iných,",
+        "často [E]stal sa Ježišov [a]kríž.",
+        "Jeho [a]tvár je smutná, oči [d]sĺz plné má,",
+        "lebo [E]ja sa tou cestou obávam [a]ísť."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Za nás [d]hriešnych šiel Pán, by [a]svoj život dal,",
+        "cestu [E]útrap znášal kvôli [a]nám.[A]",
+        "Lásky [d]málo je v nás, no [a]Pán nás má rád,",
+        "obeť [E]lásky na kríži je pribi[a]tá."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Akým [a]som člove[E]kom, viem [d]iba začí[a]nať,",
+        "stále [C]padám do [G]tých istých [a]chýb.",
+        "Dôve[a]ra slabá [E]je,  povrch[d]nosť sužu[a]je,",
+        "aj ta[C]kého ma [G]Ty však máš [a]rád.",
+        "O prav[a]de nevravím, Tvojej [d]lásky sa bojím",
+        "a [E]nedôverujem Tvojmu [a]slovu.",
+        "Kresťa[a]nom sa nazý[E]vam, no eš[d]te nie som [a]ním,",
+        "preto [E]prosím :\"Odpusť [a]mi !\""
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Živo[a]tom chcel som ísť [E]sám, bez [d]Teba sa to [a]nedá,",
+        "nemám [C]už síl a [G]tak Ťa pro[a]sím:",
+        "daj, nech [a]som ochot[E]ný vziať na [d]seba ten svoj [a]kríž,",
+        "ktorý [C]určíš mi [G]z lásky Ty [a]sám."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Ježiš, [d]s krížom šiel sám,",
+        "tam [a]na miesto rán,",
+        "aby [E]spásu dal všetkým [a]nám."
+      ]
+    }
+  ]
+}

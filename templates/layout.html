@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+ <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            line-height: 1.7;
+        }
+
+        /* Mobile responsive design - MUCH BIGGER fonts */
+        @media (max-width: 991px) {
+            body {
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 1rem !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                font-size: 1.6rem !important;
+            }
+            
+            body.container {
+                max-width: none !important;
+                padding: 1rem !important;
+            }
+            
+            /* MASSIVE headings for mobile */
+            h1, h2, h3, h4, h5, h6 {
+                font-size: 2.5rem !important;
+                font-weight: 800 !important;
+                line-height: 1.2 !important;
+            }
+            
+            /* Large buttons for touch */
+            .btn {
+                font-size: 1.5rem !important;
+                padding: 1.2rem 1.8rem !important;
+                min-height: 60px !important;
+                font-weight: 600 !important;
+            }
+            
+            /* Big form controls */
+            .form-control, .form-select, input, textarea {
+                font-size: 1.4rem !important;
+                padding: 1rem !important;
+                min-height: 55px !important;
+            }
+            
+            /* Larger labels and text */
+            label, .form-label {
+                font-size: 1.3rem !important;
+                font-weight: 600 !important;
+            }
+            
+            /* Bigger badges and small elements */
+            .badge {
+                font-size: 1.1rem !important;
+                padding: 0.6rem 1rem !important;
+            }
+            
+            /* Card and content styling */
+            .card {
+                overflow: visible !important;
+                font-size: 1.4rem !important;
+            }
+            
+            .card-body {
+                padding: 1.5rem !important;
+            }
+            
+            /* Links and general text */
+            a {
+                font-size: 1.3rem !important;
+            }
+            
+            /* Lists and other text elements */
+            ul, ol, p, div {
+                font-size: 1.4rem !important;
+                line-height: 1.4 !important;
+            }
+            
+            /* Clip long filenames with ellipsis */
+            .dropdown-item,
+            .dropdown-header,
+            .file-name,
+            a[href*=".pdf"],
+            a[href*=".mp3"],
+            a[href*=".tex"] {
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                max-width: 280px !important;
+            }
+            
+            /* Specifically for dropdown menus */
+            .dropdown-menu {
+                max-width: 300px !important;
+            }
+            
+            .dropdown-menu .dropdown-item {
+                max-width: 260px !important;
+                display: block !important;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .intro {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .steps {
+            counter-reset: step-counter;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .step {
+            background: white;
+            padding: 20px 25px 20px 70px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .step:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .step:nth-child(2n)::before {
+            background: var(--secondary);
+        }
+
+        .step:nth-child(3n)::before {
+            background: var(--accent);
+        }
+
+        .btn-demo {
+            pointer-events: none;
+            margin: 0 5px;
+            font-size: 0.9rem;
+            padding: 5px 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .highlight {
+            background-color: rgba(243, 156, 18, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-style: italic;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .emoji {
+            font-size: 1.3rem;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+            .song-table {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border-radius: 12px;
+        background: white;
+    }
+
+    .song-table thead th {
+        background:  #2c3e50 ;
+        color: white;
+        font-weight: 600;
+        padding: 16px 12px;
+        text-align: left;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .song-table tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .song-table tbody tr:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .song-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .song-table tbody tr:nth-child(even):hover {
+        background-color: #f1f3f5;
+    }
+
+    .song-table td {
+        padding: 14px 12px;
+        vertical-align: middle;
+        color: #333;
+    }
+
+    .song-table .status-icon {
+        font-size: 1.2rem;
+        text-align: center;
+        display: block;
+    }
+
+    .song-table .status-true {
+        color: #2ecc71;
+    }
+
+    .song-table .status-false {
+        color: #e74c3c;
+    }
+
+    .song-table .actions {
+        white-space: nowrap;
+    }
+
+    .song-table .btn {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .song-table .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .song-table .btn-info {
+        background-color: #3498db;
+        border-color: #3498db;
+    }
+
+    .song-table .btn-warning {
+        background-color: #f39c12;
+        border-color: #f39c12;
+        color: white;
+    }
+
+    .song-table .btn-primary {
+        background-color: #9b59b6;
+        border-color: #9b59b6;
+    }
+
+    .song-table .btn-sm {
+        min-width: 100px;
+    }
+    </style>
+</head>
+<body class="container py-4">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-info">{{ messages[0] }}</div>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+  "title": "Márnotratný syn",
+  "author": "M. Juhásová (zbor - SATB)",
+  "categories": [
+    "záver",
+    "pôst",
+    "prijímanie"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Tak [a]povedz, či smiem sa [Fmaj7]vrátiť do [G]dverí otcovs[E]kých,",
+        "či [a]ďalej musím sa [Fmaj7]trápiť? Už [G]nemám na to [E]síl.",
+        "Či [d]odpustíš mi, že som všetko [G]stratil,",
+        "že [Cmaj7]pastier svíň som, hanbu som ti [Fmaj7]spravil? Odpu[E4]stí[E]š?"
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tak [a]povedz, či dáš mi [Fmaj7]nádej, že [G]s tebou zas byť [E]smiem?",
+        "Nič [a]nechcem, k sluhom len [Fmaj7]zájdem a [G]službou dám ti [E]zmier.",
+        "Či [d]uveríš mi, že chcem začať [G]znova,",
+        "že [Cmaj7]nemám v pláne útek zopa[Fmaj7]kovať? Uve[E4]ríš[E]?"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Znova [A]túžba [E]ku tebe ma [f#]ženie,[A7]",
+        "z tvojich [D]rúk mi [h]žiari odpu[E4]stenie[E],",
+        "slová [D]strácam, čo [C#]chystal som sa [f#]vyriecť,",
+        "že ma [D]vítaš, z [h]handier dáš ma [E4]vyzliecť[E].",
+        "Ty ma [A]ľúbiš, som [E]znova tvojím [f#]synom.[A7]",
+        "ty si [D]z biedy [h]ku sebe ma [E4]zdvihol[E].",
+        "Prosím, [D]ty ma [E7]chráň, [C#]ty ma [f#]bráň,[D] veď len [E]teba [A]mám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tvoj pokoj ku mne sa vrátil, zas šťastné srdce mám,",
+        "som krehký, ľahko sa sklátim, to dobre chápeš sám.",
+        "Si Baránok, čo sníma hriechy sveta,",
+        "si záchranou, keď číha na mňa bieda, Ježiš môj."
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Si láskou, ja lásku hľadám, len ona cenu má.",
+        "Vo všetkom už som sa sklamal, len ty si pri mne stál.",
+        "Hoc´ viem, že veľa výhod má tvoj domov,",
+        "len kvôli tebe chcem sa vrátiť domov, Ježiš môj."
+      ]
+    }
+  ]
+}

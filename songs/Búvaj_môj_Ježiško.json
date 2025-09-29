@@ -1,0 +1,30 @@
+{
+  "title": "Búvaj môj Ježiško",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Búvaj môj Ježiško, dieťatko zlaté,",
+        "miláčku očká zatvor nevyspaté."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Búvaj môj Ježiško, búvaj že sladko,",
+        "v plači ho kolembaj, Ty, Božia Matko."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prestaňte že spievať anjelské zbory,",
+        "keď malý Ježiško očká zatvorí."
+      ]
+    }
+  ]
+}

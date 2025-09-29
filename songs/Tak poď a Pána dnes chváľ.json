@@ -1,0 +1,38 @@
+{
+  "title": "Tak poď a Pána dnes chváľ",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+       "Tak [e]poď a Pána [D]dnes ch[G]váľ, a[C]lelu[D]ja, a[h]lelu[e]ja.",
+      "Tak [e]svojho [D]Boha [G]chváľ, a[C]lelu[D]ja, a[h]lelu[e]ja."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+       "[:[G]Slá[D]va [G]znie, [G]slá[D]va [G]znie, [C]nech to [D]každý [G]vie, [H7] :]"
+    
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+      "Zaspievaj Pánovi žalm, aleluja, aleluja.",
+      "Vzdaj chválu Bohu a hraj, aleluja, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+  
+      "Dnes lásku Pánovi daj, aleluja, aleluja.",
+      "Svoj život mu odovzdaj, aleluja, aleluja."
+      ]
+    }
+  ]
+}

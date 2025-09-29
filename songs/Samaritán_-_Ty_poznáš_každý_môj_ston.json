@@ -1,0 +1,40 @@
+{
+  "title": "Samaritán - Ty poznáš každý môj ston",
+  "author": "M. Chanáth - Chairé",
+  "categories": [
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Ty poznáš každý môj [C]ston, keď padám a [D]nevládny [e]som,",
+        "keď pery [h]vysycha[C]jú, dych strácam [D]so životom."
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       "Vždy, keď ma nájdeš na dne a keď už vidím matne,",
+        "do nozdier vdýchneš život, nik mi ho neukradne."
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+         "Tvoj dotyk rany hojí a bolesť hneď prebolí.",
+        "Smrť viac už [h]nebude [C]tieniť, do rán [D]nenaso[C]lí,[D] nenasolí."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G] Olej [C]s vínom zlievaš do [D]rán,",
+        "keď v svojich [h]rukách zvieraš",
+        "[e]život môj, čo [G]stratu ťa stál [C]všetkého,",
+        "čo [D]si ty, Pane, [G]mal."
+      ]
+    }
+  ]
+}

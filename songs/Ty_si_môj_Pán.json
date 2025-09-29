@@ -1,0 +1,22 @@
+{
+  "title": "Ty si môj Pán (ja ťa chválim)",
+  "author": "",
+  "categories": ["obetovanie", "cez rok"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[:Ty si [D] môj Pán:], [:ja ťa [h] chválim,:]",
+        "[:už mi [G] chýbaš:], [:príď k [A] nám.:]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Sme [h] hladní, Pane [f#] príď,",
+        "ukáž [G] nám svoju [D] tvár.",
+        "Ty [h] vieš, čo nám [f#] chýba,",
+        "pomôž [G] deťom svojim [A] vstať."]
+    }
+  ]
+}

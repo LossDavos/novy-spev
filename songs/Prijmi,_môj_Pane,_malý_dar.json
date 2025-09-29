@@ -1,0 +1,32 @@
+{
+  "title": "Prijmi, môj Pane, malý dar",
+  "author": "",
+  "categories": ["obetovanie", "nevhodné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Prijmi, môj Pane, malý dar,",
+        "čo predkladám Ti dnes na oltár.",
+        "Viem, že veľmi skromný je,",
+        "ale s veľkou láskou ver Ti ho dám."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "S láskou ho obetujem, hriechy svoje ľutujem.",
+        "[:S chlebom a vínom ho predkladám.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tu na oltári premieňaš",
+        "chlieb na telo a krv za víno.",
+        "Prijmi ho, Pane, ako dar,",
+        "ktorý denne Ti dávam na oltár."
+      ]
+    }
+  ]
+}

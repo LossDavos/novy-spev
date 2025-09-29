@@ -1,0 +1,35 @@
+{
+  "title": "Predivná láska",
+  "author": "",
+  "categories": ["pôst"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Môj Pán, jak predivné, za mňa si zomrel",
+        "a ja tak hriešny smiem voľný žiť."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Tak predivná Jeho láska je, to Syn Boží učinil.",
+        "Môj dlh splatil, moju smrť zomrel a ja smiem žiť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď mrel, On bol tak sám, zbitý, odmietnutý.",
+        "Svoju krv však vylial za môj hriech."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Božia láska dnes prúdi sťa rieka,",
+        "tak poď umy sa v nej, znova ži."
+      ]
+    }
+  ]
+}

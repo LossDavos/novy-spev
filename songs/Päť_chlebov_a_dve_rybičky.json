@@ -1,0 +1,40 @@
+{
+  "title": "Päť chlebov a dve rybičky",
+  "author": "M. Wiesnerová, Ľ. Fulková",
+  "categories": [
+    "detské",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/: [a]Päť chlebov a [d]dve rybičky [G]pre pár ľudí [Cmaj7]dosť,",
+        "[F]rozdať ho však [Bmaj7]pár tisícom - [E]číra nemož[a]nosť. :/",
+        "[A7]Pán Ježiš však [d]napriek tomu [C]taký príkaz [F]dal:",
+        "[E]\"Rozdajte to [a]medzi ľudí, [E]nasýťte ten [a]dav!\""
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/: Neveriaci učeníci spočítali zas:",
+        "\"Päť chlebov a dve rybičky. Nemáme tu viac.\" :/",
+        "Potom Ježiš zobral jedlo, požehnával ho,",
+        "lámal, dával učeníkom, rozmnožoval ho."
+       
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "/: Všetci jedli do sýtosti, chleba dosť bolo,",
+        "odrobiniek dvanásť košov plných zostalo. :/",
+        "Bohu nie je nič nemožné, slávu a moc má,",
+        "keď to málo, čo máš, rozdáš, viac ti požehná."
+      ]
+    }
+  ]
+}

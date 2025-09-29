@@ -1,0 +1,30 @@
+{
+  "title": "Milý Ježiš, Priateľ detí",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Milý Ježiš, Priateľ detí, sme tu v Tvojom chráme.",
+        "Pozri na nás, veríme Ti, dáme Ti, čo máme."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ježiš, Ježiš, milujem Ťa, Ty si naša spása,",
+        "Ježiš, Ježiš, Tvoje dieťa obnoví sa zasa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vďaka, Ježiš, za chlieb z neba, to je Tvoje telo.",
+        "Hriechu sa nám chrániť treba, milovať Ťa vrelo."
+      ]
+    }
+  ]
+}

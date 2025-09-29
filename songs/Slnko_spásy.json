@@ -1,0 +1,44 @@
+{
+  "title": "Slnko spásy",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Slnko spásy, kým nám žiariš, nádejná je naša púť.",
+        "V srdciach nám však ohňu viery nedaj vyhasnúť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pozeráš sa na Boží ľud z diaľnych výšav sponad hviezd.",
+        "Kriste, príď a neodchádzaj, treba nás tu viesť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď nás zrána pozobúdzaš do prosieb a modlitieb,",
+        "dožič ústam, čo Ťa chvália, každodenný chlieb."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pomôž v práci, poteš v žiali, vyveď nás vždy z ťažkostí,",
+        "nech sa láska láskou spláca, nech Ťa ľudstvo ctí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Večer príď sa pozhovárať, potom v spánku daj nám síl,",
+        "aby diabol proti nám zbraň nikdy netasil."
+      ]
+    }
+  ]
+}

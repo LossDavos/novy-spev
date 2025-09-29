@@ -1,0 +1,30 @@
+{
+  "title": "Už Ježiško zostupuje",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Už Ježiško zostupuje z nebeského raja,",
+        "do izbietky medzi dietky, do našeho kraja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Na cestu mu chválospevy odznievajú všade",
+        "a hviezdičky pod nožičky všetky svietia v rade."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Otvárajte rýchlo dvierka na srdiečku celé.",
+        "Privítajte, chválu vzdajte Jezuliatku vrele."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "title": "Krásna Matka",
+  "author": "",
+  "categories": [
+    "mariánske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Krásna [G]Matka, Mária, počúvaj hlas,",
+        "ktorý k [D]Tebe dnes [G]volá.",
+        "Tápem [C]tmou, som tak [G]sám.",
+        "Mária, [C]Mária, kam [D]skloniť hlavu [G]mám?"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Cesta [G]žitia, Mária, neistá je, všade [D]vládne iba [G]tma.",
+        "Túžim [C]ísť, niet však [G]kam.",
+        "Mária, [C]Mária, kam [D]skloniť hlavu [G]mám."
+       ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Svetom [C]vládne nepokoj.",
+        "Ty si v [F]tomto ťažkom [G]boji lásky [C]zdroj,",
+        "preto [F]volám úzkost[C]ne:",
+        "„Mária, [F]Mária, v tom [G]boji stoj pri [C]mne.",
+        "Mária, [F]Mária, nech [G]spolu šťastní [C]sme.“"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Matka drahá, prišla noc, obraciam sa na Teba ja o pomoc.",
+        "Podaj dlaň, pomôž vstať,",
+        "Mária, Mária, chcem lásku v srdci mať."
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Cesta [G]žitia, Mária, neistá je, všade [D]vládne iba [G]tma.",
+        "Túžim [C]ísť, niet však [G]kam.",
+        "Mária, [C]Mária, kam [D]skloniť hlavu [G]mám."
+       ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nie si [C]sám, nie si sám.",
+        "Pozri [F]vôkol, koľko [G]krás ti ponú[C]kam.",
+        "Zane[F]chaj hriech, obráť [C]tvár,",
+        "tvoja tvár bez [F]masky v tom [G]boji význam [C]má.",
+        "Mária, [F]Mária, zlo s [G]Tebou premôcť sa [C]dá,",
+        "Mária, [F]Mária, zlo s [G]Tebou premôcť sa [C]dá,"
+            ]
+    }
+  ]
+}

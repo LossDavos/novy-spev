@@ -1,0 +1,51 @@
+{
+  "title": "Ja som Pán",
+  "author": "Dominik",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Ja som Pán a dávam vám pokoj, lásku v trápeniach.",
+        "Čujem nárek váš a rád dám radu vám.",
+        "Keď ste v tmách a temnotách, kto počúva Boží hlas,",
+        "kto ho zná a snáď ho rád zanesie vám."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Jedným slúžiť, druhým hlásať,",
+        "všetkým s láskou srdce otvárať.",
+        "Dobro dávať, zlo premáhať",
+        "a prinášať lásku bez hraníc."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ja som Kráľ a preto znám, ako kríže trápia vás.",
+        "No aj v krížoch môžeš nájsť Božie slová.",
+        "Tak obráť sa k Pánovi, o tvoj kríž sa rozdelí.",
+        "Koľko z vás už síl aj má priniesť ma vám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ja som Pán a Otec váš, svoju náruč otváram.",
+        "Koľkí z vás však nechcú ísť smerom lepším.",
+        "Ja volám vždy ku spáse, srdce dám len spokojné.",
+        "Božia láska zvíťazí v dušiach ľudí."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Tu som, Pán môj. Ty voláš ma, hoc vidíš sám, že slabosti mám.",
+        "Tu som, Pán môj, vravím áno, chcem ísť tam,",
+        "kde svoje miesto mám."
+      ]
+    }
+  ]
+}

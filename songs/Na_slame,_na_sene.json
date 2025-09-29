@@ -1,0 +1,36 @@
+{
+  "title": "Na slame, na sene",
+  "author": "K. Hatiar (zbor ST)",
+  "categories": [
+    "vianoce",
+    "úvod"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "/: [C]Na slame, [C7]na sene, [F]v jasličky [C]vložené [G7]dieťatko maličké [C]spí. :/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Zvony v diali [C4]oznamujú [C]nám, že už prišla [C4]sama láska [C]k nám.[C4]",
+        "[C]Prišla nikým [C4]nepoznaná, [C]opľutá a [C4]nečakaná [C]láska k nám[C4].",
+        "[C]Prišla skromne [C4]v tichu, v šere, [C]aby jasom [C4]naplnila [F]celý kraj.",
+        "Prišla [C]láska k nám, to [G]každý čuj, nech [F]nie je smutný [C]nik,",
+        "to [G]každý čuj, nech je [F]radosť vôkol [C]nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Otvorme si srdcia dokorán, sme bratmi, to dobre vieš i sám.",
+        "Zabudni na všetky sváry, je tu prísľub novej jari, čuj jej hlas.",
+        "Úsmev nech nám z tvárí žiari, svet je veľký, my sme malí,",
+        "dobre vieš. Prišla láska k nám, tak prijmi ju a svet sa zbaví",
+        "bied a veľký svet sa rajom stane nám."
+      ]
+    }
+  ]
+}

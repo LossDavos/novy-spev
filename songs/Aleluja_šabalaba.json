@@ -1,0 +1,57 @@
+{
+  "title": "Aleluja šabalaba",
+  "author": "autor neznámy",
+  "categories": [
+    "detské",
+    "úvod",
+    "prijímanie",
+    "záver",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[F]Aleluja, šabalaba-[B]labambam,",
+        "[F]Aleluja, šabalaba-[C]labambam,",
+        "[F]Aleluja, šabalaba-[B]labambam a[F]men, [C]a-[F]men."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ty si môj Pán a ja [B]ťa mám rád,",
+        "[F]Ty si môj Pán a ja [C]ťa mám rád,",
+        "[F]Ty si môj Pán a ja [B]ťa mám rád,",
+        "a[F]men, [C]a-[F]men."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš za nás zomrel a z mŕtvych vstal ..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Svätého Ducha nám on dal..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Všetci sme tu jedna veľká rodina..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Ježiš žije a príde zas..."
+      ]
+    }
+  ]
+}

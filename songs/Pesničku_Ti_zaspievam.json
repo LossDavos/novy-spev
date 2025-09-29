@@ -1,0 +1,37 @@
+{
+  "title": "Pesničku Ti zaspievam",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Pesničku Ti zaspievam, aleluja,",
+        "poviem Ti, jak rád Ťa mám, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ty nás všetkých miluješ, aleluja,",
+        "k hriešnikom sa znižuješ, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ty vyslyšíš srdca hlas, aleluja,",
+        "kajúcnikom odpúšťaš, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prijmi vďaky, Otče náš, aleluja,",
+        "milostivo žehnaj nás, aleluja."
+      ]
+    }
+  ]
+}

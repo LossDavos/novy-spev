@@ -1,0 +1,47 @@
+{
+  "title": "Jasnou rečou hovorí",
+  "author": "A. Ficiková - Južania",
+  "categories": [
+    "pôst",
+    "záver",
+    "k svätcom"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[a]Jasnou rečou hovo[E]rí [C]život svedkov Kristo[d]vých",
+        "ako máš [a]žiť, keď spokoj[E]ným, šťastným chceš [a]byť.",
+        "Život prostých rozko[E]ší, [C]nudy, prázdnych staros[d]tí,",
+        "kde každým [a]dňom sa s veľkým [E]zlom láska bo[a]rí."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[F]Môžeš kráčať proti [C]prúdu,",
+        "tiež v [F]láske všetko spáliť [E]smieš.",
+        "/: Len na [a]hriech nedaj sa [E]zviesť, nedaj sa [a]zviesť. :/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Jeho tvár je pokojná, zovretú päsť nepozná",
+        "a veru tým katom biednym ruka žehná.",
+        "Kedykoľvek môžeš prísť, keď ich spoznáš, pochopíš,",
+        "že s Kristom žiť znamená zisk, to uvidíš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+
+        "Každý rub má aj svoj líc, život nie je iba z kríz,",
+        "tak vôľu skoľ, pokor sa, skloň, vezmi svoj kríž.",
+        "Pokora ti osoží, vôľu Otca vyplníš",
+        "a radosť tým skutkom drobným zdvojnásobíš."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Radosťou veľkou",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Radosťou veľkou srdce mi [C]jasá,",
+        "radosť mám v [D7]duši, vždy ju no[G]sím.",
+        "[G]Boh mi ju dáva, Cirkev pri[C]náša,",
+        "sám ju pre[D7]žívam, preto pro[G]sím."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Daj, Pane, [h]vieru [a]celému [D7]svetu,",
+        "[G]daj svoju [h]milosť [C]tomuto [D7]veku,",
+        "[G]nech každý [h]pozná, že [C]len [D7]Ty si ra[G]dosť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pochopte ľudia, že svet je krásny,",
+        "Boh ho vytvoril a nám daroval,",
+        "žiť na ňom, zveľadiť ho prikazoval."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Dokážme všetci, že sme si bratia,",
+        "že hnev, nenávisť už viac neplatia,",
+        "že v nás horí a vládne veľká láska."
+      ]
+    }
+  ]
+}

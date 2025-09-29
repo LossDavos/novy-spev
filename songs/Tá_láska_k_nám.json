@@ -1,0 +1,42 @@
+{
+  "title": "Tá láska k nám",
+  "author": "",
+  "categories": [],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Tá láska k nám v kríži zas núka nám spásny dar.",
+        "Kríž zázrak je, nájdeš v ňom správny smer, lásky cieľ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Sníval sa mi krásny sen, Tvoja ruka je v mojej.",
+        "Ráno, keď sa prebúdzam, každý deň len s Tebou začínam."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Deň čo deň si vziať svoj kríž, ty Pánov odkaz pochopíš.",
+        "V kríži zázrak lásky je, ten všetkých nás s Pánom zbližuje."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pozri, Pane, slabý som, často padnem pod krížom.",
+        "Pomôž z prachu biedy vstať,",
+        "krížom svojim Ťa nasledovať."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Sníval sa mi krásny sen, kríž svoj, Pane, prijať chcem."
+      ]
+    }
+  ]
+}

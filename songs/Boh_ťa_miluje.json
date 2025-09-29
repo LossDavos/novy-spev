@@ -1,0 +1,42 @@
+{
+  "title": "Boh ťa miluje",
+  "author": "",
+  "categories": [
+    "detské",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Boh ťa miluje a [F]ja ťa milujem, a [C]tak by to malo [G]byť.",
+        "[C]Boh ťa miluje a [F]ja ťa milujem, a [C]tak by [G]to malo [C]byť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Mal by som byť šťastný, aj [F]ty by si mal byť šťastný,",
+        "a [C]tak by to malo [G]byť.",
+        "[C]Mal by som byť šťastný, aj [F]ty by si mal byť šťastný,",
+        "a [C]tak by [G]to malo [C]byť. (pretože)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/: Mohol by som byť smutný,",
+        "aj ty by si mohol byť smutný,",
+        "a tak by to nemalo byť. :/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/: Máme sa mať radi ako bratia a sestry,",
+        "a tak by to malo byť. :/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "V jasličkách Dieťatko vyhľadajte",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Ž: V jasličkách dieťatko vyhľadajte, na Boží hlas pozor dajte.",
+        "M: Chudobní pastieri nesú mu dar, radosťou im zažiari tvár."
+        ]
+    },
+     {
+      "type": "chorus",
+      "lines": [
+       "S: V tom biednom dieťati Boh nesmierne bohatý. Za dary sa darom viery odplatí."
+        ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "Ž: Viera, kde žiari, tam temno sa stiahne. Jas tme ustúpi, keď viera zhasne.",
+        "S: Viera, kde žiari, tam temno sa stiahne. Jas tme ustúpi, keď viera zhasne."
+        ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "M: Sláva Ti, Spasiteľ, zaplesá zem celá. Pieseň Ti veriacich znie veselá."
+      ]
+    },
+     {
+      "type": "chorus",
+      "lines": [
+        "Ž: Boh z lásky nesmiernej ľudstvu Ťa dal. Náš z lásky povďačnej Bohu si dar.",
+        "S: Boh z lásky nesmiernej ľudstvu Ťa dal. Náš z lásky povďačnej Bohu si dar."
+      ]
+    }
+  ]
+}

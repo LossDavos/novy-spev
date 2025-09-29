@@ -1,0 +1,57 @@
+{
+  "title": "Prisahám ",
+  "author": "Monika Ližbetin",
+  "categories": [
+    "sobášne"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[F]V bielych šatách tu [C]stojím",
+        "a [F]nemám viac už [C]strach,",
+        "lebo [F]dnes svoj život",
+        "s tvojím [C]spojím,",
+        "[Dm7]s modlitbou na pe[G4]rách. [G]",
+        "[F]Dnes sa dve cesty [C]pretnú,",
+        "dve [F]túžby spoja sa v [C]jednu,",
+        "tak [Dm]poďme sa [Dm/C]objímať,",
+        "[B]všetky kríže [F]prijímať,",
+        "[Ab]kým do ríši dobra",
+        "spolu [G4]vojdeme raz. [G]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Prisa[C]hám[C/E] ti [F]vernosť a [G]lásku,",
+        "prisa[C]hám[C/E], nie [F]na chvíľu [G]krátku,",
+        "ale [Dm]naveky, [Em7]naveky, [C]na dl[C/E]hý [Am]čas,",
+        "[Am/G]kým [F]smrť neroz[G]delí [C]nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[F]Otázok mnoho [C]na perách mám,",
+        "[F]odpoveď na mnohé dnes [C]nepoznám,",
+        "[F]že sme si súdený,",
+        "[C]to dávno viem,",
+        "veď ťa [Dm7]ľúbim, milu[G4]jem. [G]",
+        "[F]Pred Bohom, davom a [C]sami pred sebou",
+        "[F]svoj sľub sme potvrdili [C]prísahou,",
+        "[Dm]do rúk ti [Dm/C]nevkladám [B]iba [F]svoju dlaň,",
+        "[Ab]sprevádzaj ma, miluj a [G4]naveky [G]chráň."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Prisa[C]hám[C/E] ti [F]vernosť a [G]lásku,",
+        "prisa[C]hám[C/E], nie na [F]chvíľu [G]krátku,",
+        "ale [Dm]naveky, [Em7]naveky, [C]na dl[C/E]hý [Am]čas,",
+        "[Am/G]kým [F]smrť nerozdelí [G4]nás. [G"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "title": "Tvoj ľud",
+  "author": "zb. Chváľte Pána Ježiša",
+  "categories": [
+    "úvod",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Tvoj ľud [F]dnes sa s láskou [C]schádza, Bože [F]náš.",
+        "Tvoj ľud [g]dnes sa s láskou [C7]schádza, Bože [F]náš.[F7]",
+        "K tebe [B]kráčame, [g]lebo ty si [F] do[A7]broti[d]vý,",
+        "k tebe [g]kráčame, ty [C7]Pán a Otec [F]náš.[F7]",
+        "K tebe [B]kráčame, [g]lebo ty si [F] do[A7]broti[d]vý,",
+        "k tebe [g]kráčame, ty [C7]Pán a Otec [F]náš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/: Aj ja chcem tu v úcte stáť, môj Boh a Pán. :/",
+        "/: Svojim blížnym a tebe slúžiť zo všetkých síl,",
+        "plný nádeje ti šepkať: Otče náš. :/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "title": "Radostná zvesť",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Radostná zvesť ozýva sa: Spasiteľ je tu,",
+        "v tejto noci z Božej moci zjavil sa svetu.",
+        "Vstaňte aj vy, nemeškajte, súri posla hlas,",
+        "cestu k nemu vám ukáže novej hviezdy jas."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pozdvihnite zrak, Boh vám dáva znak,",
+        "tak sa k nemu zrodenému cestu dozviete.",
+        "V ňom je sloboda, sila, mier, zhoda,",
+        "čistým okom ho v hlbokom taji uzriete."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Posol radí: zanechajte rýchle tmavú noc,",
+        "vyskočte hneď, Boh vám núka svetlo na pomoc.",
+        "Hodina už spásy aj vám práve odbila,",
+        "nikdy viac sa nenavráti milosti chvíľa."
+      ]
+    }
+  ]
+}

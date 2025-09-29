@@ -1,0 +1,43 @@
+{
+  "title": "Keď sa v tichú",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Keď sa v tichú, pokojnú, jasnú noc",
+        "pozerám na nebo plné hviezd.",
+        "Keď premýšľam, či život zmysel má,",
+        "chcem volať ku Tebe, Otče náš."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ó, Bože, ó, Bože, Pane môj, nepamätaj na to, čo bolo zlé.",
+        "Vieš dobre, že vždy chcem byť len Tvoj",
+        "a že iba Tvojou cestou kráčať chcem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď ma život úplne rozčarí a skala hriechu ma poraní,",
+        "keď sa pokoj utopí v mori zla,",
+        "vždy vtedy ja celý hľadám Ťa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ľudské cesty sú často kľukaté,",
+        "ťažko je dostať sa ku Tebe.",
+        "V mojich nohách, hoc časom nieto síl,",
+        "vždy dôjdem, vždy dúfam, verím Ti."
+      ]
+    }
+  ]
+}

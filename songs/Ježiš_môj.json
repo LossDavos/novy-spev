@@ -1,0 +1,43 @@
+{
+  "title": "Ježiš môj",
+  "author": "M. Redman - Rieka života",
+  "categories": [
+    "pôst",
+    "obetovanie"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Ježiš [A\\D]môj, pred [G\\D]tvojou stojím [D]obetou,",
+        "[G]stal si sa [D\\F#]bláznom, [G]zomrieť si [A4]šiel.[A]",
+        "[D]Mnoho[A\\D]krát ja [G\\D]žasnem, ako [D]máš nás rád",
+        "[: a [G]stojím tu [A4]dnes ešte [D]raz. :]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "A [D\\F#]znova hľadím [G]na kríž, kde si [D\\F#]svoj život [A4]dal.[A]",
+        "Som [D\\F#]pokorený [G]láskou, srdce [D\\F#]zlomené [A4]mám.[A]",
+        "[h7]Znova ďaku[G]jem ti, [D\\F#]ďakujem, svoj [A]život ti [G]dám.[A4]    [D]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Najvyšší si teraz, Ježiš, na nebi,",
+        "nebeský vládca, raz budem tam stáť.",
+        "Teraz však tu žasnem, ako máš ma rád",
+        "[: a chválu ti vzdám ešte raz. :]"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "[G]Vďaka za tvoj [A4]krí[A]ž, [D]vďaka za tvoj [h7]kríž,",
+        "[G]vďaka za tvoj [A4]kríž, [A]priateľ [D]môj."
+      ]
+    }
+  ]
+}

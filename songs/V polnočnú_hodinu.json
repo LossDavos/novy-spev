@@ -1,0 +1,30 @@
+{
+  "title": "V polnočnú hodinu",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]V polnočnú [D]hodi[G]nu [D]anjel sa [G]zjavu[D]je,",
+        "/:[a]radostnú [D]novinu [C]pastierom [D]zvestu[G]je:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nebesia naplnil spev chvály anjelskej:",
+        "/:Kristus sa narodil z matičky prečistej.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pastieri vstávajte, spiechajte k Betlému,",
+        "/:správu tú povedzte po ceste každému:/."
+      ]
+    }
+  ]
+}

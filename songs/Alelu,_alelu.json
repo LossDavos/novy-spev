@@ -1,0 +1,58 @@
+{
+  "title": "Alelu, alelu",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "/:[E]Alelu, ale[E7]lu, ale[A]lu, ale[A]luja, [E]chváľ[B]me Bo[E]ha.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[E]Chváľme Bo[B]ha, aleluja, chváľme Bo[E]ha, aleluja,",
+        "chváľme Bo[B]ha, aleluja, chváľme Bo[E]ha."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "...chwalicz Boga (chvalič Boga)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "...chvalim Boga (chválim Boga)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "...loben wir Gott (loben vir Got)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "...Áldott az Úr (áldotazúr)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "...Doxa Theu (doksa Teu)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "...gloria Deo (gloria Deo)"
+      ]
+    }
+  ]
+}

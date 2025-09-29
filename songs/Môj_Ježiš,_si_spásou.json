@@ -1,0 +1,35 @@
+{
+  "title": "Môj Ježiš, si spásou",
+  "author": "D. Zschech - Rieka života",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "veľká noc",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[A]  Môj Ježiš, [E]  si spásou [f#]a nie je [E]nik ako [D]ty.",
+        "Chcem v každý [A\\C#]čas, [D]tak ako [A\\E]dnes,",
+        "[f#]teba chváliť, [G]Pán [D\\F#]môj, [E4]rád.[E]",
+        "[A]  Môj Majster[E], si štítom, [f#]záchrancom [E]si, pokoj [D]môj.",
+        "Všetko, čo [A\\C#]viem, [D]všetko, čo [A\\E]mám,",
+        "[f#]tebe dávam, [G]Pán [D\\F#]môj, [E4]rád.[E]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[A]Sám si môj [f#]Boh, celá [D]zem nech vi[E4]dí:[E]",
+        "[A]sláva a [f#]moc, maje[D]stát ti pat[E4]rí.    [E]",
+        "[f#]Hory pred trónom sa [D]skláňajú",
+        "a ty [E]sám [f#]vládneš [E4]sláv[E]ne.",
+        "[A]Spievam ti [f#]rád, že si [D]Pán môj a [E4]Krá[E]ľ.",
+        "[A]Navždy chcem [f#]stáť, teba [D]stále mať [E4]rád.[E]",
+        "[f#]Nič nie je viac ako [D]láska, čo [E]dal si [A]nám."
+      ]
+    }
+  ]
+}

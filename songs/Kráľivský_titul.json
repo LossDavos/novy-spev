@@ -1,0 +1,34 @@
+{
+  "title": "Kráľovský titul",
+  "author": "Košičania?",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Kráľovský [C]titul by si [G]rád, [C]sám sebe nie si [D]kráľ.",
+        "[G]So slávou [C]si už kama[G]rát, [C]blížnych si [D]dávno [G]vzdal.",
+        "Každý chce [D]krála piedestál. [C]Kde toľko [G]trónov [D]vziať?",
+        "[G]Lenže tam, [D]kde je každý kráľ, [C]komu chceš [D]kraľo[G]vať?"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Kde dva[C]ja - tra[D]ja v mene [G]lásky [e]sú, [C]vra[D]ví [G]Pán,",
+        "[G]som s ni[C]mi aj [D]ja, Duch Svä[G]tý v nich [e]má [C]več[D]ný [G]chrám.",
+        "[G]Kde dva[C]ja - tra[D]ja v mene [G]lásky [e]chcú [C]žiť [D]svoj [G]svet,",
+        "[G]som s ni[C]mi aj [D]ja, novú [G]tvár im [e]dám, [C]no[D]vý [G]vek."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Slúžiť chcel, zostal chudobným, sám sebe bol vždy kráľ.",
+        "Že prví budú poslední, náš Pán tak rozmýšľal.",
+        "Nechci byť prvý, posledný, rozmýšľaj ako Pán.",
+        "Vládni sám sebe vzpriamený a buduj s druhým chrám."
+      ]
+    }
+]
+}

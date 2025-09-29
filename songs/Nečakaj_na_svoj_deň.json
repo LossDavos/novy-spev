@@ -1,0 +1,44 @@
+{
+  "title": "Nečakaj na svoj deň",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Nečakaj na svoj deň, na svoj veľký čin,",
+        "každá chvíľa sa ti ponúka.",
+        "Lásku Krista prinášaj bratom, sestrám svojim,",
+        "nech slnko svieti, kde si ty."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nech slnko svieti, kde si ty, nech slnko svieti, kde si ty.",
+        "Nech ožiari celú zem a všetko zlé nech v dobré zmení,",
+        "nech slnko svieti, kde si ty."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nie si sám, je tu Pán, On je blízko nás,",
+        "na cestách nás verne sprevádza.",
+        "Ruka v ruke choď s ním ďalej, odolávaj tmám,",
+        "nech slnko svieti, kde si ty."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Staň sa soľou, staň sa kvasom chleba nového,",
+        "po ktorom toľko túži náš svet.",
+        "Staň sa sviecou, ktorá svetlom Božím žiariť smie,",
+        "nech slnko svieti, kde si ty."
+      ]
+    }
+  ]
+}

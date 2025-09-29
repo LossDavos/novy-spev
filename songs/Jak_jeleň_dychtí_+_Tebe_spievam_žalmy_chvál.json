@@ -1,0 +1,54 @@
+{
+  "title": "Jak jeleň dychtí + Tebe spievam žalmy chvál",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[A]Jak jeleň dychtí po vodných bystrin[E]ách",
+        "[A]tak moje vnútro hľadá tvoju [E]tvár",
+        "[A]Snívam o kráse tvojej slávy čo [E]naplní tvoj chrám",
+        "o[A] svätom mieste, kde prebývaš ty [E]sám[H]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chcem v tvojej slávnej prítomnosti stáť",
+        "túžim ísť blízko až pred tvoj trón",
+        "Tam spievať ti s chórmi anelov",
+        "čo ti úctu vzdávajú",
+        "pridať sa k chvále, čo v nebesách znie"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Tebe spievam žalmy [A]chvál, môj Pán",
+        "spievam žalmy [f#]chvál, môj [c#]Pán",
+        "lebo [f#]nádherné a [H]sväté meno [E]máš."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Tebe spievam žalmy [A]chvál, môj Pán",
+        "spievam žalmy [f#]chvál, môj [c#]Pán",
+        "lebo [f#]nádherné a [H]sväté meno [A]máš.[E]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Zostávať túžim v tvojom objatí",
+        "kde tvoju blízkosť cítiť smiem",
+        "Chcem prebývať v tieni tvojich krídel",
+        "kde ma sebou obklopíš",
+        "až kým sa úplne v tebe nestratím"
+      ]
+    }
+  ]
+}

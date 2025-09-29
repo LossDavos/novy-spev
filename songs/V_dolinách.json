@@ -1,0 +1,33 @@
+{
+  "title": "V dolinách",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]V dolinách, keď o polnoci [A]zneje zvona [D]hlas,",
+        "[D]z neba na svet práve schádza [A]Dieťa – [D]Mesiáš.",
+        "/:[A]Nad biednou jaskyňou jasá [D]chór anjelov, správu hlása: „[D]Narodil [A]sa [D]Kráľ!“:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "„Pokoj všetkým dobrej vôle,“ zvučí po horách,",
+        "„radosť túto oznamujte v mestách, dedinách“.",
+        "/:Poďme rýchlo privítať Ho, dary dať pre vznešeného – leží v jasličkách.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V domoch zlatých škárou fučí, srieň pokrýva tvár.",
+        "Len v príbytkoch malých duší izbu hreje Kráľ.",
+        "/:Bohatým sa stôl už láme, zámky pýchy rúca dávne, láska víťazí.:/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "title": "Keby nás Boh nemal rád",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Keby nás Boh nemal rád, nezjavil by lásku krásnu.",
+        "Keby nás Boh nemal rád, nebol by nám toto dal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Seba v zrodení On nám dal v mene Otca.",
+        "Ten raj znovený tak nám do srdca skryl."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Dal nám v onen deň, keď sám sa ujal biedy,",
+        "ten dar láskavý: On sám nám viny zmyl."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svoj žiaľ v onú noc, keď sám sa potil krvou,",
+        "dal nám v onú noc, keď úpel o pomoc."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svoj bôľ piatočný, On sám za synov zeme",
+        "dal rád Otcovi, svoj bôľ tých temných chvíľ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svoj dar vzkriesenia, keď z brány hrobu povstal,",
+        "svoj jas znovenia on sám nám v srdce dal."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "title": "Zima, zima tu je",
+  "author": "",
+  "categories": [
+    "mikulášske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:Zima, zima tu je, sniežik poletuje,:/",
+        "/:k nám už svätý Mikuláško zďaleka cestuje.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Cingi-lingi sánky, doniesol nám dárky.:/",
+        "/:Dobrým deťom rozdeľuje, zlých upozorňuje.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Mikuláško svätý, poteš dobré deti,:/",
+        "/:daj im hodne darov z neba, všetko čo im treba.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Nadeľ im v hojnosti všetko krásne čnosti,:/",
+        "/:by Ježiška milovali, nikdy neprestali.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Svätec Boží z neba, všetkým daj, čo treba.:/",
+        "/:Lásku k Bohu, ku rodičom, ku sestrám i bratom.:/"
+      ]
+    }
+  ]
+}

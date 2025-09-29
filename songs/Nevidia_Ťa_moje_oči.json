@@ -1,0 +1,29 @@
+{
+  "title": "Nevidia Ťa moje oči",
+  "author": "",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Nevidia Ťa moje oči, nepočujú moje uši.",
+        "Ty svetlom si mi aj v mraku, tak spievam v svojej duši."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ó, Ježiš, môj Ježiš, tak veľmi ľúbim Ťa,",
+        "len s Tebou Ježiš, môj Ježiš, chcem prežiť každý deň,",
+        "s ním každý deň."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kým je pre Teba človek, že sa stále staráš oň.",
+        "A čím si milosrdenstvo Tvoje zaslúžil."
+      ]
+    }
+  ]
+}

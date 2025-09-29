@@ -1,0 +1,27 @@
+{
+  "title": "Duch a nevesta",
+  "author": "",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Duch a nevesta hovoria: Príď",
+        "ak ich počuješ, povedz tiež príď",
+        "A ten kto smäd má, nech pride tiež,",
+        "z vody života zadarmo dostaneš"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Haleluja, tak pána chváľ.",
+        "Haleluja, tak pána chváľ.",
+        "Haleluja, tak pána chváľ.",
+        "Haleluja, tak pána chváľ."
+      ]
+    }
+  ]
+}

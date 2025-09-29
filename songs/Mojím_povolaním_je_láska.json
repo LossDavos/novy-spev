@@ -1,0 +1,44 @@
+{
+  "title": "Mojím povolaním je láska",
+  "author": "S. Košč",
+  "categories": [
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Hľadám svoje [d7\\C]miesto, svoje [C]povolanie hľa[F]dám,",
+        "[C]žiadne ma nena[d]pĺňa, túžim po [G4]všet[G]kých.",
+        "[C]Cítim, že Cirkev je [d7\\C]telo a ako [C]každé te[F]lo",
+        "má svoje [C]srdce a tým [d]srdcom ja chcem sa [G]stať.[G7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Mojím [C]povolaním je [d7\\C]láska, mojím [C]povolaním je [F]láska,",
+        "mojím [Edim]povolaním je [d]darovať všetko, [e]daro[F]vať [G]se[C]ba."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Som iba dieťa bezmocné a slabé,",
+        "slabosť moja však vedie, vedie ma k láske.",
+        "Takto budem všetkým, tak sa splní môj sen,",
+        "hľa, moje miesto a toto miesto si mi dal ty."
+         ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Až raz budem v nebi, chcem sa čo najskôr vrátiť späť,",
+        "ruže Božej milosti na svet prinášať.",
+        "Chcem vo svojom nebi robiť dobro všetkým,",
+        "chcem z neba sa vrátiť, vrátiť na zem."
+      ]
+    }
+  ]
+}

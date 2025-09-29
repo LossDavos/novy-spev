@@ -1,0 +1,29 @@
+{
+  "title": "Slzy",
+  "author": "",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Slzy, ktoré z detských tvári na zem padajú.",
+        "Deti, ktoré nepoznaných rodičov čakajú.",
+        "Koľkokrát ich stretli v dave rušných ulíc,",
+        "to podivné príbuzenstvo spálilo sa v nich.",
+        "Kto im vráti, čo im patrí – detstvo skrátené?",
+        "Lásku majú za odmenu v nás.",
+        "Ani zviera nevzdáva sa svojho mláďaťa.",
+        "Príroda je drsná – zákon má."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Človek zákon sám chce zmeniť, vnútri prázdno má.",
+        "Dieťa nie je kompas, v ktorom hrá."
+      ]
+    }
+  ]
+}

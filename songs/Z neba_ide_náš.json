@@ -1,0 +1,25 @@
+{
+  "title": "Z neba ide náš",
+  "author": "",
+  "categories": [
+    "mikulášske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:Z neba ide náš svätý Mikuláš:/",
+        "popod okná, popod stienky, na chrbte kôš nesie veľký",
+        "a v ňom samý dar pre radosť i žiaľ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Zastaví sa, ver, u každučkých dvier.:/",
+        "Či je tma a či sa svieti, radom pozná všetky deti,",
+        "darčeky dá hen a tu prútik len."
+      ]
+    }
+  ]
+}

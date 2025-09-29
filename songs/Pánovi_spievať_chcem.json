@@ -1,0 +1,25 @@
+{
+  "title": "Pánovi spievať chcem",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Pánovi spievať chcem vždy, kým budem žiť,",
+        "vďaky mu vzdávať, chváliť, slúžiť po celý čas.",
+        "Môjmu srdcu dáva svoj pokoj Pán na každý deň,",
+        "nádejou sýti moju dušu, On je môj Pán."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:Chváľ duša moja, Pána chváľ, aleluja, aleluja,",
+        "chváľ duša moja, Pána chváľ, alelujaaaa.:]"
+      ]
+    }
+  ]
+}

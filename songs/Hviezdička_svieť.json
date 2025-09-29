@@ -1,0 +1,43 @@
+{
+  "title": "Hviezdička svieť",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Hviezdička svieť, ó, vždy nad nami svieť,",
+        "ako si svietila v tme,",
+        "Matka keď do jaslí uložila",
+        "dieťatko v Betleheme."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Svieť nám zas v tento čas,",
+        "prinášaj všade dnes radosť a ples, rozohrej, rozveseľ nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Hviezdička svieť, ó, vždy nad nami svieť,",
+        "ako si svietila v tme,",
+        "vtedy, keď láska sa narodila",
+        "v jasličkách v Betleheme."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Hviezdička svieť, ó, vždy nad nami svieť,",
+        "oznamuj deťom, že k nám",
+        "láskavý Spasiteľ prichádza dnes,",
+        "koniec už žiaľom a tmám."
+      ]
+    }
+  ]
+}

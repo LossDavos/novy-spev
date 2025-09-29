@@ -1,0 +1,53 @@
+{
+  "title": "Vládca",
+  "author": "R. Morgan, B. Flieding - Rieka života",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "adorácia",
+    "cez rok",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[D]   [A]   [f#]   [E]   [D]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Každý z nás dúfa [A]v súcit a bezhraničnú [f#]lásku,",
+        "ó, [E]Pane, zmiluj [D]sa. Každý z nás túži [A]prijímať",
+        "milosť odpu[f#]stenia a [E]nádej spá[D]sy.[E]   [D]   [E]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[A]Vládca, vrchmi môže [E]hýbať,",
+        "môj Boh je [D]najmocne[A]jší, má moc [f#]zachrániť [E]nás.",
+        "[A]Víťaz, pôvod večnej [E]spásy,",
+        "porazil [D]smrť, z hrobu [A]vstal, Ježiš [f#]víťazne [E]vstal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Biedny som, ty ma prijímaš, všetok môj strach a pády,",
+        "ó, Kriste zmiluj sa. Za tebou túžim kráčať,",
+        "si moja pevná nádej, dnes sa ti dávam."
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "[D] Zažiar svetlom, [A] nech ťa svet vi[E]dí, [f#]spievaj!",
+        "[D] Tebe sláva, [A] Kráľ môj víťa[E]zný, [f#]Ježiš!",
+        "[D] Zažiar svetlom, [A] nech ťa svet vi[E]dí, [f#]spievaj!",
+        "[D] Tebe sláva, [A] Kráľ môj víťa[E]zný,"
+      ]
+    }
+  ]
+}

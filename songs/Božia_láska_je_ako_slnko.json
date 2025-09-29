@@ -1,0 +1,37 @@
+{
+  "title": "Božia láska je ako slnko",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Božia láska je ako slnko,",
+        "všade hreje a svieti jej lúč."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Príď pred jej jasné lúče,",
+        "vezmi si z nej sám, koľko chceš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nájdeš v nej hojnosť darov,",
+        "dá ti šťastie, len za ňou poď."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Na tmavom nebi žiari,",
+        "v radosť premení každý žiaľ."
+      ]
+    }
+  ]
+}

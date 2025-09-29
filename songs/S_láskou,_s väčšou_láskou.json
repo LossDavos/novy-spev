@@ -1,0 +1,45 @@
+{
+  "title": "S láskou, s väčšou láskou",
+  "author": "",
+  "categories": [
+    "mariánske"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "S láskou, s väčšou láskou kráčať chcem,",
+        "stále ísť za Tebou.",
+        "S láskou, s čistou, krásnou kráčať chcem",
+        "za Tebou s Máriou."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Spomeň si, obzri sa, čo ti hriech núkal,",
+        "či si bol naozaj šťastný.",
+        "Obral ťa o radosť, z lásky ťa zdieral,",
+        "ty si však synom nájdeným."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Sám seba nájdeš v ňom, skutočnú radosť,",
+        "nájdeš svoj život stratený.",
+        "Nestratíš, len získaš, prežiješ mladosť.",
+        "Dnes si už synom nájdeným."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "S Máriou začni žiť životom lásky,",
+        "všímaj si príklad pokorný.",
+        "Ona ťa naučí prežiť tak krásny",
+        "život v Pánovom náručí."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Otvor mi oči Duch Svätý",
+  "author": "M. W. Smith",
+  "categories": [
+    "k Duchu Svätému",
+    "prijímanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/: [E]Otvor mi oči Duch Svätý, [H]ot[(Emaj7)]vor mi oči môj Pán",
+        "vidieť ťa [A2]túžim, [(H\\F#)]vidieť ťa [E]túžim. :/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/: Chcem vidieť [H]teba vo mne [c#]rásť a [A]žiariť svetlo tvojej [H]slávy",
+        "vylej svoju lásku a [c#]moc spievam: [A]Svätý, svätý, [H]svätý! :/",
+        "[A]Svätý, svätý, [H]svätý, vidieť ťa [E]túžim."
+      ]
+    }
+  ]
+}

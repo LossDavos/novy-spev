@@ -1,0 +1,31 @@
+{
+  "title": "Zvelebený si, Bože",
+  "author": "F. Fráňa",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Zvelebe[a]ný si, Bože, [e] nave[a]ky, [F]z tvojich [C]rúk všetko [D]má[G]me.",
+        "[C]Zvelebe[a]ný si, Bože, [e] nave[a]ky, [F]chlieb ti [C]tu priná[G]ša[C]me.",
+        "... víno ti prinášame.",
+        "... dary ti prinášame."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "... víno ti prinášame."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "... dary ti prinášame."
+      ]
+    }
+  ]
+}

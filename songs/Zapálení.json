@@ -1,0 +1,40 @@
+{
+  "title": "Zapálení",
+  "author": "Timothy",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Zapálení[G4] [G] ohňom v srdci[G4] [G] obíde[G4]me [G]zem s [G/H]modlit[C]bou,",
+        "nádej [a7]stúpa, deň zo[e7]búdza, spevom [a7]pies[C/D]ní [D7]zem pl[G4]ní.[G]",
+        "Od dávnych čias plameň horí okolo nás svetlom jasným.",
+        "Srdcia túžbou naplnené prebudenie čakajú."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nech ten plameň [G]žiari a zmení srdcia chmúrnych,",
+        "noc temnú v deň [C2]nádher[D]ný.",
+        "Nech vždy väčšou [a]láskou spolu s našou [e]piesňou",
+        "žiari z ná[D] [C] [e7] [D]s, žiari z ná[G] [C] [e7] [D]s."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chceme vždy ísť s láskou, pravdou,",
+        "posilnení v mene Ježiš,",
+        "zomdlených dvíhať, slabých zachrániť,",
+        "zem Tvojou piesňou naplniť."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "...žiari z ná[D] [C] [e7] [D]s, žiari z ná[G] [C] [e7] [D]s, žiari z ná[G] [C] [e7] [D]s, žiari z ná[G] [C] [e7] [C] [D] [G]s."
+      ]
+    }
+  ]
+}

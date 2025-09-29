@@ -1,0 +1,44 @@
+{
+  "title": "Ježiš, len Teba veľmi ľúbim",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš, len Teba veľmi ľúbim,",
+        "Ježiš, len za Tebou ja túžim."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Len Ty si Pán dobrý a ľúbiš ma,",
+        "len Tebe, Pane, patrí sláva, chvála."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš, ja modlím sa ku Tebe,",
+        "Ježiš, Tvoje meno je sväté."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš nám všetkým dáva radosť,",
+        "Ježiš jej pre každého má dosť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš, ja za Tebou vždy kráčam,",
+        "Ježiš, veď Ty si moja spása."
+      ]
+    }
+  ]
+}

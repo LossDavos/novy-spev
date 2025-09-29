@@ -1,0 +1,39 @@
+{
+  "title": "Nech ten chrám - Chválospev",
+  "author": "M. Šiškovič, M. Juhásová, I. Matyášová",
+  "categories": [
+    "úvod",
+    "prijímanie",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Nech ten [B]chrám zaplaví svetlo [g]sviec jagavé,",
+        "nech nám [Es]z úst zne[c]jú zvola[F4]nia jasa[F]vé.",
+        "Nech ten [B]chrám naplní zástup [g]sŕdc veselých,",
+        "mužov, [Es]žien, de[c]tí, nech ja[F4]sá svet ce[F]lý."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[: Lebo [B]Pán je živý, lebo [g]Pán je živý,",
+        "žije [c]v nás, žije [F4]v n[F]ás. :]"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        " žije v [B]ná[B7]    [Es]–  [es]   [B]ás."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "(alebo) žije v [B]ná[Des]     [Es]–  [Ges]     [B]ás."
+      ]
+    }
+  ]
+}

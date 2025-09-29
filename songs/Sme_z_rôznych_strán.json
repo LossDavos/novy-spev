@@ -1,0 +1,37 @@
+{
+  "title": "Sme z rôznych strán",
+  "author": "J. Bezák, Z. Matejovičová",
+  "categories": [
+    "úvod",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Sme z [C]rôznych strán a [Cmaj7]kútov[(Gdim)],        [d] no jedno nás [G]spája:",
+        "[a] chceme kráčať [e]správnou cestou, [d] hľadá ju každý, [G]ty a ja.",
+        "[C]Chceme sa zísť [Cmaj7]s tebou, Pane, [d] nebrať, radšej [G]dávať,",
+        "[a] pre iných mať [e]plné dlane, [F] vedieť sa roz[G]dávať."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[F] V láske [G]nás [e]všetkých [a]spájaš,",
+        "[d] všetkých, čo [G]chcú s tebou sa [C]zísť.[C7]",
+        "[F] V láske [G]nás [e]všetkých [a]spájaš,",
+        "[d] všetkých, čo [G]chcú s tebou sa [C]zísť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Jeden s druhým v dobrom sa zísť, nerobiť si prieky,",
+        "skúsme všetci spoločne ísť po prúde rieky.",
+        "Láska robí zázraky, nad zlobou víťazí,",
+        "tak sa chyťme za ruky, nič nás neporazí."
+      ]
+    }
+  ]
+}

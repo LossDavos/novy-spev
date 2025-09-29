@@ -1,0 +1,27 @@
+{
+  "title": "Spievaj Pánovi",
+  "author": "(J. Berthier) (zbor - SATB)",
+  "categories": [
+    "adorácia",
+    "veľká noc",
+    "cez rok",
+    "poďakovanie po prijímaní"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Spievaj [e]Pá[e\\D]no-[C]vi, [a]duša, [e]spie[H]vaj: [e]A[D]le[G]lu [D]- [e]ja, [a7]ale[H]lu[e]ja!",
+        "Hosťa vzá[e7]cne[C]ho [a]v srdci [e]ví[H]taj: [e]A[D]le[G]lu [D]- [e]ja, [a7]ale[H]lu[e]ja!"
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Bo[D]hu [G]spievajme: [C]A[G]le[D]lu [e]- [H]ja!",
+        "[e]Vďa[D]ky [G]vzdávajme: [C]A[G]le[D]lu [e]- [H]ja!",
+        "(komunita Taizé ju nemá vo svojej databáze)"
+      ]
+    }
+  ]
+}

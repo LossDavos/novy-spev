@@ -1,0 +1,23 @@
+{
+  "title": "Svetlo viery",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Svetlo viery rozsvieť sa, naplň zem i nebesá,",
+        "svetlo viery rozsvieť sa, naplň zem i nebesá."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Veriť, Pane, v Tvoje slovo znamená žiť v svete novom.",
+        "Celý vesmír k Tebe ide, Božej sláve na úsvite."
+      ]
+    }
+  ]
+}

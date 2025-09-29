@@ -1,0 +1,64 @@
+{
+  "title": "Vďaky",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Vďaky Ti, Pane, vzdávame vďaky,",
+        "Tebe, čo kraľuješ v nebi naveky."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pretože dávaš nám vieru."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pretože dávaš nám nádej."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pretože dávaš nám lásku."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pretože dávaš nám chleba."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pretože odpúšťaš hriechy."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Navraciaš hriešnikom život."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Preto buď naveky s nami."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "S radosťou spievame pieseň."
+      ]
+    }
+  ]
+}

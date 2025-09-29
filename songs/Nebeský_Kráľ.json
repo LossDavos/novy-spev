@@ -1,0 +1,55 @@
+{
+  "title": "Nebeský Kráľ",
+  "author": "Unknown",
+  "categories": [
+    "pôstne"
+    ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[Cm]Nebeský [G/H]Kráľ vstúpil [A♭maj7]k nám",
+        "[B♭/A♭]tak, ako [E♭/G]dieťa [A♭/C]bez‍[E♭/B♭]‍bran‍[B♭]‍né.",
+        "[Cm]Neprišiel [G/H]hold služby [A♭maj7]vziať,[B♭/A♭]",
+        "tu žil a [E♭/G]slúžil [A♭/C]od‍[E♭/B♭]‍da‍[B♭]‍ne."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "To je náš [E♭]Boh, [B♭]Kráľ - Služob‍[Cm]‍ní‍[Cm/B♭]‍k.",
+        "On svojich k [A♭]službe [B♭]povo‍[E♭]‍la‍[B♭]‍l.",
+        "Nuž, dajme [E♭]životy",
+        "[E♭/D♭]vďačne na [A♭/C]oltár!",
+        "[D]Pán Ježiš [E♭]tie‍[B♭]‍ž seba sa [E♭]vzdal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[Cm]V záhrade [G/H]sĺz Vodca [A♭maj7]náš",
+        "[B♭/A♭]vín mojich [E♭/G]niesol [A♭/C]bre‍[E♭/B♭]‍me‍[B♭]‍ná.",
+        "[Cm]Tam srdce [G/H]roztrhol [A♭maj7]bôľ: [B♭/A♭]",
+        "Buď Tvoja [E♭/G]vôľa [A♭/C]ne‍[E♭/B♭]‍men‍[B♭]‍ná!\""
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[Cm]Ach, pozri [G/H]na rany [A♭maj7]rúk!",
+        "[B♭/A♭]Tie jazvy [E♭/G]obeť [A♭/C]hlá‍[E♭/B♭]‍sa‍[B♭]‍jú;",
+        "[Cm]do dlane [G/H]Pôvodcu [A♭maj7]hviezd [B♭/A♭]",
+        "hriešnici [E♭/G]klince [A♭/C]vtĺ‍[E♭/B♭]‍ka‍[B♭]‍jú."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[Cm]My chceme [G/H]tiež v službe [A♭maj7]stáť.",
+        "[B♭/A♭]Nech denne [E♭/G]Majster [A♭/C]vlád‍[E♭/B♭]‍ne [B♭]nám!",
+        "[Cm]Keď pomoc [G/H]prijíma [A♭maj7]brat, [B♭/A♭]",
+        "v ňom službu [E♭/G]prijme [A♭/C]vlast‍[E♭/B♭]‍ne [B♭]Pán."
+      ]
+    }
+  ]
+}

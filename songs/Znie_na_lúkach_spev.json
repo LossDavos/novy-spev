@@ -1,0 +1,46 @@
+{
+  "title": "Znie na lúkach spev",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Znie na lúkach spev, tam spieva si kvet,",
+        "ja v srdci radosť mám.",
+        "Znie na lúkach spev, tam spieva si kvet,",
+        "ja v srdci veľkú radosť mám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Každou cestou v tomto svete, Pán ťa vedie k nebu blíž.",
+        "Svojim Duchom privedie ťa k slnku, ktoré uvidíš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V každom kúte našej zeme všetci túžia šťastne žiť.",
+        "Stretneš brata i ty jemu bratom môžeš denne byť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V každom kúte našej vlasti jeden cieľ je pred nami,",
+        "by sme v radosti i strasti stretli sa a poznali."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Každou cestou v tomto svete dúfaj vždy a odhoď strach.",
+        "Pán ťa vedie, k viere zve ťa, mier ti všade prichystal."
+      ]
+    }
+  ]
+}

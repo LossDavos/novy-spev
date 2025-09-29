@@ -1,0 +1,39 @@
+{
+  "title": "Všade vôkol vždy nájdem Ťa",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Všade vôkol vždy nájdem Ťa,",
+        "viem, len Ty mi dávaš život,",
+        "Tvoja ruka je istota,",
+        "vždy si so mnou, Pane môj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V každej tajnosti nášho smútku, nie som sám,",
+        "v radosti, keď s priateľom zídem sa, nie som sám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V našich srdciach zmietaných búrkou, nájdem Ťa,",
+        "v jasnom nebi za každou skúškou, nájdem Ťa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď si stieram pot v tvrdej práci, nie som sám,",
+        "keď sa teším z poznanej krásy, nie som sám."
+      ]
+    }
+  ]
+}

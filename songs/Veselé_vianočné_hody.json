@@ -1,0 +1,30 @@
+{
+  "title": "Veselé vianočné hody",
+  "author": "česká koleda",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Veselé via[F]noč[C]né [G7]ho[C]dy, spievajte de[F]ti [C]ko[G7]le[C]dy",
+        "/:[C]o tom, čo sa [G7]vskutku stalo, [C]že sa ľuďom [G7]narodilo [C]Die[G7]ťat[C]ko:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Po tme leží, nemá sviečočky na nebi svietia mu hviezdičky.",
+        "/:Ty, ktorý nám všetko dávaš, chudobný si a nič nemáš, Dieťatko.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prišli k Nemu chudobní pastieri, milé piesne jemu spievali.",
+        "/:Vitaj u nás, nebeský Kráľ, celý svet Ťa dávno čakal, Dieťatko.:/"
+      ]
+    }
+  ]
+}

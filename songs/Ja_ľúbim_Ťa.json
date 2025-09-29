@@ -1,0 +1,32 @@
+{
+  "title": "Ja ľúbim ťa (I love you Lord)",
+  "author": "Laurie Klein, pr. Rieka Života",
+  "categories": ["cezročné"],
+
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[E] [H] [A] [E] [A] [E\\G#] [f#] [A] [H]"
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ja [E]ľúbim ťa",
+        "Pane, [H]spievam [E]ti",
+        "a [A]ce[E\\G#]lou [f#]du[A]šou",
+        "ťa [H]chváliť chcem"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nech [E]sa ti páčia",
+        "slová [H]mojich [E]úst",
+        "[f#]rozjí[E\\G#]manie [A]môj[E\\G#]ho [f#]srdca",
+        "[A]pred [H]tvojou [E]tvá[A] [H]rou [f#] [E]"
+      ]
+    }
+  ]
+}

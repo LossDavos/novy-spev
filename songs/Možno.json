@@ -1,0 +1,36 @@
+{
+  "title": "Možno prišiel na svet v noci",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Možno prišiel na svet v noci v tmavom baráku,",
+        "možno, že to bolo vo vašom paneláku.",
+        "Mohlo to byť veľmi dávno, môže to byť dnes.",
+        "Tak už nestoj, ponáhľaj sa, rýchlo k Nemu bež."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Možno, že sa práve rodí kdesi v Havane",
+        "alebo má maštaľ blízko leteckej pláne.",
+        "Možno, že si dnes za Matku Angličanku vzal,",
+        "možno, že Ho práve súdi súdny tribunál."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Možno nik nezbadal hviezdu nad Jeho skrýšou,",
+        "možno sa Mu práve klania parta chulišov.",
+        "Ak hľadáte, nájdete Ho deťom na tvári.",
+        "Ak Ho chcete, tak Ho jedzte, je na oltári."
+      ]
+    }
+  ]
+}

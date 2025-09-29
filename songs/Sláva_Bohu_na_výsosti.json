@@ -1,0 +1,30 @@
+{
+  "title": "Sláva Bohu na výsosti",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Sláva Bohu [F]na vý[C]sosti, ľuďom dobrej [G7]vôle [C]mier.",
+        "[C]Narodený [F]z láska[C]vosti s Otcom ľudstvo [G7]celé [C]zmier."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Boh sám [d]prišiel [C]nám na [f]pomoc, [C]stal sa [d]jedným [C]z nás v tú[f]to noc.",
+        "[:[C]Sláva Ti, [F]vďaka [C]Ti, [C]Bože [G7]presvä[C]tý.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Povedzte to všetkým ľuďom. Záchranca je blízko nich.",
+        "Koniec smútkom, hriechom, bludom, preporodí úprimných."
+      ]
+    }
+  ]
+}

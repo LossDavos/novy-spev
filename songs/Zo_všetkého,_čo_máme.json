@@ -1,0 +1,47 @@
+{
+  "title": "Zo všetkého, čo máme",
+  "author": "Gen Verde",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Zo [A]všetkého, čo [Amaj7]máme, odte[D\\A]raz nám nepatrí [A]nič.",
+        "Priná[f#]šame plody [c#]zeme, kto[D]ré ty rozmno[E]žíš.",
+        "[A]Tu sú naše [Amaj7]ruky, pou[D\\A]ži ich pre svoj [A]plán,",
+        "aby [f#]si svetu vždy [c#]dával chlieb, kto[D]rý da[E]rúvaš [A]nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[f#] Len kvapku malú si [c#]vložil do mojich rúk,",
+        "[A] len kvapku [A7]malú si [F#4]teraz pýtaš [F#]späť, [D]á.[E\\D]...  [c#]    [F#]",
+        "Táto [h]kvapka v tvojich [D]rukách sa na [E4]hojný dážď zme[E]ní,",
+        "čo [D]celú zem zúro[A]dní."
+      ]
+    },
+
+    {
+      "type": "verse",
+      "lines": [
+        "Kvapky z našich rúk premenené na dážď",
+        "plodnou vlahou budú pre náš budúci svet, á...",
+        "Vtedy zem pre nás pripraví nový zázrak chleba,",
+        "ktorý všetky národy nasýti."
+      ]
+    },
+        {
+      "type": "chorus",
+      "lines": [
+        "[A]Cestám vtedy [Amaj7]vietor diaľky [D\\A]náhle otvo[A]rí,",
+        "obi[f#]lím prejde a [c#]preto do [D]vône nás pono[E]rí.",
+        "[A]Láska vtedy [Amaj7]právom celú [D\\A]žatvu rozde[A]lí,",
+        "zázrak [f#]lámania chle[c#]ba znova ce[D]lý svet [E] uvi[A]dí."
+      ]
+    }
+  ]
+}

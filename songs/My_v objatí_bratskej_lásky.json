@@ -1,0 +1,37 @@
+{
+  "title": "My v objatí bratskej lásky",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "My v objatí bratskej lásky spojme sa, poďme vo svetle.",
+        "Keď Spasiteľ príde, duša zaplesá, poďme vo svetle."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Poďme vo svetle, poďme vo svetle,",
+        "vpred len nadšene, bratskej láske stále vpred."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Je slávny Boh, my sme Jeho pastvy ľud, poďme vo svetle.",
+        "Nás k víťazstvu Otec, Syn a svätý Duch vedie vo svetle."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Náš Pán a Boh koná to, čo hovorí, poďme vo svetle.",
+        "On uzdraví, hroby temné otvorí, poďme vo svetle."
+      ]
+    }
+  ]
+}

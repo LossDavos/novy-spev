@@ -1,0 +1,34 @@
+{
+  "title": "Už zahoď svoje starosti",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Už zahoď svoje starosti, už prestaň strácať čas,",
+        "už nemysli na bolesti, už bude dobre zas.",
+        "Tvoj dávny čin sa nevráti, tak zabudni svoj sen, svoj sen,",
+        "dnes Ježiš ruku podá ti, dnes prichádza tvoj deň."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Len s nami poď, my zaručene pôjdeme,",
+        "len s nami poď, do domu vojdeme."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Zdá sa, že okrem prázdnych rúk máš iba pochybnosť,",
+        "dnes, ešte zajtra snáď si tu, ak Pán nepovie dosť.",
+        "Tvoj dávny čin sa nevráti, tak zabudni svoj sen, svoj sen,",
+        "dnes Ježiš ruku podá ti, dnes prichádza tvoj deň."
+      ]
+    }
+  ]
+}

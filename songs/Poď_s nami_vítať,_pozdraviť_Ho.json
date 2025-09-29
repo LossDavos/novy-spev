@@ -1,0 +1,36 @@
+{
+  "title": "Poď s nami vítať, pozdraviť Ho (Little drummer boy)",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Poď s nami vítať, [C]pozdraviť [G]ho, [G]dnes polnočného hosťa, [C]pozdraviť [G]ho,",
+        "[D]čo Boh v ňom ľudstvu chce dať, ozdraviť ho, dar neba [G]srdcu sveta,",
+        "[C]ozdraviť ho, [G]ozdraviť ho, [D]ozdraviť ho.",
+        "[G]A svet vyhnanstvom [C]privítal [G]ho, [D]privítal [G]ho."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mám tak choré srdce, pozdravím ho, nesplnenú nádej snov, pozdravím ho,",
+        "čo tíško jemu šepce, ozdrav mi ho, keď hrozí sveta válov,",
+        "ozdrav mi ho, ozdrav mi ho, ozdrav mi ho.",
+        "V láske uznám lásku, privítam ho, privítam ho."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Z tvojich múk spevniem, keď ťa vítam, z dlaní ti dýchal lásku, keď ťa vítam,",
+        "sťa púčik tebe skrásniem, keď ťa vítam, preč hádžem zloby masku,",
+        "keď ťa vítam, keď ťa vítam, keď ťa vítam.",
+        "V sebe steliem tebe, keď ťa vítam, keď ti spievam."
+      ]
+    }
+  ]
+}

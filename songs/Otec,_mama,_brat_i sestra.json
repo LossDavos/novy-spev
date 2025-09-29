@@ -1,0 +1,45 @@
+{
+  "title": "Otec, mama, brat i sestra",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Otec, mama, brat i sestra každú nedeľu,",
+        "oblečú si pekné šaty, čistú košeľu.",
+        "Tak sa všetci ponáhľame, by sme prišli včas,",
+        "ku oslave nášho Pána spojiť hlas."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "My sme tu všetci jedna rodina,",
+        "máme sa radi, všetci to vedia.",
+        "Spievame si spolu pieseň zvesela,",
+        "či je štvrtok, piatok alebo nedeľa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Praha, Brno, Bratislava, Poprad, Košice,",
+        "všade žijú dobrých ľudí celé tisíce.",
+        "Trnava i Nové Zámky, Nitra, Bystrica,",
+        "všade ľudia chvália Pána Ježiša."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Európa, Amerika, veľká Ázia,",
+        "Španielsko a Portugalsko, Indonézia,",
+        "v celom svete Pán Boh Cirkev v svojej ruke má,",
+        "kto k nej patrí, nech si s nami zaspieva."
+      ]
+    }
+  ]
+}

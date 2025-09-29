@@ -1,0 +1,43 @@
+{
+  "title": "Zázrak vykúpenia",
+  "author": "A. Ficiková",
+  "categories": [
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[a] Môže i na pustej púšti [E] živá tráva rásť,",
+        "[d] zarodiť i planý figov[E]ník.",
+        "[a] Môže hviezda, ktorú cez deň [E] vôbec nevidíš,",
+        "[d]v noci žiariť [E]jasom ohni[a]vým.",
+        "Môže i na skalnej pôde krásny kvet vyrásť,",
+        "mravec uniesť ťažké bremená.",
+        "Môže i uprostred dažďa slnko preblesnúť,",
+        "môže dúfať človek strápený."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/: [a]Uver v zázrak vykúpenia,",
+        "[E]pozri, Boh chcel: chromí chodia,",
+        "[d] slepí vidia, [E]hluchí poču[a]jú.[(d)]    [(E)]    :/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Môže človek nepozvaný na hostinu prísť,",
+        "lotor sprava byť zachránený.",
+        "Môže ovcu zablúdenú dobrý pastier nájsť,",
+        "život zmeniť hriešnik bývalý.",
+        "Môže viera malá ako zrnko horčičné",
+        "konať veci, divy zázračné.",
+        "Môže láska ani za zbraň nepokladaná",
+        "vydobyť kráľovstvo nebeské."
+      ]
+    }
+  ]
+}

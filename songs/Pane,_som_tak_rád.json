@@ -1,0 +1,41 @@
+{
+  "title": "Pane, som tak rád",
+  "author": "zb. Chváľte Pána Ježiša - Južania",
+  "categories": [
+    "úvod",
+    "cez rok"
+  ],
+  "song_parts": [
+
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Pane, som tak [a]rád,[F] ž[(d)]e som už [G]tvoj.",
+        "[C]Pevne drž ma, [a]chráň, [F] k[(d)]eď hrozí [G]boj."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[F]Pane, mám ťa [G]rád, [C]lebo ty mňa [a]tiež,",
+        "[F]svojou večnou [G]láskou milu[C]ješ.[C7]",
+        "[F]Pane, mám ťa [G]rád, [C]lebo ty mňa [a]tiež,",
+        "[F]svojou večnou [G]láskou milu[C]ješ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pane, keď som sám, ty pri mne stoj,",
+        "cestou života mi svetlo stroj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svoje srdce dnes ti venujem,",
+        "dávam na oltár, čo dlhujem."
+      ]
+    }
+  ]
+}

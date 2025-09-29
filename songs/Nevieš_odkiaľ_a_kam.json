@@ -1,0 +1,63 @@
+{
+  "title": "Nevieš odkiaľ a kam",
+  "author": "Jerichove trúby",
+  "categories": [
+    "pôstne"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Nevieš [G]odkiaľ a kam a zrazu [D]zostal si sám,",
+        "opäť [C]počúvaš šedých tieňov [G]ná[D]rek.",
+        "Kričíš [G]do tmy príď, nevieš [D]kto to má byť,",
+        "zvoníš [C]pri dverách, ale [G]márne."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vravíš [G]skončiť to chcem, život je [D]ako zlý sen,",
+        "žijem [C]sám uprostred milióna [G]ľu[D]dí.",
+        "A ak Boh [G]stvoril svet, prečo [D]lásky v ňom niet,",
+        "ak práve [C]nebolí tak aspoň [G]nudí."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Keď ti láska zomrie, tak [D]plač, v duši [C]prší večný [G]dážď",
+        "a v [Emi]ohni čítaš, že naveky už zostaneš [D]sám.",
+        "Nemáš [G]chuť vstať a ísť, vedel [D]si, že raz to musí prísť",
+        "a [C]viem že aj keď prídeš [D]k nám, zostávaš [G]sám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kdesi [G]dávno raz, podobný [D]príbeh sa dial,",
+        "jeden [C]muž s krížom k hore krá[G]čal.",
+        "Tiež bol [G]slabý a sám, za ním[D]zástup ho hnal.",
+        "Cestu[C]bolestí krvou zmá[G]čal."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Nemal to ľahšie, to [D]nie, celé [C]niesol stvore[G]nie.",
+        "[Emi]Kvôli tebe vzal na ramená [D]kríž.",
+        "Kvôli [G]tebe chcel ho niesť, bola to [D]láska a nie lesť.",
+        "A [C]Preto dnes tu netrpíš [D]sám, je s tebou [G]Pán."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Ak nevieš [G]odkiaľ a kam a zrazu [D]zostal si sám,",
+        "opäť [C]počúvaš šedých tieňov [G]ná[D]rek.",
+        "Kričíš [G]do tmy príď, nevieš [D]kto to má byť,",
+        "Ježiš [C]počuje a [G]chápe."
+      ]
+    }
+  ]
+}

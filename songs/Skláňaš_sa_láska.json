@@ -1,0 +1,43 @@
+{
+  "title": "Skláňaš sa láska",
+  "author": "Jaspis",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Skláňaš sa láska, túžiš po nás,",
+        "veď súcit máš s biedou, útechu dáš.",
+        "Príď opäť, vráť sa k nám do ulíc",
+        "a tíš plač i bôle, lieč zranených."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vždy, keď dobro stráca sa z našich dní a Pán",
+        "by zavítať chcel do sŕdc a duší nám.",
+        "Vtedy tiež, keď bolesť trápi,",
+        "povedz to Pánovi: „Som slabý, nemám síl“."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nauč nás vždy radosť všetkým rozdávať",
+        "a s láskou matky v trápení pomáhať.",
+        "Vtedy tiež, keď ozaj zdá sa,",
+        "že náš cieľ je už tak vzdialený, ruku dá."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kiežby svetlo Krista preniklo vnútro nám",
+        "a ožiarilo radosťou Boží chrám",
+        "nádherným lúčom lásky",
+        "nech navždy odteraz už svieti a chráni."
+      ]
+    }
+  ]
+}

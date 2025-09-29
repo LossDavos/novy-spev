@@ -1,0 +1,32 @@
+{
+  "title": "Zvelebujte Pána",
+  "author": "V. Ďurkovič",
+  "categories": [
+    "záver",
+    "cez rok",
+    "poďakovanie po prijímaní"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Zvelebujte [d]Pána [a]ľudské [d]srdcia [a]ako [d]zvony[a]. [d]",
+        "Padni na kolená [a]pred ním [d]človek [a]ubie[d]dený.[a]  [d]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "On o[F]suší tvoje [G]slzy, v trápe[a]ní ťa neo[A]pustí,",
+        "u jeho [d]nôh padni [a]v prach, lebo [d]je Boh [a]všemo[d]húci.[a]  [d]"
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nemá [F]hraníc jeho [G]múdrosť, svätý, [a]svätý, plný [A]lásky.",
+        "Spievaj Pánu [d]zem, vzdávaj [a]chválu, [d]slávu [a]všetko [d]s nami.[a]  [d]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Poďme všetci spievať pieseň chvál",
+  "author": "Rieka života",
+  "categories": ["úvod"],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+      "[C]Poďme [G]všetci [e]spievať pieseň [D]chvál",
+      "[C]Národ [G]každý [e]spievaj pieseň [D]chvál",
+      "[C]Tancuj, [G]tlieskaj, poď a z [e]dvihni [D]hlas",
+      "Žije [a]Kráľ, poď a [D]spievaj Páno[G]vi"
+    ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+      "[G]Od východu [D]sln[G]ka [C] po jeho [e]zá[D]pad",
+      "[G]Z každého [D]kúta ze[e]me [C]bude mu [a]chvála [D]znieť",
+      "[G]Obetu ch[D]vá[G]ly [C] prinesie [e]kaž[D]dý",
+      "[G]Národ, kmeň, [D]jazyk i [e]hlas [C]spoja sa v [a]piesni [D]chvál"
+    ]
+    }
+  ]
+}

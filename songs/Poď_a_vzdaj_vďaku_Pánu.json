@@ -1,0 +1,37 @@
+{
+  "title": "Poď a vzdaj vďaku Pánu",
+  "author": "spirituál, T. Horváthová",
+  "categories": [
+    "cez rok",
+    "poďakovanie po prijímaní",
+    "obetovanie"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Poď a [D]vzdaj [h]vďaku [G(maj7)]Pánu, [A7]má ťa [D]rád, [G]má ťa [D]rád.",
+        "Poď a [D]vzdaj [A7]vďaku [D]Pánu, [h7]má [(E7)]ťa [A]rád, [D]má ťa [A]rád."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Keď si [D]sám keď [(Dmaj7)]nemáš [H7]čas, Pán ho [e]má pre nás vždy a [A7]zas,",
+        "ó, [D]Pa[h]ne, [e7]buď vždy [A7]s na[D]mi. [G]   [D]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nalám chlieb všetkým ľuďom ako on, ako on.   2x"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Rozdávaj víno lásky ako on, ako on.   2x"
+      ]
+    }
+  ]
+}

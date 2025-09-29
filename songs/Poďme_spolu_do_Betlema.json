@@ -1,0 +1,74 @@
+{
+  "title": "Poďme spolu do Betlema",
+  "author": "česká koleda",
+  "categories": [
+    "vianoce",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Poďme spolu do Betléma, dud-laj, dud-laj, dud-laj, dá.[D7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Ježi[A]šku, [D]milá[h]čku, [e]ja ťa [A]budem [D]kolem[D7]bati,",
+        "[G]Ježi[A]šku, [D]milá[h]čku, [e]ja ťa [A]budem [D]kolembať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Poďme bratia, poďme spolu,..."
+       
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "V maštalôčke tíško drieme,..."
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+      
+        "My Ježiška nevzbudíme,..."
+     
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        
+        "Hajaj, búvaj, dieťa krásne, ..."
+        
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+       
+        "A ty, Janku, na píšťalku, dudli dudli dudli da"
+
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+       
+        "A ty, Miško, na husličky, fidli fidli fidli da"
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        
+        "A ty, Fedor, na tú basu, brum brum brum brum brum ba da"
+      ]
+    }
+  ]
+}

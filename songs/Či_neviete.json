@@ -1,0 +1,45 @@
+{
+  "title": "Či neviete",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Či neviete, že ste svätyňou Božou?",
+        "Či neviete, že ste svätyňou Božou?",
+        "Či neviete, že ste svätyňou Božou?",
+        "Svätyňou, v ktorej býva Svätý Duch."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Plní Božej moci, vďačnosti, chvály.",
+        "Plní Božej moci, vďačnosti, chvály.",
+        "Plní Božej moci, vďačnosti, chvály.",
+        "Svätyňou, v ktorej býva Svätý Duch."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "My už vieme, že sme svätyňou Božou.",
+        "My už vieme, že sme svätyňou Božou.",
+        "My už vieme, že sme svätyňou Božou.",
+        "Svätyňou, v ktorej býva Svätý Duch."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Aleluja, my sme svätyňou Božou.",
+        "Aleluja, my sme svätyňou Božou.",
+        "Aleluja, my sme svätyňou Božou.",
+        "Svätyňou, v ktorej býva Svätý Duch."
+      ]
+    }
+  ]
+}

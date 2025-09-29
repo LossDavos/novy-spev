@@ -1,0 +1,42 @@
+{
+  "title": "Svätosť je (Holiness)",
+  "author": " Rieka života",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Svätosť [C]je, svätosť [D]je to, po čom [C]túžim,",
+        "[G]svätosť [C]je, čo potrebu[D]jem.",
+        "[G]Svätosť [C]je, svätosť [D]je to, čo chceš [C]odo mňa [G]Ty. [C] [D]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vernosť je ..."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Vezmi s[G]i[C] moje [D]srdce[C],",
+        "vezmi s[G]i[C] moju [D]myseľ[C].",
+        "Vezmi s[G]i[C] moju [D]vôľu[C],",
+        "chcem byť [G]Tvojím, [C]Pane.[D] [C]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pravda je ..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Láska je ..."
+      ]
+    }
+  ]
+}

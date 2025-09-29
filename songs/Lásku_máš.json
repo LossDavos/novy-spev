@@ -1,0 +1,43 @@
+{
+  "title": "Lásku máš (or.Eternal flame)",
+  "author": "",
+  "categories": [
+    "sobášne",
+    "nevhodné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Lásku máš, no zatiaľ si sám, váhaš,",
+        "strácaš silu a nádej, nevieš, kadiaľ ísť,",
+        "či máš kráčať sám, či máš stáť a tápať",
+        "v tomto svete neskutočných krívd."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ja verím, že nekráčaš sám. Láska,",
+        "to je to, čo vás spája. S Pánom môžeš ísť,",
+        "len s ním nájdeš cieľ, len on dáva nádej,",
+        "keď si sám a máš v tomto svete už len málo síl."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Si náš Pán, lásku dávaš nám, lásku tú,",
+        "čo vnáša pokoj medzi nás, lásku, ktorá trvá stále."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Lásku máš a kráčaš s ním, v ňom máš silu a nádej,",
+        "on vie, kadiaľ ísť. On chce blízko stáť,",
+        "padáš, chce ťa dvíhať, no ty musíš vstávať spolu s ním."
+      ]
+    }
+  ]
+}

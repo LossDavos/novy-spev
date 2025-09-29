@@ -1,0 +1,44 @@
+{
+  "title": "Kvapky",
+  "author": "M. Fedoráková - Križiaci",
+  "categories": [
+    "záver",
+    "advent",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[E]   [c#]    [g#]    [c#]    [A]   [H]   [E4]    [E]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V svetle [E]sviečky bez svetiel [c#]tisícich",
+        "po[g#]čítam kvapky, ktorými zem[c#] sám Boh ro[A]sí.[H]",
+        "Meló[E]diu, ktorú [A]vytvárajú [H] kvapôčky [c#]tisíce,",
+        "do [A]osnovy [A\\G#]notovej [f#]po kúštičkoch [H]vpí[E]šem."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Nech [E]padajú [A]kvapky lásky na [H]túto našu [c#]zem,",
+        "aby [A]úrodnou sa [f#7]stala, aby [H]rástla láska z nej,",
+        "aby [E]ľudia v sebe [A]našli ten [H]drahocenný [c#]stred,",
+        "aby [A]búrky, [A\\G#]mračná, [f#7]sváry boli [H]navždy preč."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V tichu búrky, v hrmote mojich slov",
+        "chcem dať na papier, čo zo srdca tlačí sa von.",
+        "Kvapôčky myšlienok, ktoré spať mi vôbec nedajú,",
+        "kvapky, ktorými srdce spieva Bohu na slávu."
+      ]
+    }
+  ]
+}

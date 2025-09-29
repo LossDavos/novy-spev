@@ -1,0 +1,22 @@
+{
+  "title": "Aleluja Vianočné",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Aleluja, aleluja, áá.",
+        "Aleluja, aleluja, aleluja, aleluja, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nesiem vám radostnú zvesť. Dnes sa nám narodil Spasiteľ, Kristus Pán."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Velebiť Ťa budem, Pane",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Velebiť Ťa budem, Pane, Hospodin a Kráľ môj,",
+        "chváliť Teba, Boha Spasiteľa svojho."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ďakovať Ti budem, Pane, Hospodin a Kráľ môj,",
+        "chváliť Teba, Boha Spasiteľa svojho."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "K Tebe volať budem, Pane, Hospodin a Kráľ môj,",
+        "chváliť Teba, Boha Spasiteľa svojho."
+      ]
+    }
+  ]
+}

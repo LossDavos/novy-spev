@@ -1,0 +1,23 @@
+{
+  "title": "Dajme si ruky",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:Dajme si ruky a zaspievajme,",
+        "spievajme Pánovi, aleluja.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+
+        "/:Aleluja, aleluja, aleluja, aleluja.:/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Spievajte pieseň novú",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Spievajte pieseň novú, ó-ó, spievajte aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chváľte Pána z nebies, chváľte Ho na výsostiach,",
+        "spievajte aleluja,",
+        "chváľte Ho všetci anjeli, všetky nebeské mocnosti,",
+        "spievajte aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chváľte Ho slnko a mesiac, chváľte Ho hviezdy žiarivé,",
+        "spievajte aleluja,",
+        "chváľte Ho nebies nebesia, všetky vody pod oblohou,",
+        "spievajte aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Králi zeme a národy, všetci mládenci a panny,",
+        "spievajte aleluja,",
+        "chváľte meno Pánovo, Jeho meno je vznešené,",
+        "spievajte aleluja."
+      ]
+    }
+  ]
+}

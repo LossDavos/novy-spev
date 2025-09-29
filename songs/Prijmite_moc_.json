@@ -1,0 +1,100 @@
+{
+  "title": "Prijmite moc (Receive the power)",
+  "author": "Guy Sebastian, Gary Pinto, pr. Espé",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[C] [Fadd9] [G] [a] [C/F] [G4] [G]",
+        "[E♭] [A♭add9] [B♭] [B♭7] [c] [E♭/A♭] [E♭/B♭] [B♭4] [B♭]",
+        "[C] [G/C] [a/C] [G/C] [C] [G/C] [G7/C] [G/C]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[a]Všetky [G/B]národy Ze[C]me,",
+        "teba [F]chvá[C]liť spo[F]lu chce[G]me.",
+        "[a]Keď si [G/B]blízko ja[C2]sá[C]me,",
+        "svedčiť [F]má[C]me až po [F]sám kraj Zeme.[G4] [G]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]A[G/C]le[G7/C]lu[G/C]ja [a]a[G/A]le[G7/A]lu[G/A]ja",
+        "Príj[F]mite moc ducha [F/G]svä[G2]té[G]ho",
+        "[C]A[G/C]le[G7/C]lu[G/C]ja [a]a[G/A]le[G7/A]lu[G/A]ja",
+        "Príj[F]mite moc staňte [F/G]sa svet[G2]lom [G]sve[a]ta."
+      ]
+    },
+    {
+      "type": "interlude",
+      "lines": [
+        "[a] [G/B] [C2] [C]",
+        "[a] [G/B] [d] [C] [G/B]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď volá nás Duch Svätý",
+        "vravieť áno tvojej vôli.",
+        "Svedčíme tak naveky",
+        "o tvojej láske a veľkej milosti."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Aleluja aleluja",
+        "Príjmite moc ducha svätého",
+        "Aleluja aleluja",
+        "Príjmite moc staňte sa svetlom sveta."
+      ]
+    },
+     {
+      "type": "interlude",
+      "lines": [
+        "[a] [G/B] [C2/C] [C] [G/B]",
+        "[a] [G/B] [C] [d] [C] [G/B]",
+        "[a] [G/B] [C2/C] [C] [G/B]",
+        "[a] [G/B] [C]"
+
+
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "Bará[F/A]nok ve[G/B]lebím [C]ťa",
+        "Svätý [F/A]pán ve[G/B]lebím [C]ťa",
+        "Živý [F/A]chlieb ve[G/B]lebím [C]ťa",
+        "Emanu[Fass9]el ve[G4]lebím [G]ťa[C]",
+         "Bará[F/A]nok ve[G/B]lebím [C]ťa",
+        "Svätý [F/A]pán ve[G/B]lebím [C]ťa",
+        "Živý [F/A]chlieb ve[G/B]lebím [C]ťa",
+        "Emanu[d]el",
+        "Našou [F]piesňou [G2]nech [G]znie"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[a]A[G/A]le[G7/A]lu[G/A]ja [Fmaj7]a[G/F]le[G7/F]lu[G/F]ja",
+        "Prí[d7]jmite moc ducha [F]svä[G2]té[G]ho",
+        "[C]A[G/C]le[G7/C]lu[G/C]ja [a]a[G/A]le[G7/A]lu[G/A]ja",
+        "Príj[Fadd9]mite moc staňte [F]sa svet[Gadd9]lom [G]sve[Fadd9]ta."
+      ]
+    },
+    {
+      "type": "outro",
+      "lines": [
+        "[F] [F/G] [G] [C]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Je krásne ísť",
+  "author": "Gen Rosso - Južania",
+  "categories": [
+    "úvod",
+    "poďakovanie po prijímaní"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Je [E]krásne ísť a rozdať [H]viac, než káže zvyk",
+        "a [E]v dávaní sa tešiť, [A]dávať, kým nik nevi[E]dí.",
+        "Ráno vstať a vidieť [H]úsmev v tvári brata,",
+        "[E]nájsť ho tam aj večer [A]skrášlený,",
+        "keď cez deň [E]trápenie ho oči[H7]stí."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[E]Hej, Bohu [A]vďaka nech [E]znie.",
+        "Hej, Bohu [A]vďaka, že [E]prišiel k nám [H7]nie je to [E]zlé."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Je krásne hľadať všetko, čím sa náš Boh blysol",
+        "z lásky k nám a že ju stále k nám a k svetu má.",
+        "Dá sa zvládnuť život, dá sa znášať bolesť s nádejou,",
+        "že zbierka prísľubov, čo nechal",
+        "v písme Pán, je pravdivá."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Je krásne šíriť svetom túto slávnu zvesť,",
+        "že Pán je Láska a že láskou stále žije v nás.",
+        "Nádherné je poznať, nádherné je učiť krásnu zvesť,",
+        "že Ježiš práve nás si vybral,",
+        "práve v nás chce bratov nájsť."
+      ]
+    }
+  ]
+}

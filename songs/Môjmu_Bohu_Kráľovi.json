@@ -1,0 +1,27 @@
+{
+  "title": "Môjmu Bohu Kráľovi",
+  "author": "Rieka života",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[A] [H] [g#] [c#]",
+        "[f#] [g#] [c#]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Môjmu [c#]Bohu Krá[H]ľovi budem [g#]spievať a [c#]hrať",
+        "teraz [f#]i na veky [g#]vekov. A[c#]men.:/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[A]Ale[H]luja, [g#]ale[c#]luja, [f#]ale[g#]luja, a[c#]men."
+      ]
+    }
+  ]
+}

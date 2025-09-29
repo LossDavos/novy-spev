@@ -1,0 +1,30 @@
+{
+  "title": "Aleluja, už je vzkriesený",
+  "author": "",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[:[E] [E4]Ale[E]luja[A/E], ale[E]luja, a[E/D#]le[c#]luja, [A/C#]ale[H4]luja, (aleluja)[H],",
+        "už je [A]vzkriese[H]ný náš [E]Pán. [A/E]:] [E]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vzkriese[E]ný je[C] Spasiteľ [a7]pre nás [E]všetkých,",
+        "[g#]žije[c#7] vo svojej [g#]Cirkvi, [A]ľuďom [H4]pokoj svoj pri[E]náša.[E4]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vzkriesený je Spasiteľ pre nás všetkých",
+        "a v ňom povstane každý človek na zemi žijúci."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Čo ti dáme?",
+  "author": "M. Šiškovič - Južania",
+  "categories": [
+    "vianoce",
+    "obetovanie"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Čo ti dáme, [h]dieťa lásky, [G]že si [A]prišlo [D]k nám?"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Skúšam prečítať [A]v tvojich očiach detských",
+        "[e]čo má ktorý dať, [A]aby si nás ľúbil všetkých."
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Dá sa dočítať v starých, múdrych knihách,",
+        "že kráľovský dar je zlato, kadidlo a myrha."
+        ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+       "[D]My mu dáme, [h]bratia, dcéry, [G]ví[A]no a [D]chlieb,",
+        "[D]myrhu lásky, [h]zlato viery, [G]vôňu [A]modli[D]tieb."
+      ]
+    }
+  ]
+}

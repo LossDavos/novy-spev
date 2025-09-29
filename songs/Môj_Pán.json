@@ -1,0 +1,31 @@
+{
+  "title": "Môj Pán",
+  "author": "F. Gallio",
+  "categories": [
+    "adorácia",
+    "veľká noc",
+    "cez rok",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Môj [D]Pán mojou silou [C]je a radostnou [G]piesňou.",
+        "A [D]Pán stál sa [C]už mojím spa[G]sením, on je môj [D]Boh."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Len [C]jemu odovz[G]dávam [D]život svoj.     4x"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Môj Pán vládnuť bude vždy, až naveky vekov. Amen."
+      ]
+    }
+  ]
+}

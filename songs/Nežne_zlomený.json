@@ -1,0 +1,48 @@
+{
+  "title": "Nežne zlomený",
+  "author": "J. Riddle - Rieka života",
+  "categories": [
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[H]   [F#]    [g#]    [E]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[E]Ku krížu dvíham [H]zrak, ku krížu viniem [H\\F#]sa,",
+        "pijem z hĺbky tvojich [H\\G#]rán, dielo kríža vyspie[E]vam.",
+        "Na ňom Spasiteľ [H]môj, bitý, týra[H\\G#]ný,",
+        "[F#]v ňom Boh Láska [H\\G#]je a spravodli[E]vý."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[H] Z kríža tvoj hlas volá ma[H\\G#], pozýva na kolená a viac (ja)",
+        "[H\\F#] nemám slov[F#], sa celý strácam",
+        "[E] v tvojej láske, čo nežne láme ([H]ma).[H\\G#]       [H\\F#]       [E]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Aký vzácny dar, život, ktorý mám,",
+        "ten, čo Kristus sám skrze kríž mi daroval.",
+        "Zo smrti k životu si ma povolal,",
+        "nie je viacej už tvoj hnev, Ježišov kríž zmieril ma."
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "[c#]V úžase z kríža vyznať [E]chcem,",
+        "[c#]jak úžasná, spásna láska a veľ[E]ká tvoja vernosť [F#]je."
+      ]
+    }
+  ]
+}

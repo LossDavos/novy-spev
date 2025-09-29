@@ -1,0 +1,46 @@
+{
+  "title": "Nádej",
+  "author": "Janka Daňová, Nedopovedané",
+  "categories": [
+    "cezročné",
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Dávno svet poverám neverí, len deti vystrašia príšery.",
+        "Dospelí boja sa horšej tmy, čo má chuť prebdených nocí a dní,",
+        "čo kradne biele sny, sny o šťastí.",
+        "Aj veľkí boja sa búrok a priepastí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nik nie je stratený. Nik nie je sám.",
+        "Vo všetkých tmách svieti maják.",
+        "Nenechám vás, vrátim sa k vám.",
+        "Vždy s vami som, nebojte sa."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Neboj sa, veľký svet, už nie si sám.",
+        "V tme bliká zopár viet, vrátim sa k vám.",
+        "Pozri sa veľký svet, tak usmej sa.",
+        "V tme bliká zopár viet, nebojte sa."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Už nie si stratený, už nie si sám.",
+        "V tme bliká zopár viet, vrátim sa k vám.",
+        "Pozri sa veľký svet, tak usmej sa.",
+        "V tme bliká zopár viet, nebojte sa."
+      ]
+    }
+  ]
+}

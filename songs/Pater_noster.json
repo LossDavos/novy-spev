@@ -1,0 +1,19 @@
+{
+  "title": "Pater noster",
+  "author": "",
+  "categories": ["liturgické"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Pater noster, qui es in cælis: sanctificétur Nomen Tuum:",
+        "advéniat Regnum Tuum: fiat volúntas Tua,",
+        "sicut in cælo, et in terra.",
+        "Panem nostrum cotidiánum da nobis hódie,",
+        "et dimítte nobis débita nostra,",
+        "sicut et nos dimíttimus debitóribus nostris.",
+        "Et ne nos indúcas in tentatiónem; sed líbera nos a Malo."
+      ]
+    }
+  ]
+}

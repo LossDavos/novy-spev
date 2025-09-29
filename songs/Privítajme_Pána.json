@@ -1,0 +1,27 @@
+{
+  "title": "Privítajme Pána",
+  "author": "M. Tóth - Tretí deň",
+  "categories": [
+    "úvod",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Všade tam, kde sú [D] ľudia zíde[G]ní",
+        "v mene Ježiš,[D] v láske zjednote[G]ní,",
+        "[a] práve tam Boh [e]zasľúbil, [C] že bude prítom[G]ný.",
+        "[C] Dnes viem, že [G]náš Boh je[a] na tomto [D]mieste prítomný."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:[C] Privítajme Pána [G]v tomto chráme,",
+        "[D] nech ho Božia sláva [G]naplní, [C] svojmu Bohu spieva[G]me",
+        "a hráme [D] pieseň spase[G]ných. :]  [e]  [D]   [G]"
+      ]
+    }
+  ]
+}

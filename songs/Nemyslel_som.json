@@ -1,0 +1,45 @@
+{
+  "title": "Nemyslel som",
+  "author": "",
+  "categories": [],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Nemyslel som, že práve touto cestou",
+        "skloníš ku mne svoju tvár,",
+        "no našiel si ma hynúceho hriechom,",
+        "nádhernú lásku si mi dal."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Tu sme v tvojej prítomnosti, dvíhame ruky k Tebe, Pane.",
+        "Tu sme, chválime Ježiša za všetko, čo nám bolo dané."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Nemám slov povedať to, čo cítim,",
+        "neviem vlastne, čo vravieť mám.",
+        "Si svätý a ja nehodný sa vidím,",
+        "Ty hovoríš mi: Rád ťa mám."
+      ]
+    },
+     {
+      "type": "chorus",
+      "lines": [
+        "Tu sme v tvojej prítomnosti, dvíhame ruky k Tebe, Pane.",
+        "Tu sme, chválime Ježiša za všetko, čo nám bolo dané. (4x)"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Tu sme"
+      ]
+    }
+  ]
+}

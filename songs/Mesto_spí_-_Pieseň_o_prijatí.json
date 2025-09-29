@@ -1,0 +1,65 @@
+{
+  "title": "Mesto spí - Pieseň o prijatí",
+  "author": "O. Štyrák - Tvrdošanci",
+  "categories": [
+    "vianoce",
+    "úvod",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Mesto spí už do tmy schúlené, [Dmaj7]za ním v biednej [h]maštali,",
+        "v sene, [e]leží dieťa, [A7]dýcha dnes prvý [D]krát.[A7]",
+        "[D]Malý púčik lásky velikej, [Dmaj7]z devy klíči [h]skromnej a čistej",
+        "[e]chveje sa, veď [A7]víta ho tma a [D]chlad.[A7]"
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Že k nám prišiel z lásky Boží Syn, [D5+]nikto v kraji [h]vtedy netušil",
+        "[e]a každý ho [A7]len za človeka [D]mal.[A7]",
+        "Všetky zámky tupo zapadli, všetky ľudské srdcia vychladli,",
+        "vyhnaný u zvierat prví krát spal."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Neboj sa neplač dieťatko, [D5+]zavri očká a spi sladko.",
+        "Hoc ťa vyhnali, pevnú ochranu máš.",
+        "Mamka pesničku zaspieva, Jozef rúčky poohrieva",
+        "a ruka Otcova drží nad tebou stráž."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Od čias, čo prišla tvoja hviezda, [Dmaj7]žiari vždy cez búrky, tmy,",
+        "cez dážď, nevládal jej plameň uhasiť čas.",
+        "Ty si s nami, ty si stále tu, každý rok, deň, hodinu, minútu,",
+        "prichádzaš, klopeš, zrodiť sa chceš znovu v nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "My však máme obsadené zas, [D5+]miesta nemáme a chýba čas,",
+        "nové zámky k starým prikladáme.",
+        "Zas ťa trápi od sŕdc naších chlad, neľúbime, jak ty mal si rád,",
+        "len chatrče pusté ti nechávame."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Vždy však spoznávame svoj klam [D5+]a dnes prichádzaš znova k nám,",
+        "odpusť, prosíme, nechceme už viac zrád.",
+        "Veríme ti, si Boží Syn, lásku nám dávaš, sám ňou si,",
+        "preto voláme: „Vďaka ti tisíckrát!“"
+            ]
+    }
+  ]
+}

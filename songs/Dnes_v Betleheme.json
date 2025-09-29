@@ -1,0 +1,40 @@
+{
+  "title": "Dnes v Betleheme (Dzisiaj W Betlejem)",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:[G]Dnes v Betleheme:/ vese[C]lá no[G]vi[D]na: /:[G]prečistá Panna:/ poro[C]dila [G]Sy[D]na."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Kristus sa rodí, [G]nás oslobodí, [D]anjeli hrajú, [G]králi vítajú,",
+        "[G]pastieri spievajú, zvieratá kľakajú, radost[C]nú [G]zvesť [C]nám [G]hlá[D]sa[G]jú."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Aj keď v jaskyni:/ Panna Syna rodí, /:veď On čoskoro:/ ľudí oslobodí. REF"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Aj traja králi:/ z Východu putujú /:a vzácne dary:/ Pánovi darujú. REF"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Poďme tiež aj my:/ privítať Ježiša. /:Kráľa nad kráľmi.:/ chváliť Mesiáša."
+      ]
+    }
+  ]
+}

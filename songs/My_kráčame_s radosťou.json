@@ -1,0 +1,44 @@
+{
+  "title": "My kráčame s radosťou",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "My kráčame s radosťou za Pánom Ježišom,",
+        "On vedie nás milosťou pozemským životom."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Poďme za ním všade, kde vedie nás,",
+        "On je verný Pán a Spasiteľ náš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "On duše naše sýti, On dáva večný mier,",
+        "On miluje ťa v žití, poď s ním a jemu ver."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "My svoje verné srdcia Ježišovi dáme,",
+        "v radosti a v súžení len Jeho vzývame."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "My chceme za ním kráčať po ceste zbožnosti,",
+        "Ježiša nasledovať po ceste milosti."
+      ]
+    }
+  ]
+}

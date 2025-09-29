@@ -1,0 +1,33 @@
+{
+  "title": "Verím, verím",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Verím, verím v jedného Boha, Otca, čo stvoril nebo i zem,",
+        "nekonečného, plného lásky, Jemu sa klaňať, slúžiť chcem."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Verím, verím i v jeho Syna, Ježiša, ktorý umrel i vstal,",
+        "sňal hriechy sveta z nesmiernej lásky,",
+        "z nej seba nám za pokrm dal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Verím, verím v Svätého Ducha,",
+        "ktorý nám denne dary dáva,",
+        "v Cirkev, zmytie vín, svätých i nebo",
+        "i v život večný. Amen."
+      ]
+    }
+  ]
+}

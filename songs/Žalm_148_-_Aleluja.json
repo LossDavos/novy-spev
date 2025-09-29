@@ -1,0 +1,56 @@
+{
+  "title": "Žalm 148 - Aleluja",
+  "author": "Carl",
+  "categories": [
+    "Žalmy"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[e]Aleluja, [D]aleluja, [C]aleluja, [h]alelu[e]ja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pánovi nech znie [h]v nebesiach [e]chvála,",
+        "[D]svätému [G]Bohu [D]česť nech sa [e]vzdáva.",
+        "[C]Velebte [D]Pána [e]mocnosti neba,",
+        "velebte [h]Pána zástupy [e]v nebi."
+        
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "On svojmu ľudu veľkú moc dáva",
+        "a z prachu zeme povýši biednych.",
+        "Vo svojich svätých zjavuje slávu,",
+        "Pán Izraela, veľký a mocný."
+        
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Slnko i mesiac - velebte Pána,",
+        "žiarivé hviezdy - velebte Pána,",
+        "nebesia nebies - velebte Pána,",
+        "vody pod nebom - velebte Pána."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Pánovo meno nech všetci chvália,",
+        "na jeho slovo povstalo všetko,",
+        "len jeho meno je hodné chvály,",
+        "naveky nech ho stvorenie chváli."
+      ]
+    }
+  ]
+}

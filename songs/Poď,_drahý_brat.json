@@ -1,0 +1,30 @@
+{
+  "title": "Poď, drahý brat",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:Poď, drahý brat, zavediem ťa pred oltár.:/",
+        "/:Tam uvidíš, tam objavíš, kto je tvoj nebeský Pán.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Na oltári Spasiteľ sveta žiari.:/",
+        "/:On volá nás, On žehná nás, tak nemeškaj a príď včas.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Oddávam Ti, Pane môj, moje srdce.:/",
+        "/:Naplň ho tým, čím ho Ty máš, láska moja jediná.:/"
+      ]
+    }
+  ]
+}

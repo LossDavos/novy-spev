@@ -1,0 +1,54 @@
+{
+  "title": "Ó, Bože, Darca darov",
+  "author": "J. Fabián",
+  "categories": [
+    "Cyril a Metod"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Ó, Bože, darca darov obdaruj nás,",
+        "keď oltár sme my, Kristus obeť a kňaz.",
+        "Nech Tvoja láska našu rozhrieva zas",
+        "a zmení tak život náš."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Náš národ ctí Teba pod Tatrami,",
+        "zachovaj a chráň ho pred hrozbami.",
+        "Cyril a Metod Ťa priniesli k nám,",
+        "dedičstvo, vieru nám chráň."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Otec, Syn, v Duchu lásky, Boh jeden ste",
+        "a viera nás dvíha k Vám, preto prosme:",
+        "nech vierou v Boha národ náš mocnie v nás",
+        "a jednota v láske zas."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prácu rúk našich k chlebu pridávajme,",
+        "utrpenie zas k vínu primiešajme.",
+        "Keď chlieb a víno Krista premení kňaz,",
+        "Boh s Kristom príjme aj nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Od predkov našich cez nás, sláva Ti buď.",
+        "V nás cez potomkov našich, sláva Ti buď.",
+        "Sláva ti za to Bože, sláva Ti buď,",
+        "že tvoríš v nás nový ľud."
+      ]
+    }
+  ]
+}

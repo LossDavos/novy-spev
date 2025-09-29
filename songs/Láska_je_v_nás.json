@@ -1,0 +1,54 @@
+{
+  "title": "Láska je v nás",
+  "author": "",
+  "categories": [
+    "sobášne"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Láska je v [f#]nás, v [G]každom prebýva,[D]",
+        "tam v [h]hĺbke [f#]skvie sa ako [e]vzácny draho[A]kam.",
+        "[D]Láska je v [f#]nás, [G]aj ty ju, priateľu, [D]máš,",
+        "tak [h]otvor svoje [f#]srdce, nech [e]zažiari všetkým [A]nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[h]Tak prečo [f#]kráčaš tou [G]ulicou sklama[D]nia,",
+        "vždy [h]hľadáš neus[f#]tále tie [e]nové pozna[A]nia.",
+        "Ten [h]drahokam si [f#]zalial novým [G]bahnom vábe[D]nia",
+        "a [h]znovu hľadáš [f#]lásku a [e]cítiš sa tak sám.[Asus4] [A7]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A opäť si spoznal ďalšie nové sklamanie",
+        "a znovu si smutný, v tvojom srdci prázdno je.",
+        "Stále ťa trápi tvoje vlastné svedomie,",
+        "ktoré ti šepká, tam pod bahnom láska je."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Priateľu, tak povedz, kto mi pomôže",
+        "Nájsť cestu, ktorú hľadám, sám ju nenájdem.",
+        "Viac už nemám síl ísť cestou blúdenia,",
+        "tak priveď ma k nej, k láske, ktorá vylieči ma."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V tom tichu a sám ten pokoj nachádzaš,",
+        "v tej chvíli si šťastný, z hĺbky prichádza.",
+        "Vlieva ti radosť do srdca sklamaní,",
+        "úsmev a slzy sú tvojím poznaním."
+      ]
+    }
+  ]
+}

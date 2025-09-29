@@ -1,0 +1,43 @@
+{
+  "title": "Naplň ma milosťou nekonečnou",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Naplň ma milosťou nekonečnou,",
+        "lásku šíriť chcem, Pane môj.",
+        "Naplň ma milosťou nekonečnou,",
+        "lásku šíriť budem, Pane môj."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Spievaj Pánu, spievaj Pánu, spievaj radostne mu každý deň.",
+        "Spievaj Pánu, spievaj Pánu, spievaj vďačne každý deň."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Naplň ma pokojom nekonečným,",
+        "pokoj šíriť chcem, Pane môj.",
+        "Naplň ma pokojom nekonečným,",
+        "pokoj šíriť budem, Pane môj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Naplň ma radosťou nekonečnou,",
+        "radosť šíriť chcem, Pane môj.",
+        "Naplň ma radosťou nekonečnou,",
+        "radosť šíriť budem, Pane môj."
+      ]
+    }
+  ]
+}

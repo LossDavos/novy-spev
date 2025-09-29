@@ -1,0 +1,24 @@
+{
+  "title": "Chcem oslavovať",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:[d]Chcem oslavovať [g]svojho Pána,",
+        "[d]chcem Mu [A7]spievať novú [d]pieseň.[g] [A]:/",
+        "/:Chcem [g]Ho [C]chvá[F]liť, [B][(d)]chcem Mu [A7]spievať novú [d]pieseň. [D]:/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[d]Aleluja, aleluja, [g]aleluja, aleluja,",
+        "[d]chcem mu [A7]spievať novú [d]pieseň.[g] [A]"
+      ]
+    }
+  ]
+}

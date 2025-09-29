@@ -1,0 +1,27 @@
+{
+  "title": "Pane, som tak veľmi rád",
+  "author": "R. Pounds",
+  "categories": [
+    "prijímanie",
+    "pôst",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Pane, [C]som tak veľmi [D]rád[C],  [G] život [C]s tebou som už [D]skúsil[C].",
+        "[G] Tak ti [C]spievam pieseň [D]chvál[C], [G] poznať [C]teba vždy som [D4]túžil.[D]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G] Z nebies zo[C]stúpil si [D]k nám na [C]túto [G]zem,",
+        "tu na [C]kríži musel´s [D]mrieť za [C]môj [G]hriech.",
+        "Kríž pred [C]hrobom v krvi [D]stál,",
+        "z hrobu [e7]Otec si ťa [a7]vzal, tak ti [D4]spievam [D]pieseň [G]chvál."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "title": "Príď Duchu Svätý",
+  "author": "",
+  "categories": [
+    "k duchu svätému"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Príď, Duchu Svätý a vládni nám.",
+        "Príď, Duchu Svätý, učiň zázrak v nás."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Duchu Spasiteľa, Slovo naplň sám.",
+        "Duchu Otca prídi s Jeho vôľou k nám."
+      ]
+    }
+  ]
+}

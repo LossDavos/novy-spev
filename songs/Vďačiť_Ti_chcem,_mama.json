@@ -1,0 +1,54 @@
+{
+  "title": "Vďačiť Ti chcem, mama",
+  "author": "",
+  "categories": [
+    "sobášne"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Vďačiť Ti chcem, [e]mama,[F] za nežnosť i za [C]lásku,",
+        "[F]ktorú si mi [C]dala, [G7]vďaka aj za život [C]môj.",
+        "[C]Ukryla si v [e]srdci [F]každé trápenie a [C]bôľ,",
+        "[F]všetko si mi [C]dala, [G7]aj ten úsmev milý [C]Tvoj."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[a]Vďaka za to, že si mi dala [e]život,",
+        "[F]zatiaľ, čo ty si mala [G]len bo[G7]lesť.",
+        "[C]Teraz srdce moje ti [e]volá: [F]mama, vďaka Ti za [G]lás[G7]ku.",
+        "[C]Aj keď možno [e]zajtra [F]nebudem už pri te[C]be,",
+        "[F]svetlo tvojej [C]lásky [G7]bude žiariť vždy vo [C]mne."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vďačiť Ti chcem otec, dobre si ma vychoval,",
+        "občas bol si prísny, no vždy si ma miloval.",
+        "Nikdy nezabudnem, nikdy otec na Teba,",
+        "že si sa o mňa staral, že si mi dal vždy chleba."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Vďaka za to, že si sa pre mňa trápil,",
+        "hoci neraz bolo ti ťažko.",
+        "Teraz srdce moje ti volá: otec, vďaka Ti za lásku.",
+        "Aj keď možno zajtra nebudem už pri tebe,",
+        "svetlo tvojej lásky bude žiariť vždy vo mne."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Vďačiť vám chcem teraz, vďačiť vám chcem rodičia,",
+        "že ste nás vychovali, že nás máte vždy radi."
+      ]
+    }
+  ]
+}

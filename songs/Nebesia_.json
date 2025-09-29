@@ -1,0 +1,51 @@
+{
+  "title": "Nebesia ",
+  "author": "Dominik",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+         "[F]Nebesia ti rozpovedia [g/F]o sláve Boha,",
+      "[g/C]dielo jeho [C7]rúk zvestuje [F]modrá obloha.",
+      "[d]Deň dňu hovorí [a7]Pánovo slovo,",
+      "[B]noc noci povedá [C4]známostí mno[C]ho.",
+      "Niet reči, nieto slov, nepočuť ich hlas,",
+      "ich zvuk sa vznáša po zemi zas a zas.",
+      "Aj slnku postavil na oblohe svoj stan,",
+      "ako ženích vychádza a hreje tvoju dlaň."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+     "Tak [F]čuj a otvor svoje [B]oči dnes[D7],",
+      "tak [g]ver a poznaj, že Boh [C]láska je,[C7]",
+      "že [A7]zákon Boží dokonalý, [d]verný a [B]stály ťa [C]poteší.[C7]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+         "Vzácnejšie nad zlato sú, sladšie ako med,",
+      "Tvoje súdy Pane môj a lepších od nich niet.",
+      "Kto z nás môže rozumieť poblúdeniam v nás?",
+      "Od tých skrytých, Ježiš môj, očisti ma zas.",
+      "Ako sluha, z milosti, tu stojím pred Tebou,",
+      "Ty ma ochráň od pýchy, čo vládne nado mnou.",
+      "Len tak budem dokonalý a čistý od viny,",
+      "chcem žiť podľa Tvojej vôle Pán môj jediný."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "[:Tak príď, ja otváram Ti srdce dnes.",
+        "Môj Pán, len Ty máš právo súd vyniesť.",
+        "Tvoj zákon Boží, dokonalý, verný a stály ma poteší.:]"
+      ]
+    }
+  ]
+}

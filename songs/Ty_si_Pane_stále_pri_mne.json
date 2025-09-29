@@ -1,0 +1,30 @@
+{
+  "title": "Ty si Pane stále pri mne",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Ty si, Pane, [A]stále pri mne, [G]ja to však [D]necítim.",
+        "Ty sa mi [A]ukazuješ, [G]ja ťa však [D]nevidím."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Moje zatvrdlivé srdce [D]nepustí ťa k sebe,",
+        "[G]moje oči od mamony [D]sú zaslepené."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "[D]Daj mi dole [A]závoj z očí, [G]by som ťa [D]uvidel",
+        "a za tebou, [A]ó, môj Pane, [G]vždy [A]rád som [D]šiel."
+      ]
+    }
+  ]
+}

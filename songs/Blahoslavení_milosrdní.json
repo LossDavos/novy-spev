@@ -1,0 +1,60 @@
+{
+  "title": "Blahoslavení milosrdní",
+  "author": "J. Blycharz, pr. V. Juríčková - Hymna Krakov 2016",
+  "categories": [
+    "prijímanie",
+    "záver",
+    "cez rok",
+    "veľká noc"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[c#7] Svoj pohľad [A2]dvíhame k výši[E]nám, [D]príde [A2/C#]na pomoc [E]nám;",
+        "príde nám [H4]Záchranca[H] z Božích [F#4]brá-[F#]n, [A] milo[H]srdný [C#4]Pán[C#].",
+        "[c#7] Zblúdených [A2]nájde a v náru[E]čí [D]túli a [A2\\C#]tíši     [E]strach.",
+        "Z kríža nás [H4]prúdmi [H]riek vy[F#4]lie - [F#]či, [A]vdýchne [H]nádej [C#4]ná - [C#]m."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Milosrd[E]ní [H\\D#]sú blahoslave[c#7]ní,  [A]",
+        "lebo len [E]tí, len [H4]tí, mi[H]losrdenstvo [F#4]dosia[F#]hnu.",
+        "[D#4,7]  Milosrd[E]ní [H\\D#]sú blahoslave[c#7]ní,  [A]",
+        "lebo len [E]tí, len [H4]tí, mi[H]losrdenstvo [F#4]dosia[F#]hnu."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[c#7]Ak by nám [A2]Pán neodpustil [E]hriech, [D]nik z nás [A2\\C#]neobsto[E]jí.",
+        "Blížneho [H4]prijmi a [H]kráčaj [F#4]s ním,[F#]   [A]v láske buď[H] podob[C#4]ný-ý[C#]!     R:"
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       "[c#7]Pán naše [A2]úpisy splatil [E]sám, [D]živý [A2\\C#]Syn z hrobu [E]vstal.",
+        "Duch volá: [H4]„Ježiš [H]je slávny [F#4]Pá - [F#]n!“ [A] Pred [H]svetom ho [C#4]chvá-ľ[C#]!     R:"
+         ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "[A] Pred Pána [H]prines trápe[c#]nia a [A]pri ňom [E\\G#]slobo[H]dne [A]dýchaj!",
+        "Žiť v úža[H]se ti Vzkriese[c#]ný dá, [A]živý [H]Boh, tvoj [C#4]Pá - [C#]n."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/: Milosrd[A]ní [E\\G#]sú blahoslave[f#7]ní,  [D]",
+        "lebo len [A]tí, len [E4]tí, mi[E]losrdenstvo [H4]dosia[H]hnu.",
+        "Milosrd[A]ní [E\\G#]sú blahoslave[f#7]ní,  [D]",
+        "lebo len [A]tí, len [E4]tí, mi[E]losrdenstvo [H4]dosia[H]hnu. :/"
+      ]
+    }
+  ]
+}

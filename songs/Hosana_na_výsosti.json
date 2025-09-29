@@ -1,0 +1,30 @@
+{
+  "title": "Hosana na výsosti",
+  "author": "C. Tuttle - palmový sprievod",
+  "categories": [
+    "iné",
+    "úvod",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[: Ho[F]sana, ho[C]sana, [d]hosana na [B]výso[C]sti. :]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[B] Vyvy[C]šujeme [F]ťa, (ó, aleluja) [B] Ježiš, [C]vzývame [F]ťa, (ó, aleluja)",
+        "[B] všetci [C]chválu ti [F]vzdá[A7]va[d]me, [B]hosana na [C]výsos[F]ti."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Sláva, sláva, sláva Kráľovi kráľov. :]"
+      ]
+    }
+  ]
+}

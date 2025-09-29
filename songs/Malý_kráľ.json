@@ -1,0 +1,36 @@
+{
+  "title": "Malý kráľ",
+  "author": "",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Kam odišiel malý kráľ, čo tu pred chvíľou sa hral,",
+        "možno s kŕdľom labutím letel do sveta detí.",
+        "Je to kraj, kde zloby niet, kde dieťa je ako kvet",
+        "chránený a láskaný, aj keď žije bez mamy."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A tak kráľ raj vytvoril, nebo deťom otvoril,",
+        "že vraj písali mu list, lebo nemajú kam ísť.",
+        "Ženy nechcú deti mať, muži vravia: „Nemám čas.“",
+        "Deti miesto nemajú, dvere im zatvárajú."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kráľ detí ich k sebe vzal, spieval im, s nimi sa hral.",
+        "Občas nápad taký mal, deti k matkám posielal.",
+        "Premenil ich na kvety, s ich venčekom poletí,",
+        "pýchu matky odloží, /:kvet na srdce položí.:/"
+      ]
+    }
+  ]
+}

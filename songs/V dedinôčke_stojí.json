@@ -1,0 +1,36 @@
+{
+  "title": "V dedinôčke stojí",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "V dedinôčke stojí chatka maličká",
+        "a v nej býva moja drahá mamička.",
+        "V izbe visí obraz Panny Márie,",
+        "pod ním kvitnú bieloskvúce ľalie."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pred obrazom Matky svetlo zažala",
+        "a s ružencom v ruke dlho kľačala.",
+        "Moja mamička, zlatá mamička,",
+        "pod ochranu Matky Božej nás porúčala."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď sa tichý súmrak vkráda do chaty,",
+        "prosí ona požehnanie pre deti,",
+        "ktoré žijú v svete diaľnom, neznámom,",
+        "daj im šťastia, požehnania, každým dňom."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Chválu ti vzdám (Pour toi Seigneur)",
+  "author": "A. Fleury - Komunita Emanuel (zbor - SATB)",
+  "categories": [
+    "poďakovanie po prijímaní"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Chválu ti [E]vzdám, pokorne [H]vyznávam,",
+        "že ty si [c#7]Kristus, Boh a [A]Pán.",
+        "Hľadíme [E]na tvoj kríž, Baránok [H]víťazný,",
+        "Spasiteľ [A]náš, ty [H]vládni [E]nám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[D9]Cestu otváraš predo [A]mnou [H4]a moju [H]nádej posil[c#]níš.",
+        "[A]Strachu viac [E]niet, chcem [D]kráčať pred te[c#]bou,",
+        "[A]dôveru [E]mám aj [D]keď som [H]v tmách."
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Aj keď som v skúškach, Pane môj, keď boje zvádzam so sebou,",
+        "v tebe som víťaz, vieru zachovám,",
+        "silu mi dávaš, nie som sám."
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Do srdca nám vlej pravdy lúč, tvoj zákon lásky doňho vpíš.",
+        "V tichosti príď k nám, sám vyučuj nás,",
+        "na obraz svoj pretváraj nás."
+      ]
+    }
+  ]
+}

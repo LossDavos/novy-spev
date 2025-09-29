@@ -1,0 +1,65 @@
+{
+  "title": "Keď sa raz Pán",
+  "author": "spirituál, Južania",
+  "categories": [
+    "úvod",
+    "záver",
+    "advent"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Keď sa raz [C]Pán navráti zas, keď sa raz Pán navráti [G7]zas,",
+        "aby [C]sme [C7]tiež tam [F]boli[f], keď sa raz [C]Pán na[G]vráti [C]zas."
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "/: Keď knihu tú otvorí Boh, :/",
+        "aby sme tiež tam boli, keď knihu tú otvorí Boh."
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+         "/: Keď hostinu pripraví Pán, :/",
+        "aby sme tiež tam boli, keď hostinu pripraví Pán."
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/: Keď svätí svoj opustia hrob, :/",
+        "aby sme tiež tam boli, keď svätí svoj opustia hrob."
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/: Keď po mene nazve nás Pán, :/",
+        "aby sme tiež tam boli, keď po mene nazve nás Pán."
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/: Keď zaznie spev aleluja, :/",
+        "aby sme tiež tam boli, keď zaznie spev aleluja."
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/: Aleluja, aleluja, :/",
+        "aleluja, aleluja, aleluja, aleluja."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "title": "Mária, celého sveta Kráľovná",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Mária, Mária, Mária, celého sveta Kráľovná.",
+        "Mária, Mária, Mária, prijmi nás do svojho lona.",
+        "Mária, Mária, Mária, náš národ Ťa opäť vzýva.",
+        "Mária, Mária, Mária, prijmi nás do svojho lona."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Bohom zvolená,:/ /:Matka prečistá,:/",
+        "/:od vekov stvorená,:/ /:Matka Kristova.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Bez hriechu počatá,:/ /:od vekov vždy ctená,:/",
+        "/:Panna prekrásna,:/ /:Matka spanilá.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Hľadíš tu na nás,:/ /:zdobíš oltáre,:/",
+        "/:nebeská Panna,:/ /:prekrásnej tváre.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Si v našom chráme,:/ /:i tu pred nami,:/",
+        "/:túžiš po srdciach,:/ /:chceš byť vždy s nami.:/"
+      ]
+    }
+  ]
+}

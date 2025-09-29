@@ -1,0 +1,36 @@
+{
+  "title": "Prichádzame k tebe, Pane",
+  "author": "Gen Verde, M. Šiškovič",
+  "categories": [
+    "úvod",
+    "cez rok"
+  ],
+  "song_parts": [
+
+    {
+      "type": "chorus",
+      "lines": [
+        "[C] Prichádza[d]me k tebe, [G]Pane, so srd[e]com",
+        "plným ra[a]dosti a [C]spoločne ti [d]chceme poďa[G]kovať.",
+        "Prichádza[d]me k tebe, [G]Pane, so srd[e]com",
+        "plným ra[a]dosti a [C]spoločne ti [d]chceme [G]poďa[C]kovať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za dni, ktoré nám [F]dávaš,[G]  ti ďaku[C]jeme.",
+        "Za všetky plody [F]zeme,[G]  ti ďaku[C]jeme.",
+        "[E] A tiež za [a]prácu, [E] za radosti [a]života, [F] ti ďaku[G]jeme."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za všetky tvoje slová, ti ďakujeme.",
+        "Že si nám dal život, ti ďakujeme.",
+        "A tiež za Cirkev, ktorá nás spája, ti ďakujeme."
+      ]
+    }
+  ]
+}

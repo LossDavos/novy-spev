@@ -1,0 +1,45 @@
+{
+  "title": "Ó, veľký Bože",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Ó, veľký Bože, nech Ťa vrúcne chváli",
+        "za našich svätcov pieseň slávnostná.",
+        "Tak ako dávno prišli z veľkých dialí,",
+        "i dnes ich víta Cirkev radostná."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Hlas detí stúpa hore k výšinám:",
+        "ó, príďte k nám, ó, príďte k nám.",
+        "Nech silou viery zvučí tento chrám,",
+        "na slávu vám, na slávu vám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Čo Cyril písmom pre nás zanecháva,",
+        "to Metod v Božom slove naučí.",
+        "A národ Bohu oddaným sa stáva,",
+        "väčšiu mu spásu viera zaručí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A jednu pravdu učia národ stále,",
+        "to nádej spásy z Boha vyviera.",
+        "Stojíme pevne na Petrovej skale,",
+        "nech do nej peklo jak chce udiera."
+      ]
+    }
+  ]
+}

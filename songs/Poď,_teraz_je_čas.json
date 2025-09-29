@@ -1,0 +1,27 @@
+{
+  "title": "Poď, teraz je čas",
+  "author": "B. Doerksen - Rieka života",
+  "categories": [
+    "úvod",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Poď, teraz je čas vzdať [D4]chvá[D]lu,",
+        "[A]poď, srdce svoje mu [e]s láskou [G]daj.",
+        "[D]Poď taký, aký si, [D4]chváľ [D]ho,",
+        "[A]poď, predstúp pred Kráľa, [e]prijme [G]ťa, [D]poď."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Každý jazyk v ten deň vyzná: [D]„Ty si Pán!“",
+        "[G]Každý ti raz úctu [D]vzdá. [G]Tým, čo teraz",
+        "s láskou ťa [h]hľadajú, ty [e]poklad vzácny [A]dáš."
+      ]
+    }
+  ]
+}

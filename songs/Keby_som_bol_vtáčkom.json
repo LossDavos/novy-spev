@@ -1,0 +1,44 @@
+{
+  "title": "Keby som bol vtáčkom",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Keby som bol vtáčkom so strieborným hláskom,",
+        "spieval by som pre Teba jedinú.",
+        "Najkrajšie piesne, môjho srdca tiesne,",
+        "zneli by pre Pannu Máriu."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pre Máriu, Božiu Matku, žitia môjho nádej sladkú.",
+        "Keby som bol vtáčkom, spieval by som aj pre Máriu.",
+        "Ave, ave, ave, Mária, ave, ave, ave."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keby som bol slnkom so zlatými lúčmi,",
+        "svietil by som pre Teba jedinú.",
+        "Strhol by som z neba hviezdičky pre Teba,",
+        "by Ti hlávku venčili nevinnú."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keby som bol kvietkom z voňavého hája,",
+        "kvitol by som pre Teba jedinú.",
+        "Zvädnúť na oltári s úsmevom na tvári,",
+        "chcel by som len pre Pannu Máriu."
+      ]
+    }
+  ]
+}

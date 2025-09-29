@@ -1,0 +1,73 @@
+{
+  "title": "Veľký Boh ",
+  "author": "Viminimi",
+  "categories": [
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[A] [c#] [D] [A] [E]"
+      ]
+    },
+       
+    {
+      "type": "verse",
+      "lines": [
+        "[A]Z‍‍aodetá do [c#]lásky Krista,",
+        "je [D]mo‍‍je telo [A]pl‍‍né sily a [E]d‍‍uša krásne čistá.",
+        "[A]V Tebe prijímam tak [c#]z‍‍ázračný dar,",
+        "tá [D]t‍‍úžba prudko [A]ra‍‍stie, keď h‍‍ľadím [E]na oltár."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pred Tebou [A]bl‍‍ízko stáť a [f#]vr‍‍úcne si priať,",
+        "[D]nech tá chvíľa neprestáva,",
+        "keď v[E]‍‍eľký Boh sa malým dáva.",
+        "[A]Blízko stáť, láske [f#]celý sa oddať.",
+        "[D]Z hĺbky volať: \"Pane, stráž ma,",
+        "[E]aby duša nebola viac [A]vlažná.\""
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prebývaj vždy v môjho srdca strede,",
+        "doprevádzaj k cieľu kroky, ožiaruj dni bledé.",
+        "Nech tá túžba nezapadá v prach,",
+        "hoc je ťažko, nech ma nájdeš na kolenách."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Pred Tebou [A]bl‍‍ízko stáť a [f#]vr‍‍úcne si priať,",
+        "[D]nech tá chvíľa neprestáva,",
+        "keď v[E]‍‍eľký Boh sa malým dáva.",
+        "[A]Blízko stáť, láske [f#]celý sa oddať.",
+        "[D]Z hĺbky volať: \"Pane, stráž ma\"",
+        "[E]Volám:\"[F#]Chcem pred Tebou [H]stáť!\""
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "(Pred Tebou) [H]bl‍‍ízko stáť a [g#]vr‍‍úcne si priať,",
+        "[E]nech tá chvíľa neprestáva,",
+        "keď v[F#]‍‍eľký Boh sa malým dáva.",
+        "[H]Blízko stáť, láske [g#]celý sa oddať.",
+        "[E]Z hĺbky volať: \"Pane, stráž ma,",
+        "[F#]aby duša nebola viac [A]vlažná.\""
+      ]
+    },
+    {
+      "type": "outro",
+      "lines": [
+        "[C]  [D] [E]"
+      ]
+    }
+  ]
+}

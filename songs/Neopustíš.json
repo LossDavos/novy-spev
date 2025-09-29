@@ -1,0 +1,47 @@
+{
+  "title": "Neopustíš",
+  "author": "M. Redman",
+  "categories": [
+    "záver",
+    "poďakovanie po prijímaní",
+    "adorácia"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Aj keby som [A]šiel dolinami, tam, kde číha smrť,",
+        "viem [D2/F#] tvoja láska vyháňa strach.",
+        "A aj keď budem [A]sám, čeliť bojom, ktoré život mi dá,",
+        "tak [D2/F#] nevzdám to, veď viem, že ťa mám."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "A nebojím sa [f#7]zlé [E]- [A]ho, veď môj Boh je [f#7]blíz-[E4]ko [A]mňa,",
+        "a ak môj Boh je [f#7]blíz [E]- [A]ko, koho sa mám [E]báť, koho sa mám [D2]báť?",
+        "[A]Nie, nie, ty neopustíš, keď dobre je, či v časoch zlých.",
+        "[f#7]Nie, nie, ty neopustíš, keď vánok je, či búrka hrozí.",
+        "[E4]Nie, nie, ty neopustíš, [D2]nie, v žiadnej chvíli ma neopustíš.[A]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Už vidím svetla jas, ktoré žiari v srdciach vytrvalých,",
+        "a veniec slávy pripravený.",
+        "A raz musí prísť zlému koniec, no kým príde ten čas,",
+        "chcem, aby si bol oslávený."
+         ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+       "Už vidím svetla [A]jas, ktoré žiari v srdciach vytrvalých",
+        "a raz musí [f#7]prísť zlému koniec, no kým príde ten čas,",
+        "[E](vždy) ťa budem chváliť, [D2]vždy ťa budem chváliť."
+      ]
+    }
+  ]
+}

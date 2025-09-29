@@ -1,0 +1,38 @@
+{
+  "title": "Láska, čo nie je milovaná",
+  "author": "O. Tkáč - Kapucíni",
+  "categories": [
+    "pôst",
+    "prijímanie"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Na kríži [D]pribitá, potupe[e]ná,",
+        "[C]vydaná [h]napospas v zlobe za [e]nás.",
+        "Koľko len [D]lúčov vyslala [e]nám",
+        "[C]tá Láska, čo [D]nie je milova[e]ná?!"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Úbožiak [D]malý, čo svätým sa [e]stal,",
+        "[C] poznal už [h]dávno ten bolestný [e]jav.",
+        "Slzami [D]ľútosti oplaká[e]val,",
+        "že [C]Láska je [D]málo milova[A]ná."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Dal si mi [D]život a dal si mi [e]zrieť,", 
+        "[C]že si tu [h]a s tebou strachu už [e]niet.",
+        "Odpusť, že [D]viem a predsa zabú[e]dam,",
+        "že [C]Láska, si [D]málo milova[e]ná,",
+        "že [C]Láska, si [D]málo milova[A]ná."
+      ]
+    }
+  ]
+}

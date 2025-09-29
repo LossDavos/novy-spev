@@ -1,0 +1,40 @@
+{
+  "title": "Cestou s nami",
+  "author": "autor neznámy (zbor - SSAB)",
+  "categories": [
+    "záver",
+    "pôst",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/: Cestou [C]s nami :/  /: kráčaj, [a]Pane, :/",
+        "/: my ne[d]chceme :/ /: na mieste [G]stáť. :/",
+        "/: Keď zblú[C]dime, :/ /: podaj [a]ruku, :/",
+        "/: keď pa[d]dneme, :/ pomôž [G]vstať."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/: A do [C]svetla :/ /:svojho [a]voveď, :/ [F]v[G]oveď [C]nás.  2x"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Dňom bez teba chýba nádej, zavládla v nás pustá tma.",
+        "V srdciach našich zapáľ plameň, v ktorom zhorí smútok a strach."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vezmi smútok, vráť nám radosť, zoslabnutým dodaj síl.",
+        "Chceme iným dnes pomáhať, ťarchu kríža chceme si niesť."
+      ]
+    }
+  ]
+}

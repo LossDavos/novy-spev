@@ -1,0 +1,35 @@
+{
+  "title": "Dávam všetko",
+  "author": "M. James - Rieka života",
+  "categories": [
+    "obetovanie",
+    "pôst",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Dnes chcel by som ti [D]dať to, čo v srdci [C]mám,",
+        "dávam [D]na ol[e]tár k tvojim nohám, [D\\F#]kráľov [G]Kráľ.",
+        "Dnes kladiem svoje [D]sny, ja sa zriekam svojich [C]práv,",
+        "už nechcem [D]pyšný [e]stáť, chcem nový [D\\F#]život [G]mať."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "A [e]d[D\\F#]ávam [G]všetko, [C]to, čo [G]mám, [e7]tebe, K[D]ráľ.[C2]     2x"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Keď túto pieseň [D]hrám, pod krížom stojím [C]sám",
+        "a všetky [D]bohat[e]stvá za smeti [D\\F#]pokla[G]dám,",
+        "chcem poznať teba, [D]Kráľ, slávu mena, ktoré [C]máš,",
+        "tá radosť [D]nekon[e]čí, aj keď s tebou [D\\F#]trpieť [G]mám."
+      ]
+    }
+  ]
+}

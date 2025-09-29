@@ -1,0 +1,43 @@
+{
+  "title": "Som pravá cesta",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Som pravá cesta, pravda i život",
+        "a vraviac ľuďom pre vás som žil.",
+        "Že v pote tvári na kríži zomrel",
+        "a žijem ďalej, by každý žil."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ježiš, si tu medzi nami, blízko tu na jeden krok,",
+        "Tu na oltári v Eucharistii poznáva Ťa len môj viery zrak."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Som studňa lásky, som čistá radosť,",
+        "som priateľ všetkých, ja som len Tvoj.",
+        "Som milosť duší, ohnisko viery,",
+        "som Synom Božím, ja som pokoj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Prichádzaj ku mne, ja ti dám silu,",
+        "príď ku mne ty, čo už nevieš žiť.",
+        "Ja ti dám nádej, svetlo života,",
+        "dám svoje dlane na kríž pribiť."
+      ]
+    }
+  ]
+}

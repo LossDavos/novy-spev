@@ -1,0 +1,38 @@
+{
+  "title": "Zhliadni na nás",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Zhliadni na nás, Matka naša, vyslyš prosby hlas.",
+        "Chráň nás v žití, žehnaj v práci, pomôž v každý čas."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ave, Ave, Ave Mária. Ave, Ave, Ave Mária.",
+        "Volajme, spievajme, zdravas buď Mária.",
+        "Volajme, spievajme, zdravas Mária."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Čistá Panna, hviezda ranná, svetlo nádeje,",
+        "veď nás cestou do prístavu lásky blaženej."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V bolesti a utrpení útechou nám buď,",
+        "k trpiacemu Ježišovi vrúcnu lásku vzbuď."
+      ]
+    }
+  ]
+}

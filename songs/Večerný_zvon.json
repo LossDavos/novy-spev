@@ -1,0 +1,48 @@
+{
+  "title": "Večerný zvon",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Večerný zvon horou zneje, Kráľovnej nebies slávu peje.",
+        "Ku modlitbe volá i nás, by sme jej peli vrúcne Zdravas."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ave Mária, Ave Mária, Ave Mária."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď sa chýli ku koncu deň, Kráľovnej nebies zaznej",
+        "pieseň.",
+        "Ku Márii pozdvihnem hlas, ružencom vrúcnym volám",
+        "Zdravas."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Matka zachráň svoje dietky, ktoré tu zbožne prosia všetky.",
+        "Zachráň nás pred trestom Syna, nech nám je vina",
+        "odpustená."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď idem spať, k Tebe vzdychám,",
+        "Mária, pomôž, veď som tak sám.",
+        "V nebesiach chcem zrieť Tvoju tvár,",
+        "modlitby skladám tu na oltár."
+      ]
+    }
+  ]
+}

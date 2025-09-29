@@ -1,0 +1,27 @@
+{
+  "title": "Pásli pastieri",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Pásli pastieri [G]statek na prie[C]lohu, /:[C]anjeli z [a]neba [d]vzdali [G7]chválu [C]Bohu:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pesnička slávna, my ju prespevujme /:a tú radosť svoju ľudu oznamujme:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Oznamujeme, dni sú to veselé, /:že sa nám narodil Boh – človek tu v tele:/."
+      ]
+    }
+  ]
+}

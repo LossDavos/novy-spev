@@ -1,0 +1,37 @@
+{
+  "title": "Na svoju česť Ti sľubujem",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Na svoju česť Ti sľubujem, Ježišu môj,",
+        "že všetko Tebe darujem, i život svoj."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Len sily ráč mi viacej dať v každej dobe,",
+        "aby som mohol vytrvať v svojom sľube."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chcem slúžiť Cirkvi, národu bez prestania,",
+        "pomáhať chcem svojmu rodu do skonania."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pre lásku k Tebe blížneho chcem milovať,",
+        "slabého brata, biedneho ochraňovať."
+      ]
+    }
+  ]
+}

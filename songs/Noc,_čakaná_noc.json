@@ -1,0 +1,34 @@
+{
+  "title": "Noc, čakaná noc",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:[D]Noc, čakaná [G]noc, priniesla [A]nám pre všetkých dar: Ježiška, [D]nám.:/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Glória, všetci sa [G]radujme, malého [A]Ježiška radi pri[D]vítajme,",
+        "malého [G]Ježiška v jasliach vlo[A]ženého privítaj[D]me."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Noc, prekrásna noc, volá nás tam, kde sa zrodil Kristus – náš Kráľ.:/"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Poď, pridaj sa k nám, nezostaň sám, čaká ťa tam Ježiš – náš Pán.:/"
+      ]
+    }
+  ]
+}

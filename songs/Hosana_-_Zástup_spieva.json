@@ -1,0 +1,35 @@
+{
+  "title": "Hosana - Zástup spieva",
+  "author": "spirituál, O. Studenec (zbor - SATB)",
+  "categories": [
+    "pôst",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Zástup [h]spieva, [G]volá hosa[h]na,",
+        "[h/G]Kristus [G]Kráľ sám [A]ku nám prichá[D]dza,[D/E] [F#]",
+        "každý [G]palmami [H7]máva,[A] Spasi[h]teľ,",
+        "pokoj, lásku [G]dušiam rozdá[h]va."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[h]Večer a [A]posledná večera, [h] [A] [h]",
+        "[h]v tichu naša [A]spása dozrieva, [h] [A] [h]",
+        "jedna [h]záhrada, [G]Judáš a [h]zrada."
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+        "Cesta, ktorá život podrazí,",
+        "zloba trápi dobro na kríži,",
+        "nevidí, Ježiš víťazí."
+      ]
+    }
+  ]
+}

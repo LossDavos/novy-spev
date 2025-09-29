@@ -1,0 +1,45 @@
+{
+  "title": "Žiť, žiť, pre lásku žiť",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Žiť, žiť, pre lásku žiť,",
+        "úsmev rozdávať, šťastie rozdávať.",
+        "Žiť, žiť, pre lásku žiť,",
+        "ona jediná je toho hodná."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ježiš, moja láska jediná,",
+        "tým sa moja pieseň začína.",
+        "Teba, Pane, chcem vždy milovať,",
+        "Tvoju lásku ľuďom rozdávať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vtedy, keď ma môj bôľ premáha,",
+        "tak mi moja láska pomáha.",
+        "Hlavu zdvihnúť, ďalej kráčať vpred,",
+        "tam je môj cieľ, inej cesty niet."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Hoc život chudobný sa ti zdá,",
+        "ona je v ňom, v tebe prebýva.",
+        "To poklad veľký máš, len ho chráň,",
+        "svoje šťastie môžeš stavať naň."
+      ]
+    }
+  ]
+}

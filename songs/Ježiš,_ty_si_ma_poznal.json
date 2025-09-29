@@ -1,0 +1,39 @@
+{
+  "title": "Ježiš, ty si ma poznal",
+  "author": "M. Wiesnerová",
+  "categories": [
+    "záver",
+    "pôst",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Ježiš, ty si ma poznal a [F]dal mi od[G]pustenie.",
+        "[C]Podal si mi ruku a [F]už ti ne[G]poviem: Nie!"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ty [d]poznáš moje [G]padanie (sadanie), ty [C]poznáš moje",
+        "[F]vstávanie, ty [d]poznáš moje mysle[G]nie."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Obkľúčil si ma milosťou a známosťou, čo preteká.",
+        "Chválou si ma naplnil a dal mi Ducha života."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Preskúmaj si ma, môj Bože, a poznaj moje myšlienky,",
+        "preskúmaj moje srdce dnes a veď ma cestou večnosti."
+      ]
+    }
+  ]
+}

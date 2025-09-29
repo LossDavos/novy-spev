@@ -1,0 +1,30 @@
+{
+  "title": "Našiel som cestu",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Našiel som cestu do radosti, našiel som cestu do raja.",
+        "Na tejto ceste do večnosti kráčame spolu ty a ja."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Aleluja, aleluja, alelu, alelu, alelu, alelu, aleluja."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pán Ježiš Kristus, Priateľ verný, je cesta, pravda,",
+        "život sám. S ním z hriechov všetkých očistení",
+        "kráčame spolu k výšinám."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Otvárajte brány",
+  "author": "spirituál",
+  "categories": [
+    "advent",
+    "úvod"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[F]Otvárajte brány hradieb [F7]kamenných,",
+        "[B]otvárajte brány v srdciach [Fdim]zamknutých,",
+        "[F]otvárajte, [a]aby [B]mohol [C]prísť.[C7]",
+        "[F]Zhoďte ťarchu všetkých svojich [F7]starostí,",
+        "[B]pripravujte Pánu cestu [Fdim]v radosti,",
+        "[F]pripravujte [d]cestu, aby [G7]mohol prísť",
+        "k nám [C7]slávy [F]Kráľ."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "To kvôli Krá[F7]ľu, [B]Krá[Fdim]ľu,   [F]priprav [d]každý cestu [G]Páno[C7]vi,",
+        "to kvôli [F]Krá[F7]ľu, [B]Krá[Fdim]ľu,   [F]naprav [d]každý cestu,",
+        "[G7]cestu krivú, [C7]cestu [F]zlú."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pozdvihnite svoje srdcia znavené,",
+        "posilnite nohy, sily zbavené,",
+        "otvárajte, aby mohol prísť.",
+        "Nie je doba spánku, je čas nabrať síl,",
+        "končí sa už noc a deň sa priblížil,",
+        "pripravujte cestu, aby mohol prísť",
+        "k nám slávy Kráľ."
+      ]
+    }
+  ]
+}

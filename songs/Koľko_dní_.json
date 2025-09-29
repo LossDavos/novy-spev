@@ -1,0 +1,47 @@
+{
+  "title": "Koľko dní ",
+  "author": "Kéfas",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+       "[A]koľko dní mám [G]ešte pred sebou, [Hmi] [E]to vieš iba ty.",
+        "[A] koľko z nich obs[G]tojí pred tebou, [Hmi]povieš mi raz tam, keď ti [E]budem hľadieť do očí."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+          "Prosím ťa [A]veď ma po cestách, na [D]ktorých kráčam [E]sám,",
+        "prosím ťa [A]drž ma, nech už viac [D]nepadám do [E]tých istých chýb.",
+         "prosím ťa [A]veď ma, ja chcem [D]za sve[E]tlom ísť."
+    ]
+    },
+    {
+      "type": "interlude",
+      "lines": [
+          "[C] [D] [A] (3x)",
+          "[C] [D] [E]"
+        
+    ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Viem, nepatrím k tým, čo sa hrajú na anjelov",
+        "a neustále hrajú divadlo pre iných.",
+        "Som jeden z tých, čo chcú kráčať za Tebou.",
+        "Aj keď príde noc, na cestách svietiš mi."
+      ]
+    },
+    {
+      "type": "outro",
+      "lines": [
+          "[G] [A] [H]"
+    ]
+    }
+  ]
+}

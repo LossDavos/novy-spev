@@ -1,0 +1,34 @@
+{
+  "title": "Láska si, Pane",
+  "author": "Jaspis",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Cítim sám v sebe to prázdno, čo zahmlieva mi tvár",
+        "a sám nechápem.",
+        "V duši mám túžbu a trápi ma smäd a hlad volám:",
+        "Pane, som sám."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Láska si, Pane, preto chválim Ťa.",
+        "Ty si stále tu, pri mne si, pomáhaš mi rásť.",
+        "Víťazíš nad zlobou a závisťou,",
+        "v Tebe nádej mám, silu mám, nemusím sa báť."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Poďte dnes ku mne, ja dávam, čo nemôžete nájsť,",
+        "mám rieku živú.",
+        "Túžim byť nápoj i chlebom, čo nasýtil by vás –",
+        "dávať a prijímať."
+      ]
+    }
+  ]
+}

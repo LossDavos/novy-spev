@@ -1,0 +1,37 @@
+{
+  "title": "Poďme všetci pokloniť sa Láske",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Poďme všetci pokloniť sa Láske, ktorá v jasliach na slame spí.",
+        "Boží Syn sa za pokrm nám dáva ako dieťa, slabý, bezmocný."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "V túto noc prišiel k nám.",
+        "Skrehnutý je v jasliach nebies Kráľ, lebo inde miesto nedostal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Taká veľká, úžasná je láska, že Boh srdce nám do rúk dal,",
+        "aby človek celkom Krista uvidel, aký je a poznal Jeho tvár."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "V túto noc prišiel k nám.",
+        "[:Skrehnutý je v jasliach nebies Kráľ, lebo inde miesto nedostal.:]"
+      ]
+    }
+  ]
+}

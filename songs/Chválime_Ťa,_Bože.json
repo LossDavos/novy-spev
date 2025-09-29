@@ -1,0 +1,34 @@
+{
+  "title": "Chválime Ťa, Bože",
+  "author": "L. Bezák",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+         "[D]Chválime Ťa, Bo[f#]že, za Tvoje [h]sviatosti,",
+        "[f#]sú nám [G]cestou do večno[C]sti. [A4]",
+        "[D]Sláva Ti, Kris[f#]te, ženích [h]Cirkvi, [fis]neves[G]ty,",
+        "príklad [e]lásky [A]a vernos[D]ti. [G] [D]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+       "[:Celý svet i [fis]my Bohu [G]ďakujme,[A] chválu [f#]spievajme,",
+        "[h]všetci sa [G]raduj[A]me pre [G]Teba, Trojje[A4]diný.[A] :]"
+       ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chválime Ťa, Bože, že svetlo dal si nám,",
+        "ktoré horí do tmy našich dní.",
+        "Sám svetlom si sa stal, aby sme mohli mať vždy dosť síl,",
+        "za Tebou kráčať, vždy vo svetle ísť."
+      ]
+    }
+  ]
+}

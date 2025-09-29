@@ -1,0 +1,50 @@
+{
+  "title": "Quo vadis",
+  "author": "",
+  "categories": ["pôstne"],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "Kam kráčaš, Pane? A prečo si tak sám?",
+        "A prečo, prečo nesieš ten ťažký kríž?"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ty mlčíš, len pokorne kráčaš vpred",
+        "a v očiach slzy máš, lebo hriešny je svet.",
+        "Neistý je Tvoj krok a ťažký je Tvoj dych,",
+        "a predsa kráčaš ďalej a vlečieš svoj kríž."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Už nevládze ísť, k zemi tlačí ho kríž.",
+        "Či už vidíš, človek, kam sa z lásky dá ísť.",
+        "Pán mlčí, ale jasná je  jeho reč,",
+        "a ty zatváraš si srdce a bežíš rýchlo preč."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Máš skrvavené čelo, telo pokrývajú rany od bičov",
+        "a my udierame ďalej, nezáleží nám už na ničom.",
+        "Pribíjame klincom toho, čo k nám s láskou rozprával,",
+        "napájame octom toho, čo nám cestu ukázal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď pozrieme sa na kríž, na jeho drevo krvavé,",
+        "nech prinúti nás zastať a skloniť hlavu do dlane.",
+        "Nech naše slzy túto ľútosť k Tebe zanesú,",
+        "ja viem, kde Ťa nájdem, musím ísť na Golgotu."
+      ]
+    }
+  ]
+}

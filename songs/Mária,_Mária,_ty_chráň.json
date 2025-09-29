@@ -1,0 +1,39 @@
+{
+  "title": "Mária, Mária, ty chráň",
+  "author": "Ľ. Čekovská",
+  "categories": [
+    "mariánske",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[F]Mária, [d]Mária, ty [a]chráň [g]naše srdcia [C]láskou.",
+        "[F]Mária, [d]Mária, ty [a]v nás [g]svietiš večnou [C]ľúbos[F]ťou.[A]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "My [d]v láske chceme [a]rásť, nás [d]viera [C]posvä[F]tí.",
+        "[d]Chráň nás, Matka, [a]chráň vždy [d]v tvojom [C]náru[F]čí."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za dobrých i za zlých, za všetkých prosíme.",
+        "Máme lásky dar, bo v teba veríme."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Za Cirkev prosíme, by bola jednotná,",
+        "evanjelium do sveta rozniesla."
+      ]
+    }
+  ]
+}

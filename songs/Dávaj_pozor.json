@@ -1,0 +1,49 @@
+{
+  "title": "Dávaj pozor",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/:Dávaj pozor, malé oko, čo vidíš.:/",
+        "Pán sa z neba pozerá, aká je tvoja viera.",
+        "Dávaj pozor, malé oko, čo vidíš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Dávaj pozor, malé ucho, čo čuješ.:/",
+        "Pán sa z neba pozerá, aká je tvoja viera.",
+        "Dávaj pozor, malé ucho, čo čuješ."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Dávaj pozor, malý jazyk, čo vravíš.:/",
+        "Pán sa z neba pozerá, aká je tvoja viera.",
+        "Dávaj pozor, malý jazyk, čo vravíš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Dávaj pozor, malá ruka, čo robíš.:/",
+        "Pán sa z neba pozerá, aká je tvoja viera.",
+        "Dávaj pozor, malá ruka, čo robíš."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "/:Dávaj pozor, malá noha, kam ideš.:/",
+        "Pán sa z neba pozerá, aká je tvoja viera.",
+        "Dávaj pozor, malá noha, kam ideš."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "title": "Máš jedno srdce",
+  "author": "Kéfas",
+  "categories": [
+    "sobášne",
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]V spleti ciest a [h]poblúdení [e]nastal ďalší pád.",
+        "Už [C]toľký krát sa dvíhaš z prachu a [a]chceš to radšej [D]vzdať.",
+        "[G]Neveríš už, že to [h]môžeš zmeniť, [e]srdce ti vraví však,",
+        "tam [C]hore niekto na teba myslí a [a]čaká na ná[D]vrat."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Máš jedno srdce, pre lásku [C]dal ti ho Pán.",
+        "Máš dve [a]ruky, čo vedia o[D]bjať.",
+        "Máš pekný [G]úsmev, blížnemu [C]skús ho rozdať.",
+        "Máš jedno [a]srdce, pre [D]všetkých dal ti ho [G]Pán. [D]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tak otvor srdce Tomu, ktorý neváhal svoj život dať",
+        "za teba, za mňa, aj za nás všetkých. On má nás veľmi rád.",
+        "Nech Jeho láska z teba žiari, každému ju musíš dať",
+        "a detský úsmev z tvojej tváre nedaj si už nikdy vziať."
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "Sme [Eb]časťou Jeho [F]tela, sme [d]srdce, ktoré [g]bije snáď.",
+        "Sme [Eb]ruky, čo vedia sa [F]rozdať a [d]skutkom lásky [g]ukázať,",
+        "že v [Eb]nás prebýva [D]Pán."
+      ]
+    }
+  ]
+}

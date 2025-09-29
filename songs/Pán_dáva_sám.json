@@ -1,0 +1,41 @@
+{
+  "title": "Pán dáva sám",
+  "author": "",
+  "categories": ["obetovanie"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Pán dáva sám veľkú šancu nám,",
+        "dáva nám žiť v šťastí, mať rád.",
+        "On je spása pre nás, veľký Pán láskavý,",
+        "lásku nám dáva rád v trápení."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mám prázdnu dlaň, čo ti ja dnes dám.",
+        "Srdce dám Ti dnes na oltár,",
+        "čisté, úprimné, z lásky dávané.",
+        "Ty mi dáš nádej, môj Pán, z lásky si môj Pán."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Dávam ti z lásky ten môj vzácny dar,",
+        "prijmi ho sám na svoj nebeský oltár.",
+        "Dám ti ho rád, Tebe, môj Boh a Pán,",
+        "mám Ťa rád, Priateľ večný, môj Boh a Pán.",
+        "Dávam Ti s láskou ten môj vzácny dar."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Dávam Ti s láskou ten môj vzácny dar."
+      ]
+    }
+  ]
+}

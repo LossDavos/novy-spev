@@ -1,0 +1,28 @@
+{
+  "title": "Baránok Boží",
+  "author": "J. Grenčík - Agnus Dei",
+  "categories": [
+    "Baránok Boží"
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[e]  [D]   [e]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Agnus De[C]i, qui tollis peccata [D]mundi, miserere no[e]bis. :]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[D]  [G]  Agnus De[a]i, qui tollis peccata [e]m[(G)]undi,",
+        "dona nobis pa[D]cem, dona nobis pa[C]cem, dona nobis pa[e]cem."
+      ]
+    }
+  ]
+}

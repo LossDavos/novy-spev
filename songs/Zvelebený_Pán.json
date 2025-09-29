@@ -1,0 +1,44 @@
+{
+  "title": "Zvelebený Pán",
+  "author": "M. a B. Redman - Rieka života",
+  "categories": [
+    "poďakovanie po prijímaní",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[A] Zvele[E]bený buď tam, kde [f#7]kraj medom [D]oplýva,",
+        "tam, kde [A]rieky vždy [E]hojné sú, [D]zvelebený Pán.",
+        "[A] Zvele[E]bený buď, aj keď [f#]v púšti sa [D]nachádzam,",
+        "aj keď [A]kráčam sám [E]v pustinách, [D]zvelebený Pán."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[A] Každú milosť, [E]čo mi dávaš, [f#7]vyspievam [D]rád,",
+        "[A]aj keď tma ma [E]obopína, [f#]ja zavo[D]lám:",
+        "„Zvelebený [A]buď, Pane [E]náš, zvelebený [f#7]Pán,[D]",
+        "zvelebený [A]buď, Pane [E]náš, požehnané, [f#]slávne [E]meno [D]máš“."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Zvelebený buď, keď ma lúč slnka zohrieva,",
+        "keď je svet krásny bez tieňa, zvelebený Pán.",
+        "Zvelebený buď aj na púti, čo ťažká je,",
+        "aj keď obetu prinášam, zvelebený Pán."]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[: Máš [A]právo dať aj [E]vziať, máš [f#]právo dať aj [D]vziať,",
+        "ja [A]stále spievam [E]rád, [f#7]zvelebený [D]Pán. :]"
+      ]
+    }
+  ]
+}

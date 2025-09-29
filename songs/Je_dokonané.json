@@ -1,0 +1,32 @@
+{
+  "title": "Je dokonané",
+  "author": "",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[a]Je dokonané, Ježiš je [d]víťaz,",
+        "[G]Satan je zničený, Ježiš [C]zlomil smrti [E]moc.",
+        "Ježiš je [a]Pán, ó, ale[d]luja, Ježiš je [E]Pán, kraľuje nave[a]ky."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+
+        "[:[a]Ježiš je Pán, [d]Ježiš je Pán, [G]Ježiš je Pán, [C]Ježiš je Pán.",
+        "[E]Ježiš je Pán, Ježiš[a][(d)] je Pán [E]v tomto náro[a]de.:]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Aleluja, aleluja, aleluja, aleluja,",
+        "aleluja, aleluja, sláva Pánovi."
+      ]
+    }
+  ]
+}

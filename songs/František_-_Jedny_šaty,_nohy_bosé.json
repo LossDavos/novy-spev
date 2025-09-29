@@ -1,0 +1,38 @@
+{
+  "title": "František - Jedny šaty, nohy bosé",
+  "author": "R. Mazíková",
+  "categories": [
+    "k svätcom",
+    "úvod",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Jedny [C]šaty, nohy bosé, umý[e]va sa v rannej rose,",
+        "chvály [F]vzdáva, Bohu dáva srdce [G]z lásky úprimnej.",
+        "Úsmev [C]stály z tváre žiari, radu[e]je sa z Božej slávy,",
+        "slnku [F]spieva, keď sa stmieva, s hviezda[G]mi sa zhovára."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Franti[C]šek, Franti[a]šek, vypros [F]aj nám lásky [G]dar,",
+        "nech aj [C]my ľúbi[e]me [F]tak, ako nás ľúbi [G]Pán.",
+        "Franti[C]šek, Franti[a]šek, vypros [F]aj nám lásky [G]dar,",
+        "nech aj [C]my ľúbi[e]me [F]tak, ako [G]nás ľúbi [C]Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "K Otcu svojmu ruky spína, volá k nemu, keď usína,",
+        "aj keď vstane, volá: „Pane, vďaka ti, že svitol deň.",
+        "Vďaka, že sme tvoje deti, ty nás voláš, ďakujem ti.",
+        "Kvitnú kvety, slnko svieti, za všetko buď chválený“."
+      ]
+    }
+  ]
+}

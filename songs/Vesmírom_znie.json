@@ -1,0 +1,30 @@
+{
+  "title": "Vesmírom znie (All heaven declares)",
+  "author": "Noel & Tricia Richards; BCC Worship",
+  "categories": [
+    "veľkonočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Vesmírom [C]znie[D] o Zmŕtvychvstalom [e]pieseň chvál.",
+        "On krásny [C]je[D], kto sa Jemu [G]vyrovná."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[:Naveky bude [C]stáť[D] Baránkov svätý [h]tró[e]n.",
+        "Kolená skláňam [a]rád[D] a všetkým je mi [C]On.[D] [e]:] ([G])"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ja spievať chcem o Zmŕtvychvstalom pieseň chvál,",
+        "ktorý raz mrel, aby s Bohom zmieril nás."
+      ]
+    }
+  ]
+}

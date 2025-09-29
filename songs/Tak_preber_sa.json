@@ -1,0 +1,38 @@
+{
+  "title": "Tak preber sa",
+  "author": "autor neznámy - UPC BA",
+  "categories": [
+    "veľká noc",
+    "prijímanie"
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[E]  [A]  [E]  [A]  [E]  [A]  [H]  [E]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[E] Tak [A]preber [E]sa (tak [A]preber [E]sa),",
+        "vstaň [A]zo smr[E]ti (vstaň [A]zo smr[E]ti),",
+        "poď ku sto[c#]lu (poď ku sto[f#]lu), je prestre[H]tý."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Poď nevá[E]haj ([A]nevá[E]haj) a [A]Boha [E]chváľ ([A]Boha [c#]chváľ),",
+        "že nás má [f#]rád (má nás [H]rád), Syna nám [E]dal. [A]  [E]  [A]  [H]  [E]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Z chleba telo (z chleba telo), to kvôli nám (kvôli nám),",
+        "z vína krv (z vína krv), ponúka Pán."
+      ]
+    }
+  ]
+}

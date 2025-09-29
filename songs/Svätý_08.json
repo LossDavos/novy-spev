@@ -1,0 +1,34 @@
+{
+  "title": "Svätý 08",
+  "author": "J. Grenčík",
+  "categories": [
+    "Svätý"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+         "[E]Svätý, svätý, svätý, je [D\\E]Pán, Boh [C\\E]všetkých sve[E]tov.",
+        "Plné sú, nebesia i [D\\E]zem tvo[C\\E]jej slá[E]vy."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[: Ho[f#]sa[A]na na výsos[E]tiach! :]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+          "Požehnaný, ktorý prichádza v me[D\\E]ne  [C\\E]Páno[E]vom."
+        ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+          "[: Ho[f#]sa[A]na na výsos[E]tiach! :]"
+      ]
+    }
+  ]
+}

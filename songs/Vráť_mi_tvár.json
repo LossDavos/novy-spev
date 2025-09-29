@@ -1,0 +1,63 @@
+{
+  "title": "Vráť mi tvár",
+  "author": "A. Červeň, J. Harníček",
+  "categories": ["cezročné"],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[C] [e] [Fmaj7] [C] [e] [Fmaj7]"
+    ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Vráť mi tvár [e]ukradnutú [Fmaj7]svetom,",
+        "[C]vráť jej [A7]úsmev, [d]ktorý chýba.",
+        "[F]Vráť mi [G]Pane tvár [E7]Tvoju [a]s pokojom",
+        "[F]a zober závoj [d]čo ju [G]skrýva."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Svetlo [G]svieť a ožiar [a]svet,",
+        "svojím [F]leskom na nás [C]svieť,",
+        "vzbuď v nás [G]len po viere [a]smäd,",
+        "ukáž [F]kde začína [G]hriech.",
+
+        "[C]Svetlo [G]svieť a ožiar [a]svet,",
+        "svojím [F]leskom na nás [C]svieť,",
+        "vzbuď v nás [G]len po viere [a]smäd,",
+        "ukáž [F]kde začína,[d] [G]kde začína [C]hriech"
+      ]
+    },
+    {
+      "type": "interlude",
+      "lines": [
+        "[C] [e] [Fmaj7] [C] [e] [Fmaj7]"
+    ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Vráť mi tvár [e]jasnú [Fmaj7]dieťaťa,",
+        "[C]tú čo [A7]božský nádych [d]má",
+        "[F]Je to [G]tvár [E7]Pane [a]Tvoja",
+        "hriechom [F]nikdy [d]nezniče[G]ná.",
+        "[C]Vráť mi tvár [e]malých [Fmaj7]detí,",
+        "[C]čo v duši [A7]čistej nosia [d]Teba,",
+        "[F]Takú [G]tvár, [E7]čo šťastím [a]svieti",
+        "a [F]nosí Ťa tam [d]kde je [G]treba."
+      ]
+    },
+    
+    {
+      "type": "coda",
+      "lines": [
+        "[C] [e] [Fmaj7] [C] [e] [Fmaj7]"
+    ]
+    }
+]
+
+}

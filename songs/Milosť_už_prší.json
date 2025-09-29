@@ -1,0 +1,30 @@
+{
+  "title": "Milosť už prší",
+  "author": "D. Ruis",
+  "categories": [
+    "detské",
+    "prijímanie",
+    "adorácia",
+    "veľká noc",
+    "k Duchu Svätému"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "/: [C]Milosť už [F]prší, už [C]prší, už [G]prší.",
+        "[C]Milosť už [F]prší, ako [a]jarný [G]dážď.",
+        "[C]Milosť už [F]prší, už [C]prší na [G]každého [C]z n[F]ás[a].  [G]  :/"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+       
+        "/: [C]Hej [G]hou, prijímam [F]tvoju [G]lásku.",
+        "[C]Hej [G]hou, prijímam [F]tvoju [G]moc.",
+        "[C]Hej [G]hou, budem [F]spievať [G]tebe nave[C]ky[F]. [a]  [G]  :/"
+      ]
+    }
+  ]
+}

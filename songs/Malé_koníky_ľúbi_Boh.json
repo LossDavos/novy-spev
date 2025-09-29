@@ -1,0 +1,28 @@
+{
+  "title": "Malé koníky ľúbi Boh",
+  "author": "autor neznámy",
+  "categories": [
+    "detské",
+    "úvod",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]Malé ko[A]níky [D]ľúbi [A]Boh, hoc [D]sú len [A]zviera[D]tká,[A]",
+        "a keďže [D]malé ko[A]níky [D]ľúbi [A]Boh, on [D]ľúbi [A]tiež aj [D]mňa.",
+        "On [G]ľúbi ma, on ľúbi ma, on veľmi [e7]ľúbi [A]ma.",
+        "A keďže [D]malé ko[A]níky [D]ľúbi [A]Boh, on [D]ľúbi [A]tiež aj [D]mňa.",
+        "(žabky, mravčeky, vtáčiky, rybičky, chobotničky, pštrosy, komáriky...)"
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "(žabky, mravčeky, vtáčiky, rybičky, chobotničky, pštrosy, komáriky...)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Zaspievam ti pieseň",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Zaspievam ti pieseň, že Ježiš rád nás má.",
+        "Tak zažeň z duše tieseň, veď On nás zachová."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Život svoj za teba dal,",
+        "v mukách zmieral, tak ťa miloval a preto..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "On ti túži pokoj dať,",
+        "za Ním choď a nemusíš sa báť a preto..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chce ťa láskou naplniť,",
+        "chce raz s tebou na nebesiach žiť a preto..."
+      ]
+    }
+  ]
+}

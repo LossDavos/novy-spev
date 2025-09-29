@@ -1,0 +1,27 @@
+{
+  "title": "Že zhrešil som, viem",
+  "author": "",
+  "categories": ["liturgické"],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Že zhrešil som, viem, že zhrešil som, viem, môj Pán.",
+        "Zotri môj hriech, zotri môj hriech, môj Pán.",
+        "A milosť mi vlej, a milosť mi vlej do rán, môj Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Pane, hľadal som radosť sám, bez Teba.",
+        "Veril som si, ale už som prestal dúfať.",
+        "Ježišu, neprijal som Ťa v každodenných krížoch,",
+        "nepoznal som Ťa v bratoch a v sestrách.",
+        "Pane, Tvoje dary som si nechával len pre seba.",
+        "Pane, môj život nebol ohlasovaním Tvojho Evanjelia.",
+        "Zotri môj hriech a milosť mi vlej do rán, môj Pán."
+      ]
+    }
+  ]
+}

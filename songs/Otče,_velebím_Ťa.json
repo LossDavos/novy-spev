@@ -1,0 +1,27 @@
+{
+  "title": "Otče, velebím Ťa",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Otče, velebím Ťa, chcem žiť len pre Teba a milujem Ťa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Synu, velebím Ťa, chcem žiť len pre Teba a milujem Ťa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Duchu Svätý, príď k nám, naplň srdcia naše ohňom lásky."
+      ]
+    }
+  ]
+}

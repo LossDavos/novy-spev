@@ -1,0 +1,48 @@
+{
+  "title": "Salve, don Bosco santo",
+  "author": "B. Sánchez, arr.: Barbora Brosová Lipková (zbor SAATB)",
+  "categories": [
+    "úvod",
+    "záver",
+    "k svätcom"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Salve, don Bosco [C]santo! [c]Ty mladé [D7]srdce [G]máš.",
+        "Mládež viedol si [C]láskou, [c]znova ju [D7]preu[G]káž."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[H7] Koľko mladých svetom [e]blúdi,[H7]  čo nevedia, kade [e]ísť?!",
+        "[A7] Koľkých mladých ničia [D]bludy!",
+        "Sú [C]bez viery, [D]pokoja, [e]bez svetla [D]krás,",
+        "don [c]Bosco, [D]prídi medzi [G]nás!"
+
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Ty vieš dobre, koľko stojí ponúknutie slobody.",
+        "Ty vieš, ako zle sa hojí vidieť",
+        "násilie, klamstvo, bolesť a strach,",
+        "don Bosco, prídi medzi nás!"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Pomáhaj nám v našej práci, aby pravde slúžila.",
+        "Mnoho mladých sa ti hlási, chcú dať",
+        "svetu dych života, záchranný pás,",
+        "don Bosco, prídi medzi nás!"
+      ]
+    }
+  ]
+}

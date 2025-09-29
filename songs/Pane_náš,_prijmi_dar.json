@@ -1,0 +1,36 @@
+{
+  "title": "Pane náš, prijmi dar",
+  "author": "",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G] Pane náš, prijmi [C]dar, [G] čo chcem ti dať na ol[C]tár,",
+        "[G]s láskou ti predkla[C]dám všetko, čo [D]mám.",
+        "[G] Odovzdávam rodi[C]čov, [G] bratov, sestry, priate[C]ľov,",
+        "[G] dávam seba i [C]tých, čo menej mám [D]rád."
+      ]
+    },
+     {
+      "type": "verse",
+      "lines": [
+
+        "S vďakou dávam ti týždeň, čo bol,",
+        "s láskou nesiem ti chvíle, čo sú.",
+        "S vierou ti predkladám, čo nás čaká."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/: Dávam [G]ti zo [D]svojich [C]rán, dávam [G]všetko, čo [D]v sebe [C]mám.",
+        "Všetko [G]teraz ti [D]predkla[C]dám pred tvoju [D]tvár... :/",
+        "tu, na ol[G]tár.[C]   [G]   [C]   [G]   [C]   [D]"
+      ]
+    }
+  ]
+}

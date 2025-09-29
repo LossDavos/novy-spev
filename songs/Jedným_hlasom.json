@@ -1,0 +1,55 @@
+{
+  "title": "Jedným hlasom",
+  "author": "",
+  "categories": [
+    "mariánske"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[Bb]Jedným [d]hlasom [Eb] voláme [F7]Ťa, Pane,",
+        "[B]´ni búrka, [d]´ni mráz [Eb]nezlomí [F7]nás.",
+        "[B]Sme deti [d]Tvoje a [Eb]Ty si Otec [B]náš. [F]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[B]Má[g]riu [Eb]za Matku [F7]si nám dal, [B]životu [g]bránu tak [Eb]otvá[F7]raš.",
+        "[B]Ja silu [g]zberám a [Eb]prechádzam [F]prah celkom [B]sám."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "K Márii volá tisíce sŕdc,",
+        "prosia o zdravie, kus pokoja,",
+        "silná ich viera k Márii volá i mňa."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Odpusť, že zabúdam na Teba, že hľadím príliš nad oblaky.",
+        "Veď i tu na zemi Mária deti má."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Jedným hlasom voláme Ťa, Pane,",
+        "´ni búrka, ´ni mráz nezlomí nás.",
+        "Sme deti Tvoje a Ty si Otec náš."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "K Márii volá tisíce sŕdc,",
+        "prosia o zdravie, kus pokoja,",
+        "silná ich viera k Márii volá i mňa."
+      ]
+    }
+  ]
+}

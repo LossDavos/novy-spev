@@ -1,0 +1,50 @@
+{
+  "title": "Znej pieseň Márii",
+  "author": "",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Znej pieseň Márii, spievaj duša moja,",
+        "tej bielej ľalii, Matke Spasiteľa."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ó, Panna Mária, Ty biela ľalia, ave Mária, ave Mária."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tou piesňou vábi nás zvon v nebies diale,",
+        "keď bolesť znášame, srdce trápia žiale.     R:"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tá pieseň znie ti dnes aj z vône hája,",
+        "a s ňou sa i v láske naše srdce spája.      R:"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Náš život je často ako víchrica,",
+        "ty si v ňom jediná istá pomocnica.          R:"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kráľovná vesmíru naše kroky príjmi,",
+        "ohrozených dietok láskavo sa ujmi.          R:"
+      ]
+    }
+  ]
+}

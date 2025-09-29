@@ -1,0 +1,27 @@
+{
+  "title": "Vezmi ma ",
+  "author": "Tatiana Teslíková, Heartbeat",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[G]Vezmi ma na chvíľu z tejto zeme",
+        "Nechám sa [D]unášať vetrom do vnútrozeme",
+        "a [e]dívať sa na všetko z výšky zhora",
+        "chcem [C]zabudnúť čo bolo dnes a včera"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Na miesta [G]nové",
+        "na miesta [D]nepoznané",
+        "aj tie [e]zabudnuté",
+        "tam, kde [C]moje srdce pre to tvoje začalo biť"
+      ]
+    }
+  ]
+}

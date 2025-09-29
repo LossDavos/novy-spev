@@ -1,0 +1,46 @@
+{
+  "title": "Spásu mám, ku mne príď ",
+  "author": "Timothy",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+      "[F♯m]Spásu mám, (spásu mám)",
+      "[E]ku mne príď, (ku mne príď)",
+      "[D][E]národ ka[F♯m]ždý. (4x)"
+       ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+         "[: Veď [A]Ja som [E]Boh a [F♯m]iný už [E]nie [Dmaj7]je. :]"      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[:Spásu má,:] [:k Nemu príď:] národ každý. 3x"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Veď On je Boh a iný už nie je."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Veď Ty si Boh a iný už nie je."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[:Spásu mám,:] [:ku mne príď:] národ každý. 1x"
+      ]
+    }
+  ]
+}

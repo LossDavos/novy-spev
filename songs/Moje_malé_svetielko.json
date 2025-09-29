@@ -1,0 +1,41 @@
+{
+  "title": "Moje malé svetielko",
+  "author": "",
+  "categories": [
+    "detské",
+    "prijímanie",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Moje malé svetielko – chcem, aby svietilo, [C7]hej, hej, hej!",
+        "[F]Moje malé svetielko chcem, aby svieti[C]lo,",
+        "[C]Moje malé svetielko – chcem, aby svietilo, svieti[G]lo, svietilo, svieti[C]lo."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Ježiš mi ho zapálil!..."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Skryť ho pod nádobu?! Nie!…"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "Nikto mi ho nezhasne!..."
+      ]
+    }
+  ]
+}

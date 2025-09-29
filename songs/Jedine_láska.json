@@ -1,0 +1,38 @@
+{
+  "title": "Jedine láska",
+  "author": "Š. Samselyová",
+  "categories": [
+    "úvod",
+    "prijímanie",
+    "vianoce"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Keď [D]Boží [A]Syn nás [h]navští[G]vil",
+        "a [D]prinie[A]sol svoju [G]lásku [A]k nám,",
+        "vtedy [D]celý [A]svet videl, [h]aký je [G]Boh",
+        "[e7]predivný [A]úžasný [D]Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Jeho život bol svetlom v noci a hmle,",
+        "jeho slová sa vpíjali do duší.",
+        "Deti objímal, lásku rozdával",
+        "predivný úžasný Pán."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Jedine [G]láska [A]dokáže [D]zázrak - dať slabým [G]silu a [A]života [h]cieľ.",
+        "Jedine [G]Boh ťa [A]prevedie [D]v skúškach, tak [G]poď za ním a skús,",
+        "aký [e7]predivný a [A]úžasný je [D]Pán."
+      ]
+    }
+  ]
+}

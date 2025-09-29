@@ -1,0 +1,42 @@
+{
+  "title": "Aj keby nekvitol fíg",
+  "author": "M. Tóth - Tretí deň",
+  "categories": [
+    "záver",
+    "cez rok",
+    "pôst"
+  ],
+  "song_parts": [
+
+    {
+      "type": "verse",
+      "lines": [
+        "Aj keby nekvitol [e]fíg, aj keby [Cmaj7]nerodila zem,",
+        "aj keby [a]nebesá nedoniesli [G]svetlo v nové [H7]ráno,",
+        "a aj keď [e]polia zlyhajú a sýpky [Cmaj7]prázdne zostanú,",
+        "aj keď [a]všetko vôkol [G]volá, že Boh [H7]nie je,"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "áno, [G]práve vtedy pozdvihnem svoj hlas",
+        "a [D]budem spievať chvály.",
+        "Uprostred [e]trápení, uprostred [C]súžení: [D]Ježiš je Pán.",
+        "Áno, [G]práve vtedy pozdvihnem svoj hlas",
+        "a [D]budem spievať [H7]chvály.",
+        "[e]Lebo ve[A]rím, v [a]neho ve[H7]rím.",
+        "(Aj keby nekvitol [e]fíg)"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Keď blízky priateľ opustí a je tak ťažké odpustiť,",
+        "keď sa múry v mojom vnútri zrazu rúcajú,",
+        "keď sa zdá, že to neskončí, slzy sa tlačia do očí,",
+        "viem, že stojíš blízko tých, čo v teba dúfajú."
+      ]
+    }
+  ]
+}

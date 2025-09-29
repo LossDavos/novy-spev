@@ -1,0 +1,27 @@
+{
+  "title": "My prosíme ťa, Pane (Hymna púte zaľúbených)",
+  "author": "M. Oravcová, B. Letko",
+  "categories": [
+    "iné",
+    "záver"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "My [C]prosíme ťa, Pane, [F]daj nám požehnanie,",
+        "a [a]zachráň [G]nás od prázdnych [F]ciest.",
+        "Nech [C]tvoja láska, Pane, sa [F]našou láskou stane",
+        "nech [a]necháme [G]sa tebou [F]viesť."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Ty [F]dávaš [G]lásku [C]nám, čo [F]neberie, lež [G]dá[C]va,",
+        "/: a [F]z dvoch vzdiale[G]ných [a]sŕdc, môj Pane,",
+        "[F]v tebe [G]jedno sa [C]stáva. :/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "title": "Je to zázrak",
+  "author": "M. Milučký (zbor - SAT)",
+  "categories": [
+    "pôst",
+    "cez rok",
+    "prijímanie"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Koľko [G\\F#]záhad [e]má a [C]koľko [G]tajov [C]skrý[D]va",
+        "[Fmaj7]chlieb, čo prijímať [C]smiem, a [G]ty v ňom, Bože, [C]bý[D]vaš.",
+        "[G]Vždy sa [G\\F#]pýtam [e]sám, [C]či to [G]pocho[C]pí[D]me,",
+        "[Fmaj7]že krv svojich [C]rán [G]odkryl si vo [C]ví[D]ne."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "1: [G]Je to zázrak, [D]viem, [e]si Boh a máš [C]prá[D]vo",
+        "[G]vložiť seba v [D]chlieb, [e]na ktorý má [C]ná[D]rok",
+        "[C]každý z nás[c] ho [G]smie."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "2: Zázrak, [D]viem, Boh máš právo",
+        "vložiť v chlieb, má nárok",
+        "každý  ho smie."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "3: (Je to zázrak, viem), právo máš",
+        "(vložiť seba v chlieb), ná-á-rok",
+        "každý z nás ho smie."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Netúžiš sa skrývať, bývať iba v chrámoch,",
+        "v srdci všetkých nás chceš mať bohostánok.",
+        "Neviem, či mám síl, byť vždy hodný chvíle,",
+        "keď sa dávaš nám, v chlebe a vo víne."
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       "Daj mi, prosím, moc vždy ťa v sebe chrániť.",
+        "Láskou z tvojich žíl svoj život prepáliť."
+      ]
+    }
+  ]
+}

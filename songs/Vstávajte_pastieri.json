@@ -1,0 +1,33 @@
+{
+  "title": "Vstávajte pastieri",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Vstávajte pastieri, [E]berte sa [A]hor´, [D]aká to novina, [G]dajte po[D]zor!",
+        "[D]Aké to zázraky [h]javia sa [D]na ne[A]bi!",
+        "[D]Nikdy som nevidel [E]jak som sta[A]rý [D]na nebi vysokom [G]takej [A]žia[D]ry."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Len sa ma nebojte, pastuškovia, prichádzam k vám ako anjel Slova,",
+        "aby som vám zvestil, že sa vám narodil",
+        "Mesiáš v Betleme – Ježiš malý, ktorého oddávna ste čakali."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Iďte a nájdete Kráľa kráľov, Ježiška malého, Pána pánov;",
+        "v mestečku Betleme, v jasličkách na slame",
+        "leží náš Spasiteľ narodený v chudobných plienočkách položený."
+      ]
+    }
+  ]
+}

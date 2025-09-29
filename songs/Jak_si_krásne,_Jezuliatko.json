@@ -1,0 +1,37 @@
+{
+  "title": "Jak si krásne, Jezuliatko",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Jak si krásne, Jezuliatko, vprostred biedy, úbožiatko.",
+        "Pred Tebou padáme, dary Ti skladáme."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ja Ti nesiem dve kozičky, by Ti zohriali nožičky.",
+        "Ja zas mliečka málo, by sa líčko smialo."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ja Ti nesiem veselého baránka zo stáda svojho.",
+        "S ním sa môžeš hrávať, veselo zabávať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A my biedni, čo Ti dáme, darovať Ti nič nemáme.",
+        "My Ti tu zahráme, pieseň zaspievame."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "title": "Diamant",
+  "author": "",
+  "categories": [
+    "mariánske"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[D]My diamant v srdci vzácny [A]stráži[D]me",
+        "a [d]radostnú [G]pieseň spieva[E]me.",
+        "Sme [D]šťastní a vôbec to nes[A]krýva[h]me",
+        "a [G]Máriu [e]stále [A]volá[D]me."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Ja viem, že [G]len s [G]Tebou to doká[A]žem,",
+        "vždy [D]kráčať tou [G]cestou,[D] na [G]ktorej Ježiš [A]kraľu[D]je."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ja chcem vždy len smutným bratom rozprávať,",
+        "že len s vierou môžu život krásny mať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Som šťastný, nie sám, tú radosť všetkým vysielam",
+        "a chcem, nech zblúdený krásnu Pannu privolá."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Len žiar a svieť vždy všetkým ľuďom v tmách,",
+        "nech kráčajú tou cestou, ktorou kráčal Kristus Pán."
+      ]
+    }
+  ]
+}

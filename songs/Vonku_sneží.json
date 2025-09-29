@@ -1,0 +1,41 @@
+{
+  "title": "Vianočná (Vonku sneží)",
+  "author": "Janka Daňová",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Vonku sneží. Sneží aj v nás. Prišiel Ježiš a my vraj nemáme čas.",
+        "Hlavne, že pod stromčekom má každý dosť darčekov.",
+        "Dnes je módne nosiť v očiach chlad.",
+        "Na prstoch spočítaš ľudí, čo máš ešte rád. Máš ešte rád?!"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svet zabudol pár nežných krás. Nežnosť v srdci spálil komfort mráz.",
+        "Deťom kradneme právo na kolísku, na prvé „mama“ a na rodný kút.",
+        "Po láske – len dym a spálenisko.",
+        "Zamknutí do seba míňame tisícky rúk, tisícky rúk."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Možno ti pomôže úsmev na druhých v sebe dorásť,",
+        "odomknúť láske spolu skúsme, kto ľúbi, zostane pri tebe stáť,",
+        "blízko stáť, zostane blízko stáť, kto ľúbi."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "Vonku sneží, sneží aj v nás."
+      ]
+    }
+  ]
+}

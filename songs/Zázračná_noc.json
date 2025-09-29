@@ -1,0 +1,42 @@
+{
+  "title": "Zázračná noc",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Noc zázrakov Boh vniesol cez dieťa na Zem,",
+        "hoc Máriu a Jozefa hostí zle Betlehem.",
+        "Pre strápených a núdzou hnaných maštaľ je zo skál,",
+        "v nej Boh sa zrodil ako človek, Záchranca a Kráľ."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Tak krásna zázračná noc, v nej Boh nám Syna dal,",
+        "keď z Máriinej lásky si telo vzal.",
+        "Tam anjel spieval k nám, dnes lásku, radosť vám",
+        "to Dieťa malé vnáša, je Záchranca, je Pán."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Si spása a vo válove spíš, neba dar,",
+        "tam víta si ťa bieda naša a s ňou zvierat pár.",
+        "K ním tí, čo blízko pásli prišli, dobro z ich sŕdc zriem",
+        "a múdri králi, keď si kľakli, kľakne celá Zem. REF:"
+      ]
+    },
+    {
+      "type": "bridge",
+      "lines": [
+        "/:Ježiš, ó, Ježiš, vitaj náš Kráľ. Ježiš, ó, Ježiš, maštaľ sveta meníš v chrám.:/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "title": "Na dreve kríža",
+  "author": "",
+  "categories": ["pôstne"],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[c]Na dreve [A♭]kríža [B♭]obeť presvä[E♭]tá",
+        "[c]zmieruje [f]ľud s jeho [B♭]Stvori[B♭7]te[E♭]ľom.[G7]",
+        "[c]Oltár je [A♭]krížom, [B♭]kde ju dnes ko[E♭]ná kňaz",
+        "[c]premene[f]ním v telo [B♭]Spasi[B♭7]te[E♭]ľa.[G7]"
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[c]Poď, poď hriešnik, [A♭]pristúp sem,",
+        "pokľakni len na [B♭]zem a [E♭]hľaď,",
+        "[A♭]hľaď, obeť je Kristus [E♭]Pán,",
+        "sudcu naklonil [B♭]nám, seba z lásky nám [E♭]dá[G7]va."
+      ]
+    },
+    {
+      "type": "coda",
+      "lines": [
+        "[c]Na dreve [A♭]kríža, [B♭]kde obeta [E♭]lásky",
+        "[c]zmieruje [f]ľud s jeho Stvo[B♭]ri[B♭7]te[E♭]ľom.[G7]"
+      ]
+    }
+  ]
+}

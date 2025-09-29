@@ -1,0 +1,27 @@
+{
+  "title": "Šťastie, zdravie",
+  "author": "",
+  "categories": [
+    "vianočné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Šťastie, zdravie, [F]pokoj svätý [C]vinšu[G]jeme [C]vám.",
+        "[C]Všetkým ľuďom [F]dobrej vôle, [C]všetkým [G]stvore[C]niam.",
+        "[C]Zďaleka k vám ide[G7]me, [C]novinu vám ne[G7]sie[C]me,",
+        "[C]že sa Kristus [F]Pán narodil [C]v meste [G]Betle[C]me."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V jasliach leží sám Syn Boží na slame, v zime.",
+        "V tmavej noci o polnoci dieťa nevinné.",
+        "Ó, Ježiško premilý, daj nám všetkým milosti,",
+        "by sme rástli v láske k tebe, vo viere, čnosti."
+      ]
+    }
+  ]
+}

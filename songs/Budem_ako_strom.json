@@ -1,0 +1,38 @@
+{
+  "title": "Budem ako strom",
+  "author": "Ch. Bowater, pr. B. Letko",
+  "categories": [
+    "detské",
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "Budem ako [G]strom[a]  [G]   [C]sadený pri [G]vode ([a]Kde? Pri [G]vode!)[C]",
+        "a mojou [G]opor[a]ou [G]je mi [C]živý [G]Pán.[a]  [G]   [C]   2x"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[e]A keď príde [G]des, ja [e]neutečiem [A]preč."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        
+        "A po čase sucha ja viem, že príde dážď."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+       
+        "Viem, že príde čas, keď aj...  prinesieme svoje ovocie..."
+      ]
+    }
+  ]
+}

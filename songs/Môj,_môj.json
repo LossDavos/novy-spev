@@ -1,0 +1,42 @@
+{
+  "title": "Môj, môj",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Môj, môj, môj, môj, Ježiš je môj,",
+        "keď som strápený, aj keď veselý.",
+        "Môj, môj, môj, môj, Ježiš je môj, Ježiš je vždycky môj."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mám, mám, mám, mám, Ježiša mám,",
+        "s Ním som blažený a v ňom spasený.",
+        "Mám, mám, mám, mám, Ježiša mám, Ježiša vždycky mám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Sám, sám, sám, sám, s Ježišom sám,",
+        "tak často bývam, keď sa modlievam.",
+        "Sám, sám, sám, sám, s Ježišom sám, s Ježišom často sám."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Chcem, chcem, chcem, chcem, Ježiša chcem,",
+        "s Ním chcem vždy chodiť, Jeho velebiť.",
+        "Chcem, chcem, chcem, chcem, Ježiša chcem,",
+        "Ježiša vždycky chcem."
+      ]
+    }
+  ]
+}

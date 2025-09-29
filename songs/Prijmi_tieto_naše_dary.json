@@ -1,0 +1,28 @@
+{
+  "title": "Prijmi tieto naše dary",
+  "author": "A. L. Weber - Južania",
+  "categories": [
+    "obetovanie",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[D]Prijmi tieto [A]naše dary, [h]Pane, [D7]",
+        "[G]ukry sa vo [e]víne a chle[A]be. [A7]",
+        "[D]Nech sa naša [F#]túžba skutkom [h]stane,",
+        "[D7]tieto dary [G]nesieme [A]z lásky ku [D]tebe.  [A7]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Táto obeť je obetou mladých,",
+        "ktorí chcú svoj život obnoviť.",
+        "Podľa tvojich príkazov vždy chcú žiť,",
+        "nikto, Pane, nemôže teba nahradiť."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Ovečka (Ja milujem Kráľa)",
+  "author": "Lámačské chvály ",
+  "categories": [
+    ""
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Som tvojou [C]ovečkou",
+        "malou a [G]voňavou",
+        "čistou a [a]radostnou",
+        "tebou [F]ľúbenou"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Ja milujem Kráľa a on ľúbi mňa",
+        "[G]ja milujem Kráľa a on ľúbi mňa",
+        "[a]ja milujem Kráľa a on ľúbi [F]mňa"
+      ]
+    }
+  ]
+}

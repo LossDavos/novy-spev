@@ -1,0 +1,46 @@
+{
+  "title": "Máš v duši pieseň",
+  "author": "J. Hrubý - Učedníci",
+  "categories": [
+    "mariánske",
+    "záver",
+    "advent",
+    "pôst"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[e]Máš v duši pieseň anjelských zvonov,",
+        "[h]máš v duši bolesť [C]tých najkrajších [D]tónov.",
+        "[e]Máš v sebe silu, ľudia po nej túžia,",
+        "[h]máš v sebe nádej [C]pre tých, čo sa [D]súžia."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[e]Mária, s tebou, [C]Mária, [D]kráľovstvo lásky sa [G]otvá[D]ra.",
+        "[e]Mária, s tebou, [C]Mária, [D]kráľovstvo lásky sa [e]otvára."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Máš v sebe prísľub večnej blaženosti,",
+        "máš v sebe naplnenie spasiteľných zvestí.",
+        "Máš v sebe lásku pre tých, čo ťa hľadajú,",
+        "máš v sebe lásku pre tých, čo ťa volajú."
+         ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Žehnaj moje kroky, žehnaj moje ústa,",
+        "žehnaj každej piesni, v strunách mojich zostaň.",
+        "Kytice veršov z najkrajšieho kvetu",
+        "patria tebe, Mária, Božiemu svetu."
+      ]
+    }
+  ]
+}

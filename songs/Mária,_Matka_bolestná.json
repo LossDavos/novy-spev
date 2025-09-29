@@ -1,0 +1,40 @@
+{
+  "title": "Mária, Matka bolestná",
+  "author": "M. Juhásová - Južania (zbor - SATB)",
+  "categories": [
+    "mariánske",
+    "záver",
+    "pôst",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[a]Mária, [G]Matka boles[C]tná, [d]ty nás [G]láske [C]učíš.",
+        "[d]Pod krížom [G]stojíš žalos[C]tn[a]á, [d]s Pánom svojím [E]trpíš."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[a]Av[G]e, Má[C]ria, [d]gratia ple[E]na.",
+        "[a]Av[G]e, Má[C]ri[a]a, [d]gratia [E]ple[a]na."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Mária nanebovzatá, za nás stále prosíš.",
+        "K pokániu voláš a žehnáš, ľudstvo v srdci nosíš."
+        ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Kráľovná si ružencová, ty dáš nádej mnohým,",
+        "ktorí chcú Krista v tichu nájsť, si im vzorom veľkým"
+      ]
+    }
+  ]
+}

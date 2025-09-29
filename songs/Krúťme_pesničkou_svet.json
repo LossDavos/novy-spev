@@ -1,0 +1,45 @@
+{
+  "title": "Krúťme pesničkou svet",
+  "author": "",
+  "categories": [
+    "mikulášske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Krúťme pesničkou svet, radosť nech počuť znieť,",
+        "/:keď k nám zavíta biskup Mikuláš, priateľ dobrý z nebies.:/",
+        "Tichý úsmev nám žiari, keď Mikuláš sa zjaví,",
+        "chrám sa spevom ozýva, Mikuláša keď víta."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Naše duše mladé chcú byť pohromade",
+        "/:s tebou Mikuláš, svätý otec náš, biskup, dobrý priateľ.:/",
+        "Veď nás cestou života, v ktorom vládne dobrota,",
+        "odstráň zlobu, nesváry, nech nám tvár šťastím žiari."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Svätca poslal nám dnes Ježiš dobrý z nebies,",
+        "/:by nás potešil, darmi obdaril, krajším urobil svet.:/",
+        "Buďme všetci priateľmi, deťmi Ježišovými,",
+        "pretvárajme život náš v Božie kráľovstvo u nás."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "K hviezdam pesnička leť, k hviezdam pesnička leť.",
+        "/:Pozdrav Ježiška, ktorý v nebíčku býva a riadi svet.:/",
+        "Poďakuj mu za dary, denne čo nám nadelí,",
+        "za lásku, za milosti, Mikulášske radosti."
+      ]
+    }
+  ]
+}

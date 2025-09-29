@@ -1,0 +1,43 @@
+{
+  "title": "Malá Lucka",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Malá Lucka zobúdza sa, keď slniečko hreje,",
+        "keď škovránok pri okienku na Lucku sa smeje.",
+        "Celá šťastná usmieva sa a škovránok spieva,",
+        "do kostola ponáhľa sa, chválu Bohu vzdáva."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Stále radosť máme, do kostola utekáme,",
+        "Pán Ježiš nás tam volá, tak poď aj ty do kostola."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "V malých kvietkoch pri potoku vidí Božie dielka,",
+        "Na oslavu svojho Boha pieseň chvály spieva.",
+        "Ó, môj Bože milostivý, ako Ťa mám rada,",
+        "chcem Ti stále verne slúžiť, Tvoju lásku dávať."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Tvoju lásku, Pane, chceme všetkým ľuďom dávať,",
+        "Všade vôkol radosť priniesť, vedieť sa rozdávať.",
+        "Pod ochranou Tvojej Matky víťazíme v boji,",
+        "Radosť, ktorá v nás prekvitá, všetky rany hojí."
+      ]
+    }
+  ]
+}

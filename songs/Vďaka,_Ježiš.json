@@ -1,0 +1,26 @@
+{
+  "title": "Vďaka, Ježiš",
+  "author": "R. Čanaky",
+  "categories": [
+    "záver",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "intro",
+      "lines": [
+        "[e]  [Cmaj7]        [G]   [D]  "
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Vďaka, [e]Je[C]žiš, vďaka [G]za dnešný [D]deň,",
+        "vďaka, [e]Je[C]žiš, s tebou [G]prežiť ho [D]chcem,",
+        "vďaka, [e]Je[C]žiš, že mi [G]lásku dá[D]vaš,",
+        "volám: [C(maj7)]Abba, Abba, [h]Otče,",
+        "volám: [e]A[(C)]bba, Abba, [H7]Otče."
+      ]
+    }
+  ]
+}

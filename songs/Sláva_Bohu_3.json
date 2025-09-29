@@ -1,0 +1,50 @@
+{
+  "title": "Sláva Bohu 3",
+  "author": "Katarína vl. - LS1 - sólo",
+  "categories": [
+    "Sláva Bohu"
+  ],
+  "song_parts": [
+    {
+      "type": "chorus",
+      "lines": [
+        "[: [F]Gloria, gloria, [d]gloria, [F]gloria [g]in [a]ex[B]celsis [F]Deo.:]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[F]Sláva Bohu na [C]výsostiach",
+        "[d]a na [B]zemi [g]pokoj [a]ľuďom [B]dobrej vô[A4]le. [A]"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[F]Chválime ťa, [d]velebíme [F]ťa, [B]klaniame sa [F]ti, [B]oslavuje[A]me ťa,",
+        "[D]vzdávame ti [g]vďaky, lebo [C]veľká je sláva [F]tvoja,",
+        "Pane [d]Bože, [G]Kr[C]áľ, [F]Kráľ nebes[A]ký, [d] Boh Otec [g]všemo[C]hú[d]ci. [C] "
+       
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[a]Pane [E]Ježišu [a]Kriste, [F] ty jednorodený [D]Syn,",
+        "[g]Pán a Boh, [Eb]Baránok Boží, [c]Syn Ot[D]ca,",
+        "[d]ty snímaš [Bmaj7]hriechy sveta, [g] zmiluj sa [C]nad na[d]mi.",
+        "Ty snímaš [Bmaj7]hriechy sveta, [g]prijmi našu úpenlivú [A]prosbu.",
+        "[d]Ty sedíš [Bmaj7]po pravici Otca, [g]zmiluj sa [a]nad [C]na[d]mi. [C] "
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[F]Veď len ty si svätý, [d]len ty si [F]Pán,",
+        "[B]len ty si naj[F]vyšší, [B]Ježišu [A]Kriste,",
+        "[D]s Duchom [g]Svätým [C]v sláve Boha [F]Otca.",
+        "Amen, [d]a [G]   [C]-  [F]   [A]men, [d] a[g]  -[C]  [d]men. [C]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "title": "Vzdám ti chválu",
+  "author": "D. Ruis - Rieka života",
+  "categories": [
+    "úvod",
+    "prijímanie",
+    "záver",
+    "adorácia",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Vzdám ti chválu, (vzdám ti chválu),",
+        "[F]srdcom celým, (srdcom celým),",
+        "[C]Spievam pieseň, (spievam pieseň),",
+        "[G]zo všetkých síl, ([a7]všetkých [D]síl)."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "[G]Nájsť ťa túžim, (nájsť ťa túžim),",
+        "[F]každý môj deň, (každý môj deň),",
+        "[C]Kráčať s tebou, (kráčať s tebou),",
+        "[G]kam budeš chcieť, ([a7]kam ty [D]chceš)."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[G] Tebe vzdávam [D\\F#]česť a slávu,",
+        "[C\\E] tebe spievam [a7]pieseň [D]chvál.",
+        "[G] Len ty sám mi [D\\F#]dávaš lásku,",
+        "[C\\E] len ty sám si [a7]hoden [D]mojich [G]chvál."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Rád sa skláňam, (rád sa skláňam),",
+        "ty si môj Kráľ, (ty si môj Kráľ),",
+        "rád ti slúžim, (rád ti slúžim),",
+        "dám ti všetko, čo mám, (všetko dám)."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Zrak svoj dvíham, (zrak svoj dvíham),",
+        "vidím tvoj trón, (vidím tvoj trón),",
+        "ty si nádej, (ty si nádej),",
+        "tebe dám život svoj, (život svoj)."
+      ]
+    }
+  ]
+}

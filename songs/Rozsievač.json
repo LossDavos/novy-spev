@@ -1,0 +1,45 @@
+{
+  "title": "Rozsievač",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Prikázal Boh dávno pustej pláni, aby dala plod.",
+        "On nás rozsial ako zrno z dlaní z juhu na východ.",
+        "Ako rozsievač nás rozsial všade na guľatú zem,",
+        "vie o tom, čo bolo, je a bude, čaká žatvy deň."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Chcem, Pane, rásť, chcem vydať klasy,",
+        "slovo Tvoje je slovom spásy,",
+        "chcem, Pane, rásť a dobre viem,",
+        "slovo Tvoje je slnko moje."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Jedno zrno padlo na kraj cesty, nevzklíčilo však,",
+        "nevydalo žiadne ratolesti, vyzobal ho vták.",
+        "Iné padlo na skalu, kde tŕnie rast mu zhatalo.",
+        "Svetla kde niet, klíčok ľahko strnie, hynúť začalo."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Iba v Božej pôde zrno zreje, svetlo má i vzduch,",
+        "úroda raz z neho veliká je, že až jasá duch.",
+        "Hoci s plačom neraz sejem semä, nádej v Bohu mám,",
+        "že raz stokrát viacej z dobre zeme zrniek pozbieram."
+      ]
+    }
+  ]
+}

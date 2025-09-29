@@ -1,0 +1,23 @@
+{
+  "title": "Hej, Mikuláš",
+  "author": "",
+  "categories": [
+    "mikulášske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Hej, Mikuláš, hej, Mikuláš, tebe veľká sláva,",
+        "čo ty nám dáš, čo ty nám dáš, zo srdca sa dáva."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "/:Cukrík, sladké jabĺčko, perníkové srdiečko,",
+        "hej, Mikuláš, hej, Mikuláš, tebe veľká sláva.:/"
+      ]
+    }
+  ]
+}

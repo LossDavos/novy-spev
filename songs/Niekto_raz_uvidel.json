@@ -1,0 +1,45 @@
+{
+  "title": "Niekto raz uvidel",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Niekto raz uvidel cigáňa mrieť,",
+        "pýtal sa: budeš ty Ježiša zrieť.",
+        "Kto je to, povedz mi, cigáň zalkal,",
+        "nikto mi o ňom nič nepovedal."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "Každému vrav, všade to hlás,",
+        "že Ježiš za hriešnych život svoj dal.",
+        "Nikto nech na súde nežaluje,",
+        "že si mu o ňom nič nepovedal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Môže mňa, biedneho, milovať On,",
+        "nemusím zúfať si, čuje môj ston.",
+        "Všetko to hriešnikom Syn Boha dal,",
+        "aby som aj ja v ňom spasenie mal."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "S úsmevom lúči sa, necíti žiaľ,",
+        "šťastný bol, Ježiš ho za ruku vzal.",
+        "Tichučko zašeptal posledný raz,",
+        "verím Mu, povedz to iným teraz."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Vyvyšujem teba, Pane",
+  "author": "O. Pinkner",
+  "categories": [
+    "prijímanie",
+    "adorácia",
+    "cez rok"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[C]Vyvyšujem teba, Pane[G], nad týmto [F(2)]dňom.",
+        "[C]Vyvyšujem teba, Pane[G], nad každým [F(2)]človekom.",
+        "[C]Vyvyšujem teba, Pane[G], nad všetkým, čo [F(2)]stvorené je.",
+        "[C]Vyvyšujem teba, Pane[G], nad svojím [F(2)]životom."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[C]Vyvyšujem tvoje [G]meno nad každé [F]meno. 4x"
+      ]
+    }
+  ]
+}

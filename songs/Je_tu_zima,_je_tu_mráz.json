@@ -1,0 +1,37 @@
+{
+  "title": "Je tu zima, je tu mráz",
+  "author": "",
+  "categories": [
+    "mikulášske"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "Je tu zima, je tu mráz, prišiel svätý Mikuláš,",
+        "/:všetci sa tešíme, s radosťou ho vítame:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Doniesol nám darčeky, veľa, veľa sladkostí,",
+        "/:tiež červené jabĺčka a aj dobré oriešky:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "A ty, svätý Mikuláš, mnoho dobrých vecí máš,",
+        "/:nadeľ nám v hojnosti k našej veľkej radosti:/."
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Zo srdca ti vďačíme, polepšenie sľúbime,",
+        "/:už sa teraz tešíme, že sa o rok zídeme:/."
+      ]
+    }
+  ]
+}

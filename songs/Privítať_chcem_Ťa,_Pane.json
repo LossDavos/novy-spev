@@ -1,0 +1,35 @@
+{
+  "title": "Privítať chcem Ťa, Pane",
+  "author": "",
+  "categories": [
+    "cezročné"
+  ],
+  "song_parts": [
+    {
+      "type": "verse",
+      "lines": [
+        "[A]Privítať [E]chcem Ťa, [A]Pane,[E] [A]privítať [E]uprostred [D]nás,",
+        "osláviť návrat zázrač[E]ný,",
+        "[D]ohlásiť hody pre lač[E]ných.",
+        "[A]Privítať [E]chcem Ťa, [A]Pane [E] a [A]túžim s [E]Tebou [D]žiť,",
+        "nemôžem ďalej hlúpo [E]spať, [D]pokús sa vo mne zmŕtvych[E]vstať."
+      ]
+    },
+    {
+      "type": "chorus",
+      "lines": [
+        "[E]Skúšaj, [A]skúšaj, prebuď nás, [h]spíme [E]spánkom [A]zlým.",
+        "[E]Príď a [A]spánok ukonči [h]ránom [E]sviatoč[A]ným"
+      ]
+    },
+    {
+      "type": "verse",
+      "lines": [
+        "Ľahšie Ti bolo Pane, zostúpiť do chleba,",
+        "ťažšie je cestu nájsť a spôsob, do sŕdc namyslených osôb.",
+        "Ľahšie Ti bolo Pane, vystúpiť z tvrdých skál,",
+        "ťažšie je čosi dosiahnuť, ak skúšaš ľahostajných hnúť"
+      ]
+    }
+  ]
+}
