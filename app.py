@@ -423,12 +423,12 @@ def generate_tex(song_id):
     with open(tex_path, 'w', encoding='utf-8') as f:
         f.write(latex)
 
-    # Save path in DB
-    song.tex_path = tex_path
+    # Save path in DB (convert to relative path for cross-environment compatibility)
+    song.tex_path = os.path.relpath(tex_path, BASE_DIR)
     db.session.commit()
 
-    flash("TeX file generated successfully.")
-    return redirect(url_for('index'))
+    flash("TeX file generated successfully!", "success")
+    return redirect(url_for('song_view', song_id=song_id))
 
 
 @app.route('/')
@@ -611,29 +611,55 @@ def backup():
 
 @app.route('/delete_file/<int:song_id>/<file_type>', methods=['POST'])
 def delete_file(song_id, file_type):
+    print(f"DEBUG: delete_file called with song_id={song_id}, file_type='{file_type}'", flush=True)
     song = Song.query.get_or_404(song_id)
-    song_folder = get_song_upload_folder(song_id)
 
     if file_type == 'tex':
-        if song.tex_path and os.path.exists(song.tex_path):
-            os.remove(song.tex_path)
-            song.tex_path = None
+        print(f"DEBUG: Deleting TeX file. song.tex_path = {song.tex_path}", flush=True)
+        if song.tex_path:
+            # Convert relative path to absolute path
+            actual_path = os.path.join(BASE_DIR, song.tex_path)
+            
+            print(f"DEBUG: Checking if file exists: {os.path.exists(actual_path)}", flush=True)
+            if os.path.exists(actual_path):
+                print(f"DEBUG: Removing TeX file: {actual_path}", flush=True)
+                os.remove(actual_path)
+                song.tex_path = None
+                print("DEBUG: TeX file removed and path cleared", flush=True)
 
-            if song.pdf_lyrics_path and os.path.exists(song.pdf_lyrics_path):
-                os.remove(song.pdf_lyrics_path)
-                song.pdf_lyrics_path = None
+                # Also remove generated PDFs when TeX is deleted
+                if song.pdf_lyrics_path:
+                    pdf_path = os.path.join(BASE_DIR, song.pdf_lyrics_path)
+                    if os.path.exists(pdf_path):
+                        print(f"DEBUG: Removing lyrics PDF: {pdf_path}", flush=True)
+                        os.remove(pdf_path)
+                    song.pdf_lyrics_path = None
 
-            if song.pdf_chords_path and os.path.exists(song.pdf_chords_path):
-                os.remove(song.pdf_chords_path)
-                song.pdf_chords_path = None
+                if song.pdf_chords_path:
+                    pdf_path = os.path.join(BASE_DIR, song.pdf_chords_path)
+                    if os.path.exists(pdf_path):
+                        print(f"DEBUG: Removing chords PDF: {pdf_path}", flush=True)
+                        os.remove(pdf_path)
+                    song.pdf_chords_path = None
+            else:
+                print(f"DEBUG: TeX file not found at path: {actual_path}", flush=True)
+                flash(f"TeX file not found", "error")
+        else:
+            print("DEBUG: No TeX path set for this song", flush=True)
+            flash("No TeX file to delete", "error")
 
     elif file_type == 'pdf_lyrics':
-        if song.pdf_lyrics_path and os.path.exists(song.pdf_lyrics_path):
-            os.remove(song.pdf_lyrics_path)
+        if song.pdf_lyrics_path:
+            actual_path = os.path.join(BASE_DIR, song.pdf_lyrics_path)
+            if os.path.exists(actual_path):
+                os.remove(actual_path)
         song.pdf_lyrics_path = None
+        
     elif file_type == 'pdf_chords':
-        if song.pdf_lyrics_path and os.path.exists(song.pdf_chords_path):
-            os.remove(song.pdf_chords_path)
+        if song.pdf_chords_path:
+            actual_path = os.path.join(BASE_DIR, song.pdf_chords_path)
+            if os.path.exists(actual_path):
+                os.remove(actual_path)
         song.pdf_chords_path = None
     elif file_type in ['mp3', 'midi', 'sheet_pdfs', 'sheet_mscz']:
         path_to_delete = request.form.get('path')
@@ -662,7 +688,7 @@ def delete_file(song_id, file_type):
 
     db.session.commit()
     flash(f"{file_type.upper()} file deleted.")
-    return redirect(url_for('song_detail', song_id=song.id))
+    return redirect(url_for('song_view', song_id=song.id))
 
 @app.route('/song/add', methods=['GET', 'POST'])
 def add_song():
@@ -739,8 +765,8 @@ def add_song():
 
 
         db.session.commit()
-        flash("Song added successfully!")
-        return redirect(url_for('index')+ f'#song-{song.id}')
+        flash("Song added successfully!", "success")
+        return redirect(url_for('song_view', song_id=song.id))
 
     return render_template('song_detail.html', song=Song(title=""), data=[], mp3s=[], midis=[], is_edit=False)
 
@@ -846,7 +872,7 @@ def song_detail(song_id):
                     print(song.song_id)
                     db.session.commit()
                     flash(f"Songs successfully associated with common title: {new_title}", 'success')
-                    return redirect(url_for('index')+ f'#song-{song.id}')
+                    return redirect(url_for('song_view', song_id=song.id))
 
 
                 except Exception as e:
@@ -855,11 +881,11 @@ def song_detail(song_id):
                     return redirect(url_for('song_detail', song_id=song.id))
 
             flash("Associated song not found", 'error')
-            return redirect(url_for('index')+ f'#song-{song.id}')
+            return redirect(url_for('song_view', song_id=song.id))
 
         db.session.commit()
-        flash("Song updated successfully!")
-        return redirect(url_for('index')+ f'#song-{song.id}')
+        flash("Song updated successfully!", "success")
+        return redirect(url_for('song_view', song_id=song.id))
 
     # Prepare data for template
     song.alternative_titles = song.alternative_titles.split(';;') if song.alternative_titles else []
@@ -1080,12 +1106,18 @@ def search_songs():
 def generate_pdfs(song_id):
     song = Song.query.get_or_404(song_id)
 
-    if not song.tex_path or not os.path.exists(song.tex_path):
+    if not song.tex_path:
         flash("TeX file not found for this song.", "error")
-        return redirect(url_for('song_detail', song_id=song_id))
+        return redirect(url_for('song_view', song_id=song_id))
+    
+    # Convert relative path to absolute for file operations
+    tex_file_absolute = os.path.join(BASE_DIR, song.tex_path)
+    if not os.path.exists(tex_file_absolute):
+        flash("TeX file not found for this song.", "error")
+        return redirect(url_for('song_view', song_id=song_id))
 
     song_folder = get_song_upload_folder(song.id)
-    tex_file = song.tex_path
+    tex_file = tex_file_absolute
     basename = os.path.splitext(os.path.basename(tex_file))[0]
 
     pdf_lyrics_path = os.path.join(song_folder, 'lyrics.pdf')
@@ -1156,13 +1188,13 @@ def generate_pdfs(song_id):
     run_latex(tex_file, set_chords_bool=False, output_filename=pdf_lyrics_path)
     run_latex(tex_file, set_chords_bool=True, output_filename=pdf_chords_path)
 
-    # Update DB
-    song.pdf_lyrics_path = pdf_lyrics_path
-    song.pdf_chords_path = pdf_chords_path
+    # Update DB (convert to relative paths for cross-environment compatibility)
+    song.pdf_lyrics_path = os.path.relpath(pdf_lyrics_path, BASE_DIR)
+    song.pdf_chords_path = os.path.relpath(pdf_chords_path, BASE_DIR)
     db.session.commit()
 
-    flash("PDFs generated successfully.", "success")
-    return redirect(url_for('song_detail', song_id=song_id))
+    flash("PDFs generated successfully!", "success")
+    return redirect(url_for('song_view', song_id=song_id))
 
 @app.route('/api/category_counts')
 def get_category_counts():
@@ -1236,4 +1268,4 @@ def get_category_counts():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

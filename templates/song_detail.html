@@ -142,10 +142,10 @@
 
 <!-- === FILE MANAGEMENT SECTION === -->
 <div class="file-management-section card border-0 shadow-lg rounded-4 overflow-hidden mb-4" 
-     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+     style="background: white;">
   
   <!-- Header with gradient -->
-  <div class="card-header border-0 text-white p-4" style="background: transparent;">
+  <div class="card-header border-0 text-white p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
     <div class="d-flex align-items-center justify-content-between">
       <div>
         <h4 class="mb-1 fw-bold">
@@ -166,22 +166,6 @@
   
   <!-- Content with white background -->
   <div class="card-body bg-white p-4">
-
-  <!-- === TeX File === -->
-  <div class="mb-4">
-    <h5>TeX Súbor (Nerieš)</h5>
-    {% if song.tex_path %}
-      <div>
-        <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.tex_path.split('/')[-1]) }}" target="_blank">
-          Stianhni TeX File
-        </a>
-        <button type="button" class="ms-2 btn btn-sm btn-danger" onclick="confirmDelete('tex')">Vymaž</button>
-      </div>
-    {% else %}
-      <label class="form-label">Nahraj TeX File</label>
-      <input type="file" name="tex" class="form-control">
-    {% endif %}
-  </div>
 
 <div class="printed-status-container mb-4">
   <div class="card border-0 shadow-sm rounded-3 p-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
@@ -220,22 +204,89 @@
   </div>
 </div>
 
-  <!-- === PDF Files === -->
-  {% if song.tex_path and not song.pdf_lyrics_path %}
-  <div class="mb-3">
-    <a href="{{ url_for('generate_pdfs', song_id=song.id) }}#song-{{ song.id }}"
-       class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
-      <i class="bi bi-magic me-2"></i>
-      Vygeneruj PDFs (na základe TeX súboru)
-    </a>
-  </div>
-  {% endif %}
-  
-  <div class="pdf-files-section mb-4">
-    <h5 class="d-flex align-items-center gap-2 mb-3">
-      <span class="badge bg-danger">📄</span>
-      PDF Súbory
+  <!-- === TeX & PDF Files Management === -->
+  <div class="tex-pdf-management-section mb-4">
+    <h5 class="d-flex align-items-center gap-2 mb-4">
+      <span class="badge bg-warning">📄</span>
+      TeX a PDF Súbory
+      <small class="text-muted ms-2">(LaTeX generovanie)</small>
     </h5>
+
+    <!-- TeX Source Management -->
+    <div class="tex-source-card mb-4 p-3 border rounded-3 position-relative" 
+         style="background: linear-gradient(135deg, #fff9c4 0%, #ffffff 100%); border-color: #fbbf24 !important;">
+      
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center gap-3">
+          <div class="tex-icon p-2 rounded-circle" style="background-color: rgba(251, 191, 36, 0.1);">
+            <i class="bi bi-file-earmark-code fs-4" style="color: #f59e0b;"></i>
+          </div>
+          <div>
+            <div class="fw-bold text-dark">TeX Zdrojový súbor</div>
+            <small class="text-muted">LaTeX template pre generovanie PDF</small>
+          </div>
+        </div>
+      </div>
+
+      {% if song.tex_path %}
+      <!-- TeX File Actions -->
+      <div class="tex-actions mb-3">
+        <div class="btn-group" role="group">
+          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.tex_path.split('/')[-1]) }}" target="_blank" 
+             class="btn btn-outline-warning btn-sm">
+            <i class="bi bi-download me-1"></i>Stiahnuť TeX
+          </a>
+          
+          <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('tex')"
+                  {{ 'disabled title="🔒 Súbor je chránený - pieseň je finálne skontrolovaná adminom. Pre úpravy kontaktujte administrátora."' if song.admin_checked else '' }}>
+            <i class="bi bi-trash me-1"></i>Vymazať
+          </button>
+        </div>
+      </div>
+
+
+
+      <!-- PDF Generation -->
+      {% if not song.pdf_lyrics_path %}
+      <div class="generate-pdfs-section p-2 rounded-2 bg-light bg-opacity-50">
+        <div class="d-flex align-items-center justify-content-between">
+          <small class="text-muted">
+            <i class="bi bi-info-circle me-1"></i>
+            <strong>Generovanie:</strong> Vytvorí PDF súbory z TeX šablóny
+          </small>
+          <a href="{{ url_for('generate_pdfs', song_id=song.id) }}#song-{{ song.id }}"
+             class="btn btn-primary btn-sm {{ 'disabled' if song.admin_checked else '' }}"
+             {{ 'onclick="return false;" title="Admin already checked this song"' if song.admin_checked else '' }}>
+            <i class="bi bi-magic me-1"></i>Vygeneruj PDFs
+          </a>
+        </div>
+      </div>
+      {% endif %}
+
+      {% else %}
+      <!-- TeX Upload -->
+      <div class="tex-upload-area">
+        <label class="form-label">Nahraj TeX súbor</label>
+        <input type="file" name="tex" class="form-control" 
+               accept=".tex"
+               {{ 'disabled title="Admin already checked this song"' if song.admin_checked else '' }}>
+        <small class="text-muted mt-1">
+          <i class="bi bi-info-circle me-1"></i>
+          LaTeX súbor (.tex) pre automatické generovanie PDF
+        </small>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Generated PDF Files -->
+    {% if song.pdf_lyrics_path or song.pdf_chords_path %}
+    <div class="generated-pdfs-header mb-3">
+      <h6 class="fw-bold text-success">
+        <i class="bi bi-check-circle me-1"></i>
+        Vygenerované PDF súbory
+      </h6>
+    </div>
+    {% endif %}
 
     <!-- Lyrics PDF -->
     <div class="file-card mb-3 p-3 border rounded-3 position-relative" 
@@ -261,7 +312,8 @@
             <i class="bi bi-download"></i>
             Stiahnuť
           </a>
-          <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('pdf_lyrics')">
+          <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('pdf_lyrics')"
+                  {{ 'disabled title="🔒 Súbor je chránený - pieseň je finálne skontrolovaná adminom. Pre úpravy kontaktujte administrátora."' if song.admin_checked else '' }}>
             <i class="bi bi-trash"></i>
             Vymaž
           </button>
@@ -319,7 +371,8 @@
             <i class="bi bi-download"></i>
             Stiahnuť
           </a>
-          <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('pdf_chords')">
+          <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete('pdf_chords')"
+                  {{ 'disabled title="🔒 Súbor je chránený - pieseň je finálne skontrolovaná adminom. Pre úpravy kontaktujte administrátora."' if song.admin_checked else '' }}>
             <i class="bi bi-trash"></i>
             Vymaž
           </button>
@@ -359,18 +412,20 @@
       </div>
     </div>
   </div>
+  
+  </div> <!-- End tex-pdf-management-section -->
 
    <!-- === MP3 Files === -->
-  <div class="mp3-files-section mb-4">
+  <div class="mp3-files-section mb-4" style="background: white;">
     <h5 class="d-flex align-items-center gap-2 mb-3">
       <span class="badge bg-success">🎵</span>
       MP3 Súbory
     </h5>
     
     <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center" 
-         style="background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%); border-color: #3b82f6 !important; transition: all 0.3s ease;"
-         onmouseover="this.style.background='linear-gradient(135deg, #dbeafe 0%, #f0f9ff 100%)'; this.style.borderColor='#1d4ed8';"
-         onmouseout="this.style.background='linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%)'; this.style.borderColor='#3b82f6';">
+         style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
+         onmouseover="this.style.background='#f8f9fa'; this.style.borderColor='#adb5bd';"
+         onmouseout="this.style.background='#ffffff'; this.style.borderColor='#dee2e6';">
       <label class="form-label d-block mb-2" style="cursor: pointer;">
         <i class="bi bi-music-note fs-3 text-primary"></i>
         <div class="fw-bold">Nahraj MP3 súbory</div>
@@ -388,13 +443,13 @@
       
       {% for path in mp3s %}
       <div class="audio-card mb-2 p-3 border rounded-3 position-relative" 
-           style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #bbf7d0 !important; transition: all 0.3s ease;"
-           onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(34, 197, 94, 0.15)';"
+           style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.15)';"
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
         
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
-            <div class="audio-icon p-2 rounded-circle" style="background-color: rgba(34, 197, 94, 0.1);">
+            <div class="audio-icon p-2 rounded-circle" style="background-color: rgba(108, 117, 125, 0.1);">
               <i class="bi bi-file-earmark-music fs-4" style="color: #22c55e;"></i>
             </div>
             <div>
@@ -415,7 +470,8 @@
             <button type="button" 
                     class="btn btn-outline-danger btn-sm" 
                     onclick="confirmDelete('mp3', '{{ path }}')" 
-                    title="Vymaž súbor">
+                    title="Vymaž súbor"
+                    {{ 'disabled title="Admin already checked this song"' if song.admin_checked else '' }}>
               <i class="bi bi-trash"></i>
               Vymaž
             </button>
@@ -445,16 +501,16 @@
   </div>
 
   <!-- === MIDI Files === -->
-  <div class="midi-files-section mb-4">
+  <div class="midi-files-section mb-4" style="background: white;">
     <h5 class="d-flex align-items-center gap-2 mb-3">
       <span class="badge bg-warning">🎹</span>
       MIDI Súbory
     </h5>
     
     <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center" 
-         style="background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); border-color: #f59e0b !important; transition: all 0.3s ease;"
-         onmouseover="this.style.background='linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%)'; this.style.borderColor='#d97706';"
-         onmouseout="this.style.background='linear-gradient(135deg, #fffbeb 0%, #ffffff 100%)'; this.style.borderColor='#f59e0b';">
+         style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
+         onmouseover="this.style.background='#f8f9fa'; this.style.borderColor='#adb5bd';"
+         onmouseout="this.style.background='#ffffff'; this.style.borderColor='#dee2e6';">
       <label class="form-label d-block mb-2" style="cursor: pointer;">
         <i class="bi bi-file-earmark-binary fs-3 text-warning"></i>
         <div class="fw-bold">Nahraj MIDI súbory</div>
@@ -464,7 +520,7 @@
     </div>
 
     {% if midis %}
-    <div class="midi-files-container">
+    <div class="midi-files-container" style="background: white;">
       <div class="mb-2">
         <span class="badge bg-warning">{{ midis|length }}</span>
         <small class="text-muted">MIDI súborov</small>
@@ -472,13 +528,13 @@
       
       {% for path in midis %}
       <div class="midi-card mb-2 p-3 border rounded-3 position-relative" 
-           style="background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); border-color: #fde68a !important; transition: all 0.3s ease;"
-           onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.15)';"
+           style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.15)';"
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
         
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
-            <div class="midi-icon p-2 rounded-circle" style="background-color: rgba(245, 158, 11, 0.1);">
+            <div class="midi-icon p-2 rounded-circle" style="background-color: rgba(108, 117, 125, 0.1);">
               <i class="bi bi-file-earmark-binary fs-4" style="color: #f59e0b;"></i>
             </div>
             <div>
@@ -499,7 +555,8 @@
             <button type="button" 
                     class="btn btn-outline-danger btn-sm" 
                     onclick="confirmDelete('midi', '{{ path }}')" 
-                    title="Vymaž súbor">
+                    title="Vymaž súbor"
+                    {{ 'disabled title="Admin already checked this song"' if song.admin_checked else '' }}>
               <i class="bi bi-trash"></i>
               Vymaž
             </button>
@@ -533,7 +590,7 @@
   </div>
 
 <!-- === Sheet PDF Files === -->
-  <div class="mb-4">
+  <div class="mb-4" style="background: white;">
     <h5 class="d-flex align-items-center gap-2">
       <span class="badge bg-primary">📋</span>
       Noty (PDF Files)
@@ -622,7 +679,8 @@
               <button type="button" 
                       class="btn btn-outline-danger btn-sm" 
                       onclick="confirmDelete('sheet_pdfs', '{{ path  }}')" 
-                      title="Vymaž súbor">
+                      title="Vymaž súbor"
+                      {{ 'disabled title="Admin already checked this song"' if song.admin_checked else '' }}>
                 <i class="bi bi-trash me-1"></i>Vymaž
               </button>
             </div>
@@ -655,16 +713,16 @@
   </div>
 
 <!-- === Sheet MSCZ Files === -->
-  <div class="mscz-files-section mb-4">
+  <div class="mscz-files-section mb-4" style="background: white;">
     <h5 class="d-flex align-items-center gap-2 mb-3">
       <span class="badge bg-info">🎼</span>
       Noty (MuseScore)
     </h5>
     
     <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center" 
-         style="background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%); border-color: #06b6d4 !important; transition: all 0.3s ease;"
-         onmouseover="this.style.background='linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%)'; this.style.borderColor='#0891b2';"
-         onmouseout="this.style.background='linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%)'; this.style.borderColor='#06b6d4';">
+         style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
+         onmouseover="this.style.background='#f8f9fa'; this.style.borderColor='#adb5bd';"
+         onmouseout="this.style.background='#ffffff'; this.style.borderColor='#dee2e6';">
       <label class="form-label d-block mb-2" style="cursor: pointer;">
         <i class="bi bi-file-earmark-music fs-3 text-info"></i>
         <div class="fw-bold">Nahraj MSCZ súbory</div>
@@ -682,8 +740,8 @@
       
       {% for path in sheet_mscz %}
       <div class="mscz-card mb-2 p-3 border rounded-3 position-relative" 
-           style="background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%); border-color: #bae6fd !important; transition: all 0.3s ease;"
-           onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(6, 182, 212, 0.15)';"
+           style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
+           onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.15)';"
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
         
         <div class="d-flex align-items-center justify-content-between">
@@ -700,7 +758,7 @@
           </div>
           
           <div class="mscz-actions d-flex gap-2">
-            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + path.split('/')[-1]) }}" 
+            <a href="{{ path | presigned_url }}" 
                class="btn btn-outline-info btn-sm d-flex align-items-center gap-1" 
                target="_blank" title="Stiahnuť MuseScore súbor">
               <i class="bi bi-download"></i>
@@ -709,7 +767,8 @@
             <button type="button" 
                     class="btn btn-outline-danger btn-sm" 
                     onclick="confirmDelete('sheet_mscz', '{{ path }}')" 
-                    title="Vymaž súbor">
+                    title="Vymaž súbor"
+                    {{ 'disabled title="Admin already checked this song"' if song.admin_checked else '' }}>
               <i class="bi bi-trash"></i>
               Vymaž
             </button>
@@ -828,20 +887,29 @@
         </div>
     </div>
 
-    <div class="save-section text-center mt-5 mb-4">
-      <button type="submit" class="btn btn-success btn-lg px-5 py-3 rounded-pill shadow-lg save-btn">
-        <i class="bi bi-floppy me-2"></i>
-        <span class="save-text">Uložiť zmeny</span>
-        <i class="bi bi-arrow-right ms-2"></i>
-      </button>
-      <div class="mt-2">
-        <small class="text-muted">
-          <i class="bi bi-shield-check me-1"></i>
-          Automatické zálohované pred uložením
-        </small>
-      </div>
-    </div>
+    <!-- Hidden submit button for form submission -->
+    <button type="submit" id="hidden-submit" style="display: none;"></button>
 </form>
+
+<!-- Fixed Action Buttons at Bottom -->
+<div class="fixed-action-buttons">
+  <div class="d-flex gap-2 justify-content-center">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg shadow-lg">
+      <i class="bi bi-x-circle me-2"></i>
+      <span class="d-none d-sm-inline">Zrušiť</span>
+      <span class="d-sm-none">Zrušiť</span>
+    </a>
+    
+    <button type="button" class="btn btn-success btn-lg shadow-lg save-btn" onclick="document.getElementById('hidden-submit').click();">
+      <i class="bi bi-floppy me-2"></i>
+      <span class="d-none d-sm-inline">Uložiť zmeny</span>
+      <span class="d-sm-none">Uložiť</span>
+    </button>
+  </div>
+</div>
+
+<!-- Spacer to prevent content from being hidden behind fixed buttons -->
+<div class="fixed-buttons-spacer"></div>
 
 <!-- Floating progress indicator (hidden by default) -->
 <div id="save-progress" class="position-fixed bottom-0 start-50 translate-middle-x mb-3" style="display: none; z-index: 1050;">
@@ -1291,6 +1359,116 @@
   font-size: 1.2em;
   line-height: 1;
   padding-left: 0.5rem;
+}
+
+/* Fixed Action Buttons */
+.fixed-action-buttons {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: slideUpFade 0.5s ease-out;
+}
+
+.fixed-action-buttons .btn {
+    border-radius: 30px;
+    font-weight: 600;
+    padding: 12px 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    min-width: 120px;
+}
+
+.fixed-action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.fixed-action-buttons .btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.fixed-action-buttons .btn-outline-secondary {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #6c757d;
+    color: #6c757d;
+}
+
+.fixed-action-buttons .btn-outline-secondary:hover {
+    background: #6c757d;
+    color: white;
+    border-color: #6c757d;
+}
+
+/* Spacer to prevent content overlap */
+.fixed-buttons-spacer {
+    height: 100px;
+}
+
+/* Animation for fixed buttons */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Mobile responsive for fixed buttons */
+@media (max-width: 768px) {
+    .fixed-action-buttons {
+        bottom: 15px;
+        left: 15px;
+        right: 15px;
+        transform: none;
+        width: auto;
+        border-radius: 15px;
+        padding: 10px 15px;
+    }
+    
+    .fixed-action-buttons .d-flex {
+        justify-content: space-between;
+        gap: 10px;
+    }
+    
+    .fixed-action-buttons .btn {
+        flex: 1;
+        min-width: auto;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .fixed-buttons-spacer {
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .fixed-action-buttons {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        padding: 8px 12px;
+    }
+    
+    .fixed-action-buttons .btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .fixed-buttons-spacer {
+        height: 70px;
+    }
 }
 </style>
 

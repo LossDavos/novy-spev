@@ -332,14 +332,91 @@
     .song-table .btn-sm {
         min-width: 100px;
     }
+        /* Toast notification styles */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 400px;
+        }
+        
+        .toast-notification {
+            background: #2ecc71;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 10px;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .toast-notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .toast-notification.error {
+            background: #e74c3c;
+        }
+        
+        .toast-notification.warning {
+            background: #f39c12;
+        }
+        
+        @media (max-width: 991px) {
+            .toast-container {
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+            
+            .toast-notification {
+                font-size: 1.3rem !important;
+                padding: 18px 20px !important;
+            }
+        }
     </style>
 </head>
 <body class="container py-4">
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-    <div class="alert alert-info">{{ messages[0] }}</div>
+    <div class="toast-container">
+        {% for category, message in messages %}
+        <div class="toast-notification {% if category == 'error' %}error{% elif category == 'warning' %}warning{% endif %}" data-message="{{ message }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
+    
+    <script>
+    // Auto-show and hide toast notifications
+    document.addEventListener('DOMContentLoaded', function() {
+        const toasts = document.querySelectorAll('.toast-notification');
+        toasts.forEach((toast, index) => {
+            // Show toast with delay
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, index * 100);
+            
+            // Hide toast after 4 seconds
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100%)';
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 4000 + (index * 100));
+        });
+    });
+    </script>
 </body>
 </html>

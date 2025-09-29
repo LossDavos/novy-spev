@@ -10,6 +10,10 @@ RUN apt-get update && apt-get install -y \
     texlive-latex-extra \
     texlive-fonts-recommended \
     texlive-xetex \
+    texlive-luatex \
+    texlive-lang-european \
+    fonts-liberation \
+    fontconfig \
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,8 +26,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Copy fonts and install them system-wide
+COPY static/fonts/*.ttf /usr/share/fonts/truetype/
+RUN fc-cache -fv
+
 # Create instance directory for SQLite database
 RUN mkdir -p instance
+
+# Initialize LuaTeX font database
+RUN luaotfload-tool --update
 
 # Expose port 5000
 EXPOSE 5000
