@@ -1463,6 +1463,7 @@
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        position: relative;
     }
     
     /* Show only icons in file management buttons */
@@ -1486,6 +1487,82 @@
         display: none !important;
     }
     
+    /* Enhanced disabled button styling for mobile */
+    .btn:disabled,
+    .btn.disabled {
+        opacity: 0.4 !important;
+        cursor: not-allowed !important;
+        position: relative;
+        border-style: dashed !important;
+        border-width: 2px !important;
+    }
+    
+    /* Disabled button overlay with prohibition symbol */
+    .btn:disabled::after,
+    .btn.disabled::after {
+        content: "🚫";
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        background: rgba(220, 53, 69, 0.9);
+        border-radius: 50%;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 10;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    /* Mobile-specific tooltip styling */
+    .mobile-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        white-space: nowrap;
+        z-index: 1000;
+        margin-bottom: 5px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        max-width: 250px;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.3;
+    }
+    
+    .mobile-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0, 0, 0, 0.9);
+    }
+    
+    .mobile-tooltip.show {
+        opacity: 1;
+    }
+    
+    /* Show tooltip on disabled button click/tap */
+    .btn:disabled:active .mobile-tooltip,
+    .btn.disabled:active .mobile-tooltip,
+    .btn:disabled.show-tooltip .mobile-tooltip,
+    .btn.disabled.show-tooltip .mobile-tooltip {
+        opacity: 1;
+    }
+    
     .fixed-buttons-spacer {
         height: 80px;
     }
@@ -1506,6 +1583,47 @@
     
     .fixed-buttons-spacer {
         height: 70px;
+    }
+}
+
+/* Toast notification for disabled button feedback */
+.disabled-button-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(248, 215, 218, 0.95);
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+    transition: all 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+}
+
+.disabled-button-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.disabled-button-toast .toast-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .disabled-button-toast {
+        bottom: 80px; /* Higher on mobile to avoid navbar */
+        max-width: 85%;
+        font-size: 0.85rem;
     }
 }
 </style>
@@ -1930,6 +2048,190 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
       });
     }
+  });
+  
+  // Enhanced disabled button feedback for mobile
+  // Add mobile tooltips to all disabled buttons
+  function addMobileTooltips() {
+    const disabledButtons = document.querySelectorAll('button:disabled, button.disabled, .btn:disabled, .btn.disabled');
+    
+    disabledButtons.forEach(function(button) {
+      // Skip if already has tooltip
+      if (button.querySelector('.mobile-tooltip')) return;
+      
+      // Get reason from title attribute or determine based on context
+      let reason = button.getAttribute('title') || button.getAttribute('data-reason') || '';
+      
+      // Determine reason based on button content and context if not explicitly set
+      if (!reason) {
+        const buttonText = button.textContent.trim().toLowerCase();
+        const buttonIcon = button.querySelector('i');
+        
+        if (buttonText.includes('tex') || (buttonIcon && buttonIcon.className.includes('file-code'))) {
+          reason = 'Pieseň už bola skontrolovaná administrátorom';
+        } else if (buttonText.includes('pdf') || (buttonIcon && buttonIcon.className.includes('file-pdf'))) {
+          if (!button.closest('form')) {
+            reason = 'Najprv vygeneruj TeX súbory';
+          } else {
+            reason = 'Pieseň už bola skontrolovaná administrátorom';
+          }
+        } else if (buttonText.includes('delete') || (buttonIcon && buttonIcon.className.includes('trash'))) {
+          reason = 'Súbor neexistuje alebo nemáte oprávnenie';
+        } else if (buttonText.includes('download') || (buttonIcon && buttonIcon.className.includes('download'))) {
+          reason = 'Súbor nie je dostupný';
+        } else {
+          reason = 'Akcia nie je povolená';
+        }
+      }
+      
+      // Create tooltip element
+      const tooltip = document.createElement('div');
+      tooltip.className = 'mobile-tooltip';
+      tooltip.textContent = reason;
+      button.appendChild(tooltip);
+      button.style.position = 'relative';
+    });
+  }
+  
+  // Handle disabled button clicks/taps
+  function handleDisabledButtonClick(event) {
+    const button = event.target.closest('button:disabled, button.disabled, .btn:disabled, .btn.disabled');
+    if (!button) return;
+    
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Get the reason from various possible sources
+    let reason = button.getAttribute('title') || 
+                button.getAttribute('data-bs-original-title') ||
+                button.querySelector('.mobile-tooltip')?.textContent || 
+                'Táto akcia nie je momentálne dostupná';
+    
+    // Show toast notification for all screen sizes
+    showDisabledButtonToast(reason);
+    
+    // Add visual feedback with shake animation
+    button.style.animation = 'shake 0.5s ease-in-out';
+    setTimeout(() => {
+      button.style.animation = '';
+    }, 500);
+    
+    // Vibrate on mobile if supported
+    if (navigator.vibrate) {
+      navigator.vibrate([100, 50, 100]);
+    }
+    
+    // Show tooltip temporarily if it exists
+    const tooltip = button.querySelector('.mobile-tooltip');
+    if (tooltip) {
+      button.classList.add('show-tooltip');
+      setTimeout(() => {
+        button.classList.remove('show-tooltip');
+      }, 3000);
+    }
+  }
+  
+  // Flash message function
+  function showFlashMessage(message, type = 'info') {
+    // Remove existing flash messages
+    const existingFlash = document.querySelector('.temp-flash-message');
+    if (existingFlash) existingFlash.remove();
+    
+    // Create new flash message
+    const flashDiv = document.createElement('div');
+    flashDiv.className = `alert alert-${type} alert-dismissible fade show temp-flash-message`;
+    flashDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 300px;';
+    flashDiv.innerHTML = `
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(flashDiv);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      if (flashDiv.parentNode) {
+        flashDiv.remove();
+      }
+    }, 5000);
+  }
+  
+  // Toast notification for disabled buttons
+  function showDisabledButtonToast(message) {
+    // Remove existing toast
+    let existingToast = document.querySelector('.disabled-button-toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    // Create toast element
+    let toast = document.createElement('div');
+    toast.className = 'disabled-button-toast';
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Show toast with animation
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            if (toast && toast.parentNode) {
+                toast.remove();
+            }
+        }, 300);
+    }, 3000);
+  }
+  
+  // Initialize tooltips
+  addMobileTooltips();
+  
+  // Add shake animation CSS if not already present
+  if (!document.querySelector('#shake-animation-styles')) {
+    const shakeStyles = document.createElement('style');
+    shakeStyles.id = 'shake-animation-styles';
+    shakeStyles.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(shakeStyles);
+  }
+  
+  // Add event listeners for disabled button clicks
+  document.addEventListener('click', handleDisabledButtonClick, true);
+  document.addEventListener('touchstart', handleDisabledButtonClick, true);
+  
+  // Re-initialize tooltips when content changes (for dynamic content)
+  const observer = new MutationObserver(function(mutations) {
+    let shouldUpdate = false;
+    mutations.forEach(function(mutation) {
+      if (mutation.type === 'childList' || mutation.type === 'attributes') {
+        shouldUpdate = true;
+      }
+    });
+    if (shouldUpdate) {
+      setTimeout(addMobileTooltips, 100);
+    }
+  });
+  
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['disabled', 'class']
   });
 </script>
 {% endblock %}

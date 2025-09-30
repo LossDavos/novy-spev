@@ -1264,6 +1264,82 @@ html {
         display: none !important;
     }
     
+    /* Enhanced disabled button styling for mobile */
+    .btn:disabled,
+    .btn.disabled {
+        opacity: 0.4 !important;
+        cursor: not-allowed !important;
+        position: relative;
+        border-style: dashed !important;
+        border-width: 2px !important;
+    }
+    
+    /* Disabled button overlay with prohibition symbol */
+    .btn:disabled::after,
+    .btn.disabled::after {
+        content: "🚫";
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        background: rgba(220, 53, 69, 0.9);
+        border-radius: 50%;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        z-index: 10;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    /* Mobile-specific tooltip styling */
+    .mobile-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        white-space: nowrap;
+        z-index: 1000;
+        margin-bottom: 5px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        max-width: 250px;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.3;
+    }
+    
+    .mobile-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0, 0, 0, 0.9);
+    }
+    
+    .mobile-tooltip.show {
+        opacity: 1;
+    }
+    
+    /* Show tooltip on disabled button click/tap */
+    .btn:disabled:active .mobile-tooltip,
+    .btn.disabled:active .mobile-tooltip,
+    .btn:disabled.show-tooltip .mobile-tooltip,
+    .btn.disabled.show-tooltip .mobile-tooltip {
+        opacity: 1;
+    }
+    
     /* Also hide direct text nodes */
     .file-actions .btn,
     .audio-actions .btn,
@@ -1643,6 +1719,125 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add hover hint
         pre.title = 'Kliknite pre kopírovanie do schránky';
         pre.style.cursor = 'pointer';
+    });
+    
+    // Enhanced disabled button feedback for mobile
+    // Add mobile tooltips to all disabled buttons
+    function addMobileTooltips() {
+        const disabledButtons = document.querySelectorAll('button:disabled, button.disabled, .btn:disabled, .btn.disabled');
+        
+        disabledButtons.forEach(function(button) {
+            // Skip if already has tooltip
+            if (button.querySelector('.mobile-tooltip')) return;
+            
+            // Get reason from title attribute or determine based on context
+            let reason = button.getAttribute('title') || button.getAttribute('data-reason') || '';
+            
+            // Determine reason based on button content and context if not explicitly set
+            if (!reason) {
+                const buttonText = button.textContent.trim().toLowerCase();
+                const buttonIcon = button.querySelector('i');
+                
+                if (buttonText.includes('stiahnuť') || (buttonIcon && (buttonIcon.className.includes('download') || buttonIcon.className.includes('play')))) {
+                    reason = 'Súbor nie je dostupný';
+                } else if (buttonText.includes('delete') || (buttonIcon && buttonIcon.className.includes('trash'))) {
+                    reason = 'Súbor neexistuje alebo nemáte oprávnenie';
+                } else {
+                    reason = 'Akcia nie je povolená';
+                }
+            }
+            
+            // Create tooltip element
+            const tooltip = document.createElement('div');
+            tooltip.className = 'mobile-tooltip';
+            tooltip.textContent = reason;
+            button.appendChild(tooltip);
+            button.style.position = 'relative';
+        });
+    }
+    
+    // Handle disabled button clicks/taps
+    function handleDisabledButtonClick(event) {
+        const button = event.target.closest('button:disabled, button.disabled, .btn:disabled, .btn.disabled');
+        if (!button) return;
+        
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Show tooltip temporarily
+        const tooltip = button.querySelector('.mobile-tooltip');
+        if (tooltip) {
+            button.classList.add('show-tooltip');
+            
+            // Vibrate on mobile if supported
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+            
+            // Hide tooltip after 3 seconds
+            setTimeout(() => {
+                button.classList.remove('show-tooltip');
+            }, 3000);
+        }
+        
+        // Show flash message for desktop/larger screens
+        if (window.innerWidth >= 768) {
+            const reason = button.querySelector('.mobile-tooltip')?.textContent || 'Akcia nie je povolená';
+            showFlashMessage(reason, 'warning');
+        }
+    }
+    
+    // Flash message function
+    function showFlashMessage(message, type = 'info') {
+        // Remove existing flash messages
+        const existingFlash = document.querySelector('.temp-flash-message');
+        if (existingFlash) existingFlash.remove();
+        
+        // Create new flash message
+        const flashDiv = document.createElement('div');
+        flashDiv.className = `alert alert-${type} alert-dismissible fade show temp-flash-message`;
+        flashDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 300px;';
+        flashDiv.innerHTML = `
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(flashDiv);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (flashDiv.parentNode) {
+                flashDiv.remove();
+            }
+        }, 5000);
+    }
+    
+    // Initialize tooltips
+    addMobileTooltips();
+    
+    // Add event listeners for disabled button clicks
+    document.addEventListener('click', handleDisabledButtonClick, true);
+    document.addEventListener('touchstart', handleDisabledButtonClick, true);
+    
+    // Re-initialize tooltips when content changes (for dynamic content)
+    const observer = new MutationObserver(function(mutations) {
+        let shouldUpdate = false;
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' || mutation.type === 'attributes') {
+                shouldUpdate = true;
+            }
+        });
+        if (shouldUpdate) {
+            setTimeout(addMobileTooltips, 100);
+        }
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['disabled', 'class']
     });
 });
 </script>
