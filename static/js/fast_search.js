@@ -236,6 +236,11 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // If all filters are empty, refresh the whole page to reset everything
       if (activeFilters.size === 0 && activeStatusFilters.size === 0) {
+        // Don't reload if search is active - it would clear the search input
+        if (window.isSearchActive) {
+          console.log('All filters cleared but search is active - letting search system handle it');
+          return; // Let search system handle the state
+        }
         console.log('All filters cleared - refreshing page to reset table');
         window.location.reload();
         return;
@@ -257,6 +262,11 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // If all filters are empty, refresh the whole page to reset everything
       if (activeFilters.size === 0 && activeStatusFilters.size === 0) {
+        // Don't reload if search is active - it would clear the search input
+        if (window.isSearchActive) {
+          console.log('All filters cleared but search is active - letting search system handle it');
+          return; // Let search system handle the state
+        }
         console.log('All filters cleared - refreshing page to reset table');
         window.location.reload();
         return;
@@ -294,6 +304,11 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // If all filters are empty, refresh the whole page to reset everything
       if (activeFilters.size === 0 && activeStatusFilters.size === 0) {
+        // Don't reload if search is active - it would clear the search input
+        if (window.isSearchActive) {
+          console.log('All filters cleared but search is active - letting search system handle it');
+          return; // Let search system handle the state
+        }
         console.log('All filters cleared - refreshing page to reset table');
         window.location.reload();
         return;
@@ -321,6 +336,11 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // If all filters are empty, refresh the whole page to reset everything
       if (activeFilters.size === 0 && activeStatusFilters.size === 0) {
+        // Don't reload if search is active - it would clear the search input
+        if (window.isSearchActive) {
+          console.log('All filters cleared but search is active - letting search system handle it');
+          return; // Let search system handle the state
+        }
         console.log('All filters cleared - refreshing page to reset table');
         window.location.reload();
         return;

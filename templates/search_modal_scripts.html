@@ -1,0 +1,745 @@
+// Fixed Bottom Search Bar Implementation
+function initializeFixedSearch() {
+  const quickSearchInput = document.getElementById('quickSearchInput');
+  const resultsCount = document.querySelector('.results-count-inline');
+  
+  if (!quickSearchInput) return;
+  
+  let searchTimeout;
+  let isQuickSearchActive = false;
+  
+  // Global flag to disable pagination during search
+  window.isSearchActive = false;
+  
+  // Prevent mobile zoom
+  const preventZoom = () => {
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      quickSearchInput.style.fontSize = '16px';
+      quickSearchInput.style.webkitTextSizeAdjust = '100%';
+      quickSearchInput.style.textSizeAdjust = '100%';
+    }
+  };
+  
+  quickSearchInput.addEventListener('focus', preventZoom);
+  quickSearchInput.addEventListener('blur', preventZoom);
+  preventZoom();
+  
+  // Real-time search with debouncing - update main song list
+  quickSearchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    const searchTerm = quickSearchInput.value.trim();
+    
+    if (searchTerm.length >= 1) {
+      window.isSearchActive = true; // Disable pagination during search
+      searchTimeout = setTimeout(() => performLiveSearch(searchTerm), 300);
+    } else if (searchTerm.length === 0) {
+      window.isSearchActive = false; // Re-enable pagination
+      returnToFilteredView();
+      hideQuickResults();
+    }
+  });
+  
+  // Hide results when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.fixed-bottom-search')) {
+      hideQuickResults();
+    }
+  });
+  
+  // Perform live search and update main song list
+  async function performLiveSearch(searchTerm) {
+    try {
+      const params = new URLSearchParams({
+        q: searchTerm,
+        limit: '1000' // Get more results for main list
+      });
+      
+      // Include active category filters from main page
+      if (typeof window.activeFilters !== 'undefined' && window.activeFilters && window.activeFilters.size > 0) {
+        params.append('categories', Array.from(window.activeFilters).join(','));
+      }
+      
+      // Include active status filters from main page
+      if (typeof window.activeStatusFilters !== 'undefined' && window.activeStatusFilters && window.activeStatusFilters.size > 0) {
+        if (window.activeStatusFilters.has('unchecked')) {
+          params.append('unchecked', 'true');
+        }
+        if (window.activeStatusFilters.has('unprinted')) {
+          params.append('printed', 'false');
+        }
+      }
+      
+      const response = await fetch(`/api/search?${params}`);
+      const data = await response.json();
+      
+      updateMainSongList(data.results, searchTerm);
+    } catch (error) {
+      console.error('Live search error:', error);
+    }
+  }
+  
+  // Update main song list with search results
+  function updateMainSongList(results, searchTerm) {
+    const tableBody = document.getElementById('songsTableBody');
+    const mobileContainer = document.getElementById('mobileSongsContainer');
+    
+    if (!tableBody || !mobileContainer) {
+      console.error('Song list containers not found');
+      return;
+    }
+    
+    // Store original content if not already stored
+    if (!window.originalTableContent) {
+      window.originalTableContent = tableBody.innerHTML;
+      window.originalMobileContent = mobileContainer.innerHTML;
+    }
+    
+    // Clear current content
+    tableBody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+    
+    if (results.length === 0) {
+      // Build filter description for no results message
+      const hasActiveFilters = window.activeFilters && window.activeFilters.size > 0;
+      const hasStatusFilters = window.activeStatusFilters && window.activeStatusFilters.size > 0;
+      
+      let filterDescription = '';
+      if (searchTerm) {
+        filterDescription = `"${escapeHtml(searchTerm)}"`;
+        if (hasActiveFilters || hasStatusFilters) {
+          filterDescription += ' s filtrami: ';
+        }
+      } else if (hasActiveFilters || hasStatusFilters) {
+        filterDescription = 'filtre: ';
+      }
+      
+      if (hasActiveFilters || hasStatusFilters) {
+        const filterParts = [];
+        if (hasActiveFilters) {
+          filterParts.push(`kategórie (${Array.from(window.activeFilters).join(', ')})`);
+        }
+        if (hasStatusFilters) {
+          const statusParts = [];
+          if (window.activeStatusFilters.has('unchecked')) statusParts.push('neskontrolované');
+          if (window.activeStatusFilters.has('unprinted')) statusParts.push('nevytlačené');
+          filterParts.push(`stav (${statusParts.join(', ')})`);
+        }
+        if (searchTerm) {
+          filterDescription += filterParts.join(' + ');
+        } else {
+          filterDescription += filterParts.join(' + ');
+        }
+      }
+      
+      // Show no results message
+      const noResultsRow = document.createElement('tr');
+      noResultsRow.innerHTML = `
+        <td colspan="8" class="text-center py-4 text-muted">
+          <i class="bi bi-search me-2"></i>
+          Žiadne piesne nenájdené pre ${filterDescription}
+        </td>
+      `;
+      tableBody.appendChild(noResultsRow);
+      
+      const noResultsCard = document.createElement('div');
+      noResultsCard.className = 'text-center py-4 text-muted';
+      noResultsCard.innerHTML = `
+        <i class="bi bi-search me-2"></i>
+        Žiadne piesne nenájdené pre ${filterDescription}
+      `;
+      mobileContainer.appendChild(noResultsCard);
+      return;
+    }
+    
+    // Populate with search results
+    results.forEach(song => {
+      // Add to table
+      const row = createTableRow(song);
+      tableBody.appendChild(row);
+      
+      // Add to mobile container
+      const card = createMobileCard(song);
+      mobileContainer.appendChild(card);
+    });
+    
+    // Update results count in search bar
+    if (resultsCount) {
+      const hasActiveFilters = window.activeFilters && window.activeFilters.size > 0;
+      const hasStatusFilters = window.activeStatusFilters && window.activeStatusFilters.size > 0;
+      
+      if (searchTerm) {
+        // Show search results count
+        let countText = `${results.length}`;
+        if (hasActiveFilters || hasStatusFilters) {
+          countText += ' (filtrované)';
+        }
+        resultsCount.textContent = countText;
+        resultsCount.style.display = 'inline';
+      } else if (hasActiveFilters || hasStatusFilters) {
+        // Show filter results count (no search term)
+        resultsCount.textContent = `${results.length} filtrovaných`;
+        resultsCount.style.display = 'inline';
+      } else {
+        // No search term and no filters - hide count
+        resultsCount.textContent = '';
+        resultsCount.style.display = 'none';
+      }
+    }
+  }
+  
+  // Return to filtered view or original list when search is cleared
+  function returnToFilteredView() {
+    const hasActiveFilters = window.activeFilters && window.activeFilters.size > 0;
+    const hasStatusFilters = window.activeStatusFilters && window.activeStatusFilters.size > 0;
+    
+    if (hasActiveFilters || hasStatusFilters) {
+      // If filters are active, show filtered results (no search term, just filters)
+      performFilterOnlySearch();
+    } else {
+      // No filters active, return to original full list
+      resetToOriginalList();
+    }
+  }
+
+  // Perform search with only filters (no search term)
+  async function performFilterOnlySearch() {
+    try {
+      const params = new URLSearchParams({
+        limit: '1000' // Get more results for main list
+      });
+      
+      // Include active category filters
+      if (window.activeFilters && window.activeFilters.size > 0) {
+        params.append('categories', Array.from(window.activeFilters).join(','));
+      }
+      
+      // Include active status filters
+      if (window.activeStatusFilters && window.activeStatusFilters.size > 0) {
+        if (window.activeStatusFilters.has('unchecked')) {
+          params.append('unchecked', 'true');
+        }
+        if (window.activeStatusFilters.has('unprinted')) {
+          params.append('printed', 'false');
+        }
+      }
+      
+      const response = await fetch(`/api/search?${params}`);
+      const data = await response.json();
+      
+      updateMainSongList(data.results, ''); // Empty search term since we're just filtering
+    } catch (error) {
+      console.error('Filter-only search error:', error);
+      // Fallback to original list if error
+      resetToOriginalList();
+    }
+  }
+
+  // Reset to original song list (only when no filters are active)
+  function resetToOriginalList() {
+    const tableBody = document.getElementById('songsTableBody');
+    const mobileContainer = document.getElementById('mobileSongsContainer');
+    
+    if (tableBody && window.originalTableContent) {
+      tableBody.innerHTML = window.originalTableContent;
+    }
+    if (mobileContainer && window.originalMobileContent) {
+      mobileContainer.innerHTML = window.originalMobileContent;
+    }
+    
+    // Reset results count
+    if (resultsCount) {
+      resultsCount.textContent = '';
+      resultsCount.style.display = 'none';
+    }
+    
+    // Reset pagination state when returning to original list
+    if (typeof window.resetPaginationState === 'function') {
+      window.resetPaginationState();
+    }
+  }
+  
+  // Show quick results (now just shows results count)
+  function showQuickResults() {
+    // We don't show dropdown anymore, just update the main list
+    isQuickSearchActive = true;
+  }
+  
+  // Hide quick results
+  function hideQuickResults() {
+    // Since we removed the dropdown, just reset the search state
+    isQuickSearchActive = false;
+  }
+  
+  // Global functions for button handlers
+  window.hideQuickResults = hideQuickResults;
+  window.toggleSearchExpand = () => {
+    if (isQuickSearchActive) {
+      hideQuickResults();
+    } else {
+      quickSearchInput.focus();
+    }
+  };
+  
+  // Global function to trigger search update when filters change
+  window.triggerLiveSearchUpdate = (searchTerm) => {
+    performLiveSearch(searchTerm);
+  };
+  
+  // Global function to return to filtered view (used when clearing all filters during search)
+  window.returnToFilteredView = () => {
+    returnToFilteredView();
+  };
+  
+
+  
+  // Create table row for search results (same structure as original)
+  function createTableRow(song) {
+    const row = document.createElement('tr');
+    row.id = `song-${song.id}`;
+    row.className = 'song-row align-middle';
+    row.setAttribute('data-categories', (song.categories || '').toLowerCase());
+    row.setAttribute('data-printed', song.printed ? 'true' : 'false');
+    row.setAttribute('data-checked', song.admin_checked ? 'true' : 'false');
+    
+    // Build alternative titles display
+    let alternativeTitlesHtml = '';
+    if (song.alternative_titles) {
+      const altTitles = song.alternative_titles.split(';;').filter(t => t.trim());
+      if (altTitles.length > 0) {
+        alternativeTitlesHtml = `
+          <div class="text-muted small">
+            <i class="bi bi-arrow-repeat me-1"></i>
+            ${altTitles.map(title => `<span class="badge bg-light text-dark me-1">${escapeHtml(title.trim())}</span>`).join('')}
+          </div>`;
+      }
+    }
+    
+    // Build MP3 files display
+    let mp3Html = '';
+    if (song.mp3_paths && song.mp3_paths.length > 0) {
+      if (song.mp3_paths.length === 1) {
+        const mp3File = song.mp3_paths[0];
+        const filename = mp3File.split('/').pop();
+        mp3Html = `
+          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+             class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-1" 
+             title="Prehrať MP3: ${escapeHtml(filename)}"
+             target="_blank">
+            <i class="bi bi-play-circle-fill"></i>
+            <span class="small">MP3</span>
+          </a>`;
+      } else {
+        const mp3List = song.mp3_paths.map(mp3File => {
+          const filename = mp3File.split('/').pop();
+          return `
+            <li>
+              <a class="dropdown-item d-flex align-items-center gap-2" 
+                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+                 target="_blank"
+                 title="Prehrať ${escapeHtml(filename)}">
+                <i class="bi bi-play-circle-fill text-success"></i>
+                <span class="text-truncate">${escapeHtml(filename)}</span>
+              </a>
+            </li>`;
+        }).join('');
+        
+        mp3Html = `
+          <div class="btn-group">
+            <button type="button" class="btn btn-success btn-sm dropdown-toggle d-flex align-items-center gap-1" 
+                    data-bs-toggle="dropdown" aria-expanded="false"
+                    title="${song.mp3_paths.length} MP3 súborov">
+              <i class="bi bi-music-note-list"></i>
+              <span class="small">${song.mp3_paths.length}× MP3</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><h6 class="dropdown-header"><i class="bi bi-file-music text-success me-1"></i>MP3 Súbory</h6></li>
+              ${mp3List}
+            </ul>
+          </div>`;
+      }
+    } else {
+      mp3Html = `
+        <span class="text-muted small">
+          <i class="bi bi-volume-mute"></i><br>Žiadne MP3
+        </span>`;
+    }
+    
+    // Build status badges
+    const statusBadges = [];
+    if (song.admin_checked) {
+      statusBadges.push(`
+        <span class="badge badge-checked px-3 py-2 shadow-sm" title="Pieseň je skontrolovaná">
+          <i class="bi bi-check-circle-fill me-2"></i>✅ Skontr.
+        </span>`);
+    } else {
+      statusBadges.push(`
+        <span class="badge badge-pending px-3 py-2 shadow-sm pulse-subtle" title="Pieseň čaká na kontrolu">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>⏳ Čaká kontr.
+        </span>`);
+    }
+    if (song.printed) {
+      statusBadges.push(`
+        <span class="badge badge-printed px-3 py-2 shadow-sm" title="Pieseň je už vytlačená">
+          <i class="bi bi-printer-fill me-2"></i>🖨️
+        </span>`);
+    }
+    
+    // Build file download buttons
+    let fileDownloadsHtml = '';
+    if (song.pdf_lyrics_path || song.pdf_chords_path) {
+      const lyricsBtn = song.pdf_lyrics_path ? 
+        `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" 
+           class="btn btn-outline-primary btn-sm" 
+           title="Stiahnuť text piesne">
+          <i class="bi bi-file-text"></i> Text
+        </a>` : '';
+      
+      const chordsBtn = song.pdf_chords_path ? 
+        `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" 
+           class="btn btn-outline-warning btn-sm" 
+           title="Stiahnuť akordy">
+          <i class="bi bi-music-note-beamed"></i> Akordy
+        </a>` : '';
+      
+      if (lyricsBtn || chordsBtn) {
+        fileDownloadsHtml = `
+          <div class="btn-group btn-group-sm" role="group">
+            ${lyricsBtn}${chordsBtn}
+          </div>`;
+      }
+    }
+    
+    if (!song.pdf_lyrics_path && !song.pdf_chords_path) {
+      fileDownloadsHtml = `
+        <span class="text-muted small">
+          <i class="bi bi-x-circle"></i> Žiadne PDF súbory
+        </span>`;
+    }
+    
+    row.innerHTML = `
+      <td class="px-3 py-3">
+        <div class="d-flex align-items-center">
+          <span class="fw-bold text-primary fs-6">${escapeHtml(song.song_id || '')}</span>
+          ${!song.admin_checked ? '<span class="badge bg-warning ms-2 pulse-animation" title="Potrebuje kontrolu"><i class="bi bi-exclamation-triangle"></i></span>' : ''}
+        </div>
+      </td>
+      
+      <td class="px-3 py-3">
+        <div class="song-info">
+          <div class="fw-bold text-dark mb-1">${escapeHtml(song.title || '')}</div>
+          ${song.version_name ? `<div class="text-muted small mb-1"><i class="bi bi-tag me-1"></i>${escapeHtml(song.version_name)}</div>` : ''}
+          ${alternativeTitlesHtml}
+        </div>
+      </td>
+      
+      <td class="px-3 py-3">
+        <div class="author-info">
+          ${song.author ? `<div class="fw-semibold text-dark">${escapeHtml(song.author)}</div>` : ''}
+          ${song.author_original && song.author_original !== song.author ? 
+            `<small class="text-muted"><i class="bi bi-globe me-1"></i>${escapeHtml(song.author_original)}</small>` : ''}
+          ${!song.author && !song.author_original ? '<span class="text-muted fst-italic">Neznámy</span>' : ''}
+        </div>
+      </td>
+      
+      <td class="text-center px-3 py-3">
+        <div class="audio-files">
+          ${mp3Html}
+        </div>
+      </td>
+      
+      <td class="text-center px-3 py-3">
+        <div class="d-flex flex-column gap-1 align-items-center">
+          <div class="mb-2 d-flex flex-wrap justify-content-center gap-1">
+            ${statusBadges.join('')}
+          </div>
+          ${fileDownloadsHtml}
+        </div>
+      </td>
+
+      <td class="text-center px-3 py-3">
+        <div class="btn-group-vertical btn-group-sm" role="group">
+          <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm mb-1">
+            <i class="bi bi-eye me-1"></i>Detaily
+          </a>
+          
+          <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm mb-1">
+            <i class="bi bi-pencil-square me-1"></i>Upraviť
+          </a>
+
+          <div class="btn-group btn-group-sm" role="group">
+            <form method="POST" action="/song/${song.id}/generate_tex#song-${song.id}" class="d-inline">
+              <button type="submit" class="btn btn-outline-warning btn-sm ${song.admin_checked ? 'disabled' : ''}"
+                      ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+                <i class="bi bi-file-code"></i>TeX
+              </button>
+            </form>
+
+            <form method="GET" action="/generate_pdfs/${song.id}#song-${song.id}" class="d-inline">
+              <button type="submit" class="btn btn-primary btn-sm ${!song.tex_path || song.admin_checked ? 'disabled' : ''}"
+                      style="background-color: #9b59b6; border-color: #9b59b6;"
+                      ${!song.tex_path ? 'title="First generate TeX files"' : ''}
+                      ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+                <i class="bi bi-file-pdf"></i>PDF
+              </button>
+            </form>
+          </div>
+        </div>
+      </td>
+    `;
+    
+    return row;
+  }
+  
+  // Create mobile card for search results (same structure as original)
+  function createMobileCard(song) {
+    const card = document.createElement('div');
+    card.className = 'mobile-song-card song-row';
+    card.id = `mobile-song-${song.id}`;
+    card.setAttribute('data-categories', (song.categories || '').toLowerCase());
+    card.setAttribute('data-printed', song.printed ? 'true' : 'false');
+    card.setAttribute('data-checked', song.admin_checked ? 'true' : 'false');
+    card.setAttribute('data-search-content', song.title ? song.title.toLowerCase() : '');
+    
+    const mp3Count = song.mp3_paths ? song.mp3_paths.length : 0;
+    const audioIcon = mp3Count > 0 ? 
+      `<span class="status-icon status-has-audio" data-bs-toggle="tooltip" data-bs-placement="top" title="${mp3Count} MP3 súborov">
+        <i class="bi bi-volume-up-fill"></i>
+      </span>` :
+      `<span class="status-icon status-no-audio" data-bs-toggle="tooltip" data-bs-placement="top" title="Žiadne MP3">
+        <i class="bi bi-volume-mute"></i>
+      </span>`;
+    
+    // Build categories for the expanded section
+    let categoriesHtml = '';
+    if (song.categories) {
+      const categories = song.categories.split(';;').filter(c => c.trim());
+      if (categories.length > 0) {
+        categoriesHtml = `
+          <div class="mobile-status-badges">
+            <small class="text-muted">Kategórie:</small>
+            ${categories.map(cat => `<span class="badge bg-light text-dark">${escapeHtml(cat.trim())}</span>`).join('')}
+          </div>
+        `;
+      }
+    }
+    
+    // Build MP3 buttons/dropdowns for actions grid
+    let mp3Button = '';
+    if (mp3Count > 0) {
+      if (mp3Count === 1) {
+        const mp3File = song.mp3_paths[0];
+        mp3Button = `
+          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+             class="btn btn-success btn-sm" 
+             title="Prehrať MP3: ${escapeHtml(mp3File.split('/').pop())}"
+             target="_blank">
+            <i class="bi bi-play-circle-fill"></i>
+            <span>MP3</span>
+          </a>
+        `;
+      } else {
+        const mp3List = song.mp3_paths.map(mp3File => {
+          const filename = mp3File.split('/').pop();
+          return `
+            <li>
+              <a class="dropdown-item" 
+                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+                 target="_blank">
+                <i class="bi bi-play-circle-fill text-success me-2"></i>${escapeHtml(filename)}
+              </a>
+            </li>
+          `;
+        }).join('');
+        
+        mp3Button = `
+          <div class="btn-group w-100">
+            <button type="button" class="btn btn-success btn-sm dropdown-toggle" 
+                    data-bs-toggle="dropdown" aria-expanded="false"
+                    title="${mp3Count} MP3 súborov">
+              <i class="bi bi-music-note-list"></i>
+              <span>${mp3Count}× MP3</span>
+            </button>
+            <ul class="dropdown-menu w-100">
+              <li><h6 class="dropdown-header">MP3 Súbory</h6></li>
+              ${mp3List}
+            </ul>
+          </div>
+        `;
+      }
+    } else {
+      mp3Button = `
+        <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
+          <i class="bi bi-volume-mute"></i>
+          <span>Žiadne MP3</span>
+        </button>
+      `;
+    }
+    
+    // Build sheet music button
+    let sheetButton = '';
+    if (song.sheet_pdf_paths && song.sheet_pdf_paths.length > 0) {
+      if (song.sheet_pdf_paths.length === 1) {
+        sheetButton = `
+          <a href="/song/${song.id}/download_sheet/${song.sheet_pdf_paths[0].split('/').pop()}" 
+             class="btn btn-outline-danger btn-sm" 
+             title="Stiahnuť noty"
+             target="_blank">
+            <i class="bi bi-file-earmark-music"></i>
+            <span>Noty</span>
+          </a>
+        `;
+      } else {
+        const sheetList = song.sheet_pdf_paths.map(sheet => {
+          const filename = sheet.split('/').pop();
+          return `
+            <li>
+              <a href="/song/${song.id}/download_sheet/${filename}" 
+                 class="dropdown-item"
+                 target="_blank">
+                <i class="bi bi-file-earmark-music text-danger me-2"></i>${escapeHtml(filename)}
+              </a>
+            </li>
+          `;
+        }).join('');
+        
+        sheetButton = `
+          <div class="btn-group w-100">
+            <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle" 
+                    data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-file-earmark-music"></i>
+              <span>${song.sheet_pdf_paths.length}× Noty</span>
+            </button>
+            <ul class="dropdown-menu w-100">
+              <li><h6 class="dropdown-header">Noty súbory</h6></li>
+              ${sheetList}
+            </ul>
+          </div>
+        `;
+      }
+    } else {
+      sheetButton = `
+        <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
+          <i class="bi bi-file-earmark-music"></i>
+          <span>Žiadne noty</span>
+        </button>
+      `;
+    }
+    
+    card.innerHTML = `
+      <!-- Main Song Info -->
+      <div class="mobile-song-header">
+        <!-- Status badges in top right corner -->
+        <div class="mobile-status-badges-corner position-absolute">
+          ${song.printed ? 
+            '<span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="🖨️ Vytlačené">🖨️</span>' : ''
+          }
+          ${song.admin_checked ? 
+            '<span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="✅ Skontrolované administrátorom">✅</span>' : ''
+          }
+        </div>
+
+        <div class="mobile-song-info">
+          <div class="d-flex align-items-start gap-2 mb-2 flex-wrap">
+            <span class="mobile-song-id">${escapeHtml(song.song_id || '')}</span>
+            <div class="mobile-song-title">${escapeHtml(song.title || '')}</div>
+
+            <!-- Audio status icons on the right -->
+            <div class="mobile-audio-icons d-flex gap-1 ms-auto">
+              ${audioIcon}
+            </div>
+          </div>
+          
+          ${song.author ? `<div class="mobile-song-author text-secondary mb-1"><i class="bi bi-person me-1"></i>${escapeHtml(song.author)}</div>` : ''}
+          ${song.version_name ? `<div class="text-muted small"><i class="bi bi-tag me-1"></i>${escapeHtml(song.version_name)}</div>` : ''}
+        </div>
+      </div>
+
+      <!-- Essential Actions (Always Visible) - 4 evenly spaced buttons -->
+      <div class="mobile-song-actions-grid">
+        <!-- 1. Slová (Lyrics) -->
+        ${song.pdf_lyrics_path ? 
+          `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
+            <i class="bi bi-file-text"></i>
+            <span>Slová</span>
+          </a>` : 
+          `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
+            <i class="bi bi-file-text"></i>
+            <span>Žiadne slová</span>
+          </button>`
+        }
+
+        <!-- 2. Akordy (Chords) -->
+        ${song.pdf_chords_path ? 
+          `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
+            <i class="bi bi-music-note-beamed"></i>
+            <span>Akordy</span>
+          </a>` : 
+          `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
+            <i class="bi bi-music-note-beamed"></i>
+            <span>Žiadne akordy</span>
+          </button>`
+        }
+
+        <!-- 3. Noty (Sheet Music) -->
+        ${sheetButton}
+
+        <!-- 4. MP3 -->
+        ${mp3Button}
+      </div>
+
+      <!-- Expandable Section for Additional Functionality -->
+      <div class="mobile-expandable">
+        <button class="mobile-expand-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-collapse-${song.id}" aria-expanded="false">
+          <i class="bi bi-chevron-down"></i>
+          Viac možností
+        </button>
+
+        <div class="collapse mobile-expanded-content" id="mobile-collapse-${song.id}">
+          <!-- Action Buttons -->
+          <div class="mobile-files-grid">
+            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm">
+              <i class="bi bi-eye me-1"></i>Detaily
+            </a>
+
+            <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-pencil-square me-1"></i>Upraviť
+            </a>
+
+            <!-- Generate TeX Button - Same as table -->
+            <form method="POST" action="/song/${song.id}/generate_tex#mobile-song-${song.id}" class="d-inline">
+              <button type="submit" class="btn btn-outline-warning btn-sm ${song.admin_checked ? 'disabled' : ''}" ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+                <i class="bi bi-file-code"></i>TeX
+              </button>
+            </form>
+
+            <!-- Generate PDF Button - Same as table -->
+            <form method="GET" action="/generate_pdfs/${song.id}#mobile-song-${song.id}" class="d-inline">
+              <button type="submit" class="btn btn-primary btn-sm ${!song.tex_path || song.admin_checked ? 'disabled' : ''}" style="background-color: #9b59b6; border-color: #9b59b6;" ${!song.tex_path ? 'title="First generate TeX files"' : ''} ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+                <i class="bi bi-file-pdf"></i>PDF
+              </button>
+            </form>
+          </div>
+
+          <!-- Categories -->
+          ${categoriesHtml}
+        </div>
+      </div>
+    `;
+    
+    return card;
+  }
+  
+  // Escape HTML utility
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text || '';
+    return div.innerHTML;
+  }
+}
+
+
+
+// Initialize search system
+document.addEventListener('DOMContentLoaded', function() {
+  initializeFixedSearch();
+});

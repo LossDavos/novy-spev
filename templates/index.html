@@ -1292,6 +1292,19 @@
   transform: scale(1.05);
 }
 
+/* Custom chord fretboard icon */
+.chord-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+}
+
+.chord-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
 /* Category filter info */
 .category-filter-info {
   background: rgba(13, 110, 253, 0.05);
@@ -1300,412 +1313,9 @@
   margin-top: 1rem;
 }
 
-/* Search Modal Styles */
-.search-modal-section .btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.search-modal-section .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
-
-.search-modal-section .btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
-}
-
-.search-modal-section .btn:hover::before {
-  left: 100%;
-}
-
-/* Virtual Scrolling Results Container */
-.virtual-scroll-container {
-  height: 400px;
-  overflow-y: auto;
-  border: 1px solid #dee2e6;
-  border-radius: 0.5rem;
-  background: #f8f9fa;
-  position: relative;
-}
-
-#scrollableContent {
-  position: relative;
-}
-
-#visibleResults {
-  padding: 0.75rem;
-}
-
-#scrollLoadingIndicator {
-  background: rgba(248, 249, 250, 0.9);
-  border-top: 1px solid #dee2e6;
-  backdrop-filter: blur(4px);
-}
-
-.search-result-title {
-  font-size: 1rem;
-  line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.search-result-meta {
-  flex-wrap: nowrap;
-  overflow: hidden;
-}
-
-.search-result-badges {
-  overflow: hidden;
-  height: 2rem;
-}
-
-.search-result-badges .badge {
-  font-size: 0.7rem;
-}
-
-.search-result-item {
-  background: white;
-  border: 1px solid #e9ecef;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-  min-height: 120px;
-  max-height: 120px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.search-result-item:hover {
-  border-color: #007bff;
-  box-shadow: 0 2px 8px rgba(0,123,255,0.15);
-  transform: translateY(-1px);
-}
-
-.search-result-item.selected {
-  border-color: #28a745;
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-}
-
-.search-result-checkbox {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  transform: scale(1.2);
-}
-
-.search-result-title {
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-}
-
-.search-result-meta {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.search-result-id {
-  background: #6c757d;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.search-result-author {
-  color: #6c757d;
-  font-style: italic;
-}
-
-.search-result-badges {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-top: 0.5rem;
-}
-
-.search-result-badges .badge {
-  font-size: 0.75rem;
-  padding: 0.25em 0.5em;
-}
-
-/* Category filter grid in modal */
-.category-filter-grid .form-check {
-  margin-bottom: 0.5rem;
-}
-
-.category-filter-grid .form-check-label {
-  font-weight: 500;
-  color: #495057;
-}
-
-/* Modal enhancements */
-.modal-dialog {
-  margin: 1rem auto;
-  max-width: 900px;
-}
-
-.modal-content {
-  border: none;
-  border-radius: 1.5rem;
-  box-shadow: 0 25px 80px rgba(102, 126, 234, 0.15), 0 10px 40px rgba(0,0,0,0.1);
-  overflow: hidden;
-}
-
-#searchModal .modal-header {
-  border-radius: 1.5rem 1.5rem 0 0;
-  padding: 1.5rem 2rem;
-  border: none;
-}
-
-#searchModal .modal-body {
-  padding: 0;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-#searchModal .modal-footer {
-  border-radius: 0 0 1.5rem 1.5rem;
-  border: none;
-}
-
-/* Enhanced search input styling */
-#searchModal .input-group-lg .form-control {
-  border-radius: 0.75rem;
-  transition: all 0.3s ease;
-  border: 2px solid #e9ecef;
-}
-
-#searchModal .input-group-lg .form-control:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
-  transform: translateY(-1px);
-}
-
-#searchModal .input-group-lg .input-group-text {
-  border-radius: 0.75rem 0 0 0.75rem;
-  border: 2px solid #e9ecef;
-  border-right: none;
-  background: white;
-  transition: all 0.3s ease;
-}
-
-#searchModal .input-group:focus-within .input-group-text {
-  border-color: #667eea;
-}
-
-#searchModal .input-group-lg .btn {
-  border-radius: 0 0.75rem 0.75rem 0;
-  border: 2px solid #e9ecef;
-  border-left: none;
-  transition: all 0.3s ease;
-}
-
-#searchModal .input-group:focus-within .btn {
-  border-color: #667eea;
-}
-
-/* Results container styling */
-#searchModal .virtual-scroll-container {
-  height: 400px;
-  border-radius: 1rem;
-  transition: all 0.3s ease;
-}
-
-#searchModal .search-result-item {
-  border-radius: 1rem;
-  margin-bottom: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid #f0f0f0;
-  padding: 1.25rem;
-  min-height: 240px;
-  background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-#searchModal .search-result-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.15);
-  border-color: #667eea;
-}
-
-#searchModal .search-result-item.selected {
-  background: linear-gradient(135deg, #e8f4fd 0%, #f1f8ff 100%);
-  border-color: #667eea;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
-}
-
-/* New search result styling */
-.search-result-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.song-id {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-  font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-}
-
-.song-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #2d3748;
-  flex: 1;
-}
-
-.song-author {
-  color: #718096;
-  font-size: 0.95rem;
-  margin-bottom: 0.75rem;
-  font-weight: 500;
-}
-
-.song-content-preview {
-  margin: 0.75rem 0;
-  padding: 0.75rem;
-  background: rgba(248, 250, 252, 0.8);
-  border-radius: 0.75rem;
-  border-left: 3px solid #e2e8f0;
-  flex: 1;
-  overflow: visible;
-  min-height: 60px;
-}
-
-.verse-preview, .chorus-preview {
-  color: #4a5568;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin-bottom: 0.5rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  display: block;
-  white-space: normal;
-}
-
-.verse-preview:last-child, .chorus-preview:last-child {
-  margin-bottom: 0;
-}
-
-.preview-label {
-  font-weight: 700;
-  color: #667eea;
-  margin-right: 0.5rem;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.search-result-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: auto;
-}
-
-.result-badges {
-  display: flex;
-  gap: 0.25rem;
-  flex-wrap: wrap;
-}
-
-.result-categories {
-  display: flex;
-  gap: 0.25rem;
-  flex-wrap: wrap;
-}
-
-.result-categories .badge {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-}
-
-/* Search input enhancements */
-#searchInput {
-  border-radius: 0.5rem;
-  border: 2px solid #e9ecef;
-  transition: all 0.3s ease;
-}
-
-#searchInput:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
-}
-
-/* Loading states */
-.loading-spinner {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #007bff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Responsive modal */
-@media (max-width: 768px) {
-  .modal-dialog {
-    margin: 0.5rem;
-    max-width: none;
-  }
-  
-  .modal-body {
-    padding: 1rem;
-    max-height: 80vh;
-  }
-  
-  .search-results-container {
-    max-height: 300px;
-  }
-  
-  .search-result-item {
-    padding: 0.75rem;
-  }
-  
-  .search-result-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-}
+<!-- Include Search Modal Styles -->
+<style>
+{% include 'search_modal_styles.html' %}
 </style>
 
 {% set categories = [
@@ -1957,132 +1567,15 @@
           <span class="status-count badge bg-light text-dark ms-2" id="unprintedCount">0</span>
         </button>
       </div>
-      
-      <div class="status-filter-info mt-3 pt-2 border-top">
-        <small class="text-muted">
-          <i class="bi bi-info-circle me-1"></i>
-          <span id="statusFilterStatus">Filtrujte piesne podľa ich stavu kontroly a tlače.</span>
-        </small>
-      </div>
+  
     </div>
   </div>
 </div>
 
-<!-- Search Modal Button -->
-<div class="search-modal-section mb-4">
-  <div class="d-flex justify-content-center">
-    <button type="button" class="btn btn-lg btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#searchModal" style="border-radius: 25px; padding: 0.75rem 2rem;">
-      <i class="bi bi-search me-2"></i>
-      <span>Vyhľadať v {{ total_songs }} piesňach</span>
-      <i class="bi bi-funnel ms-2"></i>
-    </button>
-  </div>
-</div>
 
-<!-- Advanced Search Modal -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
-        <h5 class="modal-title text-white fw-bold" id="searchModalLabel">
-          <i class="bi bi-search me-2"></i>
-          Vyhľadávanie piesní
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 2rem;">
-        <!-- Search Form -->
-        <form id="searchForm" class="mb-4">
-          <div class="mb-4">
-            <label for="searchInput" class="form-label fw-bold fs-5 text-dark mb-3">
-              <i class="bi bi-search text-primary me-2"></i>Čo hľadáte?
-            </label>
-            <div class="input-group input-group-lg shadow-sm">
-              <span class="input-group-text border-0 bg-white">
-                <i class="bi bi-search text-muted"></i>
-              </span>
-              <input type="text" class="form-control border-0 fs-4" id="searchInput" 
-                     placeholder="Zadajte názov piesne, autora alebo text..." 
-                     autocomplete="off"
-                     style="padding: 1rem; font-size: 1.1rem !important;">
-              <button type="submit" class="btn btn-primary border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <i class="bi bi-search me-1"></i>Vyhľadať
-              </button>
-            </div>
-            <div class="form-text mt-2 text-muted">
-              <i class="bi bi-info-circle me-1"></i>
-              Môžete hľadať podľa názvu, autora alebo textu piesne
-            </div>
-          </div>
-        </form>
-        
-        <!-- Search Results -->
-        <div id="searchResults" style="display: none;">
-          <div class="results-divider my-4">
-            <hr style="border: none; height: 2px; background: linear-gradient(90deg, transparent, #667eea, transparent);">
-          </div>
-          
-          <div class="results-header mb-4 p-3 rounded-3" style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-              <div class="results-info">
-                <h6 class="mb-1 text-dark fw-bold">
-                  <i class="bi bi-music-note-list text-primary me-2"></i>
-                  Výsledky vyhľadávania
-                </h6>
-                <p class="mb-0 text-muted small">
-                  Nájdených <span id="resultCount" class="fw-bold text-primary">0</span> piesní
-                </p>
-              </div>
 
-            </div>
-          </div>
-          
-          <!-- Virtual Scrolling Results Container -->
-          <div id="resultsContainer" class="virtual-scroll-container rounded-3 shadow-sm" style="border: 1px solid #e9ecef; background: white;">
-            <div id="scrollableContent">
-              <div id="topSpacer" style="height: 0px;"></div>
-              <div id="visibleResults"></div>
-              <div id="bottomSpacer" style="height: 0px;"></div>
-            </div>
-            <!-- Loading indicator -->
-            <div id="scrollLoadingIndicator" class="text-center py-4" style="display: none; background: rgba(248, 249, 250, 0.9);">
-              <div class="loading-spinner me-2"></div>
-              <span class="text-muted">Načítavajú sa ďalšie výsledky...</span>
-            </div>
-          </div>
-          
-          <!-- Search Progress -->
-          <div class="search-progress mt-3 text-center" id="searchProgress" style="display: none;">
-            <small class="text-muted p-2 rounded-pill" style="background: rgba(102, 126, 234, 0.1);">
-              <i class="bi bi-info-circle me-1"></i>
-              Zobrazených <span id="visibleCount" class="fw-bold">0</span> z <span id="totalFound" class="fw-bold">0</span> piesní
-              <span id="loadingMore" style="display: none;"> • <i class="bi bi-arrow-repeat"></i> Načítavajú sa ďalšie...</span>
-            </small>
-          </div>
-          
-          <!-- No Results -->
-          <div id="noResults" style="display: none;" class="text-center py-5">
-            <div class="mb-4">
-              <i class="bi bi-music-note-beamed text-muted opacity-50" style="font-size: 4rem;"></i>
-            </div>
-            <h5 class="text-muted fw-bold mb-2">Žiadne piesne nenájdené</h5>
-            <p class="text-muted mb-4">Skúste zmeniť vyhľadávaný výraz alebo použite iné kľúčové slová</p>
-            <div class="d-flex justify-content-center">
-              <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('searchInput').focus()">
-                <i class="bi bi-search me-1"></i>Skúsiť znova
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer border-0" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem 2rem;">
-        <button type="button" class="btn btn-lg btn-outline-secondary px-4" data-bs-dismiss="modal">
-          <i class="bi bi-x-circle me-2"></i>Zavrieť
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Spacer to prevent content overlap with fixed search bar -->
+<div class="fixed-search-spacer" style="max-height: 0px;"></div>
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -2106,7 +1599,7 @@
               <i class="bi bi-person me-1"></i>Autor
             </th>
             <th class="text-center px-3 py-3">
-              <i class="bi bi-music-note-list me-1"></i>Audio súbory
+              <i class="bi bi-volume-up-fill me-1"></i>Audio súbory
             </th>
             <th class="text-center px-3 py-3">
               <i class="bi bi-download me-1"></i>Súbory & Status
@@ -2147,6 +1640,9 @@
   </small>
   <!-- Mobile cards will be loaded dynamically via JavaScript -->
 </div>
+
+<!-- Spacer to prevent content from being hidden behind fixed search bar -->
+<div class="fixed-search-spacer"></div>
 
 <style>
 .badge {
@@ -2260,6 +1756,11 @@
 
 /* Mobile responsive styles */
 @media (max-width: 991px) {
+    /* Add bottom padding for fixed search bar */
+    body {
+        padding-bottom: 80px !important;
+    }
+    
     /* Hide table on mobile and show card layout instead */
     .songs-table-container {
         display: none !important;
@@ -2303,18 +1804,18 @@
     }
     
     .mobile-song-actions-grid .btn {
-        min-height: 65px !important;
-        font-size: 2.2rem !important;
+        min-height: 44px !important;
+        font-size: 14px !important;
         padding: 0.7rem !important;
     }
     
     .mobile-song-actions-grid .btn i {
-        font-size: 2.8rem !important;
+        font-size: 16px !important;
     }
     
     .mobile-song-actions-grid .btn span {
-        font-size: 2.1rem !important;
-        font-weight: 700 !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
     }
 }
     
@@ -2325,7 +1826,7 @@
         padding: 1rem !important;
         border-radius: 0 !important;
         box-shadow: none !important;
-        font-size: 1.6rem !important;
+        font-size: 14px !important;
     }
     
     body.container {
@@ -2348,48 +1849,48 @@
     }
     
     .mobile-song-title {
-        font-size: 2.5rem !important;
-        font-weight: 800 !important;
-        line-height: 1.2 !important;
-        margin-bottom: 0.8rem !important;
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .mobile-song-id {
-        font-size: 2rem !important;
-        font-weight: 900 !important;
-    }
-    
-    .mobile-song-author {
-        font-size: 1.7rem !important;
+        font-size: 0.9rem !important;
         font-weight: 600 !important;
     }
     
-    /* MASSIVE badges for mobile readability */
+    .mobile-song-author {
+        font-size: 1rem !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Normal sized badges for mobile */
     .mobile-song-card .badge {
-        font-size: 1.5rem !important;
-        padding: 1rem 1.4rem !important;
-        font-weight: 700 !important;
-        margin: 0.4rem !important;
+        font-size: 0.8rem !important;
+        padding: 0.4rem 0.6rem !important;
+        font-weight: 600 !important;
+        margin: 0.2rem !important;
     }
     
-    /* Category badges specifically - HUGE */
+    /* Category badges - normal size */
     .mobile-song-card .category-badge {
-        font-size: 1.4rem !important;
-        padding: 0.9rem 1.3rem !important;
+        font-size: 0.75rem !important;
+        padding: 0.3rem 0.5rem !important;
     }
     
-    /* MUCH larger buttons for touch */
+    /* Touch-friendly buttons but normal font size */
     .mobile-song-card .btn {
-        font-size: 1.6rem !important;
-        padding: 1.2rem 1.8rem !important;
-        min-height: 60px !important;
-        font-weight: 700 !important;
+        font-size: 14px !important; /* Keep at 14px+ to prevent zoom */
+        padding: 0.75rem 1rem !important;
+        min-height: 44px !important;
+        font-weight: 500 !important;
     }
     
-    /* Status text and other info - BIGGER */
+    /* Status text - normal size */
     .mobile-song-card .text-muted,
     .mobile-song-card .small {
-        font-size: 1.4rem !important;
+        font-size: 0.9rem !important;
     }
     
     /* Header responsive sizing */
@@ -2401,40 +1902,38 @@
         font-size: 1.1rem !important;
     }
     
-    /* Search and filter elements - MASSIVE fonts for mobile */
+    /* Search and filter elements - normal size with zoom prevention */
     .search-container input,
     .search-container select,
     .search-container .btn {
-        font-size: 1.8rem !important;
-        padding: 1.5rem 1.8rem !important;
-        min-height: 65px !important;
-        font-weight: 600 !important;
+        font-size: 16px !important; /* Prevent zoom but keep normal size */
+        padding: 0.75rem !important;
+        min-height: 44px !important;
+        font-weight: normal !important;
     }
     
-    /* Category filter buttons - HUGE */
+    /* Category filter buttons - normal size */
     .category-filters .btn {
-        font-size: 1.6rem !important;
-        padding: 1.3rem 1.8rem !important;
-        min-height: 60px !important;
-        font-weight: 700 !important;
-        margin: 0.5rem !important;
+        font-size: 14px !important;
+        padding: 0.75rem 1rem !important;
+        min-height: 44px !important;
+        font-weight: 500 !important;
+        margin: 0.25rem !important;
     }
     
-
-    
-    /* Make category count numbers MUCH bigger on mobile */
+    /* Make category count numbers normal size on mobile */
     .category-count {
-        font-size: 1.3rem !important;
-        padding: 0.4rem 0.8rem !important;
-        font-weight: 800 !important;
-        min-width: 2.5rem !important;
+        font-size: 0.7rem !important;
+        padding: 0.1rem 0.4rem !important;
+        font-weight: 600 !important;
+        min-width: 1.5rem !important;
         text-align: center !important;
     }
     
     /* Active category count */
     .category-filter-btn.active .category-count {
-        font-size: 1.4rem !important;
-        font-weight: 900 !important;
+        font-size: 0.7rem !important;
+        font-weight: 700 !important;
     }
     
     /* Make flame effects MASSIVE on mobile ONLY */
@@ -2483,12 +1982,12 @@
                     radial-gradient(circle at 75% 55%, rgba(255, 255, 255, 0.6) 0%, transparent 5px) !important;
     }
     
-    /* Make "Viac možností" text much bigger on mobile */
+    /* Make "Viac možností" text normal size on mobile */
     .mobile-expand-toggle {
-        font-size: 1.4rem !important;
-        font-weight: 600 !important;
-        padding: 1rem 1.5rem !important;
-        min-height: 50px !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        padding: 0.6rem 1rem !important;
+        min-height: 44px !important;
     }
     
     /* Icon in the expand toggle */
@@ -2496,95 +1995,95 @@
         font-size: 1.2rem !important;
     }
     
-    /* Fix dropdown font sizes - make dropdown items consistent */
+    /* Fix dropdown font sizes - normal size */
     .mobile-song-card .dropdown-item {
-        font-size: 1.2rem !important;
-        padding: 0.8rem 1rem !important;
-        font-weight: 500 !important;
+        font-size: 14px !important; /* Prevent zoom but keep readable */
+        padding: 0.5rem 0.75rem !important;
+        font-weight: normal !important;
     }
     
-    /* PDF dropdown headers (filenames) should be smaller */
+    /* PDF dropdown headers (filenames) normal size */
     .mobile-song-card .dropdown-header {
-        font-size: 1rem !important;
+        font-size: 0.8rem !important;
         font-weight: 600 !important;
-        padding: 0.5rem 1rem !important;
+        padding: 0.5rem 0.75rem !important;
     }
     
-    /* MP3 filenames - truncate long names and make bigger */
+    /* MP3 filenames - truncate long names, normal size */
     .mobile-song-card .dropdown-item {
-        font-size: 1.2rem !important;
+        font-size: 14px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         max-width: 250px !important;
     }
     
-    /* Search input specifically - MASSIVE */
+    /* Search input - prevent zoom but normal size */
     #search {
-        font-size: 2rem !important;
-        padding: 1.5rem !important;
-        min-height: 70px !important;
+        font-size: 16px !important; /* Prevent zoom */
+        padding: 0.75rem !important;
+        min-height: 44px !important;
     }
     
-    /* Filter dropdowns - HUGE */
+    /* Filter dropdowns - normal size */
     #categoryFilter,
     #printedFilter,
     #checkedFilter {
-        font-size: 1.8rem !important;
-        padding: 1.4rem !important;
-        min-height: 65px !important;
+        font-size: 16px !important; /* Prevent zoom */
+        padding: 0.75rem !important;
+        min-height: 44px !important;
     }
     
-    /* Clear filters button - BIG */
+    /* Clear filters button - normal size */
     .clear-filters-btn {
-        font-size: 1.7rem !important;
-        padding: 1.3rem 2rem !important;
-        min-height: 65px !important;
-        font-weight: 700 !important;
+        font-size: 14px !important;
+        padding: 0.75rem 1rem !important;
+        min-height: 44px !important;
+        font-weight: 500 !important;
     }
     
-    /* Filter section headers - LARGE */
+    /* Filter section headers - normal size */
     .filter-section h5,
     .filter-section label {
-        font-size: 1.8rem !important;
-        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
     }
     
-    /* Force ALL headings to be HUGE on mobile */
+    /* Keep headings normal size on mobile */
     h1, h2, h3, h4, h5, h6 {
-        font-size: 2.6rem !important;
-        font-weight: 800 !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
     }
     
-    /* Specifically target the text content - MASSIVE */
+    /* Normal text content sizes on mobile */
     .card-body h5,
     .d-flex h5 {
-        font-size: 3rem !important;
-        font-weight: 900 !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
         line-height: 1.2 !important;
     }
     
-    /* Specific filter category header - EVEN MORE MASSIVE - Multiple selectors to override Bootstrap */
+    /* Normal filter category header sizes */
     .category-filter-section h5,
     .category-filter-section h5.mb-0,
     .category-filter-section h5.fw-bold,
     .category-filter-section .card-body h5 {
-        font-size: 2.8rem !important;
-        font-weight: 900 !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
     }
     
-    /* All h5 headings in cards - LARGER */
+    /* All h5 headings in cards - normal size */
     .card h5,
     h5.mb-0,
     h5.fw-bold {
-        font-size: 2.5rem !important;
-        font-weight: 800 !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
     }
     
-    /* Clear button in filter section */
+    /* Clear button in filter section - normal size */
     .category-filter-section button {
-        font-size: 1.6rem !important;
-        padding: 1rem 1.5rem !important;
+        font-size: 14px !important;
+        padding: 0.75rem 1rem !important;
     }
 }
 
@@ -3083,7 +2582,7 @@
 }
 
 .mobile-song-title::before {
-    content: '🎵';
+    content: '🔊';
     position: absolute;
     left: -1.5rem;
     opacity: 0.6;
@@ -3244,356 +2743,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
   
-  // Search Modal Functionality
-  initializeSearchModal();
-  
   // Initialize main page lazy loading
   initializeMainPageLazyLoading();
 
-  // Add auto-focus to search input when modal opens
-  const searchModal = document.getElementById('searchModal');
-  if (searchModal) {
-    searchModal.addEventListener('shown.bs.modal', function () {
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput) {
-        searchInput.focus();
-      }
-    });
-  }
+
 });
 
-// Virtual Scrolling Search Modal Implementation
-function initializeSearchModal() {
-  const searchForm = document.getElementById('searchForm');
-  const searchInput = document.getElementById('searchInput');
-  const searchResults = document.getElementById('searchResults');
-  const virtualContainer = document.getElementById('resultsContainer');
-  const visibleResults = document.getElementById('visibleResults');
-  const topSpacer = document.getElementById('topSpacer');
-  const bottomSpacer = document.getElementById('bottomSpacer');
-  const noResults = document.getElementById('noResults');
-  const scrollLoadingIndicator = document.getElementById('scrollLoadingIndicator');
-  // clearAllBtn is not needed in search modal - commenting out for now
-  const clearAllBtn = null; 
-  
-  // Virtual scrolling configuration
-  const ITEM_HEIGHT = 260; // Approximate height of each search result item
-  const BUFFER_SIZE = 5; // Extra items to render outside viewport
-  const BATCH_SIZE = 25; // How many results to fetch at once
-  
-  // State management
-  let allResults = [];
-  let selectedSongs = new Set();
-  let totalResults = 0;
-  let isLoading = false;
-  let hasMoreData = true;
-  let currentSearchParams = null;
-  
-  // Search functionality
-  searchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    await performSearch();
-  });
-  
-  // Real-time search with debouncing
-  let searchTimeout;
-  searchInput.addEventListener('input', () => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(async () => {
-      if (searchInput.value.trim().length > 2) {
-        await performSearch();
-      } else if (searchInput.value.trim().length === 0) {
-        clearResults();
-      }
-    }, 400);
-  });
-  
-
-  
-  // Clear all filters
-  if (clearAllBtn) {
-    clearAllBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      
-      // Check if filter elements exist before accessing them
-      const uncheckedFilter = document.getElementById('filterUnchecked');
-      if (uncheckedFilter) uncheckedFilter.checked = false;
-      
-      const printedFilter = document.getElementById('filterPrinted');
-      if (printedFilter) printedFilter.checked = false;
-      
-      document.querySelectorAll('.category-checkbox').forEach(cb => cb.checked = false);
-      clearResults();
-    });
-  }
-  
-  // Virtual scrolling event listener
-  virtualContainer.addEventListener('scroll', throttle(handleScroll, 100));
-  
-
-  
-  // Perform search request
-  async function performSearch() {
-    if (isLoading) return;
-    
-    // Reset state for new search
-    allResults = [];
-    selectedSongs.clear();
-    hasMoreData = true;
-    clearResults();
-    
-    // Build search parameters
-    currentSearchParams = new URLSearchParams();
-    
-    const searchText = searchInput.value.trim();
-    if (searchText) {
-      currentSearchParams.append('q', searchText);
-    }
-    
-    // Check if filter elements exist before accessing them
-    const uncheckedFilter = document.getElementById('filterUnchecked');
-    if (uncheckedFilter && uncheckedFilter.checked) {
-      currentSearchParams.append('unchecked', 'true');
-    }
-    
-    const printedFilter = document.getElementById('filterPrinted');
-    if (printedFilter && printedFilter.checked) {
-      currentSearchParams.append('printed', 'true');
-    }
-    
-    const selectedCategories = [];
-    document.querySelectorAll('.category-checkbox:checked').forEach(cb => {
-      selectedCategories.push(cb.value);
-    });
-    if (selectedCategories.length > 0) {
-      currentSearchParams.append('categories', selectedCategories.join(','));
-    }
-    
-    // Load first batch
-    await loadBatch(0);
-  }
-  
-  // Load batch of results
-  async function loadBatch(offset) {
-    if (isLoading || !hasMoreData) return;
-    
-    isLoading = true;
-
-    
-    try {
-      const params = new URLSearchParams(currentSearchParams);
-      params.append('limit', BATCH_SIZE.toString());
-      params.append('offset', offset.toString());
-      
-      const response = await fetch(`/api/search?${params}`);
-      const data = await response.json();
-      
-      if (offset === 0) {
-        totalResults = data.total_found;
-        allResults = data.results;
-      } else {
-        allResults = [...allResults, ...data.results];
-      }
-      
-      hasMoreData = data.has_more;
-      
-      if (allResults.length === 0 && offset === 0) {
-        showNoResults();
-      } else {
-        showResults();
-        renderVisibleItems();
-      }
-      
-
-      
-    } catch (error) {
-      console.error('Search error:', error);
-
-    } finally {
-      isLoading = false;
-      scrollLoadingIndicator.style.display = 'none';
-    }
-  }
-  
-  // Handle scroll events for virtual scrolling
-  function handleScroll() {
-    if (!allResults.length) return;
-    
-    // Render visible items
-    renderVisibleItems();
-    
-    // Check if need to load more data
-    const container = virtualContainer;
-    const scrollTop = container.scrollTop;
-    const containerHeight = container.clientHeight;
-    const totalHeight = allResults.length * ITEM_HEIGHT;
-    
-    // Load more when scrolled 80% down
-    if (hasMoreData && !isLoading && 
-        scrollTop + containerHeight > totalHeight * 0.8) {
-      scrollLoadingIndicator.style.display = 'block';
-      loadBatch(allResults.length);
-    }
-  }
-  
-  // Virtual rendering - only render visible items
-  function renderVisibleItems() {
-    if (!allResults.length) return;
-    
-    const container = virtualContainer;
-    const scrollTop = container.scrollTop;
-    const containerHeight = container.clientHeight;
-    
-    // Calculate which items should be visible
-    const startIndex = Math.max(0, Math.floor(scrollTop / ITEM_HEIGHT) - BUFFER_SIZE);
-    const endIndex = Math.min(
-      allResults.length - 1,
-      Math.floor((scrollTop + containerHeight) / ITEM_HEIGHT) + BUFFER_SIZE
-    );
-    
-    // Update spacers
-    topSpacer.style.height = `${startIndex * ITEM_HEIGHT}px`;
-    bottomSpacer.style.height = `${(allResults.length - endIndex - 1) * ITEM_HEIGHT}px`;
-    
-    // Clear current visible results
-    visibleResults.innerHTML = '';
-    
-    // Render visible items
-    for (let i = startIndex; i <= endIndex; i++) {
-      const song = allResults[i];
-      if (song) {
-        const resultItem = createResultItem(song, i);
-        visibleResults.appendChild(resultItem);
-      }
-    }
-    
-    updateResultCount();
-    updateSelectedCount();
-  }
-  
-  // Show results container
-  function showResults() {
-    searchResults.style.display = 'block';
-    noResults.style.display = 'none';
-    document.getElementById('searchProgress').style.display = 'block';
-  }
-  
-  // Show no results message
-  function showNoResults() {
-    searchResults.style.display = 'none';
-    noResults.style.display = 'block';
-    document.getElementById('searchProgress').style.display = 'none';
-  }
-  
-  // Create result item HTML
-  function createResultItem(song, index) {
-    const item = document.createElement('div');
-    item.className = 'search-result-item';
-    item.style.minHeight = `${ITEM_HEIGHT}px`;
-    item.dataset.songId = song.song_id;
-    
-    const statusBadges = [];
-    if (!song.admin_checked) {
-      statusBadges.push('<span class="badge bg-warning">⏳ Neskontrolované</span>');
-    }
-    if (song.printed) {
-      statusBadges.push('<span class="badge bg-info">🖨️ Vytlačené</span>');
-    }
-    
-    const categories = song.categories ? song.categories.split(';;').filter(c => c.trim()).map(c => 
-      `<span class="badge bg-light text-dark border">${escapeHtml(c.trim())}</span>`
-    ).join(' ') : '';
-    
-    // Prepare author display (Slovak first, then English if available)
-    let authorDisplay = '';
-    if (song.author) {
-      authorDisplay = escapeHtml(song.author);
-      if (song.author_original && song.author_original !== song.author) {
-        authorDisplay += ` (${escapeHtml(song.author_original)})`;
-      }
-    } else if (song.author_original) {
-      authorDisplay = escapeHtml(song.author_original);
-    }
-    
-    item.innerHTML = `
-      <div class="search-result-header">
-        <span class="song-id">${escapeHtml(song.song_id)}</span>
-        <span class="song-title">${escapeHtml(song.title)}</span>
-      </div>
-      ${authorDisplay ? `<div class="song-author"><i class="bi bi-person-fill me-1"></i>${authorDisplay}</div>` : ''}
-      <div class="song-content-preview">
-        ${song.verse1_preview ? `<div class="verse-preview"><span class="preview-label">Sloha:</span> ${escapeHtml(song.verse1_preview)}...</div>` : ''}
-        ${song.chorus_preview ? `<div class="chorus-preview"><span class="preview-label">Refrén:</span> ${escapeHtml(song.chorus_preview)}...</div>` : ''}
-      </div>
-      <div class="search-result-footer">
-        <div class="result-badges">
-          ${statusBadges.join(' ')}
-          ${song.version_name ? `<span class="badge bg-secondary">${escapeHtml(song.version_name)}</span>` : ''}
-        </div>
-        <div class="result-categories">
-          ${categories}
-        </div>
-      </div>
-    `;
-    
-    // Add click handler to navigate to song detail page
-    item.addEventListener('click', () => {
-      window.location.href = `/song/${song.id}/view`;
-    });
-    
-    return item;
-  }
-  
-  // Handle song selection
-
-  
-  // Update UI functions
-  function updateResultCount() {
-    document.getElementById('resultCount').textContent = allResults.length;
-    document.getElementById('visibleCount').textContent = allResults.length;
-    document.getElementById('totalFound').textContent = totalResults;
-  }
-  
-  function updateSelectedCount() {
-    // No-op function since selection UI was removed
-  }
-  
-
-  
-  function clearResults() {
-    searchResults.style.display = 'none';
-    noResults.style.display = 'none';
-    document.getElementById('searchProgress').style.display = 'none';
-    visibleResults.innerHTML = '';
-    topSpacer.style.height = '0px';
-    bottomSpacer.style.height = '0px';
-    virtualContainer.scrollTop = 0;
-    allResults = [];
-    selectedSongs.clear();
-    totalResults = 0;
-    hasMoreData = true;
-    updateSelectedCount();
-  }
-  
-  // Utility functions
-  function throttle(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func.apply(this, args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  }
-  
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-}
+// Include Search Modal JavaScript
+{% include 'search_modal_scripts.html' %}
 
 // Main Page Lazy Loading Implementation
 function initializeMainPageLazyLoading() {
@@ -3613,6 +2770,9 @@ function initializeMainPageLazyLoading() {
   let activeFilters = new Set(); // Track active category filters
   let totalFilteredSongs = totalSongs; // Track total songs with current filters
   
+  // Make activeFilters globally accessible for search integration
+  window.activeFilters = activeFilters;
+  
   // Debug initial state
   console.log('Pagination initialized:', {
     initialBatchSize,
@@ -3620,6 +2780,19 @@ function initializeMainPageLazyLoading() {
     currentlyLoadedSongs,
     allLoaded
   });
+  
+  // Function to reset pagination state (called when clearing search)
+  window.resetPaginationState = function() {
+    currentlyLoadedSongs = {{ songs|length }};
+    isLoading = false;
+    allLoaded = currentlyLoadedSongs >= totalSongs;
+    totalFilteredSongs = totalSongs;
+    activeFilters.clear();
+    if (window.activeStatusFilters) {
+      window.activeStatusFilters.clear();
+    }
+    console.log('Pagination state reset to initial values');
+  };
   
   // Load initial batch from server data
   const initialSongs = {{ songs|tojson }};
@@ -3773,10 +2946,28 @@ function initializeMainPageLazyLoading() {
     
     console.log('Active filters updated:', Array.from(activeFilters));
     console.log('Active status filters updated:', Array.from(window.activeStatusFilters));
+    
+    // If search is active, update search results with new filters
+    if (window.isSearchActive) {
+      const searchInput = document.getElementById('quickSearchInput');
+      if (searchInput && searchInput.value.trim()) {
+        console.log('Updating search results with new filters');
+        // Trigger search update by calling the search function directly
+        if (typeof window.triggerLiveSearchUpdate === 'function') {
+          window.triggerLiveSearchUpdate(searchInput.value.trim());
+        }
+      }
+    }
   }
   
   // Reset pagination when filters change
   function resetPaginationForFilters() {
+    // If search is active, don't use pagination system - let search handle it
+    if (window.isSearchActive) {
+      console.log('Skipping pagination reset - search is handling filter updates');
+      return;
+    }
+    
     // If we have active filters, we need to clear the loaded songs and reload with filters
     const hasStatusFilters = window.activeStatusFilters && window.activeStatusFilters.size > 0;
     if (activeFilters.size > 0 || hasStatusFilters) {
@@ -3805,10 +2996,37 @@ function initializeMainPageLazyLoading() {
       console.log('No active filters, keeping current pagination');
       // No filters - restore original pagination state
       totalFilteredSongs = totalSongs;
-      // Check if we need to reset
+      
+      // If search is active, let search system handle the "no filters" case
+      if (window.isSearchActive) {
+        const searchInput = document.getElementById('quickSearchInput');
+        if (searchInput && searchInput.value.trim()) {
+          // Re-run search without filters
+          if (typeof window.triggerLiveSearchUpdate === 'function') {
+            window.triggerLiveSearchUpdate(searchInput.value.trim());
+          }
+        } else {
+          // No search term, return to original list
+          if (typeof window.returnToFilteredView === 'function') {
+            window.returnToFilteredView();
+          }
+        }
+        return; // Don't do the normal pagination reset
+      }
+      
+      // Check if we need to reset (only when not in search mode)
       if (currentlyLoadedSongs > initialBatchSize) {
         // We've loaded extra filtered songs, need to reload
-        location.reload(); // Simple reload to restore original state
+        // But don't reload if search is active - it would clear search input
+        if (!window.isSearchActive) {
+          location.reload(); // Simple reload to restore original state
+        } else {
+          console.log('Skipping page reload because search is active');
+          // Instead, let the search system handle returning to unfiltered state
+          if (typeof window.returnToFilteredView === 'function') {
+            window.returnToFilteredView();
+          }
+        }
       }
     }
   }
@@ -3817,6 +3035,12 @@ function initializeMainPageLazyLoading() {
   async function loadMoreSongs() {
     if (isLoading || allLoaded) {
       console.log('Skipping load more - isLoading:', isLoading, 'allLoaded:', allLoaded);
+      return;
+    }
+    
+    // Skip loading more songs if search is active
+    if (window.isSearchActive) {
+      console.log('Skipping load more - search is active');
       return;
     }
     
@@ -3942,7 +3166,7 @@ function initializeMainPageLazyLoading() {
              class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-1" 
              title="Prehrať MP3: ${escapeHtml(filename)}"
              target="_blank">
-            <i class="bi bi-play-circle-fill"></i>
+            <i class="bi bi-volume-up-fill"></i>
             <span class="small">MP3</span>
           </a>`;
       } else {
@@ -3954,7 +3178,7 @@ function initializeMainPageLazyLoading() {
                  href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
                  target="_blank"
                  title="Prehrať ${escapeHtml(filename)}">
-                <i class="bi bi-play-circle-fill text-success"></i>
+                <i class="bi bi-volume-up-fill text-success"></i>
                 <span class="text-truncate">${escapeHtml(filename)}</span>
               </a>
             </li>`;
@@ -3965,7 +3189,7 @@ function initializeMainPageLazyLoading() {
             <button type="button" class="btn btn-success btn-sm dropdown-toggle d-flex align-items-center gap-1" 
                     data-bs-toggle="dropdown" aria-expanded="false"
                     title="${song.mp3_paths.length} MP3 súborov">
-              <i class="bi bi-music-note-list"></i>
+              <i class="bi bi-volume-up-fill"></i>
               <span class="small">${song.mp3_paths.length}× MP3</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -4015,7 +3239,7 @@ function initializeMainPageLazyLoading() {
         `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" 
            class="btn btn-outline-warning btn-sm" 
            title="Stiahnuť akordy">
-          <i class="bi bi-music-note-beamed"></i> Akordy
+          <i class="fa-solid fa-guitar"></i> Akordy
         </a>` : '';
       
       if (lyricsBtn || chordsBtn) {
@@ -4150,8 +3374,7 @@ function initializeMainPageLazyLoading() {
              class="btn btn-success btn-sm" 
              title="Prehrať MP3: ${escapeHtml(mp3File.split('/').pop())}"
              target="_blank">
-            <i class="bi bi-play-circle-fill"></i>
-            <span>MP3</span>
+            <i class="bi bi-volume-up-fill"></i>
           </a>
         `;
       } else {
@@ -4162,7 +3385,7 @@ function initializeMainPageLazyLoading() {
               <a class="dropdown-item" 
                  href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
                  target="_blank">
-                <i class="bi bi-play-circle-fill text-success me-2"></i>${escapeHtml(filename)}
+                <i class="bi bi-volume-up-fill text-success me-2"></i>${escapeHtml(filename)}
               </a>
             </li>
           `;
@@ -4173,8 +3396,7 @@ function initializeMainPageLazyLoading() {
             <button type="button" class="btn btn-success btn-sm dropdown-toggle" 
                     data-bs-toggle="dropdown" aria-expanded="false"
                     title="${mp3Count} MP3 súborov">
-              <i class="bi bi-music-note-list"></i>
-              <span>${mp3Count}× MP3</span>
+              <i class="bi bi-volume-up-fill"></i>
             </button>
             <ul class="dropdown-menu w-100">
               <li><h6 class="dropdown-header">MP3 Súbory</h6></li>
@@ -4187,7 +3409,6 @@ function initializeMainPageLazyLoading() {
       mp3Button = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
           <i class="bi bi-volume-mute"></i>
-          <span>Žiadne MP3</span>
         </button>
       `;
     }
@@ -4201,8 +3422,7 @@ function initializeMainPageLazyLoading() {
              class="btn btn-outline-danger btn-sm" 
              title="Stiahnuť noty"
              target="_blank">
-            <i class="bi bi-file-earmark-music"></i>
-            <span>Noty</span>
+            <i class="fa-solid fa-music"></i>
           </a>
         `;
       } else {
@@ -4213,7 +3433,7 @@ function initializeMainPageLazyLoading() {
               <a href="/song/${song.id}/download_sheet/${filename}" 
                  class="dropdown-item"
                  target="_blank">
-                <i class="bi bi-file-earmark-music text-danger me-2"></i>${escapeHtml(filename)}
+                <i class="fa-solid fa-music text-danger me-2"></i>${escapeHtml(filename)}
               </a>
             </li>
           `;
@@ -4223,8 +3443,7 @@ function initializeMainPageLazyLoading() {
           <div class="btn-group w-100">
             <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle" 
                     data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-file-earmark-music"></i>
-              <span>${song.sheet_pdf_paths.length}× Noty</span>
+              <i class="fa-solid fa-music"></i>
             </button>
             <ul class="dropdown-menu w-100">
               <li><h6 class="dropdown-header">Noty súbory</h6></li>
@@ -4236,8 +3455,7 @@ function initializeMainPageLazyLoading() {
     } else {
       sheetButton = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
-          <i class="bi bi-file-earmark-music"></i>
-          <span>Žiadne noty</span>
+          <i class="fa-solid fa-music"></i>
         </button>
       `;
     }
@@ -4277,23 +3495,19 @@ function initializeMainPageLazyLoading() {
         ${song.pdf_lyrics_path ? 
           `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
             <i class="bi bi-file-text"></i>
-            <span>Slová</span>
           </a>` : 
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
             <i class="bi bi-file-text"></i>
-            <span>Žiadne slová</span>
           </button>`
         }
 
         <!-- 2. Akordy (Chords) -->
         ${song.pdf_chords_path ? 
           `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
-            <i class="bi bi-music-note-beamed"></i>
-            <span>Akordy</span>
+            <i class="fa-solid fa-guitar"></i>
           </a>` : 
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
-            <i class="bi bi-music-note-beamed"></i>
-            <span>Žiadne akordy</span>
+            <i class="fa-solid fa-guitar"></i>
           </button>`
         }
 
@@ -4398,5 +3612,7 @@ function initializeMainPageLazyLoading() {
 }
 </script>
 
+<!-- Include Search Modal at the very end so it renders on top -->
+{% include 'search_modal.html' %}
 
 {% endblock %}
