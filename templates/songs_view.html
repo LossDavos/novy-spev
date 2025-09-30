@@ -359,21 +359,47 @@
   border: 1px solid rgba(0,0,0,0.05);
 }
 
-/* Status badges in top right corner */
-.mobile-status-badges-corner {
-  top: 0.5rem;
-  right: 0.5rem;
-  display: flex;
-  gap: 0.3rem;
-  z-index: 10;
+/* Status badges on the left side, smaller and overlapping */
+.mobile-status-badges-left {
+    min-width: fit-content;
+    align-self: flex-start;
+    position: relative;
+    height: 28px; /* Compact height for overlapping badges */
 }
 
-/* Larger status icons for top right corner */
-.mobile-status-badges-corner .status-icon {
-  width: 32px;
-  height: 32px;
-  font-size: 1.1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+.mobile-status-badges-left .status-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 0.9rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    border: 2px solid white; /* White border to separate overlapping badges */
+}
+
+/* Position badges to overlap vertically - checked badge in front */
+.mobile-status-badges-left .status-icon.status-printed {
+    top: -4px; /* Move printer badge even higher */
+    left: 0;
+    z-index: 1; /* Behind the checked badge */
+}
+
+.mobile-status-badges-left .status-icon.status-checked {
+    top: 8px; /* Adjust checked badge position accordingly */
+    left: 0; /* Keep same horizontal alignment */
+    z-index: 2; /* In front of the printer badge */
+}
+
+/* Fallback for first/second child if class-based selectors don't work */
+.mobile-status-badges-left .status-icon:first-child {
+    top: -4px; /* Move first badge higher */
+    left: 0;
+    z-index: 1; /* Behind */
+}
+
+.mobile-status-badges-left .status-icon:nth-child(2) {
+    top: 8px; /* Adjust second badge position */
+    left: 0;
+    z-index: 2; /* In front */
 }
 
 .status-icon {
@@ -779,52 +805,43 @@
 
     <!-- Main Song Info -->
     <div class="mobile-song-header">
-      <!-- Status badges in top right corner -->
-      <div class="mobile-status-badges-corner position-absolute">
-        {% if song.printed %}
-        <span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="🖨️ Vytlačené">
-          🖨️
-        </span>
-        {% endif %}
-
-        {% if song.admin_checked %}
-        <span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="✅ Skontrolované administrátorom">
-          ✅
-        </span>
-        {% endif %}
-      </div>
-
       <div class="mobile-song-info">
-        <div class="d-flex align-items-start gap-2 mb-2 flex-wrap">
-          <span class="mobile-song-id">{{ song.song_id }}</span>
-          <div class="mobile-song-title">{{ song.title }}</div>
-
-          <!-- Audio status icons on the right -->
-          <div class="mobile-audio-icons d-flex gap-1 ms-auto">
-            {% set mp3_files = song.mp3_paths|parse_json %}
-            {% if mp3_files|length > 0 %}
-            <span class="status-icon status-has-audio" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="{{ mp3_files|length }} MP3 súborov" data-bs-original-title="{{ mp3_files|length }} MP3 súborov">
-              <i class="bi bi-volume-up-fill"></i>
+        <div class="d-flex align-items-start gap-3 mb-2">
+          <!-- Status badges on the left, stacked vertically -->
+          <div class="mobile-status-badges-left d-flex flex-column gap-1">
+            {% if song.printed %}
+            <span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Vytlačené">
+              <i class="bi bi-printer-fill"></i>
             </span>
-            {% else %}
-            <span class="status-icon status-no-audio" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Žiadne MP3" data-bs-original-title="Žiadne MP3">
-              <i class="bi bi-volume-mute"></i>
+            {% endif %}
+
+            {% if song.admin_checked %}
+            <span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Skontrolované administrátorom">
+              <i class="bi bi-check-circle-fill"></i>
             </span>
             {% endif %}
           </div>
+          
+          <!-- Song ID and Title on the right -->
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-start gap-2 mb-1 flex-wrap">
+              <span class="mobile-song-id">{{ song.song_id }}</span>
+              <div class="mobile-song-title">{{ song.title }}</div>   
+            </div>
+            
+            {% if song.author %}
+            <div class="mobile-song-author text-secondary mb-1">
+              <i class="bi bi-person me-1"></i>{{ song.author }}
+            </div>
+            {% endif %}
+            
+            {% if song.version_name %}
+            <div class="text-muted small">
+              <i class="bi bi-tag me-1"></i>{{ song.version_name }}
+            </div>
+            {% endif %}
+          </div>
         </div>
-        
-        {% if song.author %}
-        <div class="mobile-song-author text-secondary mb-1">
-          <i class="bi bi-person me-1"></i>{{ song.author }}
-        </div>
-        {% endif %}
-        
-        {% if song.version_name %}
-        <div class="text-muted small">
-          <i class="bi bi-tag me-1"></i>{{ song.version_name }}
-        </div>
-        {% endif %}
       </div>
     </div>
 
@@ -834,12 +851,10 @@
       {% if song.pdf_lyrics_path %}
       <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
         <i class="bi bi-file-text"></i>
-        <span>Slová</span>
       </a>
       {% else %}
       <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne slová">
         <i class="bi bi-file-text"></i>
-        <span>Žiadne slová</span>
       </button>
       {% endif %}
 
@@ -847,12 +862,10 @@
       {% if song.pdf_chords_path %}
       <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
         <i class="bi bi-music-note-beamed"></i>
-        <span>Akordy</span>
       </a>
       {% else %}
       <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne akordy">
         <i class="bi bi-music-note-beamed"></i>
-        <span>Žiadne akordy</span>
       </button>
       {% endif %}
 
@@ -862,13 +875,11 @@
         {% if sheet_pdfs|length == 1 %}
         <a href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=sheet_pdfs[0].split('/')[-1]) }}" class="btn btn-outline-danger btn-sm" title="Stiahnuť noty" target="_blank">
           <i class="bi bi-file-earmark-music"></i>
-          <span>Noty</span>
         </a>
         {% else %}
         <div class="btn-group w-100">
           <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-file-earmark-music"></i>
-            <span>{{ sheet_pdfs|length }}× Noty</span>
           </button>
           <ul class="dropdown-menu w-100">
             <li><h6 class="dropdown-header">Noty súbory</h6></li>
@@ -885,7 +896,6 @@
       {% else %}
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne noty">
           <i class="bi bi-file-earmark-music"></i>
-          <span>Žiadne noty</span>
         </button>
       {% endif %}
 
@@ -900,7 +910,6 @@
         <div class="btn-group w-100">
           <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{{ mp3_files|length }} MP3 súborov">
             <i class="bi bi-music-note-list"></i>
-            <span>{{ mp3_files|length }}× MP3</span>
           </button>
           <ul class="dropdown-menu w-100">
             <li><h6 class="dropdown-header">MP3 Súbory</h6></li>
@@ -917,7 +926,6 @@
       {% else %}
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne MP3 súbory">
           <i class="bi bi-volume-mute"></i>
-          <span>Žiadne MP3</span>
         </button>
       {% endif %}
     </div>
