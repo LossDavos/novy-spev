@@ -533,8 +533,7 @@ function initializeFixedSearch() {
              class="btn btn-success btn-sm" 
              title="Prehrať MP3: ${escapeHtml(mp3File.split('/').pop())}"
              target="_blank">
-            <i class="bi bi-play-circle-fill"></i>
-            <span>MP3</span>
+            <i class="bi bi-volume-up-fill"></i>
           </a>
         `;
       } else {
@@ -545,7 +544,7 @@ function initializeFixedSearch() {
               <a class="dropdown-item" 
                  href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
                  target="_blank">
-                <i class="bi bi-play-circle-fill text-success me-2"></i>${escapeHtml(filename)}
+                <i class="bi bi-volume-up-fill text-success me-2"></i>${escapeHtml(filename)}
               </a>
             </li>
           `;
@@ -556,8 +555,7 @@ function initializeFixedSearch() {
             <button type="button" class="btn btn-success btn-sm dropdown-toggle" 
                     data-bs-toggle="dropdown" aria-expanded="false"
                     title="${mp3Count} MP3 súborov">
-              <i class="bi bi-music-note-list"></i>
-              <span>${mp3Count}× MP3</span>
+              <i class="bi bi-volume-up-fill"></i>
             </button>
             <ul class="dropdown-menu w-100">
               <li><h6 class="dropdown-header">MP3 Súbory</h6></li>
@@ -570,7 +568,6 @@ function initializeFixedSearch() {
       mp3Button = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
           <i class="bi bi-volume-mute"></i>
-          <span>Žiadne MP3</span>
         </button>
       `;
     }
@@ -584,8 +581,7 @@ function initializeFixedSearch() {
              class="btn btn-outline-danger btn-sm" 
              title="Stiahnuť noty"
              target="_blank">
-            <i class="bi bi-file-earmark-music"></i>
-            <span>Noty</span>
+            <i class="fa-solid fa-music"></i>
           </a>
         `;
       } else {
@@ -596,7 +592,7 @@ function initializeFixedSearch() {
               <a href="/song/${song.id}/download_sheet/${filename}" 
                  class="dropdown-item"
                  target="_blank">
-                <i class="bi bi-file-earmark-music text-danger me-2"></i>${escapeHtml(filename)}
+                <i class="fa-solid fa-music text-danger me-2"></i>${escapeHtml(filename)}
               </a>
             </li>
           `;
@@ -606,8 +602,7 @@ function initializeFixedSearch() {
           <div class="btn-group w-100">
             <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle" 
                     data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-file-earmark-music"></i>
-              <span>${song.sheet_pdf_paths.length}× Noty</span>
+              <i class="fa-solid fa-music"></i>
             </button>
             <ul class="dropdown-menu w-100">
               <li><h6 class="dropdown-header">Noty súbory</h6></li>
@@ -619,8 +614,7 @@ function initializeFixedSearch() {
     } else {
       sheetButton = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
-          <i class="bi bi-file-earmark-music"></i>
-          <span>Žiadne noty</span>
+          <i class="fa-solid fa-music"></i>
         </button>
       `;
     }
@@ -660,23 +654,19 @@ function initializeFixedSearch() {
         ${song.pdf_lyrics_path ? 
           `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
             <i class="bi bi-file-text"></i>
-            <span>Slová</span>
           </a>` : 
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
             <i class="bi bi-file-text"></i>
-            <span>Žiadne slová</span>
           </button>`
         }
 
         <!-- 2. Akordy (Chords) -->
         ${song.pdf_chords_path ? 
           `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
-            <i class="bi bi-music-note-beamed"></i>
-            <span>Akordy</span>
+            <i class="fa-solid fa-guitar"></i>
           </a>` : 
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
-            <i class="bi bi-music-note-beamed"></i>
-            <span>Žiadne akordy</span>
+            <i class="fa-solid fa-guitar"></i>
           </button>`
         }
 

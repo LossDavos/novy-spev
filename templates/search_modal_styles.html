@@ -1,18 +1,18 @@
-/* Fixed Bottom Search Bar Styles */
+/* Search Bar Styles - Responsive positioning */
 .fixed-bottom-search {
-  position: fixed !important;
-  bottom: 20px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  z-index: 999999 !important;
-  isolation: isolate;
-  will-change: transform;
   background: linear-gradient(135deg, rgba(2, 48, 71, 0.98) 0%, rgba(0, 99, 149, 0.98) 100%);
   backdrop-filter: blur(10px);
   padding: 12px 20px;
   border-radius: 50px;
   border: 2px solid rgba(255, 255, 255, 0.4);
   animation: slideUpFade 0.5s ease-out;
+  display: block !important;
+  
+  /* Default: Above table on larger screens */
+  position: static;
+  margin: 0 auto 2rem auto;
+  max-width: 600px;
+  z-index: 10;
 }
 
 .search-bar-container {
@@ -231,9 +231,37 @@
   }
 }
 
-/* Mobile responsiveness for fixed search */
-@media (max-width: 768px) {
+/* Desktop and larger screens - positioned above table */
+@media (min-width: 992px) {
   .fixed-bottom-search {
+    /* Keep as static positioning above table */
+    position: static;
+    margin: 0 auto 2rem auto;
+    max-width: 600px;
+    padding: 12px 20px;
+    border-radius: 50px;
+    transform: none;
+  }
+  
+  /* Remove bottom padding since search is not fixed on desktop */
+  body {
+    padding-bottom: 0 !important;
+  }
+  
+  .search-input-group {
+    padding: 0.25rem;
+  }
+  
+  .quick-search-input {
+    font-size: 16px !important;
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Mobile and tablet responsiveness - fixed at bottom */
+@media (max-width: 991px) {
+  .fixed-bottom-search {
+    /* Fixed at bottom on mobile */
     position: fixed !important;
     bottom: 15px !important;
     left: 50% !important;
@@ -241,6 +269,7 @@
     padding: 8px 15px;
     max-width: 95vw;
     border-radius: 40px;
+    z-index: 999999 !important;
   }
   
   .search-input-group {
@@ -263,9 +292,15 @@
   }
 }
 
-/* Spacer to prevent content overlap */
+/* Spacer to prevent content overlap - only on mobile/tablet */
 .fixed-search-spacer {
-  height: 100px;
+  height: 0px; /* No spacer needed on desktop since search is not fixed */
+}
+
+@media (max-width: 991px) {
+  .fixed-search-spacer {
+    height: 100px; /* Only add spacer on mobile/tablet where search is fixed */
+  }
 }
 
 @media (max-width: 480px) {
@@ -277,6 +312,7 @@
     padding: 6px 12px;
     max-width: 98vw;
     border-radius: 35px;
+    z-index: 999999 !important;
   }
   
   .fixed-search-spacer {

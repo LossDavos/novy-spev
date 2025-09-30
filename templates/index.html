@@ -1584,6 +1584,10 @@
     </div>
   {% endif %}
 {% endwith %}
+
+<!-- Include Search Bar - positioned here for desktop (above table), but will be fixed on mobile via CSS -->
+{% include 'search_modal.html' %}
+
 <!-- Desktop table view -->
 <div class="table-responsive songs-table-container shadow-sm rounded-4 overflow-hidden d-none d-lg-block" id="mainSongsTable">
   <table class="table table-hover mb-0 song-table">
@@ -3611,8 +3615,5 @@ function initializeMainPageLazyLoading() {
   }
 }
 </script>
-
-<!-- Include Search Modal at the very end so it renders on top -->
-{% include 'search_modal.html' %}
 
 {% endblock %}
