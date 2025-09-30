@@ -1448,6 +1448,44 @@
         font-size: 0.9rem;
     }
     
+    /* Mobile button sizing - icons only for file management buttons */
+    /* Target only file management buttons, not category buttons */
+    .card-body .btn-sm:has(i),
+    .d-flex .btn-outline-primary:has(i),
+    .d-flex .btn-outline-success:has(i),
+    .d-flex .btn-outline-warning:has(i),
+    .d-flex .btn-outline-danger:has(i),
+    .d-flex .btn-outline-info:has(i) {
+        font-size: 0 !important; /* Hide text */
+        padding: 0.6rem !important;
+        min-height: 44px;
+        min-width: 44px;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* Show only icons in file management buttons */
+    .card-body .btn-sm:has(i) i,
+    .d-flex .btn-outline-primary:has(i) i,
+    .d-flex .btn-outline-success:has(i) i,
+    .d-flex .btn-outline-warning:has(i) i,
+    .d-flex .btn-outline-danger:has(i) i,
+    .d-flex .btn-outline-info:has(i) i {
+        font-size: 1.2rem !important;
+        margin: 0 !important;
+    }
+    
+    /* Hide text content in file management buttons - keep only icons */
+    .card-body .btn-sm:has(i) > *:not(i),
+    .d-flex .btn-outline-primary:has(i) > *:not(i),
+    .d-flex .btn-outline-success:has(i) > *:not(i),
+    .d-flex .btn-outline-warning:has(i) > *:not(i),
+    .d-flex .btn-outline-danger:has(i) > *:not(i),
+    .d-flex .btn-outline-info:has(i) > *:not(i) {
+        display: none !important;
+    }
+    
     .fixed-buttons-spacer {
         height: 80px;
     }

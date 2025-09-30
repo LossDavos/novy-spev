@@ -369,18 +369,18 @@ function initializeFixedSearch() {
     if (song.admin_checked) {
       statusBadges.push(`
         <span class="badge badge-checked px-3 py-2 shadow-sm" title="Pieseň je skontrolovaná">
-          <i class="bi bi-check-circle-fill me-2"></i>✅ Skontr.
+          <i class="bi bi-check-circle-fill"></i>
         </span>`);
     } else {
       statusBadges.push(`
         <span class="badge badge-pending px-3 py-2 shadow-sm pulse-subtle" title="Pieseň čaká na kontrolu">
-          <i class="bi bi-exclamation-triangle-fill me-2"></i>⏳ Čaká kontr.
+          <i class="bi bi-exclamation-triangle-fill"></i>
         </span>`);
     }
     if (song.printed) {
       statusBadges.push(`
         <span class="badge badge-printed px-3 py-2 shadow-sm" title="Pieseň je už vytlačená">
-          <i class="bi bi-printer-fill me-2"></i>🖨️
+          <i class="bi bi-printer-fill"></i>
         </span>`);
     }
     
@@ -622,24 +622,24 @@ function initializeFixedSearch() {
     card.innerHTML = `
       <!-- Main Song Info -->
       <div class="mobile-song-header">
-        <!-- Status badges in top right corner -->
-        <div class="mobile-status-badges-corner position-absolute">
-          ${song.printed ? 
-            '<span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="🖨️ Vytlačené">🖨️</span>' : ''
-          }
-          ${song.admin_checked ? 
-            '<span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="✅ Skontrolované administrátorom">✅</span>' : ''
-          }
-        </div>
-
         <div class="mobile-song-info">
-          <div class="d-flex align-items-start gap-2 mb-2 flex-wrap">
-            <span class="mobile-song-id">${escapeHtml(song.song_id || '')}</span>
-            <div class="mobile-song-title">${escapeHtml(song.title || '')}</div>
-
-            <!-- Audio status icons on the right -->
-            <div class="mobile-audio-icons d-flex gap-1 ms-auto">
-              ${audioIcon}
+          <div class="d-flex align-items-start gap-3 mb-2">
+            <!-- Status badges on the left, stacked vertically -->
+            <div class="mobile-status-badges-left d-flex flex-column gap-1">
+              ${song.printed ? 
+                '<span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Vytlačené"><i class="bi bi-printer-fill"></i></span>' : ''
+              }
+              ${song.admin_checked ? 
+                '<span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Skontrolované administrátorom"><i class="bi bi-check-circle-fill"></i></span>' : ''
+              }
+            </div>
+            
+            <!-- Song ID and Title on the right -->
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-start gap-2 mb-1 flex-wrap">
+                <span class="mobile-song-id">${escapeHtml(song.song_id || '')}</span>
+                <div class="mobile-song-title">${escapeHtml(song.title || '')}</div>
+              </div>
             </div>
           </div>
           

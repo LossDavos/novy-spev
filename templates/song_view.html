@@ -1216,6 +1216,63 @@ html {
         width: 100%;
     }
     
+    /* Mobile button sizing - icons only, no text */
+    .file-actions .btn,
+    .audio-actions .btn,
+    .midi-actions .btn,
+    .mscz-actions .btn,
+    .download-actions .btn {
+        padding: 0.6rem !important;
+        min-height: 44px; /* Touch-friendly minimum */
+        min-width: 44px; /* Square buttons */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+    }
+    
+    .file-actions .btn-sm,
+    .audio-actions .btn-sm,
+    .midi-actions .btn-sm,
+    .mscz-actions .btn-sm,
+    .download-actions .btn-sm {
+        padding: 0.5rem !important;
+        min-height: 40px;
+        min-width: 40px;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+    }
+    
+    /* Show only icons in mobile buttons */
+    .file-actions .btn i,
+    .audio-actions .btn i,
+    .midi-actions .btn i,
+    .mscz-actions .btn i,
+    .download-actions .btn i {
+        font-size: 1.2rem !important;
+        margin: 0 !important;
+    }
+    
+    /* Hide text content in buttons on mobile - keep only icons */
+    .file-actions .btn > *:not(i),
+    .audio-actions .btn > *:not(i),
+    .midi-actions .btn > *:not(i),
+    .mscz-actions .btn > *:not(i),
+    .download-actions .btn > *:not(i) {
+        display: none !important;
+    }
+    
+    /* Also hide direct text nodes */
+    .file-actions .btn,
+    .audio-actions .btn,
+    .midi-actions .btn,
+    .mscz-actions .btn,
+    .download-actions .btn {
+        font-size: 0 !important;
+    }
+    
     .download-actions .btn {
         width: 100%;
         justify-content: center !important;
