@@ -204,21 +204,25 @@
         
         <div class="row generation-buttons w-100" role="group">
           <div class="col-6">
-            <form method="POST" action="{{ url_for('generate_tex', song_id=song.id) }}" class="d-inline w-100">
-              <button type="submit" class="btn btn-outline-warning w-100 {{ 'disabled' if song.admin_checked else '' }}"
-                      {{ 'disabled title="Admin already checked this song"' if song.admin_checked else '' }}>
+            <form method="POST" action="{{ url_for('generate_tex', song_id=song.id) }}" class="d-inline w-100" onsubmit="return checkTexPermission(event)">
+              <button type="submit" class="btn btn-outline-warning w-100 {{ 'restricted-action' if song.admin_checked or song.printed else '' }}"
+                      title="{{ 'Pieseň je chránená - skontrolovaná adminom' if song.admin_checked else ('Pieseň je vytlačená - nemožno meniť' if song.printed else 'Generovať LaTeX súbory') }}">
                 <i class="bi bi-file-code me-1"></i>TeX
+                {% if song.admin_checked %}<i class="bi bi-lock-fill ms-1"></i>{% endif %}
+                {% if song.printed %}<i class="bi bi-printer-fill ms-1"></i>{% endif %}
               </button>
             </form>
           </div>
           
           <div class="col-6">
-            <form method="GET" action="{{ url_for('generate_pdfs', song_id=song.id) }}" class="d-inline w-100">
-              <button type="submit" class="btn btn-primary w-100 {{ 'disabled' if not song.tex_path or song.admin_checked else '' }}" 
+            <form method="GET" action="{{ url_for('generate_pdfs', song_id=song.id) }}" class="d-inline w-100" onsubmit="return checkPdfPermission(event)">
+              <button type="submit" class="btn btn-primary w-100 {{ 'restricted-action' if not song.tex_path or song.admin_checked or song.printed else '' }}" 
                       style="background-color: #9b59b6; border-color: #9b59b6;"
-                      {{ 'title="First generate TeX files"' if not song.tex_path else '' }}
-                      {{ 'title="Admin already checked this song"' if song.admin_checked else '' }}>
+                      title="{{ 'Najprv vygenerujte TeX súbory' if not song.tex_path else ('Pieseň je chránená - skontrolovaná adminom' if song.admin_checked else ('Pieseň je vytlačená - nemožno meniť' if song.printed else 'Generovať PDF súbory')) }}">
                 <i class="bi bi-file-pdf me-1"></i>PDF
+                {% if not song.tex_path %}<i class="bi bi-exclamation-triangle ms-1"></i>{% endif %}
+                {% if song.admin_checked %}<i class="bi bi-lock-fill ms-1"></i>{% endif %}
+                {% if song.printed %}<i class="bi bi-printer-fill ms-1"></i>{% endif %}
               </button>
             </form>
           </div>
@@ -1651,6 +1655,84 @@ html {
         page-break-inside: avoid;
     }
 }
+
+/* Restricted action button styling - clickable but visually indicates restriction */
+.restricted-action {
+    position: relative;
+    opacity: 0.7 !important;
+    border-style: dashed !important;
+    border-width: 2px !important;
+}
+
+.restricted-action:hover {
+    opacity: 0.9 !important;
+}
+
+.restricted-action::before {
+    content: "🔒";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 18px;
+    height: 18px;
+    background: rgba(220, 53, 69, 0.9);
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Shake animation for restricted actions */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+/* Toast notification for restricted button feedback */
+.disabled-button-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(248, 215, 218, 0.95);
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+    transition: all 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+}
+
+.disabled-button-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.disabled-button-toast .toast-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .disabled-button-toast {
+        bottom: 80px; /* Higher on mobile to avoid navbar */
+        max-width: 85%;
+        font-size: 0.85rem;
+    }
+}
 </style>
 
 <script>
@@ -1821,7 +1903,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('touchstart', handleDisabledButtonClick, true);
     
     // Re-initialize tooltips when content changes (for dynamic content)
-    const observer = new MutationObserver(function(mutations) {
+    const mutationObserver = new MutationObserver(function(mutations) {
         let shouldUpdate = false;
         mutations.forEach(function(mutation) {
             if (mutation.type === 'childList' || mutation.type === 'attributes') {
@@ -1833,13 +1915,117 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    observer.observe(document.body, {
+    mutationObserver.observe(document.body, {
         childList: true,
         subtree: true,
         attributes: true,
         attributeFilter: ['disabled', 'class']
     });
 });
+
+// Permission checking functions for LaTeX generation
+function checkTexPermission(event) {
+    const songAdminChecked = {{ 'true' if song.admin_checked else 'false' }};
+    const songPrinted = {{ 'true' if song.printed else 'false' }};
+    
+    console.log('checkTexPermission called, admin_checked:', songAdminChecked, 'printed:', songPrinted);
+    
+    if (songAdminChecked) {
+        event.preventDefault();
+        event.stopPropagation();
+        showDisabledButtonToast("Nemôžete generovať TeX súbory pre pieseň, ktorá už bola skontrolovaná administrátorom", event);
+        return false;
+    }
+    
+    if (songPrinted) {
+        event.preventDefault();
+        event.stopPropagation();
+        showDisabledButtonToast("Nemôžete generovať TeX súbory pre pieseň, ktorá už bola vytlačená", event);
+        return false;
+    }
+    
+    return true;
+}
+
+function checkPdfPermission(event) {
+    const songAdminChecked = {{ 'true' if song.admin_checked else 'false' }};
+    const songPrinted = {{ 'true' if song.printed else 'false' }};
+    const hasTexPath = {{ 'true' if song.tex_path else 'false' }};
+    
+    console.log('checkPdfPermission called, admin_checked:', songAdminChecked, 'printed:', songPrinted, 'hasTexPath:', hasTexPath);
+    
+    if (songAdminChecked) {
+        event.preventDefault();
+        event.stopPropagation();
+        showDisabledButtonToast("Nemôžete generovať PDF súbory pre pieseň, ktorá už bola skontrolovaná administrátorom", event);
+        return false;
+    }
+    
+    if (songPrinted) {
+        event.preventDefault();
+        event.stopPropagation();
+        showDisabledButtonToast("Nemôžete generovať PDF súbory pre pieseň, ktorá už bola vytlačená", event);
+        return false;
+    }
+    
+    if (!hasTexPath) {
+        event.preventDefault();
+        event.stopPropagation();
+        showDisabledButtonToast("Najprv musíte vygenerovať TeX súbory pred vytvorením PDF", event);
+        return false;
+    }
+    
+    return true;
+}
+
+// Toast notification function (reuse from song_detail.html)
+function showDisabledButtonToast(message, event) {
+    console.log('showDisabledButtonToast called with message:', message);
+    
+    // Remove existing toast
+    let existingToast = document.querySelector('.disabled-button-toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    // Create toast element
+    let toast = document.createElement('div');
+    toast.className = 'disabled-button-toast';
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Show toast with animation
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            if (toast && toast.parentNode) {
+                toast.remove();
+            }
+        }, 300);
+    }, 3000);
+    
+    // Add visual feedback - shake the button if event is provided
+    if (event && event.target) {
+        const button = event.target.closest('button');
+        if (button) {
+            button.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => {
+                button.style.animation = '';
+            }, 500);
+        }
+    }
+}
 </script>
 
 {% endblock %}

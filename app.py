@@ -1154,8 +1154,8 @@ def generate_pdfs(song_id):
             )
 
             tmp_tex_path = os.path.join(tmpdir, "song.tex")
-            flash(f"Fonts directory contents: { os.listdir(fonts_dest)}")
-            flash(f"Modified tex_content snippet: {tex_content[:500]}")
+            # flash(f"Fonts directory contents: { os.listdir(fonts_dest)}")
+            # flash(f"Modified tex_content snippet: {tex_content[:500]}")
             with open(tmp_tex_path, "w", encoding='utf-8') as f:
                 f.write(tex_content)
 
