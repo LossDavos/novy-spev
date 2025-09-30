@@ -52,3 +52,26 @@ Thumbs.db
 # IDEs
 .idea/
 
+# Database files
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Application uploads and generated files
+static/uploads/
+static/generated/
+static/temp/
+
+# Backup files
+*.backup
+*backup*.db
+*backup*.sqlite
+
+# Logs
+*.log
+logs/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
