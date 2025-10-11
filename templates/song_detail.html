@@ -1918,7 +1918,7 @@ document.addEventListener('DOMContentLoaded', function() {
       `;
 
       // Fetch songs
-      fetch(`/api/songs?prefix=${prefix}&exclude_id=${songId}`)
+      fetch(`/api/songs-for-association?prefix=${prefix}&exclude_id=${songId}`)
         .then(response => response.json())
         .then(songs => {
           list.innerHTML = '';

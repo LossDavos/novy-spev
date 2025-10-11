@@ -940,7 +940,7 @@ def parse_json_filter(text):
     except (json.JSONDecodeError, TypeError):
         return []
 
-@app.route('/api/songs')
+@app.route('/api/songs-for-association')
 def get_songs():
     prefix = request.args.get('prefix', '').upper()
     exclude_id = request.args.get('exclude_id')  # song_id to exclude
