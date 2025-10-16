@@ -690,23 +690,37 @@ def delete_file(song_id, file_type):
     flash(f"{file_type.upper()} file deleted.")
     return redirect(url_for('song_view', song_id=song.id))
 
-@app.route('/song/add', methods=['GET', 'POST'])
+@app.route('/song/add')
 def add_song():
+    return redirect(url_for('song_detail', song_id='new'))
+
+@app.route('/song/<song_id>', methods=['GET', 'POST'])
+def song_detail(song_id):
+    # Handle both new song creation and existing song editing
+    is_new_song = song_id == 'new'
+    
+    if is_new_song:
+        song = Song(title="")
+    else:
+        try:
+            song_id = int(song_id)
+            song = Song.query.get_or_404(song_id)
+        except ValueError:
+            return redirect(url_for('index'))
+
     if request.method == 'POST':
-        print(request.form)
-        song = Song(
-            title=request.form['title'],
-            version_name=request.form['version_name'],
+        # Update song fields
+        song.title = request.form['title']
+        song.author = request.form['author'].strip() if request.form['author'] and request.form['author'].strip() else None
+        song.version_name = request.form['version_name']
 
-            author=request.form['author'] if request.form['author'] is not None and len(request.form['author']) > 1 else None,
-            title_original=request.form.get('title_original', ''),
-            author_original=request.form.get('author_original', ''),
-            # checked='checked' in request.form,
-            admin_checked='admin_checked' in request.form,
+        song.title_original = request.form.get('title_original', '')
+        song.author_original = request.form.get('author_original', '')
+        song.admin_checked = 'admin_checked' in request.form
+        song.printed = 'printed' in request.form
 
-            categories=';;'.join(request.form.get('categories', '').split(',')),
-            alternative_titles=';;'.join(request.form.getlist('alternative_titles'))
-        )
+        song.categories = ';;'.join(request.form.get('categories', '').split(','))
+        song.alternative_titles = ';;'.join(request.form.getlist('alternative_titles'))
 
         # Handle song parts
         parts = []
@@ -724,95 +738,18 @@ def add_song():
                 break
         song.song_parts = json.dumps(parts, ensure_ascii=False)
 
-        db.session.add(song)
-        db.session.commit()  # Commit to get song ID
+        # For new songs, add to session first to get an ID
+        if is_new_song:
+            db.session.add(song)
+            db.session.commit()  # Commit to get song ID
 
         song_folder = get_song_upload_folder(song.id)
 
-        # Handle file uploads
-        def handle_file_upload(file, field_name):
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                path = os.path.join(song_folder, filename)
-                file.save(path)
-
-                return path
-            return None
-
-        # Single files
-        song.tex_path = handle_file_upload(request.files.get('tex'), 'tex')
-        song.pdf_lyrics_path = handle_file_upload(request.files.get('pdf_lyrics'), 'pdf_lyrics')
-        song.pdf_chords_path = handle_file_upload(request.files.get('pdf_chords'), 'pdf_chords')
-
-        # Multiple files
-        def handle_multi_upload(files, field_name):
-            paths = []
-            for file in files:
-                flash(f"{file},name: {file.filename} is allowed? {allowed_file(file.filename)}")
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    path = os.path.join(song_folder, filename)
-                    file.save(path)
-
-                    paths.append(path)
-            flash(f"{paths}")
-            return json.dumps(paths, ensure_ascii=False)
-
-        song.mp3_paths = update_multi_files_s3(song.mp3_paths, request.files.getlist('mp3s'), folder=f'mp3s/{song.id}')
-        song.midi_paths = update_multi_files_s3(song.midi_paths, request.files.getlist('midis'), folder=f'midis/{song.id}')
-        song.sheet_pdf_paths = handle_multi_upload(request.files.getlist('sheet_pdfs'), 'sheet_pdfs')
-        song.sheet_mscz_paths = handle_multi_upload(request.files.getlist('sheet_mscz'), 'sheet_mscz')
-
-
-        db.session.commit()
-        flash("Song added successfully!", "success")
-        return redirect(url_for('song_view', song_id=song.id))
-
-    return render_template('song_detail.html', song=Song(title=""), data=[], mp3s=[], midis=[], is_edit=False)
-
-@app.route('/song/<int:song_id>', methods=['GET', 'POST'])
-def song_detail(song_id):
-    song = Song.query.get_or_404(song_id)
-
-    if request.method == 'POST':
-        # Handle song association
-
-        song.title = request.form['title']
-        song.author = request.form['author'] if request.form['author'] is not None and len(request.form['author']) > 1 else None
-        song.version_name = request.form['version_name']
-
-        song.title_original = request.form.get('title_original', '')
-        song.author_original = request.form.get('author_original', '')
-        # song.checked = 'checked' in request.form
-        song.admin_checked = 'admin_checked' in request.form
-        song.printed = 'printed' in request.form
-
-        song.categories = ';;'.join(request.form.get('categories', '').split(','))
-        song.alternative_titles = ';;'.join(request.form.getlist('alternative_titles'))
-
-        # Update song parts
-        parts = []
-        idx = 0
-        while True:
-            part_type = request.form.get(f'part_type_{idx}')
-            part_lines = request.form.get(f'part_lines_{idx}')
-            if part_type and part_lines:
-                parts.append({
-                    'type': part_type,
-                    'lines': [line.strip() for line in part_lines.splitlines() if line.strip()]
-                })
-                idx += 1
-            else:
-                break
-        song.song_parts = json.dumps(parts, ensure_ascii=False)
-
-        song_folder = get_song_upload_folder(song.id)
-
-        # Handle file uploads
+        # Handle file uploads (works for both new and existing songs)
         def handle_file_update(current_path, file, field_name):
             if file and allowed_file(file.filename):
-                # Delete old file if exists
-                if current_path and os.path.exists(current_path):
+                # Delete old file if exists (only for existing songs)
+                if not is_new_song and current_path and os.path.exists(current_path):
                     os.remove(current_path)
                 # Save new file
                 filename = secure_filename(file.filename)
@@ -826,12 +763,13 @@ def song_detail(song_id):
         song.pdf_lyrics_path = handle_file_update(song.pdf_lyrics_path, request.files.get('pdf_lyrics'), 'pdf_lyrics')
         song.pdf_chords_path = handle_file_update(song.pdf_chords_path, request.files.get('pdf_chords'), 'pdf_chords')
 
-        # Update multiple files
+        # Handle multiple files (works for both new and existing songs)
         def update_multi_files(current_paths, new_files, field_name):
             paths = json.loads(current_paths or '[]')
 
-            # Handle deletions
-            paths = [p for p in paths if os.path.exists(p)]  # Remove any deleted files
+            # Handle deletions (only for existing songs)
+            if not is_new_song:
+                paths = [p for p in paths if os.path.exists(p)]  # Remove any deleted files
 
             # Add new files
             for file in new_files:
@@ -842,7 +780,6 @@ def song_detail(song_id):
                     paths.append(path)
 
             return json.dumps(paths, ensure_ascii=False)
-
 
         song.mp3_paths = update_multi_files_s3(song.mp3_paths, request.files.getlist('mp3s'), folder=f'mp3s/{song.id}')
         song.midi_paths = update_multi_files_s3(song.midi_paths, request.files.getlist('midis'), folder=f'midis/{song.id}')
@@ -878,24 +815,37 @@ def song_detail(song_id):
                 except Exception as e:
                     db.session.rollback()
                     flash(f"Error during association: {str(e)}", 'error')
-                    return redirect(url_for('song_detail', song_id=song.id))
+                    if is_new_song:
+                        return redirect(url_for('song_detail', song_id='new'))
+                    else:
+                        return redirect(url_for('song_detail', song_id=song.id))
 
             flash("Associated song not found", 'error')
             return redirect(url_for('song_view', song_id=song.id))
 
         db.session.commit()
-        flash("Song updated successfully!", "success")
+        if is_new_song:
+            flash("Song created successfully!", "success")
+        else:
+            flash("Song updated successfully!", "success")
         return redirect(url_for('song_view', song_id=song.id))
 
     # Prepare data for template
     song.alternative_titles = song.alternative_titles.split(';;') if song.alternative_titles else []
     data = json.loads(song.song_parts) if song.song_parts else []
     mp3s = json.loads(song.mp3_paths or '[]')
-    midis =  json.loads(song.midi_paths or '[]')
+    midis = json.loads(song.midi_paths or '[]')
     sheet_pdfs = json.loads(song.sheet_pdf_paths or '[]')
     sheet_mscz = json.loads(song.sheet_mscz_paths or '[]')
 
-    return render_template('song_detail.html', song=song, data=data, mp3s=mp3s, midis=midis, sheet_pdfs=sheet_pdfs, sheet_mscz=sheet_mscz, is_edit=True)
+    return render_template('song_detail.html', 
+                         song=song, 
+                         data=data, 
+                         mp3s=mp3s, 
+                         midis=midis, 
+                         sheet_pdfs=sheet_pdfs, 
+                         sheet_mscz=sheet_mscz, 
+                         is_edit=not is_new_song)
 
 @app.route('/song/<int:song_id>/view')
 def song_view(song_id):

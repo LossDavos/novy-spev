@@ -56,6 +56,7 @@
 <form method="post" enctype="multipart/form-data">
     <div class="mb-3">
        <div class="song-container d-flex align-items-start gap-2 mb-3">
+          {% if song.song_id %}
           <span class="fw-bold mt-2 clickable-song-id"
                 data-bs-toggle="modal"
                 data-bs-target="#associateSongModal"
@@ -63,6 +64,15 @@
                 style="cursor: pointer; text-decoration: underline dotted;">
             {{ song.song_id }}
           </span>
+          {% else %}
+          <span class="fw-bold mt-2 clickable-song-id"
+                data-bs-toggle="modal"
+                data-bs-target="#associateSongModal"
+                data-song-id="NEW"
+                style="cursor: pointer; text-decoration: underline dotted; color: #6c757d;">
+            [Priradiť k piesni]
+          </span>
+          {% endif %}
           <div class="flex-grow-1">
             <input class="form-control mb-1" name="title" value="{{ song.title }}", placeholder="Názov piesne">
             <input class="form-control form-control-sm" name="version_name" value="{{ song.version_name if song.version_name }}" placeholder="Názov verzie (ak má pieseň viac verzií)">
@@ -1905,47 +1915,72 @@ document.addEventListener('DOMContentLoaded', function() {
       currentSongContainer = this.closest('.song-container');
       const songId = this.dataset.songId;
       document.getElementById('currentSongId').textContent = songId;
-      const prefix = songId.split('-')[0];
-
-      // Show loading state
-      const list = document.getElementById('songList');
-      list.innerHTML = `
-        <div class="text-center py-3">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      `;
-
-      // Fetch songs
-      fetch(`/api/songs-for-association?prefix=${prefix}&exclude_id=${songId}`)
-        .then(response => response.json())
-        .then(songs => {
-          list.innerHTML = '';
-
-          if (songs.length === 0) {
-            list.innerHTML = '<div class="text-center py-3">No songs found</div>';
-            return;
-          }
-
-          // Add matching prefix songs first
-          songs.filter(s => s.song_id.startsWith(prefix))
-               .forEach(song => addSongItem(song, list, modal));
-
-          // Add other songs
-          songs.filter(s => !s.song_id.startsWith(prefix))
-               .forEach(song => addSongItem(song, list, modal));
-        })
-        .catch(error => {
-          console.error("Error:", error);
-          list.innerHTML = `
-            <div class="alert alert-danger">
-              Error loading songs: ${error.message}
-            </div>
-          `;
-        });
+      
+      // Handle new song case
+      if (songId === 'NEW') {
+        // For new songs, get prefix from title's first letter
+        const titleInput = currentSongContainer.querySelector('input[name="title"]');
+        const title = titleInput.value.trim();
+        if (!title) {
+          alert('Prosím zadajte najprv názov piesne');
+          titleInput.focus();
+          return;
+        }
+        // Get first letter and normalize it
+        const prefix = title.charAt(0).toUpperCase().replace(/[^\u0041-\u005A\u0061-\u007A\u00C0-\u017F]/u, 'A');
+        
+        // Fetch songs for this prefix
+        fetchSongsForAssociation(prefix, songId);
+      } else {
+        // For existing songs, use the song ID prefix
+        const prefix = songId.split('-')[0];
+        fetchSongsForAssociation(prefix, songId);
+      }
     });
   });
+
+  // Separate function to fetch songs
+  function fetchSongsForAssociation(prefix, excludeSongId) {
+
+    // Show loading state
+    const list = document.getElementById('songList');
+    list.innerHTML = `
+      <div class="text-center py-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    `;
+
+    // Fetch songs (exclude current song ID only if it's not NEW)
+    const excludeParam = excludeSongId !== 'NEW' ? `&exclude_id=${excludeSongId}` : '';
+    fetch(`/api/songs-for-association?prefix=${prefix}${excludeParam}`)
+      .then(response => response.json())
+      .then(songs => {
+        list.innerHTML = '';
+
+        if (songs.length === 0) {
+          list.innerHTML = '<div class="text-center py-3">No songs found</div>';
+          return;
+        }
+
+        // Add matching prefix songs first
+        songs.filter(s => s.song_id.startsWith(prefix))
+             .forEach(song => addSongItem(song, list, modal));
+
+        // Add other songs
+        songs.filter(s => !s.song_id.startsWith(prefix))
+             .forEach(song => addSongItem(song, list, modal));
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        list.innerHTML = `
+          <div class="alert alert-danger">
+            Error loading songs: ${error.message}
+          </div>
+        `;
+      });
+  }
 
   // Search functionality
   document.getElementById('songSearch').addEventListener('input', function() {
@@ -1971,7 +2006,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const currentIdElement = currentSongContainer.querySelector('.clickable-song-id');
       const titleInput = currentSongContainer.querySelector('input[name="title"]');
       const versionInput = currentSongContainer.querySelector('input[name="version_name"]');
-      const hiddenIdInput = currentSongContainer.querySelector('input[name="song_id"]');
 
       const currentTitle = titleInput.value;
 
@@ -1980,18 +2014,16 @@ document.addEventListener('DOMContentLoaded', function() {
       currentIdElement.dataset.songId = song.song_id;
 
       // 2. Update HIDDEN form field (critical for submission)
-      if (!hiddenIdInput) {
-        console.log('not')
+      let hiddenInput = currentSongContainer.querySelector('input[name="associated_song_id"]');
+      if (!hiddenInput) {
         // Create hidden input if it doesn't exist
-        const newHiddenInput = document.createElement('input');
-        newHiddenInput.type = 'hidden';
-        newHiddenInput.name = 'associated_song_id';
-        newHiddenInput.value = song.song_id;
-        currentSongContainer.appendChild(newHiddenInput);
+        hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'associated_song_id';
+        hiddenInput.value = song.song_id;
+        currentSongContainer.appendChild(hiddenInput);
       } else {
-                console.log('yes')
-
-        hiddenIdInput.value = song.song_id;
+        hiddenInput.value = song.song_id;
       }
 
       // 3. Move current title to version if different
