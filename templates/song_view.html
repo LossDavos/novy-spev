@@ -695,6 +695,12 @@
       <span class="d-none d-sm-inline">Upraviť pieseň</span>
       <span class="d-sm-none">Upraviť</span>
     </a>
+    
+    <button type="button" class="btn btn-danger btn-lg shadow-lg" onclick="confirmDeleteSong()">
+      <i class="bi bi-trash me-2"></i>
+      <span class="d-none d-sm-inline">Vymazať pieseň</span>
+      <span class="d-sm-none">Vymazať</span>
+    </button>
   </div>
 </div>
 
@@ -2024,6 +2030,174 @@ function showDisabledButtonToast(message, event) {
                 button.style.animation = '';
             }, 500);
         }
+    }
+}
+
+// Delete song confirmation function with password protection
+function confirmDeleteSong() {
+    // Create modal HTML
+    const modalHTML = `
+        <div class="modal fade" id="deleteSongModal" tabindex="-1" aria-labelledby="deleteSongModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-danger">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="deleteSongModalLabel">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Vymazať pieseň - Potvrdenie
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+                            <div>
+                                <strong>POZOR!</strong> Táto akcia je <strong>nezvratná</strong>. 
+                                Vymaže sa pieseň <strong>"{{ song.title }}"</strong> vrátane všetkých súborov.
+                            </div>
+                        </div>
+                        
+                        <p class="mb-3">Pre potvrdenie zadajte heslo:</p>
+                        
+                        <div class="mb-3">
+                            <label for="deletePassword" class="form-label fw-bold">Heslo na vymazanie:</label>
+                            <input type="password" class="form-control" id="deletePassword" 
+                                   placeholder="Zadajte heslo..." autocomplete="off">
+                            <div class="invalid-feedback" id="passwordError">
+                                Nesprávne heslo. Skúste znovu.
+                            </div>
+                        </div>
+                        
+                        <div class="text-muted small">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Vymazanie odstráni všetky súbory (MP3, PDF, TeX, MIDI, MuseScore) z lokálneho úložiska aj S3.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Zrušiť
+                        </button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="executeDelete()">
+                            <i class="bi bi-trash me-1"></i>Vymazať pieseň
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing modal if any
+    const existingModal = document.getElementById('deleteSongModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('deleteSongModal'));
+    modal.show();
+    
+    // Focus on password input when modal is shown
+    document.getElementById('deleteSongModal').addEventListener('shown.bs.modal', function () {
+        document.getElementById('deletePassword').focus();
+    });
+    
+    // Allow Enter key to trigger delete
+    document.getElementById('deletePassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            executeDelete();
+        }
+    });
+}
+
+async function executeDelete() {
+    const password = document.getElementById('deletePassword').value;
+    const deleteBtn = document.getElementById('confirmDeleteBtn');
+    const passwordField = document.getElementById('deletePassword');
+    const errorDiv = document.getElementById('passwordError');
+    
+    if (!password.trim()) {
+        passwordField.classList.add('is-invalid');
+        errorDiv.textContent = 'Zadajte heslo';
+        errorDiv.style.display = 'block';
+        return;
+    }
+    
+    // Show loading state
+    deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Overujem heslo...';
+    deleteBtn.disabled = true;
+    
+    try {
+        // Check password with server
+        const response = await fetch('/api/check-delete-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password: password })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.valid) {
+            // Show error
+            passwordField.classList.add('is-invalid');
+            errorDiv.textContent = result.message || 'Nesprávne heslo';
+            errorDiv.style.display = 'block';
+            
+            // Reset button
+            deleteBtn.innerHTML = '<i class="bi bi-trash me-1"></i>Vymazať pieseň';
+            deleteBtn.disabled = false;
+            
+            // Clear error after 3 seconds
+            setTimeout(() => {
+                passwordField.classList.remove('is-invalid');
+                errorDiv.style.display = 'none';
+                passwordField.value = '';
+                passwordField.focus();
+            }, 3000);
+            
+            return;
+        }
+        
+        // Password correct - proceed with deletion
+        deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Vymazávam...';
+        
+        // Create and submit form with password
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/song/delete/{{ song.id }}';
+        
+        // Add password to form
+        const passwordInput = document.createElement('input');
+        passwordInput.type = 'hidden';
+        passwordInput.name = 'password';
+        passwordInput.value = password;
+        form.appendChild(passwordInput);
+        
+        // Add CSRF token if you're using it
+        // const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        // if (csrfToken) {
+        //     const csrfInput = document.createElement('input');
+        //     csrfInput.type = 'hidden';
+        //     csrfInput.name = 'csrf_token';
+        //     csrfInput.value = csrfToken.getAttribute('content');
+        //     form.appendChild(csrfInput);
+        // }
+        
+        document.body.appendChild(form);
+        form.submit();
+        
+    } catch (error) {
+        console.error('Error checking password:', error);
+        passwordField.classList.add('is-invalid');
+        errorDiv.textContent = 'Chyba servera. Skúste znovu.';
+        errorDiv.style.display = 'block';
+        
+        // Reset button
+        deleteBtn.innerHTML = '<i class="bi bi-trash me-1"></i>Vymazať pieseň';
+        deleteBtn.disabled = false;
     }
 }
 </script>

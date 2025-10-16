@@ -28,6 +28,7 @@ S3_BUCKET = os.getenv("S3_BUCKET")
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_REGION = os.getenv("AWS_REGION")
+DELETE_SONG_PASSWORD = os.getenv("DELETE_SONG_PASSWORD", "DELETE_SONG_2024")  # Default fallback
 
 
 
@@ -397,9 +398,38 @@ def backup_db(src_path, backup_folder):
     return backup_path
 
 def delete_song_files(song_id):
-    """Delete all files associated with a song"""
+    """Delete all files associated with a song - both local and S3 files"""
+    # Get song data first to access S3 file paths
+    song = Song.query.get(song_id)
+    
+    if song:
+        # Delete S3 files (MP3s and MIDIs)
+        try:
+            # Delete MP3 files from S3
+            if song.mp3_paths:
+                mp3_paths = json.loads(song.mp3_paths)
+                for s3_key in mp3_paths:
+                    if s3_key:  # Make sure the key is not empty
+                        print(f"Deleting S3 MP3 file: {s3_key}")
+                        delete_from_s3(s3_key)
+            
+            # Delete MIDI files from S3
+            if song.midi_paths:
+                midi_paths = json.loads(song.midi_paths)
+                for s3_key in midi_paths:
+                    if s3_key:  # Make sure the key is not empty
+                        print(f"Deleting S3 MIDI file: {s3_key}")
+                        delete_from_s3(s3_key)
+                        
+        except (json.JSONDecodeError, TypeError) as e:
+            print(f"Error parsing S3 file paths for song {song_id}: {e}")
+        except Exception as e:
+            print(f"Error deleting S3 files for song {song_id}: {e}")
+    
+    # Delete local files (sheet PDFs, MuseScore files, TeX, generated PDFs, etc.)
     song_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(song_id))
     if os.path.exists(song_folder):
+        print(f"Deleting local song folder: {song_folder}")
         shutil.rmtree(song_folder)
 
 # Routes
@@ -868,11 +898,18 @@ def song_view(song_id):
 
 @app.route('/song/delete/<int:song_id>', methods=['POST'])
 def delete_song(song_id):
+    # Check if password is provided and correct
+    provided_password = request.form.get('password')
+    if not provided_password or provided_password != DELETE_SONG_PASSWORD:
+        flash("Nesprávne heslo pre vymazanie piesne!", "error")
+        return redirect(url_for('song_view', song_id=song_id))
+    
     song = Song.query.get_or_404(song_id)
+    song_title = song.title  # Store for flash message
     delete_song_files(song_id)
     db.session.delete(song)
     db.session.commit()
-    flash("Song deleted successfully!")
+    flash(f"Pieseň '{song_title}' bola úspešne vymazaná!", "success")
     return redirect(url_for('index'))
 
 # Template filter for chord rendering
@@ -889,6 +926,21 @@ def parse_json_filter(text):
         return json.loads(text)
     except (json.JSONDecodeError, TypeError):
         return []
+
+@app.route('/api/check-delete-password', methods=['POST'])
+def check_delete_password():
+    """API endpoint to validate delete password"""
+    try:
+        data = request.get_json()
+        provided_password = data.get('password', '')
+        
+        if provided_password == DELETE_SONG_PASSWORD:
+            return jsonify({'valid': True})
+        else:
+            return jsonify({'valid': False, 'message': 'Nesprávne heslo'})
+    
+    except Exception as e:
+        return jsonify({'valid': False, 'message': 'Chyba servera'}), 500
 
 @app.route('/api/songs-for-association')
 def get_songs():
