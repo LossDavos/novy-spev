@@ -28,7 +28,7 @@ S3_BUCKET = os.getenv("S3_BUCKET")
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_REGION = os.getenv("AWS_REGION")
-DELETE_SONG_PASSWORD = os.getenv("DELETE_SONG_PASSWORD")  # Default fallback
+DELETE_SONG_PASSWORD = os.getenv("DELETE_SONG_PASSWORD")
 
 
 
@@ -193,18 +193,18 @@ def download_original_sheet(song_id, sheet_filename):
     Download original PDF sheet without stamp
     """
     song = Song.query.get_or_404(song_id)
-    
+
     # Check if file exists in current upload structure
     current_file_path = os.path.join(app.config['UPLOAD_FOLDER'], str(song.id), sheet_filename)
-    
+
     if not os.path.exists(current_file_path):
         flash("Sheet PDF not found!", "error")
         return redirect(url_for('song_detail', song_id=song.id))
-    
+
     # Check if we have an original version stored
     base_name = os.path.splitext(current_file_path)[0]
     original_path = base_name + '_original.pdf'
-    
+
     if os.path.exists(original_path):
         # Return the original version
         return redirect(url_for('static', filename=f'uploads/{song.id}/{os.path.basename(original_path)}'))
@@ -220,37 +220,37 @@ def download_stamped_sheet(song_id, sheet_filename):
     """
     from flask import send_file
     import io
-    
+
     song = Song.query.get_or_404(song_id)
-    
+
     # Check if file exists in current upload structure
     current_file_path = os.path.join(app.config['UPLOAD_FOLDER'], str(song.id), sheet_filename)
-    
+
     if not os.path.exists(current_file_path):
         flash("Sheet PDF not found!", "error")
         return redirect(url_for('song_detail', song_id=song.id))
-    
+
     try:
         # Create stamped version in memory using temporary file
         with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as temp_stamped:
             font_path = os.path.join(os.path.dirname(__file__), 'static', 'fonts')
             success = stamp_pdf(current_file_path, temp_stamped.name, song.song_id, song.version_name, font_path)
-            
+
             if not success:
                 flash("Failed to create stamped version", "error")
                 return redirect(url_for('song_detail', song_id=song.id))
-            
+
             # Read the stamped PDF into memory
             with open(temp_stamped.name, 'rb') as f:
                 pdf_data = f.read()
-            
+
             # Clean up temp file
             os.unlink(temp_stamped.name)
-            
+
             # Create filename for download
             base_name = os.path.splitext(sheet_filename)[0]
             stamped_filename = f"{base_name}_stamped.pdf"
-            
+
             # Serve from memory
             return send_file(
                 io.BytesIO(pdf_data),
@@ -258,7 +258,7 @@ def download_stamped_sheet(song_id, sheet_filename):
                 download_name=stamped_filename,
                 mimetype='application/pdf'
             )
-        
+
     except Exception as e:
         flash(f"Error creating stamped version: {str(e)}", "error")
         return redirect(url_for('song_detail', song_id=song.id))
@@ -271,36 +271,36 @@ def download_blank_stamped(song_id):
     """
     from flask import send_file
     import io
-    
+
     song = Song.query.get_or_404(song_id)
-    
+
     try:
         # Path to blank PDF in the project directory
         blank_pdf_path = os.path.join(os.path.dirname(__file__), 'blank.pdf')
-        
+
         if not os.path.exists(blank_pdf_path):
             flash("Blank PDF template not found!", "error")
             return redirect(url_for('song_detail', song_id=song.id))
-        
+
         # Create stamped blank version in memory using temporary file
         with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as temp_stamped:
             font_path = os.path.join(os.path.dirname(__file__), 'static', 'fonts')
             success = stamp_pdf(blank_pdf_path, temp_stamped.name, song.song_id, song.version_name, font_path)
-            
+
             if not success:
                 flash("Failed to create blank stamped version", "error")
                 return redirect(url_for('song_detail', song_id=song.id))
-            
+
             # Read the stamped PDF into memory
             with open(temp_stamped.name, 'rb') as f:
                 pdf_data = f.read()
-            
+
             # Clean up temp file
             os.unlink(temp_stamped.name)
-            
+
             # Create filename for download
             blank_filename = f"{song.song_id}_blank_stamped.pdf"
-            
+
             # Serve from memory
             return send_file(
                 io.BytesIO(pdf_data),
@@ -308,7 +308,7 @@ def download_blank_stamped(song_id):
                 download_name=blank_filename,
                 mimetype='application/pdf'
             )
-        
+
     except Exception as e:
         flash(f"Error creating blank stamped version: {str(e)}", "error")
         return redirect(url_for('song_detail', song_id=song.id))
@@ -340,17 +340,17 @@ def get_presigned_url():
         key = request.args.get('key')
         if not key:
             return jsonify({'error': 'Missing key parameter'}), 400
-        
+
         expires_in = int(request.args.get('expires_in', 3600))
-        
+
         url = s3.generate_presigned_url(
             'get_object',
             Params={'Bucket': S3_BUCKET, 'Key': key},
             ExpiresIn=expires_in
         )
-        
+
         return redirect(url)
-        
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -401,7 +401,7 @@ def delete_song_files(song_id):
     """Delete all files associated with a song - both local and S3 files"""
     # Get song data first to access S3 file paths
     song = Song.query.get(song_id)
-    
+
     if song:
         # Delete S3 files (MP3s and MIDIs)
         try:
@@ -412,7 +412,7 @@ def delete_song_files(song_id):
                     if s3_key:  # Make sure the key is not empty
                         print(f"Deleting S3 MP3 file: {s3_key}")
                         delete_from_s3(s3_key)
-            
+
             # Delete MIDI files from S3
             if song.midi_paths:
                 midi_paths = json.loads(song.midi_paths)
@@ -420,12 +420,12 @@ def delete_song_files(song_id):
                     if s3_key:  # Make sure the key is not empty
                         print(f"Deleting S3 MIDI file: {s3_key}")
                         delete_from_s3(s3_key)
-                        
+
         except (json.JSONDecodeError, TypeError) as e:
             print(f"Error parsing S3 file paths for song {song_id}: {e}")
         except Exception as e:
             print(f"Error deleting S3 files for song {song_id}: {e}")
-    
+
     # Delete local files (sheet PDFs, MuseScore files, TeX, generated PDFs, etc.)
     song_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(song_id))
     if os.path.exists(song_folder):
@@ -467,11 +467,11 @@ def index():
     initial_batch_size = 50
     songs_query = Song.query.order_by(Song.song_id).limit(initial_batch_size).all()
     total_songs = Song.query.count()
-    
+
     # Calculate full database statistics
     total_admin_checked = Song.query.filter(Song.admin_checked == True).count()
     total_printed = Song.query.filter(Song.printed == True).count()
-    
+
     # Calculate category counts for the entire database
     categories = [
         "stále omšové spevy", "úvod", "medzispevy (žalmy; aleluja)", "obetovanie",
@@ -480,7 +480,7 @@ def index():
         "k svätcom", "detské", "iné", "liturgia hodín", "sobášne", "Taizé",
         "krížová cesta", "nevhodné"
     ]
-    
+
     category_counts = {}
     all_songs = Song.query.all()  # For category counting - could be optimized with raw SQL
     for category in categories:
@@ -489,7 +489,7 @@ def index():
             if song.categories and category.lower() in song.categories.lower():
                 count += 1
         category_counts[category] = count
-    
+
     # Convert Song objects to JSON-serializable dictionaries
     songs_data = []
     for song in songs_query:
@@ -501,7 +501,7 @@ def index():
             sheet_pdf_paths = json.loads(song.sheet_pdf_paths or '[]')
         except (json.JSONDecodeError, TypeError):
             pass
-        
+
         songs_data.append({
             'id': song.id,
             'song_id': song.song_id,
@@ -520,9 +520,9 @@ def index():
             'pdf_chords_path': song.pdf_chords_path,
             'tex_path': song.tex_path
         })
-    
-    return render_template('index.html', 
-                         songs=songs_data, 
+
+    return render_template('index.html',
+                         songs=songs_data,
                          total_songs=total_songs,
                          total_admin_checked=total_admin_checked,
                          total_printed=total_printed,
@@ -535,10 +535,10 @@ def get_songs_paginated():
     try:
         offset = int(request.args.get('offset', 0))
         limit = min(int(request.args.get('limit', 25)), 100)  # Max 100 songs per batch
-        
+
         songs = Song.query.order_by(Song.song_id).offset(offset).limit(limit).all()
         total_songs = Song.query.count()
-        
+
         songs_data = []
         for song in songs:
             # Parse file paths safely
@@ -549,7 +549,7 @@ def get_songs_paginated():
                 sheet_pdf_paths = json.loads(song.sheet_pdf_paths or '[]')
             except (json.JSONDecodeError, TypeError):
                 pass
-            
+
             songs_data.append({
                 'id': song.id,
                 'song_id': song.song_id,
@@ -568,7 +568,7 @@ def get_songs_paginated():
                 'pdf_chords_path': song.pdf_chords_path,
                 'tex_path': song.tex_path
             })
-        
+
         return jsonify({
             'songs': songs_data,
             'total_songs': total_songs,
@@ -576,7 +576,7 @@ def get_songs_paginated():
             'limit': limit,
             'has_more': (offset + len(songs_data)) < total_songs
         })
-    
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -588,29 +588,29 @@ def songs_view(song_ids):
     """
     # Parse the song IDs from the URL
     song_id_list = [sid.strip() for sid in song_ids.split(',') if sid.strip()]
-    
+
     if not song_id_list:
         flash("No song IDs provided", "error")
         return redirect(url_for('index'))
-    
+
     # Query songs based on the provided IDs
     songs = Song.query.filter(Song.song_id.in_(song_id_list)).all()
-    
+
     # Check for missing songs
     found_ids = [song.song_id for song in songs]
     missing_ids = [sid for sid in song_id_list if sid not in found_ids]
-    
+
     if missing_ids:
         flash(f"Songs not found: {', '.join(missing_ids)}", "warning")
-    
+
     if not songs:
         flash("No songs found with the provided IDs", "error")
         return redirect(url_for('index'))
-    
+
     # Sort songs to match the order from the URL
     songs_dict = {song.song_id: song for song in songs}
     ordered_songs = [songs_dict[sid] for sid in song_id_list if sid in songs_dict]
-    
+
     return render_template('songs_view.html', songs=ordered_songs, song_ids=song_ids)
 
 @app.route('/load_songs')
@@ -649,7 +649,7 @@ def delete_file(song_id, file_type):
         if song.tex_path:
             # Convert relative path to absolute path
             actual_path = os.path.join(BASE_DIR, song.tex_path)
-            
+
             print(f"DEBUG: Checking if file exists: {os.path.exists(actual_path)}", flush=True)
             if os.path.exists(actual_path):
                 print(f"DEBUG: Removing TeX file: {actual_path}", flush=True)
@@ -684,7 +684,7 @@ def delete_file(song_id, file_type):
             if os.path.exists(actual_path):
                 os.remove(actual_path)
         song.pdf_lyrics_path = None
-        
+
     elif file_type == 'pdf_chords':
         if song.pdf_chords_path:
             actual_path = os.path.join(BASE_DIR, song.pdf_chords_path)
@@ -728,7 +728,7 @@ def add_song():
 def song_detail(song_id):
     # Handle both new song creation and existing song editing
     is_new_song = song_id == 'new'
-    
+
     if is_new_song:
         song = Song(title="")
     else:
@@ -868,26 +868,26 @@ def song_detail(song_id):
     sheet_pdfs = json.loads(song.sheet_pdf_paths or '[]')
     sheet_mscz = json.loads(song.sheet_mscz_paths or '[]')
 
-    return render_template('song_detail.html', 
-                         song=song, 
-                         data=data, 
-                         mp3s=mp3s, 
-                         midis=midis, 
-                         sheet_pdfs=sheet_pdfs, 
-                         sheet_mscz=sheet_mscz, 
+    return render_template('song_detail.html',
+                         song=song,
+                         data=data,
+                         mp3s=mp3s,
+                         midis=midis,
+                         sheet_pdfs=sheet_pdfs,
+                         sheet_mscz=sheet_mscz,
                          is_edit=not is_new_song)
 
 @app.route('/song/<int:song_id>/view')
 def song_view(song_id):
     """Read-only detailed view of a song - no editing capabilities"""
     song = Song.query.get_or_404(song_id)
-    
+
     # Parse song parts data
     try:
         data = json.loads(song.song_parts or '[]')
     except (json.JSONDecodeError, TypeError):
         data = []
-    
+
     # Get file paths
     mp3s = json.loads(song.mp3_paths or '[]')
     midis = json.loads(song.midi_paths or '[]')
@@ -903,7 +903,7 @@ def delete_song(song_id):
     if not provided_password or provided_password != DELETE_SONG_PASSWORD:
         flash("Nesprávne heslo pre vymazanie piesne!", "error")
         return redirect(url_for('song_view', song_id=song_id))
-    
+
     song = Song.query.get_or_404(song_id)
     song_title = song.title  # Store for flash message
     delete_song_files(song_id)
@@ -933,12 +933,12 @@ def check_delete_password():
     try:
         data = request.get_json()
         provided_password = data.get('password', '')
-        
+
         if provided_password == DELETE_SONG_PASSWORD:
             return jsonify({'valid': True})
         else:
             return jsonify({'valid': False, 'message': 'Nesprávne heslo'})
-    
+
     except Exception as e:
         return jsonify({'valid': False, 'message': 'Chyba servera'}), 500
 
@@ -980,18 +980,18 @@ def search_songs():
     """Fast server-side search endpoint with pagination"""
     from unidecode import unidecode
     import re
-    
+
     # Get search parameters
     query = request.args.get('q', '').strip()
     printed_filter = request.args.get('printed')  # 'true' or None
-    unchecked_filter = request.args.get('unchecked')  # 'true' or None  
+    unchecked_filter = request.args.get('unchecked')  # 'true' or None
     categories_filter = request.args.get('categories')  # comma-separated
     limit = min(int(request.args.get('limit', 50)), 100)  # Max 100 results per page
     offset = max(int(request.args.get('offset', 0)), 0)  # Start from this position
-    
+
     # Start with base query
     query_obj = Song.query
-    
+
     # Apply text search if provided
     if query:
         # Normalize the search query the same way we normalize stored text
@@ -999,39 +999,39 @@ def search_songs():
         query_no_chords = re.sub(r'\[[^\]]*\]', '', query)
         normalized_query = unidecode(query_no_chords.lower()).replace(",", " ").replace(".", " ").replace("-", " ").replace("_", " ").replace(";", " ").strip()
         normalized_query = re.sub(r'\s+', ' ', normalized_query)
-        
+
         # Use LIKE for fast substring search on pre-normalized text
         query_obj = query_obj.filter(Song.search_text.like(f'%{normalized_query}%'))
-    
+
     # Apply filters
     if printed_filter == 'true':
         query_obj = query_obj.filter(Song.printed == True)
     elif printed_filter == 'false':
         query_obj = query_obj.filter(Song.printed == False)
-    
+
     if unchecked_filter == 'true':
         query_obj = query_obj.filter(Song.admin_checked == False)
-    
+
     # Apply category filters (intersection - must have ALL selected categories)
     category_list = []
     if categories_filter:
         category_list = [cat.strip().lower() for cat in categories_filter.split(',') if cat.strip()]
         for category in category_list:
             query_obj = query_obj.filter(Song.categories.ilike(f'%{category}%'))
-    
+
     # Get total count before applying pagination
     total_count = query_obj.count()
-    
+
     # Apply pagination and execute query
     songs = query_obj.order_by(Song.song_id).offset(offset).limit(limit).all()
-    
+
     # Return JSON response with song data and pagination info
     results = []
     for song in songs:
         # Extract first 5 words from verse1 and chorus
         verse1_preview = ""
         chorus_preview = ""
-        
+
         if song.song_parts:
             try:
                 song_data = json.loads(song.song_parts)
@@ -1039,7 +1039,7 @@ def search_songs():
                     if isinstance(part, dict):
                         part_type = part.get('type', '').lower()
                         lines = part.get('lines', [])
-                        
+
                         if part_type in ['sloka', 'verse', 'verse1', 'verš'] and not verse1_preview and lines:
                             # Get first line and extract first 9 words
                             first_line = lines[0] if lines else ""
@@ -1047,7 +1047,7 @@ def search_songs():
                             clean_line = re.sub(r'\[[^\]]*\]', '', first_line)
                             words = clean_line.split()[:9]
                             verse1_preview = ' '.join(words)
-                        
+
                         elif part_type in ['refren', 'chorus', 'refrén'] and not chorus_preview and lines:
                             # Get first line and extract first 9 words
                             first_line = lines[0] if lines else ""
@@ -1057,7 +1057,7 @@ def search_songs():
                             chorus_preview = ' '.join(words)
             except (json.JSONDecodeError, TypeError):
                 pass
-        
+
         # Parse file paths safely
         mp3_paths = []
         sheet_pdf_paths = []
@@ -1066,7 +1066,7 @@ def search_songs():
             sheet_pdf_paths = json.loads(song.sheet_pdf_paths or '[]')
         except (json.JSONDecodeError, TypeError):
             pass
-        
+
         results.append({
             'id': song.id,
             'song_id': song.song_id,
@@ -1087,7 +1087,7 @@ def search_songs():
             'pdf_chords_path': song.pdf_chords_path,
             'tex_path': song.tex_path
         })
-    
+
     return jsonify({
         'results': results,
         'total_found': total_count,
@@ -1098,7 +1098,7 @@ def search_songs():
         'query': query,
         'filters_applied': {
             'printed': printed_filter == 'true',
-            'unchecked': unchecked_filter == 'true', 
+            'unchecked': unchecked_filter == 'true',
             'categories': category_list
         }
     })
@@ -1111,7 +1111,7 @@ def generate_pdfs(song_id):
     if not song.tex_path:
         flash("TeX file not found for this song.", "error")
         return redirect(url_for('song_view', song_id=song_id))
-    
+
     # Convert relative path to absolute for file operations
     tex_file_absolute = os.path.join(BASE_DIR, song.tex_path)
     if not os.path.exists(tex_file_absolute):
@@ -1203,13 +1203,13 @@ def get_category_counts():
     """API endpoint to get category counts with optional filtering"""
     from unidecode import unidecode
     import re
-    
+
     # Get filter parameters (same as search API)
     query = request.args.get('q', '').strip()
     printed_filter = request.args.get('printed')
     unchecked_filter = request.args.get('unchecked')
     active_categories = request.args.get('active_categories')  # comma-separated active filters
-    
+
     # List of all categories
     categories = [
         "stále omšové spevy", "úvod", "medzispevy (žalmy; aleluja)", "obetovanie",
@@ -1218,52 +1218,52 @@ def get_category_counts():
         "k svätcom", "detské", "iné", "liturgia hodín", "sobášne", "Taizé",
         "krížová cesta", "nevhodné"
     ]
-    
+
     # Build base query with filters (excluding category filters for now)
     query_obj = Song.query
-    
+
     # Apply text search if provided
     if query:
         query_no_chords = re.sub(r'\[[^\]]*\]', '', query)
         normalized_query = unidecode(query_no_chords.lower()).replace(",", " ").replace(".", " ").replace("-", " ").replace("_", " ").replace(";", " ").strip()
         normalized_query = re.sub(r'\s+', ' ', normalized_query)
         query_obj = query_obj.filter(Song.search_text.like(f'%{normalized_query}%'))
-    
+
     # Apply other filters
     if printed_filter == 'true':
         query_obj = query_obj.filter(Song.printed == True)
     if unchecked_filter == 'true':
         query_obj = query_obj.filter(Song.admin_checked == False)
-    
+
     # Get active categories list for intersection logic
     active_categories_list = []
     if active_categories:
         active_categories_list = [cat.strip().lower() for cat in active_categories.split(',') if cat.strip()]
-    
+
     # Calculate counts for each category
     category_counts = {}
-    
+
     for category in categories:
         # For each category, create a query that includes this category + all active categories
         category_query = query_obj
-        
+
         # Add the current category we're counting
         category_query = category_query.filter(Song.categories.ilike(f'%{category.lower()}%'))
-        
+
         # Add all active category filters (intersection logic)
         for active_cat in active_categories_list:
             if active_cat != category.lower():  # Don't double-filter the same category
                 category_query = category_query.filter(Song.categories.ilike(f'%{active_cat}%'))
-        
+
         # Count songs for this category
         count = category_query.count()
         # Use lowercase version as key to match what frontend JavaScript expects
-        # (frontend does btn.dataset.category.toLowerCase())  
+        # (frontend does btn.dataset.category.toLowerCase())
         category_counts[category.lower()] = count
-        
+
         # Also add the original case version for debugging/fallback
         category_counts[category] = count
-    
+
     # Ensure JSON response has proper UTF-8 encoding
     return jsonify(category_counts)
 

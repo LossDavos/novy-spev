@@ -7,7 +7,7 @@
   border: 2px solid rgba(255, 255, 255, 0.4);
   animation: slideUpFade 0.5s ease-out;
   display: block !important;
-  
+
   /* Default: Above table on larger screens */
   position: static;
   margin: 0 auto 2rem auto;
@@ -242,16 +242,16 @@
     border-radius: 50px;
     transform: none;
   }
-  
+
   /* Remove bottom padding since search is not fixed on desktop */
   body {
     padding-bottom: 0 !important;
   }
-  
+
   .search-input-group {
     padding: 0.25rem;
   }
-  
+
   .quick-search-input {
     font-size: 16px !important;
     padding: 0.75rem 1rem;
@@ -271,21 +271,21 @@
     border-radius: 40px;
     z-index: 999999 !important;
   }
-  
+
   .search-input-group {
     padding: 0.125rem;
   }
-  
+
   .search-toggle-btn {
     width: 36px;
     height: 36px;
   }
-  
+
   .quick-search-input {
     padding: 0.625rem 0.75rem;
     font-size: 16px !important; /* Critical: prevent zoom */
   }
-  
+
   /* Add bottom padding to body to prevent content being hidden behind fixed search */
   body {
     padding-bottom: 100px !important;
@@ -314,11 +314,11 @@
     border-radius: 35px;
     z-index: 999999 !important;
   }
-  
+
   .fixed-search-spacer {
     height: 90px;
   }
-  
+
   body {
     padding-bottom: 90px !important;
   }
@@ -736,33 +736,33 @@
     margin: 0.5rem;
     max-width: none;
   }
-  
+
   .modal-body {
     padding: 1rem;
     max-height: 80vh;
   }
-  
+
   .search-results-container {
     max-height: 300px;
   }
-  
+
   .search-result-item {
     padding: 0.75rem;
   }
-  
+
   .search-result-meta {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   /* Prevent zoom on focus for mobile search input - critical fix */
   #searchModal .input-group-lg .form-control {
     font-size: 16px !important; /* Minimum 16px to prevent mobile zoom */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
-  
+
   /* Ensure search input is properly sized on mobile */
   #searchInput {
     font-size: 16px !important; /* Critical: prevents mobile zoom */
@@ -771,19 +771,19 @@
     height: auto !important;
     min-height: 44px; /* Touch-friendly minimum height */
   }
-  
+
   /* Make search button touch-friendly on mobile */
   #searchModal .input-group-lg .btn {
     font-size: 14px !important;
     padding: 0.75rem 1rem !important;
     min-height: 44px;
   }
-  
+
   /* Keep modal normal size on mobile */
   #searchModal .modal-body {
     padding: 1rem !important;
   }
-  
+
   /* Only make full-screen on very tiny devices */
   @media (max-width: 480px) {
     .modal-dialog {
@@ -791,14 +791,14 @@
       width: calc(100% - 1rem);
       max-width: none;
     }
-    
+
     /* Keep search input font size to prevent zoom but don't make it huge */
     #searchInput {
       font-size: 16px !important; /* Prevent zoom but keep reasonable size */
       padding: 0.75rem !important;
       min-height: 48px;
     }
-    
+
     #searchModal .input-group-lg .btn {
       font-size: 14px !important;
       min-height: 48px;

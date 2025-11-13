@@ -59,14 +59,14 @@ def register_poppins_fonts(font_path="/home/Davos/novy_spev/static/fonts/"):
 def stamp_pdf(input_pdf_path, output_pdf_path, song_id, version_name=None, font_path=""):
     """
     Stamp a PDF with song ID and optional version name
-    
+
     Args:
         input_pdf_path: Path to the input PDF file
         output_pdf_path: Path where stamped PDF will be saved
         song_id: Song ID to display in the stamp
         version_name: Optional version name to display
         font_path: Path to directory containing Poppins fonts
-    
+
     Returns:
         bool: True if successful, False otherwise
     """
@@ -76,7 +76,7 @@ def stamp_pdf(input_pdf_path, output_pdf_path, song_id, version_name=None, font_
     print(f"  song_id: {song_id}")
     print(f"  version_name: {version_name}")
     print(f"  font_path: {font_path}")
-    
+
     try:
         # Register custom fonts
         fonts_available = register_poppins_fonts(font_path)

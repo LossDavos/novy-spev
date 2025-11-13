@@ -29,7 +29,7 @@
 
 <!-- Header Section -->
 <div class="song-view-header mb-4">
-  <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">    
+  <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
     <!-- Song Status Badges -->
     <div class="d-flex gap-1 flex-wrap justify-content-center order-1 order-md-2 w-100 w-md-auto mb-2 mb-md-0">
       {% if song.printed %}
@@ -45,7 +45,7 @@
         <span class="d-sm-none">⚠</span>
       </span>
       {% endif %}
-      
+
       {% if song.admin_checked %}
       <span class="badge bg-success px-2 py-1 fs-7 fs-md-6">
         <i class="bi bi-check-circle-fill me-1"></i>
@@ -64,9 +64,9 @@
 </div>
 
 <!-- Song Basic Information -->
-<div class="song-info-section card border-0 shadow-lg rounded-4 mb-4" 
+<div class="song-info-section card border-0 shadow-lg rounded-4 mb-4"
      style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-  
+
   <div class="card-header border-0 text-white p-4" style="background: transparent;">
     <div class="d-flex align-items-center justify-content-between">
       <div>
@@ -83,9 +83,9 @@
       </div>
     </div>
   </div>
-  
+
   <div class="card-body bg-white p-4">
-    
+
     <!-- Authors Section -->
     <div class="row mb-4 g-3">
       <div class="col-md-6 col-12">
@@ -105,7 +105,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Titles Section -->
     <div class="row mb-4 g-3">
       <div class="col-md-6 col-12">
@@ -133,13 +133,13 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Categories Section -->
     <div class="categories-display mb-4">
       <label class="fw-bold text-muted small mb-2 d-block">
         <i class="bi bi-tags-fill text-primary me-1"></i>KATEGÓRIE
       </label>
-      <div class="categories-container p-3 rounded-3 border" 
+      <div class="categories-container p-3 rounded-3 border"
            style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
         {% if song.categories %}
           {% for category in song.categories.split(';;') %}
@@ -159,9 +159,9 @@
 
 {% set file_count = (sheet_pdfs|length) + (mp3s|length) + (midis|length) + (sheet_mscz|length) + (1 if song.pdf_lyrics_path else 0) + (1 if song.pdf_chords_path else 0) %}
 <!-- File Management Section (Read-Only) -->
-<div class="file-management-section card border-0 shadow-lg rounded-4 overflow-hidden mb-4" 
+<div class="file-management-section card border-0 shadow-lg rounded-4 overflow-hidden mb-4"
      style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-  
+
   <div class="card-header border-0 text-white p-4" style="background: transparent;">
     <div class="d-flex align-items-center justify-content-between">
       <div>
@@ -173,13 +173,13 @@
       </div>
       <div class="file-stats">
         <span class="badge bg-white text-primary fs-6">
-          <i class="bi bi-files"></i> 
+          <i class="bi bi-files"></i>
           {{ file_count }} súborov
         </span>
       </div>
     </div>
   </div>
-  
+
   <div class="card-body bg-white p-4">
 
     <!-- TeX and PDF Generation Section -->
@@ -188,10 +188,10 @@
         <span class="badge bg-primary">⚙️</span>
         Generovanie súborov
       </h5>
-      
-      <div class="generation-actions card p-3 border" 
+
+      <div class="generation-actions card p-3 border"
            style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
-        
+
         <div class="d-flex align-items-center justify-content-between mb-3">
           <div>
             <h6 class="mb-1 fw-bold text-primary">
@@ -201,7 +201,7 @@
             <small class="text-muted">Vygenerujte TeX alebo PDF súbory z textu piesne</small>
           </div>
         </div>
-        
+
         <div class="row generation-buttons w-100" role="group">
           <div class="col-6">
             <form method="POST" action="{{ url_for('generate_tex', song_id=song.id) }}" class="d-inline w-100" onsubmit="return checkTexPermission(event)">
@@ -213,10 +213,10 @@
               </button>
             </form>
           </div>
-          
+
           <div class="col-6">
             <form method="GET" action="{{ url_for('generate_pdfs', song_id=song.id) }}" class="d-inline w-100" onsubmit="return checkPdfPermission(event)">
-              <button type="submit" class="btn btn-primary w-100 {{ 'restricted-action' if not song.tex_path or song.admin_checked or song.printed else '' }}" 
+              <button type="submit" class="btn btn-primary w-100 {{ 'restricted-action' if not song.tex_path or song.admin_checked or song.printed else '' }}"
                       style="background-color: #9b59b6; border-color: #9b59b6;"
                       title="{{ 'Najprv vygenerujte TeX súbory' if not song.tex_path else ('Pieseň je chránená - skontrolovaná adminom' if song.admin_checked else ('Pieseň je vytlačená - nemožno meniť' if song.printed else 'Generovať PDF súbory')) }}">
                 <i class="bi bi-file-pdf me-1"></i>PDF
@@ -227,7 +227,7 @@
             </form>
           </div>
         </div>
-        
+
         <div class="mt-2 px-1">
           <small class="text-muted">
             <i class="bi bi-info-circle me-1"></i>
@@ -247,9 +247,9 @@
 
       <!-- Lyrics PDF -->
       {% if song.pdf_lyrics_path %}
-      <div class="file-card mb-3 p-3 border rounded-3 position-relative" 
+      <div class="file-card mb-3 p-3 border rounded-3 position-relative"
            style="background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%); border-color: #fecaca !important;">
-        
+
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
             <div class="file-type-icon p-2 rounded-circle" style="background-color: rgba(220, 38, 38, 0.1);">
@@ -260,25 +260,25 @@
               <small class="text-muted">Slová bez akordov</small>
             </div>
           </div>
-          
+
           <div class="file-actions">
-            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}" 
+            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}"
                class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" target="_blank">
               <i class="bi bi-download"></i>
               Stiahnuť
             </a>
           </div>
         </div>
-        
+
         <div class="print-info mt-3 p-2 rounded-2 bg-light bg-opacity-50">
           <small class="text-muted d-block">
             <i class="bi bi-printer text-primary me-1"></i>
-            <strong>Tlač:</strong> Obojstranne, 
-            <span class="fw-bold text-primary">10× (normálne)</span> alebo 
+            <strong>Tlač:</strong> Obojstranne,
+            <span class="fw-bold text-primary">10× (normálne)</span> alebo
             <span class="fw-bold">3× (neznáme piesne)</span>
           </small>
         </div>
-        
+
         <div class="position-absolute top-0 end-0 p-2">
           <span class="badge bg-success"><i class="bi bi-check-circle"></i></span>
         </div>
@@ -287,9 +287,9 @@
 
       <!-- Lyrics + Chords PDF -->
       {% if song.pdf_chords_path %}
-      <div class="file-card mb-3 p-3 border rounded-3 position-relative" 
+      <div class="file-card mb-3 p-3 border rounded-3 position-relative"
            style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #bbf7d0 !important;">
-        
+
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
             <div class="file-type-icon p-2 rounded-circle" style="background-color: rgba(34, 197, 94, 0.1);">
@@ -300,21 +300,21 @@
               <small class="text-muted">Slová s akordami</small>
             </div>
           </div>
-          
+
           <div class="file-actions">
-            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}" 
+            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}"
                class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" target="_blank">
               <i class="bi bi-download"></i>
               Stiahnuť
             </a>
           </div>
         </div>
-        
+
         <div class="print-info mt-3 p-2 rounded-2 bg-light bg-opacity-50">
           <small class="d-block">
             <i class="bi bi-printer text-success me-1"></i>
-            <strong class="text-success">Tlač:</strong> 
-            <span class="fw-bold text-success">5× (normálne)</span> alebo 
+            <strong class="text-success">Tlač:</strong>
+            <span class="fw-bold text-success">5× (normálne)</span> alebo
             <span class="fw-bold">2× (neznáme)</span>
           </small>
           <div class="mt-1">
@@ -324,7 +324,7 @@
             </small>
           </div>
         </div>
-        
+
         <div class="position-absolute top-0 end-0 p-2">
           <span class="badge bg-success"><i class="bi bi-check-circle"></i></span>
         </div>
@@ -345,11 +345,11 @@
           <span class="badge bg-success">{{ mp3s|length }}</span>
           <small class="text-muted">audio súborov</small>
         </div>
-        
+
         {% for path in mp3s %}
-        <div class="audio-card mb-2 p-3 border rounded-3 position-relative" 
+        <div class="audio-card mb-2 p-3 border rounded-3 position-relative"
              style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #bbf7d0 !important;">
-          
+
           <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
               <div class="audio-icon p-2 rounded-circle" style="background-color: rgba(34, 197, 94, 0.1);">
@@ -362,21 +362,21 @@
                 </small>
               </div>
             </div>
-            
+
             <div class="audio-actions">
-              <a href="{{ path | presigned_url }}" 
-                 class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" 
+              <a href="{{ path | presigned_url }}"
+                 class="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
                  target="_blank" title="Prehrať/Stiahnuť">
                 <i class="bi bi-play-circle"></i>
                 Prehrať
               </a>
             </div>
           </div>
-          
+
           <div class="mt-2 px-2">
             <div class="audio-viz d-flex align-items-end gap-1" style="height: 20px;">
               {% for i in range(20) %}
-              <div class="viz-bar bg-success bg-opacity-30 rounded-top" 
+              <div class="viz-bar bg-success bg-opacity-30 rounded-top"
                    style="width: 3px; height: {{ (loop.index % 4 + 1) * 5 }}px;"></div>
               {% endfor %}
             </div>
@@ -399,11 +399,11 @@
           <span class="badge bg-warning">{{ midis|length }}</span>
           <small class="text-muted">MIDI súborov</small>
         </div>
-        
+
         {% for path in midis %}
-        <div class="midi-card mb-2 p-3 border rounded-3 position-relative" 
+        <div class="midi-card mb-2 p-3 border rounded-3 position-relative"
              style="background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); border-color: #fde68a !important;">
-          
+
           <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
               <div class="midi-icon p-2 rounded-circle" style="background-color: rgba(245, 158, 11, 0.1);">
@@ -416,21 +416,21 @@
                 </small>
               </div>
             </div>
-            
+
             <div class="midi-actions">
-              <a href="{{ path | presigned_url }}" 
-                 class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1" 
+              <a href="{{ path | presigned_url }}"
+                 class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1"
                  target="_blank" title="Stiahnuť MIDI súbor">
                 <i class="bi bi-download"></i>
                 Stiahnuť
               </a>
             </div>
           </div>
-          
+
           <div class="mt-2 px-2">
             <div class="midi-tracks d-flex gap-1" style="height: 16px;">
               {% for i in range(8) %}
-              <div class="track-line bg-warning bg-opacity-40 rounded" 
+              <div class="track-line bg-warning bg-opacity-40 rounded"
                    style="flex: 1; height: {{ (loop.index % 3 + 1) * 4 }}px; margin-top: auto;"></div>
               {% endfor %}
             </div>
@@ -457,12 +457,12 @@
           <span class="badge bg-primary">{{ sheet_pdfs|length }}</span>
           <small class="text-muted">súborov nôt</small>
         </div>
-        
+
         {% for path in sheet_pdfs %}
-        <div class="sheet-card mb-3 p-4 border rounded-4 position-relative overflow-hidden" 
-             style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%); 
+        <div class="sheet-card mb-3 p-4 border rounded-4 position-relative overflow-hidden"
+             style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%);
                     box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-          
+
           <div class="d-flex align-items-start justify-content-between mb-3">
             <div class="file-info d-flex align-items-center gap-3">
               <div class="file-icon p-2 rounded-circle bg-primary bg-opacity-10">
@@ -476,7 +476,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="download-actions">
             <div class="mb-2">
               <small class="text-muted fw-semibold">
@@ -485,31 +485,31 @@
             </div>
 
             <div class="btn-group dropup">
-              <button type="button" class="btn btn-primary btn-sm dropdown-toggle d-flex align-items-center gap-1" 
+              <button type="button" class="btn btn-primary btn-sm dropdown-toggle d-flex align-items-center gap-1"
                       data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
                 <i class="bi bi-download"></i>
                 Stiahnuť noty
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" 
-                     href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}" 
+                  <a class="dropdown-item"
+                     href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}"
                      target="_blank" title="Pôvodný súbor bez pečiatky">
                     <i class="bi bi-file-earmark-pdf text-primary me-2"></i>
                     Originál
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" 
-                     href="{{ url_for('download_stamped_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}" 
+                  <a class="dropdown-item"
+                     href="{{ url_for('download_stamped_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}"
                      target="_blank" title="Súbor s pečiatkou">
                     <i class="bi bi-file-earmark-check text-success me-2"></i>
                     S pečiatkou
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" 
-                     href="{{ url_for('download_blank_stamped', song_id=song.id) }}" 
+                  <a class="dropdown-item"
+                     href="{{ url_for('download_blank_stamped', song_id=song.id) }}"
                      target="_blank" title="Prázdna stránka len s pečiatkou">
                     <i class="bi bi-file-earmark-blank text-info me-2"></i>
                     Prázdna s pečiatkou
@@ -518,14 +518,14 @@
               </ul>
             </div>
           </div>
-          
+
           <div class="info-panel mt-3 p-2 rounded-2 bg-light bg-opacity-50">
             <small class="text-muted d-block">
               <i class="bi bi-lightbulb text-warning me-1"></i>
               <strong>Info:</strong> Originál = bez zmien, S pečiatkou = s ID piesne, Prázdna = len pečiatka
             </small>
           </div>
-          
+
           <div class="position-absolute top-0 end-0 p-2">
             <div class="bg-primary bg-opacity-10 rounded-circle p-1" style="width: 40px; height: 40px;">
               <i class="bi bi-music-note-beamed text-primary d-flex align-items-center justify-content-center h-100"></i>
@@ -549,11 +549,11 @@
           <span class="badge bg-info">{{ sheet_mscz|length }}</span>
           <small class="text-muted">MuseScore súborov</small>
         </div>
-        
+
         {% for path in sheet_mscz %}
-        <div class="mscz-card mb-2 p-3 border rounded-3 position-relative" 
+        <div class="mscz-card mb-2 p-3 border rounded-3 position-relative"
              style="background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%); border-color: #bae6fd !important;">
-          
+
           <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
               <div class="mscz-icon p-2 rounded-circle" style="background-color: rgba(6, 182, 212, 0.1);">
@@ -566,17 +566,17 @@
                 </small>
               </div>
             </div>
-            
+
             <div class="mscz-actions">
-              <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + path.split('/')[-1]) }}" 
-                 class="btn btn-outline-info btn-sm d-flex align-items-center gap-1" 
+              <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + path.split('/')[-1]) }}"
+                 class="btn btn-outline-info btn-sm d-flex align-items-center gap-1"
                  target="_blank" title="Stiahnuť MuseScore súbor">
                 <i class="bi bi-download"></i>
                 Stiahnuť
               </a>
             </div>
           </div>
-          
+
           <div class="mt-2 px-2">
             <div class="staff-lines" style="position: relative; height: 20px;">
               {% for i in range(5) %}
@@ -610,7 +610,7 @@
 </div>
 
 <!-- Song Parts Section (Read-Only) -->
-<div class="parts-section card border-0 shadow-lg rounded-4 p-4 mb-4" 
+<div class="parts-section card border-0 shadow-lg rounded-4 p-4 mb-4"
      style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div>
@@ -629,9 +629,9 @@
 <div id="parts-display" class="mb-4">
   {% if data %}
     {% for part in data %}
-    <div class="card p-4 mb-3 part-display part-{{ part.type | lower | replace(' ', '-') }}" 
+    <div class="card p-4 mb-3 part-display part-{{ part.type | lower | replace(' ', '-') }}"
          data-part-index="{{ loop.index0 }}">
-      
+
       <div class="d-flex align-items-center justify-content-between mb-3">
         <div class="part-type-display">
           <span class="badge fs-6 px-3 py-2 part-type-badge">
@@ -640,7 +640,7 @@
           </span>
           <small class="text-muted ms-2">Časť {{ loop.index }}</small>
         </div>
-        
+
         <div class="part-position text-muted">
           <small><i class="bi bi-list-ol me-1"></i>{{ loop.index }}/{{ data|length }}</small>
         </div>
@@ -648,21 +648,21 @@
 
       <!-- Song Text with Chords -->
       <div class="part-content mb-3">
-        <div class="rendered-block p-3 rounded-3" 
+        <div class="rendered-block p-3 rounded-3"
              style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); font-family: 'Courier New', monospace; line-height: 1.8;">
           {% for line in part.lines %}
             <div class="song-line">{{ line | replace_chords | safe }}</div>
           {% endfor %}
         </div>
       </div>
-      
+
       <!-- Raw Text Display (Collapsed) -->
       <div class="raw-text-section">
-        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" 
+        <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse"
                 data-bs-target="#raw-text-{{ loop.index0 }}" aria-expanded="false">
           <i class="bi bi-code-square me-1"></i>Zobraziť surový text
         </button>
-        
+
         <div class="collapse mt-2" id="raw-text-{{ loop.index0 }}">
           <div class="card card-body bg-light">
             <pre class="mb-0 small text-muted">{% for line in part.lines %}{{ line }}
@@ -689,13 +689,13 @@
       <span class="d-none d-sm-inline">Späť na zoznam</span>
       <span class="d-sm-none">Späť</span>
     </a>
-    
+
     <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-primary btn-lg shadow-lg">
       <i class="bi bi-pencil-square me-2"></i>
       <span class="d-none d-sm-inline">Upraviť pieseň</span>
       <span class="d-sm-none">Upraviť</span>
     </a>
-    
+
     <button type="button" class="btn btn-danger btn-lg shadow-lg" onclick="confirmDeleteSong()">
       <i class="bi bi-trash me-2"></i>
       <span class="d-none d-sm-inline">Vymazať pieseň</span>
@@ -1131,101 +1131,101 @@ html {
         text-align: center;
         margin-bottom: 2rem;
     }
-    
+
     .song-view-header .d-flex {
         flex-direction: column;
         gap: 1rem;
     }
-    
+
     .song-view-header .d-flex:first-child {
         flex-direction: column-reverse;
     }
-    
+
     /* Song info section mobile */
     .song-info-section .card-header {
         padding: 1.5rem !important;
     }
-    
+
     .song-info-section .card-header .d-flex {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
     }
-    
+
     .song-info-section h2 {
         font-size: 1.5rem;
         line-height: 1.3;
     }
-    
+
     .song-id-large {
         display: none; /* Hide decorative large ID on mobile */
     }
-    
+
     /* Authors and titles - stack vertically */
     .song-info-section .row .col-md-6 {
         margin-bottom: 1rem;
     }
-    
+
     .info-card {
         padding: 1rem !important;
         margin-bottom: 0.75rem;
     }
-    
+
     .info-card .fs-5 {
         font-size: 1.1rem !important;
     }
-    
+
     /* Categories display mobile */
     .categories-container {
         padding: 1rem !important;
     }
-    
+
     .category-display-badge {
         font-size: 0.75rem;
         padding: 0.4em 0.6em;
         margin: 0.2rem;
     }
-    
+
     /* File management mobile */
     .file-management-section .card-header {
         padding: 1.5rem 1rem !important;
     }
-    
+
     .file-management-section .card-header .d-flex {
         flex-direction: column;
         text-align: center;
         gap: 0.5rem;
     }
-    
+
     .file-management-section .card-body {
         padding: 1rem !important;
     }
-    
+
     /* File cards mobile */
     .file-card, .audio-card, .midi-card, .sheet-card, .mscz-card {
         padding: 1rem !important;
         margin-bottom: 1rem !important;
     }
-    
+
     .file-card .d-flex {
         flex-direction: column;
         gap: 1rem;
         align-items: stretch !important;
     }
-    
+
     .file-info {
         text-align: center;
     }
-    
+
     .file-actions, .audio-actions, .midi-actions, .mscz-actions {
         width: 100%;
         justify-content: center !important;
     }
-    
+
     .download-actions .btn-group {
         width: 100%;
     }
-    
+
     /* Mobile button sizing - icons only, no text */
     .file-actions .btn,
     .audio-actions .btn,
@@ -1240,7 +1240,7 @@ html {
         justify-content: center !important;
         white-space: nowrap !important;
     }
-    
+
     .file-actions .btn-sm,
     .audio-actions .btn-sm,
     .midi-actions .btn-sm,
@@ -1254,7 +1254,7 @@ html {
         justify-content: center !important;
         white-space: nowrap !important;
     }
-    
+
     /* Show only icons in mobile buttons */
     .file-actions .btn i,
     .audio-actions .btn i,
@@ -1264,7 +1264,7 @@ html {
         font-size: 1.2rem !important;
         margin: 0 !important;
     }
-    
+
     /* Hide text content in buttons on mobile - keep only icons */
     .file-actions .btn > *:not(i),
     .audio-actions .btn > *:not(i),
@@ -1273,7 +1273,7 @@ html {
     .download-actions .btn > *:not(i) {
         display: none !important;
     }
-    
+
     /* Enhanced disabled button styling for mobile */
     .btn:disabled,
     .btn.disabled {
@@ -1283,7 +1283,7 @@ html {
         border-style: dashed !important;
         border-width: 2px !important;
     }
-    
+
     /* Disabled button overlay with prohibition symbol */
     .btn:disabled::after,
     .btn.disabled::after {
@@ -1304,7 +1304,7 @@ html {
         border: 2px solid white;
         box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
-    
+
     /* Mobile-specific tooltip styling */
     .mobile-tooltip {
         position: absolute;
@@ -1327,7 +1327,7 @@ html {
         text-align: center;
         line-height: 1.3;
     }
-    
+
     .mobile-tooltip::after {
         content: '';
         position: absolute;
@@ -1337,11 +1337,11 @@ html {
         border: 5px solid transparent;
         border-top-color: rgba(0, 0, 0, 0.9);
     }
-    
+
     .mobile-tooltip.show {
         opacity: 1;
     }
-    
+
     /* Show tooltip on disabled button click/tap */
     .btn:disabled:active .mobile-tooltip,
     .btn.disabled:active .mobile-tooltip,
@@ -1349,7 +1349,7 @@ html {
     .btn.disabled.show-tooltip .mobile-tooltip {
         opacity: 1;
     }
-    
+
     /* Also hide direct text nodes */
     .file-actions .btn,
     .audio-actions .btn,
@@ -1358,33 +1358,33 @@ html {
     .download-actions .btn {
         font-size: 0 !important;
     }
-    
+
     .download-actions .btn {
         width: 100%;
         justify-content: center !important;
     }
-    
+
     /* Fix dropdown cutoff issues */
     .btn-group {
         position: static !important;
     }
-    
+
     .dropdown-menu {
         position: absolute !important;
         z-index: 1055 !important;
     }
-    
+
     /* Ensure all containers allow dropdown overflow */
     .card, .card-body, .row, .col-12, .d-flex, .mb-3, .download-actions {
         overflow: visible !important;
     }
-    
+
     /* Dropdown sizing and spacing */
     .download-actions .btn-group .dropdown-menu {
         min-width: 180px;
         max-width: none;
     }
-    
+
     /* On mobile, switch to dropdown below */
     @media (max-width: 768px) {
         .download-actions .btn-group {
@@ -1394,84 +1394,84 @@ html {
             /* Remove dropend on mobile, use regular dropdown */
         }
     }
-    
+
     /* Parts section mobile */
     .parts-section {
         padding: 1.5rem !important;
         margin-bottom: 2rem !important;
     }
-    
+
     .parts-section .d-flex {
         flex-direction: column;
         text-align: center;
         gap: 1rem;
     }
-    
+
     .part-display {
         padding: 1rem !important;
         margin-bottom: 1.5rem !important;
     }
-    
+
     .part-display .d-flex:first-child {
         flex-direction: column;
         text-align: center;
         gap: 0.5rem;
     }
-    
+
     .part-type-badge {
         align-self: center;
     }
-    
+
     .rendered-block {
         font-size: 0.9rem;
         padding: 1rem !important;
         line-height: 1.6 !important;
     }
-    
+
     /* Raw text collapsible */
     .raw-text-section {
         text-align: center;
     }
-    
+
     /* Action buttons mobile */
     .action-buttons .d-flex {
         flex-direction: column;
         align-items: center;
         gap: 1rem;
     }
-    
+
     .btn-lg {
         width: 100%;
         max-width: 280px;
         padding: 0.75rem 1.5rem;
         font-size: 1rem;
     }
-    
+
     /* Touch-friendly improvements */
     .btn {
         min-height: 44px; /* Apple's recommended minimum touch target */
         padding: 0.5rem 1rem;
     }
-    
+
     .btn-sm {
         min-height: 38px;
         padding: 0.375rem 0.75rem;
     }
-    
+
     /* Spacing improvements */
     .mb-4 {
         margin-bottom: 2rem !important;
     }
-    
+
     .mb-3 {
         margin-bottom: 1.5rem !important;
     }
-    
+
     /* Headers mobile */
     h4 {
         font-size: 1.3rem;
     }
-    
+
     h5 {
         font-size: 1.1rem;
     }
@@ -1483,47 +1483,47 @@ html {
     .song-info-section .card-header {
         padding: 1rem !important;
     }
-    
+
     .song-info-section h2 {
         font-size: 1.3rem;
     }
-    
+
     .song-info-section h5 {
         font-size: 1rem;
     }
-    
+
     .info-card {
         padding: 0.75rem !important;
     }
-    
+
     .file-management-section .card-header {
         padding: 1rem !important;
     }
-    
+
     .file-card, .audio-card, .midi-card, .sheet-card, .mscz-card {
         padding: 0.75rem !important;
     }
-    
+
     .part-display {
         padding: 0.75rem !important;
     }
-    
+
     .rendered-block {
         font-size: 0.85rem;
         padding: 0.75rem !important;
     }
-    
+
     .btn-lg {
         font-size: 0.9rem;
         padding: 0.625rem 1.25rem;
     }
-    
+
     /* Category badges smaller */
     .category-display-badge {
         font-size: 0.7rem;
         padding: 0.3em 0.5em;
     }
-    
+
     /* Horizontal scroll for very long content */
     .rendered-block {
         overflow-x: auto;
@@ -1606,19 +1606,19 @@ html {
         border-radius: 15px;
         padding: 10px 15px;
     }
-    
+
     .fixed-action-buttons .d-flex {
         justify-content: space-between;
         gap: 10px;
     }
-    
+
     .fixed-action-buttons .btn {
         flex: 1;
         min-width: auto;
         padding: 10px 15px;
         font-size: 0.9rem;
     }
-    
+
     .fixed-buttons-spacer {
         height: 80px;
     }
@@ -1631,12 +1631,12 @@ html {
         right: 10px;
         padding: 8px 12px;
     }
-    
+
     .fixed-action-buttons .btn {
         padding: 8px 12px;
         font-size: 0.85rem;
     }
-    
+
     .fixed-buttons-spacer {
         height: 70px;
     }
@@ -1647,16 +1647,16 @@ html {
     .song-view-header, .fixed-action-buttons {
         display: none;
     }
-    
+
     .fixed-buttons-spacer {
         display: none;
     }
-    
+
     .card {
         border: 1px solid #000 !important;
         break-inside: avoid;
     }
-    
+
     .part-display {
         page-break-inside: avoid;
     }
@@ -1747,7 +1747,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({
@@ -1757,13 +1757,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Add entrance animations on scroll (for better UX)
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const observer = new IntersectionObserver(function(entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1772,7 +1772,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }, observerOptions);
-    
+
     // Observe elements that should animate on scroll
     document.querySelectorAll('.part-display, .file-card, .info-card').forEach(el => {
         el.style.opacity = '0';
@@ -1780,7 +1780,7 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
-    
+
     // Enhanced button click feedback
     document.querySelectorAll('.btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -1790,7 +1790,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         });
     });
-    
+
     // Copy to clipboard for raw text
     document.querySelectorAll('pre').forEach(pre => {
         pre.addEventListener('click', function() {
@@ -1803,29 +1803,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 300);
             });
         });
-        
+
         // Add hover hint
         pre.title = 'Kliknite pre kopírovanie do schránky';
         pre.style.cursor = 'pointer';
     });
-    
+
     // Enhanced disabled button feedback for mobile
     // Add mobile tooltips to all disabled buttons
     function addMobileTooltips() {
         const disabledButtons = document.querySelectorAll('button:disabled, button.disabled, .btn:disabled, .btn.disabled');
-        
+
         disabledButtons.forEach(function(button) {
             // Skip if already has tooltip
             if (button.querySelector('.mobile-tooltip')) return;
-            
+
             // Get reason from title attribute or determine based on context
             let reason = button.getAttribute('title') || button.getAttribute('data-reason') || '';
-            
+
             // Determine reason based on button content and context if not explicitly set
             if (!reason) {
                 const buttonText = button.textContent.trim().toLowerCase();
                 const buttonIcon = button.querySelector('i');
-                
+
                 if (buttonText.includes('stiahnuť') || (buttonIcon && (buttonIcon.className.includes('download') || buttonIcon.className.includes('play')))) {
                     reason = 'Súbor nie je dostupný';
                 } else if (buttonText.includes('delete') || (buttonIcon && buttonIcon.className.includes('trash'))) {
@@ -1834,7 +1834,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     reason = 'Akcia nie je povolená';
                 }
             }
-            
+
             // Create tooltip element
             const tooltip = document.createElement('div');
             tooltip.className = 'mobile-tooltip';
@@ -1843,44 +1843,44 @@ document.addEventListener('DOMContentLoaded', function() {
             button.style.position = 'relative';
         });
     }
-    
+
     // Handle disabled button clicks/taps
     function handleDisabledButtonClick(event) {
         const button = event.target.closest('button:disabled, button.disabled, .btn:disabled, .btn.disabled');
         if (!button) return;
-        
+
         event.preventDefault();
         event.stopPropagation();
-        
+
         // Show tooltip temporarily
         const tooltip = button.querySelector('.mobile-tooltip');
         if (tooltip) {
             button.classList.add('show-tooltip');
-            
+
             // Vibrate on mobile if supported
             if (navigator.vibrate) {
                 navigator.vibrate(100);
             }
-            
+
             // Hide tooltip after 3 seconds
             setTimeout(() => {
                 button.classList.remove('show-tooltip');
             }, 3000);
         }
-        
+
         // Show flash message for desktop/larger screens
         if (window.innerWidth >= 768) {
             const reason = button.querySelector('.mobile-tooltip')?.textContent || 'Akcia nie je povolená';
             showFlashMessage(reason, 'warning');
         }
     }
-    
+
     // Flash message function
     function showFlashMessage(message, type = 'info') {
         // Remove existing flash messages
         const existingFlash = document.querySelector('.temp-flash-message');
         if (existingFlash) existingFlash.remove();
-        
+
         // Create new flash message
         const flashDiv = document.createElement('div');
         flashDiv.className = `alert alert-${type} alert-dismissible fade show temp-flash-message`;
@@ -1890,9 +1890,9 @@ document.addEventListener('DOMContentLoaded', function() {
             ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
-        
+
         document.body.appendChild(flashDiv);
-        
+
         // Auto-remove after 5 seconds
         setTimeout(() => {
             if (flashDiv.parentNode) {
@@ -1900,14 +1900,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 5000);
     }
-    
+
     // Initialize tooltips
     addMobileTooltips();
-    
+
     // Add event listeners for disabled button clicks
     document.addEventListener('click', handleDisabledButtonClick, true);
     document.addEventListener('touchstart', handleDisabledButtonClick, true);
-    
+
     // Re-initialize tooltips when content changes (for dynamic content)
     const mutationObserver = new MutationObserver(function(mutations) {
         let shouldUpdate = false;
@@ -1920,7 +1920,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(addMobileTooltips, 100);
         }
     });
-    
+
     mutationObserver.observe(document.body, {
         childList: true,
         subtree: true,
@@ -1933,23 +1933,23 @@ document.addEventListener('DOMContentLoaded', function() {
 function checkTexPermission(event) {
     const songAdminChecked = {{ 'true' if song.admin_checked else 'false' }};
     const songPrinted = {{ 'true' if song.printed else 'false' }};
-    
+
     console.log('checkTexPermission called, admin_checked:', songAdminChecked, 'printed:', songPrinted);
-    
+
     if (songAdminChecked) {
         event.preventDefault();
         event.stopPropagation();
         showDisabledButtonToast("Nemôžete generovať TeX súbory pre pieseň, ktorá už bola skontrolovaná administrátorom", event);
         return false;
     }
-    
+
     if (songPrinted) {
         event.preventDefault();
         event.stopPropagation();
         showDisabledButtonToast("Nemôžete generovať TeX súbory pre pieseň, ktorá už bola vytlačená", event);
         return false;
     }
-    
+
     return true;
 }
 
@@ -1957,43 +1957,43 @@ function checkPdfPermission(event) {
     const songAdminChecked = {{ 'true' if song.admin_checked else 'false' }};
     const songPrinted = {{ 'true' if song.printed else 'false' }};
     const hasTexPath = {{ 'true' if song.tex_path else 'false' }};
-    
+
     console.log('checkPdfPermission called, admin_checked:', songAdminChecked, 'printed:', songPrinted, 'hasTexPath:', hasTexPath);
-    
+
     if (songAdminChecked) {
         event.preventDefault();
         event.stopPropagation();
         showDisabledButtonToast("Nemôžete generovať PDF súbory pre pieseň, ktorá už bola skontrolovaná administrátorom", event);
         return false;
     }
-    
+
     if (songPrinted) {
         event.preventDefault();
         event.stopPropagation();
         showDisabledButtonToast("Nemôžete generovať PDF súbory pre pieseň, ktorá už bola vytlačená", event);
         return false;
     }
-    
+
     if (!hasTexPath) {
         event.preventDefault();
         event.stopPropagation();
         showDisabledButtonToast("Najprv musíte vygenerovať TeX súbory pred vytvorením PDF", event);
         return false;
     }
-    
+
     return true;
 }
 
 // Toast notification function (reuse from song_detail.html)
 function showDisabledButtonToast(message, event) {
     console.log('showDisabledButtonToast called with message:', message);
-    
+
     // Remove existing toast
     let existingToast = document.querySelector('.disabled-button-toast');
     if (existingToast) {
         existingToast.remove();
     }
-    
+
     // Create toast element
     let toast = document.createElement('div');
     toast.className = 'disabled-button-toast';
@@ -2003,14 +2003,14 @@ function showDisabledButtonToast(message, event) {
             <span>${message}</span>
         </div>
     `;
-    
+
     document.body.appendChild(toast);
-    
+
     // Show toast with animation
     setTimeout(() => {
         toast.classList.add('show');
     }, 10);
-    
+
     // Auto-hide after 3 seconds
     setTimeout(() => {
         toast.classList.remove('show');
@@ -2020,7 +2020,7 @@ function showDisabledButtonToast(message, event) {
             }
         }, 300);
     }, 3000);
-    
+
     // Add visual feedback - shake the button if event is provided
     if (event && event.target) {
         const button = event.target.closest('button');
@@ -2051,22 +2051,22 @@ function confirmDeleteSong() {
                         <div class="alert alert-danger d-flex align-items-center" role="alert">
                             <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
                             <div>
-                                <strong>POZOR!</strong> Táto akcia je <strong>nezvratná</strong>. 
+                                <strong>POZOR!</strong> Táto akcia je <strong>nezvratná</strong>.
                                 Vymaže sa pieseň <strong>"{{ song.title }}"</strong> vrátane všetkých súborov.
                             </div>
                         </div>
-                        
+
                         <p class="mb-3">Pre potvrdenie zadajte heslo:</p>
-                        
+
                         <div class="mb-3">
                             <label for="deletePassword" class="form-label fw-bold">Heslo na vymazanie:</label>
-                            <input type="password" class="form-control" id="deletePassword" 
+                            <input type="password" class="form-control" id="deletePassword"
                                    placeholder="Zadajte heslo..." autocomplete="off">
                             <div class="invalid-feedback" id="passwordError">
                                 Nesprávne heslo. Skúste znovu.
                             </div>
                         </div>
-                        
+
                         <div class="text-muted small">
                             <i class="bi bi-info-circle me-1"></i>
                             Vymazanie odstráni všetky súbory (MP3, PDF, TeX, MIDI, MuseScore) z lokálneho úložiska aj S3.
@@ -2084,25 +2084,25 @@ function confirmDeleteSong() {
             </div>
         </div>
     `;
-    
+
     // Remove existing modal if any
     const existingModal = document.getElementById('deleteSongModal');
     if (existingModal) {
         existingModal.remove();
     }
-    
+
     // Add modal to body
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
+
     // Show modal
     const modal = new bootstrap.Modal(document.getElementById('deleteSongModal'));
     modal.show();
-    
+
     // Focus on password input when modal is shown
     document.getElementById('deleteSongModal').addEventListener('shown.bs.modal', function () {
         document.getElementById('deletePassword').focus();
     });
-    
+
     // Allow Enter key to trigger delete
     document.getElementById('deletePassword').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
@@ -2116,18 +2116,18 @@ async function executeDelete() {
     const deleteBtn = document.getElementById('confirmDeleteBtn');
     const passwordField = document.getElementById('deletePassword');
     const errorDiv = document.getElementById('passwordError');
-    
+
     if (!password.trim()) {
         passwordField.classList.add('is-invalid');
         errorDiv.textContent = 'Zadajte heslo';
         errorDiv.style.display = 'block';
         return;
     }
-    
+
     // Show loading state
     deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Overujem heslo...';
     deleteBtn.disabled = true;
-    
+
     try {
         // Check password with server
         const response = await fetch('/api/check-delete-password', {
@@ -2137,19 +2137,19 @@ async function executeDelete() {
             },
             body: JSON.stringify({ password: password })
         });
-        
+
         const result = await response.json();
-        
+
         if (!result.valid) {
             // Show error
             passwordField.classList.add('is-invalid');
             errorDiv.textContent = result.message || 'Nesprávne heslo';
             errorDiv.style.display = 'block';
-            
+
             // Reset button
             deleteBtn.innerHTML = '<i class="bi bi-trash me-1"></i>Vymazať pieseň';
             deleteBtn.disabled = false;
-            
+
             // Clear error after 3 seconds
             setTimeout(() => {
                 passwordField.classList.remove('is-invalid');
@@ -2157,25 +2157,25 @@ async function executeDelete() {
                 passwordField.value = '';
                 passwordField.focus();
             }, 3000);
-            
+
             return;
         }
-        
+
         // Password correct - proceed with deletion
         deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Vymazávam...';
-        
+
         // Create and submit form with password
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '/song/delete/{{ song.id }}';
-        
+
         // Add password to form
         const passwordInput = document.createElement('input');
         passwordInput.type = 'hidden';
         passwordInput.name = 'password';
         passwordInput.value = password;
         form.appendChild(passwordInput);
-        
+
         // Add CSRF token if you're using it
         // const csrfToken = document.querySelector('meta[name="csrf-token"]');
         // if (csrfToken) {
@@ -2185,16 +2185,16 @@ async function executeDelete() {
         //     csrfInput.value = csrfToken.getAttribute('content');
         //     form.appendChild(csrfInput);
         // }
-        
+
         document.body.appendChild(form);
         form.submit();
-        
+
     } catch (error) {
         console.error('Error checking password:', error);
         passwordField.classList.add('is-invalid');
         errorDiv.textContent = 'Chyba servera. Skúste znovu.';
         errorDiv.style.display = 'block';
-        
+
         // Reset button
         deleteBtn.innerHTML = '<i class="bi bi-trash me-1"></i>Vymazať pieseň';
         deleteBtn.disabled = false;

@@ -2,15 +2,15 @@
 function initializeFixedSearch() {
   const quickSearchInput = document.getElementById('quickSearchInput');
   const resultsCount = document.querySelector('.results-count-inline');
-  
+
   if (!quickSearchInput) return;
-  
+
   let searchTimeout;
   let isQuickSearchActive = false;
-  
+
   // Global flag to disable pagination during search
   window.isSearchActive = false;
-  
+
   // Prevent mobile zoom
   const preventZoom = () => {
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -19,16 +19,16 @@ function initializeFixedSearch() {
       quickSearchInput.style.textSizeAdjust = '100%';
     }
   };
-  
+
   quickSearchInput.addEventListener('focus', preventZoom);
   quickSearchInput.addEventListener('blur', preventZoom);
   preventZoom();
-  
+
   // Real-time search with debouncing - update main song list
   quickSearchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     const searchTerm = quickSearchInput.value.trim();
-    
+
     if (searchTerm.length >= 1) {
       window.isSearchActive = true; // Disable pagination during search
       searchTimeout = setTimeout(() => performLiveSearch(searchTerm), 300);
@@ -38,14 +38,14 @@ function initializeFixedSearch() {
       hideQuickResults();
     }
   });
-  
+
   // Hide results when clicking outside
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.fixed-bottom-search')) {
       hideQuickResults();
     }
   });
-  
+
   // Perform live search and update main song list
   async function performLiveSearch(searchTerm) {
     try {
@@ -53,12 +53,12 @@ function initializeFixedSearch() {
         q: searchTerm,
         limit: '1000' // Get more results for main list
       });
-      
+
       // Include active category filters from main page
       if (typeof window.activeFilters !== 'undefined' && window.activeFilters && window.activeFilters.size > 0) {
         params.append('categories', Array.from(window.activeFilters).join(','));
       }
-      
+
       // Include active status filters from main page
       if (typeof window.activeStatusFilters !== 'undefined' && window.activeStatusFilters && window.activeStatusFilters.size > 0) {
         if (window.activeStatusFilters.has('unchecked')) {
@@ -68,41 +68,41 @@ function initializeFixedSearch() {
           params.append('printed', 'false');
         }
       }
-      
+
       const response = await fetch(`/api/search?${params}`);
       const data = await response.json();
-      
+
       updateMainSongList(data.results, searchTerm);
     } catch (error) {
       console.error('Live search error:', error);
     }
   }
-  
+
   // Update main song list with search results
   function updateMainSongList(results, searchTerm) {
     const tableBody = document.getElementById('songsTableBody');
     const mobileContainer = document.getElementById('mobileSongsContainer');
-    
+
     if (!tableBody || !mobileContainer) {
       console.error('Song list containers not found');
       return;
     }
-    
+
     // Store original content if not already stored
     if (!window.originalTableContent) {
       window.originalTableContent = tableBody.innerHTML;
       window.originalMobileContent = mobileContainer.innerHTML;
     }
-    
+
     // Clear current content
     tableBody.innerHTML = '';
     mobileContainer.innerHTML = '';
-    
+
     if (results.length === 0) {
       // Build filter description for no results message
       const hasActiveFilters = window.activeFilters && window.activeFilters.size > 0;
       const hasStatusFilters = window.activeStatusFilters && window.activeStatusFilters.size > 0;
-      
+
       let filterDescription = '';
       if (searchTerm) {
         filterDescription = `"${escapeHtml(searchTerm)}"`;
@@ -112,7 +112,7 @@ function initializeFixedSearch() {
       } else if (hasActiveFilters || hasStatusFilters) {
         filterDescription = 'filtre: ';
       }
-      
+
       if (hasActiveFilters || hasStatusFilters) {
         const filterParts = [];
         if (hasActiveFilters) {
@@ -130,7 +130,7 @@ function initializeFixedSearch() {
           filterDescription += filterParts.join(' + ');
         }
       }
-      
+
       // Show no results message
       const noResultsRow = document.createElement('tr');
       noResultsRow.innerHTML = `
@@ -140,7 +140,7 @@ function initializeFixedSearch() {
         </td>
       `;
       tableBody.appendChild(noResultsRow);
-      
+
       const noResultsCard = document.createElement('div');
       noResultsCard.className = 'text-center py-4 text-muted';
       noResultsCard.innerHTML = `
@@ -150,23 +150,23 @@ function initializeFixedSearch() {
       mobileContainer.appendChild(noResultsCard);
       return;
     }
-    
+
     // Populate with search results
     results.forEach(song => {
       // Add to table
       const row = createTableRow(song);
       tableBody.appendChild(row);
-      
+
       // Add to mobile container
       const card = createMobileCard(song);
       mobileContainer.appendChild(card);
     });
-    
+
     // Update results count in search bar
     if (resultsCount) {
       const hasActiveFilters = window.activeFilters && window.activeFilters.size > 0;
       const hasStatusFilters = window.activeStatusFilters && window.activeStatusFilters.size > 0;
-      
+
       if (searchTerm) {
         // Show search results count
         let countText = `${results.length}`;
@@ -186,12 +186,12 @@ function initializeFixedSearch() {
       }
     }
   }
-  
+
   // Return to filtered view or original list when search is cleared
   function returnToFilteredView() {
     const hasActiveFilters = window.activeFilters && window.activeFilters.size > 0;
     const hasStatusFilters = window.activeStatusFilters && window.activeStatusFilters.size > 0;
-    
+
     if (hasActiveFilters || hasStatusFilters) {
       // If filters are active, show filtered results (no search term, just filters)
       performFilterOnlySearch();
@@ -207,12 +207,12 @@ function initializeFixedSearch() {
       const params = new URLSearchParams({
         limit: '1000' // Get more results for main list
       });
-      
+
       // Include active category filters
       if (window.activeFilters && window.activeFilters.size > 0) {
         params.append('categories', Array.from(window.activeFilters).join(','));
       }
-      
+
       // Include active status filters
       if (window.activeStatusFilters && window.activeStatusFilters.size > 0) {
         if (window.activeStatusFilters.has('unchecked')) {
@@ -222,10 +222,10 @@ function initializeFixedSearch() {
           params.append('printed', 'false');
         }
       }
-      
+
       const response = await fetch(`/api/search?${params}`);
       const data = await response.json();
-      
+
       updateMainSongList(data.results, ''); // Empty search term since we're just filtering
     } catch (error) {
       console.error('Filter-only search error:', error);
@@ -238,38 +238,38 @@ function initializeFixedSearch() {
   function resetToOriginalList() {
     const tableBody = document.getElementById('songsTableBody');
     const mobileContainer = document.getElementById('mobileSongsContainer');
-    
+
     if (tableBody && window.originalTableContent) {
       tableBody.innerHTML = window.originalTableContent;
     }
     if (mobileContainer && window.originalMobileContent) {
       mobileContainer.innerHTML = window.originalMobileContent;
     }
-    
+
     // Reset results count
     if (resultsCount) {
       resultsCount.textContent = '';
       resultsCount.style.display = 'none';
     }
-    
+
     // Reset pagination state when returning to original list
     if (typeof window.resetPaginationState === 'function') {
       window.resetPaginationState();
     }
   }
-  
+
   // Show quick results (now just shows results count)
   function showQuickResults() {
     // We don't show dropdown anymore, just update the main list
     isQuickSearchActive = true;
   }
-  
+
   // Hide quick results
   function hideQuickResults() {
     // Since we removed the dropdown, just reset the search state
     isQuickSearchActive = false;
   }
-  
+
   // Global functions for button handlers
   window.hideQuickResults = hideQuickResults;
   window.toggleSearchExpand = () => {
@@ -279,19 +279,19 @@ function initializeFixedSearch() {
       quickSearchInput.focus();
     }
   };
-  
+
   // Global function to trigger search update when filters change
   window.triggerLiveSearchUpdate = (searchTerm) => {
     performLiveSearch(searchTerm);
   };
-  
+
   // Global function to return to filtered view (used when clearing all filters during search)
   window.returnToFilteredView = () => {
     returnToFilteredView();
   };
-  
 
-  
+
+
   // Create table row for search results (same structure as original)
   function createTableRow(song) {
     const row = document.createElement('tr');
@@ -300,7 +300,7 @@ function initializeFixedSearch() {
     row.setAttribute('data-categories', (song.categories || '').toLowerCase());
     row.setAttribute('data-printed', song.printed ? 'true' : 'false');
     row.setAttribute('data-checked', song.admin_checked ? 'true' : 'false');
-    
+
     // Build alternative titles display
     let alternativeTitlesHtml = '';
     if (song.alternative_titles) {
@@ -313,7 +313,7 @@ function initializeFixedSearch() {
           </div>`;
       }
     }
-    
+
     // Build MP3 files display
     let mp3Html = '';
     if (song.mp3_paths && song.mp3_paths.length > 0) {
@@ -321,8 +321,8 @@ function initializeFixedSearch() {
         const mp3File = song.mp3_paths[0];
         const filename = mp3File.split('/').pop();
         mp3Html = `
-          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
-             class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-1" 
+          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}"
+             class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-1"
              title="Prehrať MP3: ${escapeHtml(filename)}"
              target="_blank">
             <i class="bi bi-play-circle-fill"></i>
@@ -333,8 +333,8 @@ function initializeFixedSearch() {
           const filename = mp3File.split('/').pop();
           return `
             <li>
-              <a class="dropdown-item d-flex align-items-center gap-2" 
-                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+              <a class="dropdown-item d-flex align-items-center gap-2"
+                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}"
                  target="_blank"
                  title="Prehrať ${escapeHtml(filename)}">
                 <i class="bi bi-play-circle-fill text-success"></i>
@@ -342,10 +342,10 @@ function initializeFixedSearch() {
               </a>
             </li>`;
         }).join('');
-        
+
         mp3Html = `
           <div class="btn-group">
-            <button type="button" class="btn btn-success btn-sm dropdown-toggle d-flex align-items-center gap-1" 
+            <button type="button" class="btn btn-success btn-sm dropdown-toggle d-flex align-items-center gap-1"
                     data-bs-toggle="dropdown" aria-expanded="false"
                     title="${song.mp3_paths.length} MP3 súborov">
               <i class="bi bi-music-note-list"></i>
@@ -363,7 +363,7 @@ function initializeFixedSearch() {
           <i class="bi bi-volume-mute"></i><br>Žiadne MP3
         </span>`;
     }
-    
+
     // Build status badges
     const statusBadges = [];
     if (song.admin_checked) {
@@ -383,24 +383,24 @@ function initializeFixedSearch() {
           <i class="bi bi-printer-fill"></i>
         </span>`);
     }
-    
+
     // Build file download buttons
     let fileDownloadsHtml = '';
     if (song.pdf_lyrics_path || song.pdf_chords_path) {
-      const lyricsBtn = song.pdf_lyrics_path ? 
-        `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" 
-           class="btn btn-outline-primary btn-sm" 
+      const lyricsBtn = song.pdf_lyrics_path ?
+        `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}"
+           class="btn btn-outline-primary btn-sm"
            title="Stiahnuť text piesne">
           <i class="bi bi-file-text"></i> Text
         </a>` : '';
-      
-      const chordsBtn = song.pdf_chords_path ? 
-        `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" 
-           class="btn btn-outline-warning btn-sm" 
+
+      const chordsBtn = song.pdf_chords_path ?
+        `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}"
+           class="btn btn-outline-warning btn-sm"
            title="Stiahnuť akordy">
           <i class="bi bi-music-note-beamed"></i> Akordy
         </a>` : '';
-      
+
       if (lyricsBtn || chordsBtn) {
         fileDownloadsHtml = `
           <div class="btn-group btn-group-sm" role="group">
@@ -408,14 +408,14 @@ function initializeFixedSearch() {
           </div>`;
       }
     }
-    
+
     if (!song.pdf_lyrics_path && !song.pdf_chords_path) {
       fileDownloadsHtml = `
         <span class="text-muted small">
           <i class="bi bi-x-circle"></i> Žiadne PDF súbory
         </span>`;
     }
-    
+
     row.innerHTML = `
       <td class="px-3 py-3">
         <div class="d-flex align-items-center">
@@ -423,7 +423,7 @@ function initializeFixedSearch() {
           ${!song.admin_checked ? '<span class="badge bg-warning ms-2 pulse-animation" title="Potrebuje kontrolu"><i class="bi bi-exclamation-triangle"></i></span>' : ''}
         </div>
       </td>
-      
+
       <td class="px-3 py-3">
         <div class="song-info">
           <div class="fw-bold text-dark mb-1">${escapeHtml(song.title || '')}</div>
@@ -431,22 +431,22 @@ function initializeFixedSearch() {
           ${alternativeTitlesHtml}
         </div>
       </td>
-      
+
       <td class="px-3 py-3">
         <div class="author-info">
           ${song.author ? `<div class="fw-semibold text-dark">${escapeHtml(song.author)}</div>` : ''}
-          ${song.author_original && song.author_original !== song.author ? 
+          ${song.author_original && song.author_original !== song.author ?
             `<small class="text-muted"><i class="bi bi-globe me-1"></i>${escapeHtml(song.author_original)}</small>` : ''}
           ${!song.author && !song.author_original ? '<span class="text-muted fst-italic">Neznámy</span>' : ''}
         </div>
       </td>
-      
+
       <td class="text-center px-3 py-3">
         <div class="audio-files">
           ${mp3Html}
         </div>
       </td>
-      
+
       <td class="text-center px-3 py-3">
         <div class="d-flex flex-column gap-1 align-items-center">
           <div class="mb-2 d-flex flex-wrap justify-content-center gap-1">
@@ -461,7 +461,7 @@ function initializeFixedSearch() {
           <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm mb-1">
             <i class="bi bi-eye me-1"></i>Detaily
           </a>
-          
+
           <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm mb-1">
             <i class="bi bi-pencil-square me-1"></i>Upraviť
           </a>
@@ -486,10 +486,10 @@ function initializeFixedSearch() {
         </div>
       </td>
     `;
-    
+
     return row;
   }
-  
+
   // Create mobile card for search results (same structure as original)
   function createMobileCard(song) {
     const card = document.createElement('div');
@@ -499,16 +499,16 @@ function initializeFixedSearch() {
     card.setAttribute('data-printed', song.printed ? 'true' : 'false');
     card.setAttribute('data-checked', song.admin_checked ? 'true' : 'false');
     card.setAttribute('data-search-content', song.title ? song.title.toLowerCase() : '');
-    
+
     const mp3Count = song.mp3_paths ? song.mp3_paths.length : 0;
-    const audioIcon = mp3Count > 0 ? 
+    const audioIcon = mp3Count > 0 ?
       `<span class="status-icon status-has-audio" data-bs-toggle="tooltip" data-bs-placement="top" title="${mp3Count} MP3 súborov">
         <i class="bi bi-volume-up-fill"></i>
       </span>` :
       `<span class="status-icon status-no-audio" data-bs-toggle="tooltip" data-bs-placement="top" title="Žiadne MP3">
         <i class="bi bi-volume-mute"></i>
       </span>`;
-    
+
     // Build categories for the expanded section
     let categoriesHtml = '';
     if (song.categories) {
@@ -522,15 +522,15 @@ function initializeFixedSearch() {
         `;
       }
     }
-    
+
     // Build MP3 buttons/dropdowns for actions grid
     let mp3Button = '';
     if (mp3Count > 0) {
       if (mp3Count === 1) {
         const mp3File = song.mp3_paths[0];
         mp3Button = `
-          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
-             class="btn btn-success btn-sm" 
+          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}"
+             class="btn btn-success btn-sm"
              title="Prehrať MP3: ${escapeHtml(mp3File.split('/').pop())}"
              target="_blank">
             <i class="bi bi-volume-up-fill"></i>
@@ -541,18 +541,18 @@ function initializeFixedSearch() {
           const filename = mp3File.split('/').pop();
           return `
             <li>
-              <a class="dropdown-item" 
-                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}" 
+              <a class="dropdown-item"
+                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}"
                  target="_blank">
                 <i class="bi bi-volume-up-fill text-success me-2"></i>${escapeHtml(filename)}
               </a>
             </li>
           `;
         }).join('');
-        
+
         mp3Button = `
           <div class="btn-group w-100">
-            <button type="button" class="btn btn-success btn-sm dropdown-toggle" 
+            <button type="button" class="btn btn-success btn-sm dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false"
                     title="${mp3Count} MP3 súborov">
               <i class="bi bi-volume-up-fill"></i>
@@ -571,14 +571,14 @@ function initializeFixedSearch() {
         </button>
       `;
     }
-    
+
     // Build sheet music button
     let sheetButton = '';
     if (song.sheet_pdf_paths && song.sheet_pdf_paths.length > 0) {
       if (song.sheet_pdf_paths.length === 1) {
         sheetButton = `
-          <a href="/song/${song.id}/download_sheet/${song.sheet_pdf_paths[0].split('/').pop()}" 
-             class="btn btn-outline-danger btn-sm" 
+          <a href="/song/${song.id}/download_sheet/${song.sheet_pdf_paths[0].split('/').pop()}"
+             class="btn btn-outline-danger btn-sm"
              title="Stiahnuť noty"
              target="_blank">
             <i class="fa-solid fa-music"></i>
@@ -589,7 +589,7 @@ function initializeFixedSearch() {
           const filename = sheet.split('/').pop();
           return `
             <li>
-              <a href="/song/${song.id}/download_sheet/${filename}" 
+              <a href="/song/${song.id}/download_sheet/${filename}"
                  class="dropdown-item"
                  target="_blank">
                 <i class="fa-solid fa-music text-danger me-2"></i>${escapeHtml(filename)}
@@ -597,10 +597,10 @@ function initializeFixedSearch() {
             </li>
           `;
         }).join('');
-        
+
         sheetButton = `
           <div class="btn-group w-100">
-            <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle" 
+            <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-music"></i>
             </button>
@@ -618,7 +618,7 @@ function initializeFixedSearch() {
         </button>
       `;
     }
-    
+
     card.innerHTML = `
       <!-- Main Song Info -->
       <div class="mobile-song-header">
@@ -626,14 +626,14 @@ function initializeFixedSearch() {
           <div class="d-flex align-items-start gap-3 mb-2">
             <!-- Status badges on the left, stacked vertically -->
             <div class="mobile-status-badges-left d-flex flex-column gap-1">
-              ${song.printed ? 
+              ${song.printed ?
                 '<span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Vytlačené"><i class="bi bi-printer-fill"></i></span>' : ''
               }
-              ${song.admin_checked ? 
+              ${song.admin_checked ?
                 '<span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Skontrolované administrátorom"><i class="bi bi-check-circle-fill"></i></span>' : ''
               }
             </div>
-            
+
             <!-- Song ID and Title on the right -->
             <div class="flex-grow-1">
               <div class="d-flex align-items-start gap-2 mb-1 flex-wrap">
@@ -642,7 +642,7 @@ function initializeFixedSearch() {
               </div>
             </div>
           </div>
-          
+
           ${song.author ? `<div class="mobile-song-author text-secondary mb-1"><i class="bi bi-person me-1"></i>${escapeHtml(song.author)}</div>` : ''}
           ${song.version_name ? `<div class="text-muted small"><i class="bi bi-tag me-1"></i>${escapeHtml(song.version_name)}</div>` : ''}
         </div>
@@ -651,20 +651,20 @@ function initializeFixedSearch() {
       <!-- Essential Actions (Always Visible) - 4 evenly spaced buttons -->
       <div class="mobile-song-actions-grid">
         <!-- 1. Slová (Lyrics) -->
-        ${song.pdf_lyrics_path ? 
+        ${song.pdf_lyrics_path ?
           `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
             <i class="bi bi-file-text"></i>
-          </a>` : 
+          </a>` :
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
             <i class="bi bi-file-text"></i>
           </button>`
         }
 
         <!-- 2. Akordy (Chords) -->
-        ${song.pdf_chords_path ? 
+        ${song.pdf_chords_path ?
           `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
             <i class="fa-solid fa-guitar"></i>
-          </a>` : 
+          </a>` :
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
             <i class="fa-solid fa-guitar"></i>
           </button>`
@@ -715,10 +715,10 @@ function initializeFixedSearch() {
         </div>
       </div>
     `;
-    
+
     return card;
   }
-  
+
   // Escape HTML utility
   function escapeHtml(text) {
     const div = document.createElement('div');

@@ -59,23 +59,23 @@ class Song(db.Model):
             text_no_chords = re.sub(r'\[[^\]]*\]', '', text)
             # Then normalize: remove diacritics, punctuation, normalize whitespace
             return unidecode(text_no_chords.lower()).replace(",", " ").replace(".", " ").replace("-", " ").replace("_", " ").replace(";", " ").strip()
-        
+
         # Collect all searchable text
         parts = []
-        
+
         # Basic song info
         parts.append(normalize_text(self.title or ""))
         parts.append(normalize_text(self.version_name or ""))
         parts.append(normalize_text(self.author or ""))
         parts.append(normalize_text(self.title_original or ""))
         parts.append(normalize_text(self.author_original or ""))
-        
+
         # Alternative titles
         if self.alternative_titles:
             alt_titles = self.alternative_titles.split(';;')
             for alt_title in alt_titles:
                 parts.append(normalize_text(alt_title))
-        
+
         # Song parts (lyrics)
         if self.song_parts:
             try:
@@ -86,7 +86,7 @@ class Song(db.Model):
                             parts.append(normalize_text(line))
             except (json.JSONDecodeError, TypeError):
                 pass
-        
+
         # Join all parts with spaces and normalize whitespace
         self.search_text = " ".join(filter(None, parts))
         self.search_text = re.sub(r'\s+', ' ', self.search_text).strip()

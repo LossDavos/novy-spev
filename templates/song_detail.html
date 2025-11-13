@@ -120,22 +120,22 @@
     Kategórie
     <small class="text-muted">(kliknite na vybratnie/zrušenie)</small>
   </label>
-  
-  <div class="categories-container p-3 rounded-3 border" 
+
+  <div class="categories-container p-3 rounded-3 border"
        style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
     <div id="categories-buttons" class="d-flex flex-wrap gap-2">
       {% for option in options %}
-        <button type="button" 
-                class="category-btn {% if option in (song.categories or []) %}selected{% endif %} btn btn-sm position-relative" 
+        <button type="button"
+                class="category-btn {% if option in (song.categories or []) %}selected{% endif %} btn btn-sm position-relative"
                 data-value="{{ option }}"
                 style="border-radius: 20px; transition: all 0.2s ease;">
           <span class="category-text">{{ option }}</span>
-          <i class="bi bi-check-circle-fill position-absolute top-0 start-100 translate-middle category-check" 
+          <i class="bi bi-check-circle-fill position-absolute top-0 start-100 translate-middle category-check"
              style="font-size: 0.8rem; display: none;"></i>
         </button>
       {% endfor %}
     </div>
-    
+
     <!-- Selected count indicator -->
     <div class="mt-3 pt-2 border-top">
       <small class="text-muted">
@@ -144,16 +144,16 @@
       </small>
     </div>
   </div>
-  
+
   <!-- Hidden input to store selected values -->
   <input type="hidden" name="categories" id="categories-input" value="{{ song.categories if song.categories }}">
 </div>
 
 
 <!-- === FILE MANAGEMENT SECTION === -->
-<div class="file-management-section card border-0 shadow-lg rounded-4 overflow-hidden mb-4" 
+<div class="file-management-section card border-0 shadow-lg rounded-4 overflow-hidden mb-4"
      style="background: white;">
-  
+
   <!-- Header with gradient -->
   <div class="card-header border-0 text-white p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
     <div class="d-flex align-items-center justify-content-between">
@@ -166,14 +166,14 @@
       </div>
       <div class="file-stats">
         <span class="badge bg-white text-primary fs-6">
-          <i class="bi bi-files"></i> 
+          <i class="bi bi-files"></i>
           {% set file_count = (sheet_pdfs|length) + (mp3s|length) + (midis|length) + (sheet_mscz|length) %}
           {{ file_count }} súborov
         </span>
       </div>
     </div>
   </div>
-  
+
   <!-- Content with white background -->
   <div class="card-body bg-white p-4">
 
@@ -189,7 +189,7 @@
           <small class="text-muted">Označte ak je pieseň už vytlačená</small>
         </div>
       </div>
-      
+
       <!-- Custom Toggle Switch -->
       <div class="form-check form-switch form-check-reverse">
         <input class="form-check-input custom-switch" type="checkbox" id="printedBtn" name="printed"
@@ -201,12 +201,12 @@
         </label>
       </div>
     </div>
-    
+
     <!-- Status indicator bar -->
     <div class="mt-3">
       <div class="progress" style="height: 4px;">
-        <div class="progress-bar printed-progress-bar {% if song.printed %}bg-success{% else %}bg-secondary{% endif %}" 
-             role="progressbar" 
+        <div class="progress-bar printed-progress-bar {% if song.printed %}bg-success{% else %}bg-secondary{% endif %}"
+             role="progressbar"
              style="width: {% if song.printed %}100{% else %}0{% endif %}%; transition: all 0.5s ease;">
         </div>
       </div>
@@ -223,9 +223,9 @@
     </h5>
 
     <!-- TeX Source Management -->
-    <div class="tex-source-card mb-4 p-3 border rounded-3 position-relative" 
+    <div class="tex-source-card mb-4 p-3 border rounded-3 position-relative"
          style="background: linear-gradient(135deg, #fff9c4 0%, #ffffff 100%); border-color: #fbbf24 !important;">
-      
+
       <div class="d-flex align-items-center justify-content-between mb-3">
         <div class="d-flex align-items-center gap-3">
           <div class="tex-icon p-2 rounded-circle" style="background-color: rgba(251, 191, 36, 0.1);">
@@ -242,11 +242,11 @@
       <!-- TeX File Actions -->
       <div class="tex-actions mb-3">
         <div class="btn-group" role="group">
-          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.tex_path.split('/')[-1]) }}" target="_blank" 
+          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.tex_path.split('/')[-1]) }}" target="_blank"
              class="btn btn-outline-warning btn-sm">
             <i class="bi bi-download me-1"></i>Stiahnuť TeX
           </a>
-          
+
           <button type="button" class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}" onclick="confirmDelete('tex')"
                   title="{{ '🔒 Pieseň je chránená - skontrolovaná adminom' if song.admin_checked else 'Vymazať TeX súbory' }}">
             <i class="bi bi-trash me-1"></i>Vymazať
@@ -278,7 +278,7 @@
       <!-- TeX Upload -->
       <div class="tex-upload-area">
         <label class="form-label">Nahraj TeX súbor</label>
-        <input type="file" name="tex" class="form-control" 
+        <input type="file" name="tex" class="form-control"
                accept=".tex"
                {{ 'disabled title="Admin already checked this song"' if song.admin_checked else '' }}>
         <small class="text-muted mt-1">
@@ -300,11 +300,11 @@
     {% endif %}
 
     <!-- Lyrics PDF -->
-    <div class="file-card mb-3 p-3 border rounded-3 position-relative" 
+    <div class="file-card mb-3 p-3 border rounded-3 position-relative"
          style="background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%); border-color: #fecaca !important; transition: all 0.3s ease;"
          onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 15px rgba(220, 38, 38, 0.15)';"
          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-      
+
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-3">
           <div class="file-type-icon p-2 rounded-circle bg-red-50" style="background-color: rgba(220, 38, 38, 0.1);">
@@ -315,10 +315,10 @@
             <small class="text-muted">Slová bez akordov</small>
           </div>
         </div>
-        
+
         {% if song.pdf_lyrics_path %}
         <div class="file-actions d-flex gap-2">
-          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}" 
+          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}"
              class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" target="_blank">
             <i class="bi bi-download"></i>
             Stiahnuť
@@ -332,13 +332,13 @@
         </div>
         {% endif %}
       </div>
-      
+
       {% if song.pdf_lyrics_path %}
       <div class="print-info mt-3 p-2 rounded-2 bg-light bg-opacity-50">
         <small class="text-muted d-block">
           <i class="bi bi-printer text-primary me-1"></i>
-          <strong>Tlač:</strong> Obojstranne, 
-          <span class="fw-bold text-primary">10× (normálne)</span> alebo 
+          <strong>Tlač:</strong> Obojstranne,
+          <span class="fw-bold text-primary">10× (normálne)</span> alebo
           <span class="fw-bold">3× (neznáme piesne)</span>
         </small>
       </div>
@@ -348,7 +348,7 @@
         <input type="file" name="pdf_lyrics" class="form-control">
       </div>
       {% endif %}
-      
+
       <!-- Status indicator -->
       <div class="position-absolute top-0 end-0 p-2">
         {% if song.pdf_lyrics_path %}
@@ -360,11 +360,11 @@
     </div>
 
     <!-- Lyrics + Chords PDF -->
-    <div class="file-card mb-3 p-3 border rounded-3 position-relative" 
+    <div class="file-card mb-3 p-3 border rounded-3 position-relative"
          style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #bbf7d0 !important; transition: all 0.3s ease;"
          onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 15px rgba(34, 197, 94, 0.15)';"
          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-      
+
       <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-3">
           <div class="file-type-icon p-2 rounded-circle" style="background-color: rgba(34, 197, 94, 0.1);">
@@ -375,10 +375,10 @@
             <small class="text-muted">Slová s akordami</small>
           </div>
         </div>
-        
+
         {% if song.pdf_chords_path %}
         <div class="file-actions d-flex gap-2">
-          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}" 
+          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}"
              class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" target="_blank">
             <i class="bi bi-download"></i>
             Stiahnuť
@@ -392,13 +392,13 @@
         </div>
         {% endif %}
       </div>
-      
+
       {% if song.pdf_chords_path %}
       <div class="print-info mt-3 p-2 rounded-2 bg-light bg-opacity-50">
         <small class="d-block">
           <i class="bi bi-printer text-success me-1"></i>
-          <strong class="text-success">Tlač:</strong> 
-          <span class="fw-bold text-success">5× (normálne)</span> alebo 
+          <strong class="text-success">Tlač:</strong>
+          <span class="fw-bold text-success">5× (normálne)</span> alebo
           <span class="fw-bold">2× (neznáme)</span>
         </small>
         <div class="mt-1">
@@ -414,7 +414,7 @@
         <input type="file" name="pdf_chords" class="form-control">
       </div>
       {% endif %}
-      
+
       <!-- Status indicator -->
       <div class="position-absolute top-0 end-0 p-2">
         {% if song.pdf_chords_path %}
@@ -425,7 +425,7 @@
       </div>
     </div>
   </div>
-  
+
   </div> <!-- End tex-pdf-management-section -->
 
    <!-- === MP3 Files === -->
@@ -434,8 +434,8 @@
       <span class="badge bg-success">🎵</span>
       MP3 Súbory
     </h5>
-    
-    <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center" 
+
+    <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center"
          style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
          onmouseover="this.style.background='#f8f9fa'; this.style.borderColor='#adb5bd';"
          onmouseout="this.style.background='#ffffff'; this.style.borderColor='#dee2e6';">
@@ -453,13 +453,13 @@
         <span class="badge bg-success">{{ mp3s|length }}</span>
         <small class="text-muted">audio súborov</small>
       </div>
-      
+
       {% for path in mp3s %}
-      <div class="audio-card mb-2 p-3 border rounded-3 position-relative" 
+      <div class="audio-card mb-2 p-3 border rounded-3 position-relative"
            style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
            onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.15)';"
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-        
+
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
             <div class="audio-icon p-2 rounded-circle" style="background-color: rgba(108, 117, 125, 0.1);">
@@ -472,17 +472,17 @@
               </small>
             </div>
           </div>
-          
+
           <div class="audio-actions d-flex gap-2">
-            <a href="{{ path | presigned_url }}" 
-               class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" 
+            <a href="{{ path | presigned_url }}"
+               class="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
                target="_blank" title="Prehrať/Stiahnuť">
               <i class="bi bi-play-circle"></i>
               Prehrať
             </a>
-            <button type="button" 
-                    class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}" 
-                    onclick="confirmDelete('mp3', '{{ path }}')" 
+            <button type="button"
+                    class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}"
+                    onclick="confirmDelete('mp3', '{{ path }}')"
                     title="{{ 'Pieseň je chránená - skontrolovaná adminom' if song.admin_checked else 'Vymazať audio súbor' }}">
               <i class="bi bi-trash"></i>
               {% if song.admin_checked %}<i class="bi bi-lock-fill ms-1"></i>{% endif %}
@@ -490,17 +490,17 @@
             </button>
           </div>
         </div>
-        
+
         <!-- Waveform visualization hint -->
         <div class="mt-2 px-2">
           <div class="audio-viz d-flex align-items-end gap-1" style="height: 20px;">
             {% for i in range(20) %}
-            <div class="viz-bar bg-success bg-opacity-30 rounded-top" 
+            <div class="viz-bar bg-success bg-opacity-30 rounded-top"
                  style="width: 3px; height: {{ (loop.index % 4 + 1) * 5 }}px; transition: all 0.3s ease;"></div>
             {% endfor %}
           </div>
         </div>
-        
+
       </div>
       {% endfor %}
     </div>
@@ -519,8 +519,8 @@
       <span class="badge bg-warning">🎹</span>
       MIDI Súbory
     </h5>
-    
-    <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center" 
+
+    <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center"
          style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
          onmouseover="this.style.background='#f8f9fa'; this.style.borderColor='#adb5bd';"
          onmouseout="this.style.background='#ffffff'; this.style.borderColor='#dee2e6';">
@@ -538,13 +538,13 @@
         <span class="badge bg-warning">{{ midis|length }}</span>
         <small class="text-muted">MIDI súborov</small>
       </div>
-      
+
       {% for path in midis %}
-      <div class="midi-card mb-2 p-3 border rounded-3 position-relative" 
+      <div class="midi-card mb-2 p-3 border rounded-3 position-relative"
            style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
            onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.15)';"
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-        
+
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
             <div class="midi-icon p-2 rounded-circle" style="background-color: rgba(108, 117, 125, 0.1);">
@@ -557,17 +557,17 @@
               </small>
             </div>
           </div>
-          
+
           <div class="midi-actions d-flex gap-2">
-            <a href="{{ path | presigned_url }}" 
-               class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1" 
+            <a href="{{ path | presigned_url }}"
+               class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1"
                target="_blank" title="Stiahnuť MIDI súbor">
               <i class="bi bi-download"></i>
               Stiahnuť
             </a>
-            <button type="button" 
-                    class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}" 
-                    onclick="confirmDelete('midi', '{{ path }}')" 
+            <button type="button"
+                    class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}"
+                    onclick="confirmDelete('midi', '{{ path }}')"
                     title="{{ 'Pieseň je chránená - skontrolovaná adminom' if song.admin_checked else 'Vymazať MIDI súbor' }}">
               <i class="bi bi-trash"></i>
               Vymaž
@@ -575,12 +575,12 @@
             </button>
           </div>
         </div>
-        
+
         <!-- MIDI track visualization -->
         <div class="mt-2 px-2">
           <div class="midi-tracks d-flex gap-1" style="height: 16px;">
             {% for i in range(8) %}
-            <div class="track-line bg-warning bg-opacity-40 rounded" 
+            <div class="track-line bg-warning bg-opacity-40 rounded"
                  style="flex: 1; height: {{ (loop.index % 3 + 1) * 4 }}px; margin-top: auto;"></div>
             {% endfor %}
           </div>
@@ -589,7 +589,7 @@
             Inštrumentálny záznam pre playback
           </small>
         </div>
-        
+
       </div>
       {% endfor %}
     </div>
@@ -608,8 +608,8 @@
       <span class="badge bg-primary">📋</span>
       Noty (PDF Files)
     </h5>
-    
-    <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center" 
+
+    <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center"
          style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); transition: all 0.3s ease;"
          onmouseover="this.style.background='linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%)'; this.style.borderColor='#0d6efd';"
          onmouseout="this.style.background='linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)'; this.style.borderColor='#dee2e6';">
@@ -627,15 +627,15 @@
         <span class="badge bg-success">{{ sheet_pdfs|length }}</span>
         <small class="text-muted">súborov nájdených</small>
       </div>
-      
+
       {% for path in sheet_pdfs %}
-        <div class="sheet-card mb-3 p-4 border rounded-4 position-relative overflow-hidden" 
-             style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%); 
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+        <div class="sheet-card mb-3 p-4 border rounded-4 position-relative overflow-hidden"
+             style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);"
              onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.15)';"
              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)';">
-          
+
           <!-- Header with file info -->
           <div class="d-flex align-items-start justify-content-between mb-3">
             <div class="file-info d-flex align-items-center gap-3">
@@ -653,7 +653,7 @@
               <i class="bi bi-info-circle"></i>
             </div>
           </div>
-          
+
           <!-- Download buttons with improved styling -->
           <div class="download-actions">
             <div class="mb-2">
@@ -661,44 +661,44 @@
                 <i class="bi bi-download"></i> Možnosti stiahnutia:
               </small>
             </div>
-            
+
             <!-- Horizontal button layout with delete button on the right -->
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
               <!-- Download buttons group -->
               <div class="d-flex flex-wrap gap-2">
                 <!-- Original PDF Download -->
-                <a href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}" 
-                   class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" 
+                <a href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}"
+                   class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
                    target="_blank" title="Pôvodný súbor bez pečiatky">
                   <i class="bi bi-file-earmark-pdf"></i>Originál
                 </a>
-                
+
                 <!-- Stamped PDF Download -->
-                <a href="{{ url_for('download_stamped_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}" 
-                   class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" 
+                <a href="{{ url_for('download_stamped_sheet', song_id=song.id, sheet_filename=path.split('/')[-1]) }}"
+                   class="btn btn-outline-success btn-sm d-flex align-items-center gap-1"
                    target="_blank" title="Súbor s pečiatkou">
                   <i class="bi bi-file-earmark-check"></i>S pečiatkou
                 </a>
-                
+
                 <!-- Blank Stamped Page Download -->
-                <a href="{{ url_for('download_blank_stamped', song_id=song.id) }}" 
-                   class="btn btn-outline-info btn-sm d-flex align-items-center gap-1" 
+                <a href="{{ url_for('download_blank_stamped', song_id=song.id) }}"
+                   class="btn btn-outline-info btn-sm d-flex align-items-center gap-1"
                    target="_blank" title="Prázdna stránka len s pečiatkou">
                   <i class="bi bi-file-earmark-blank"></i>Prázdna s pečiatkou
                 </a>
               </div>
-              
+
               <!-- Delete button aligned to the right -->
-              <button type="button" 
-                      class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}" 
-                      onclick="confirmDelete('sheet_pdfs', '{{ path  }}')" 
+              <button type="button"
+                      class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}"
+                      onclick="confirmDelete('sheet_pdfs', '{{ path  }}')"
                       title="{{ 'Pieseň je chránená - skontrolovaná adminom' if song.admin_checked else 'Vymazať notový súbor' }}">
                 <i class="bi bi-trash me-1"></i>Vymaž
                 {% if song.admin_checked %}<i class="bi bi-lock-fill ms-1"></i>{% endif %}
               </button>
             </div>
           </div>
-          
+
           <!-- Info tooltip -->
           <div class="info-panel mt-3 p-2 rounded-2 bg-light bg-opacity-50">
             <small class="text-muted d-block">
@@ -706,7 +706,7 @@
               <strong>Tip:</strong> Originál = bez zmien, S pečiatkou = s ID piesne, Prázdna = len pečiatka
             </small>
           </div>
-          
+
           <!-- Decorative element -->
           <div class="position-absolute top-0 end-0 p-2">
             <div class="bg-primary bg-opacity-10 rounded-circle p-1" style="width: 40px; height: 40px;">
@@ -731,8 +731,8 @@
       <span class="badge bg-info">🎼</span>
       Noty (MuseScore)
     </h5>
-    
-    <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center" 
+
+    <div class="upload-zone mb-3 p-3 border border-2 border-dashed rounded-3 text-center"
          style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
          onmouseover="this.style.background='#f8f9fa'; this.style.borderColor='#adb5bd';"
          onmouseout="this.style.background='#ffffff'; this.style.borderColor='#dee2e6';">
@@ -750,13 +750,13 @@
         <span class="badge bg-info">{{ sheet_mscz|length }}</span>
         <small class="text-muted">MuseScore súborov</small>
       </div>
-      
+
       {% for path in sheet_mscz %}
-      <div class="mscz-card mb-2 p-3 border rounded-3 position-relative" 
+      <div class="mscz-card mb-2 p-3 border rounded-3 position-relative"
            style="background: #ffffff; border-color: #dee2e6 !important; transition: all 0.3s ease;"
            onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.15)';"
            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-        
+
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
             <div class="mscz-icon p-2 rounded-circle" style="background-color: rgba(6, 182, 212, 0.1);">
@@ -769,17 +769,17 @@
               </small>
             </div>
           </div>
-          
+
           <div class="mscz-actions d-flex gap-2">
-            <a href="{{ path | presigned_url }}" 
-               class="btn btn-outline-info btn-sm d-flex align-items-center gap-1" 
+            <a href="{{ path | presigned_url }}"
+               class="btn btn-outline-info btn-sm d-flex align-items-center gap-1"
                target="_blank" title="Stiahnuť MuseScore súbor">
               <i class="bi bi-download"></i>
               Stiahnuť
             </a>
-            <button type="button" 
-                    class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}" 
-                    onclick="confirmDelete('sheet_mscz', '{{ path }}')" 
+            <button type="button"
+                    class="btn btn-outline-danger btn-sm {{ 'restricted-action' if song.admin_checked else '' }}"
+                    onclick="confirmDelete('sheet_mscz', '{{ path }}')"
                     title="{{ 'Pieseň je chránená - skontrolovaná adminom' if song.admin_checked else 'Vymazať MuseScore súbor' }}">
               <i class="bi bi-trash"></i>
               Vymaž
@@ -787,7 +787,7 @@
             </button>
           </div>
         </div>
-        
+
         <!-- Musical staff visualization -->
         <div class="mt-2 px-2">
           <div class="staff-lines" style="position: relative; height: 20px;">
@@ -806,7 +806,7 @@
             Upraviteľný v MuseScore
           </small>
         </div>
-        
+
       </div>
       {% endfor %}
     </div>
@@ -823,7 +823,7 @@
 </div>
 
 
-<div class="parts-section card border-0 shadow-lg rounded-4 p-4 mb-4" 
+<div class="parts-section card border-0 shadow-lg rounded-4 p-4 mb-4"
      style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
   <h4 class="text-white fw-bold mb-3">
     <i class="bi bi-music-note-list me-2"></i>
@@ -892,7 +892,7 @@
                         </small>
                     </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="admin_checked" id="admin_checked" 
+                        <input class="form-check-input" type="checkbox" name="admin_checked" id="admin_checked"
                                {% if song.admin_checked %}checked{% endif %} style="transform: scale(1.3);">
                     </div>
                 </div>
@@ -912,7 +912,7 @@
       <span class="d-none d-sm-inline">Zrušiť</span>
       <span class="d-sm-none">Zrušiť</span>
     </a>
-    
+
     <button type="button" class="btn btn-success btn-lg shadow-lg save-btn" onclick="document.getElementById('hidden-submit').click();">
       <i class="bi bi-floppy me-2"></i>
       <span class="d-none d-sm-inline">Uložiť zmeny</span>
@@ -1013,20 +1013,20 @@
     position: relative;
     overflow: hidden;
   }
-  
+
   .category-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     border-color: #0d6efd;
   }
-  
+
   .category-btn.selected {
     background: linear-gradient(135deg, #0d6efd 0%, #0056b3 100%);
     color: white;
     border-color: #0d6efd;
     box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
   }
-  
+
   .category-btn.selected .category-check {
     display: block !important;
     color: #28a745;
@@ -1034,7 +1034,7 @@
     border-radius: 50%;
     padding: 1px;
   }
-  
+
   .category-btn::before {
     content: '';
     position: absolute;
@@ -1045,34 +1045,34 @@
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
     transition: left 0.5s;
   }
-  
+
   .category-btn:hover::before {
     left: 100%;
   }
-  
+
   /* Upload zone styling */
   .upload-zone {
     cursor: pointer;
   }
-  
+
   .upload-zone:hover input[type="file"] {
     opacity: 1;
   }
-  
+
   /* Sheet card animations */
   .sheet-card {
     backdrop-filter: blur(10px);
   }
-  
+
   .file-icon {
     animation: pulse-subtle 2s ease-in-out infinite;
   }
-  
+
   @keyframes pulse-subtle {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
   }
-  
+
   /* File management gradient background */
   .file-management-section::before {
     content: '';
@@ -1084,19 +1084,19 @@
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
     opacity: 0.5;
   }
-  
+
   /* Enhanced printed status section */
   .printed-status-container .card {
     border: 2px solid transparent;
     transition: all 0.3s ease;
   }
-  
+
   .printed-status-container .card:hover {
     transform: translateY(-1px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.12) !important;
     border-color: rgba(13, 110, 253, 0.2);
   }
-  
+
   /* Custom switch styling */
   .custom-switch {
     background-color: #e9ecef;
@@ -1104,78 +1104,78 @@
     border-radius: 1em;
     transition: all 0.3s ease;
   }
-  
+
   .custom-switch:checked {
     background-color: #28a745;
     border-color: #28a745;
     box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
   }
-  
+
   .custom-switch:focus {
     box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
   }
-  
+
   .custom-switch:hover {
     transform: scale(1.05);
   }
-  
+
   /* Progress bar animation */
   .printed-progress-bar {
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
                 background-color 0.5s ease;
   }
-  
+
   /* Status text animation */
   .printed-status-text {
     transition: all 0.3s ease;
     display: inline-block;
   }
-  
+
   /* Icon container animation */
   .printed-icon-container {
     transition: all 0.3s ease;
   }
-  
+
   #printedBtn:checked ~ * .printed-icon-container {
     background-color: rgba(40, 167, 69, 0.1) !important;
   }
-  
+
   #printedBtn:checked ~ * .printed-icon-container i {
     color: #28a745 !important;
   }
-  
+
   /* Enhanced form inputs */
   .form-control, .form-select {
     border-radius: 8px;
     border: 2px solid #e9ecef;
     transition: all 0.3s ease;
   }
-  
+
   .form-control:focus, .form-select:focus {
     border-color: #0d6efd;
     box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
     transform: translateY(-1px);
   }
-  
+
   /* Enhanced buttons */
   .btn {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   .btn:hover {
     transform: translateY(-1px);
   }
-  
+
   .btn-success {
     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     border: none;
     box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
   }
-  
+
   .btn-success:hover {
     box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
   }
-  
+
   /* Page entrance animations */
   @keyframes slideInUp {
     from {
@@ -1187,49 +1187,49 @@
       transform: translateY(0);
     }
   }
-  
+
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
   }
-  
+
   .file-management-section {
     animation: slideInUp 0.6s ease-out;
   }
-  
+
   .parts-section {
     animation: slideInUp 0.8s ease-out;
   }
-  
+
   .category-btn {
     animation: fadeIn 0.4s ease-out;
   }
-  
+
   .category-btn:nth-child(even) {
     animation-delay: 0.1s;
   }
-  
+
   .category-btn:nth-child(odd) {
     animation-delay: 0.05s;
   }
-  
+
   /* Smooth scrolling for better UX */
   html {
     scroll-behavior: smooth;
   }
-  
+
   /* Focus states for accessibility */
   .category-btn:focus-visible {
     outline: 3px solid rgba(13, 110, 253, 0.5);
     outline-offset: 2px;
   }
-  
+
   /* Loading states */
   .btn.loading {
     position: relative;
     color: transparent !important;
   }
-  
+
   .btn.loading::after {
     content: '';
     position: absolute;
@@ -1244,7 +1244,7 @@
     border-right-color: transparent;
     animation: spin 0.75s linear infinite;
   }
-  
+
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
@@ -1264,7 +1264,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     .part-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 30px rgba(0,0,0,0.15);
@@ -1448,19 +1448,19 @@
         border-radius: 15px;
         padding: 10px 15px;
     }
-    
+
     .fixed-action-buttons .d-flex {
         justify-content: space-between;
         gap: 10px;
     }
-    
+
     .fixed-action-buttons .btn {
         flex: 1;
         min-width: auto;
         padding: 10px 15px;
         font-size: 0.9rem;
     }
-    
+
     /* Mobile button sizing - icons only for file management buttons */
     /* Target only file management buttons, not category buttons */
     .card-body .btn-sm:has(i),
@@ -1478,7 +1478,7 @@
         justify-content: center !important;
         position: relative;
     }
-    
+
     /* Show only icons in file management buttons */
     .card-body .btn-sm:has(i) i,
     .d-flex .btn-outline-primary:has(i) i,
@@ -1489,7 +1489,7 @@
         font-size: 1.2rem !important;
         margin: 0 !important;
     }
-    
+
     /* Hide text content in file management buttons - keep only icons */
     .card-body .btn-sm:has(i) > *:not(i),
     .d-flex .btn-outline-primary:has(i) > *:not(i),
@@ -1499,7 +1499,7 @@
     .d-flex .btn-outline-info:has(i) > *:not(i) {
         display: none !important;
     }
-    
+
     /* Enhanced disabled button styling for mobile */
     .btn:disabled,
     .btn.disabled {
@@ -1509,7 +1509,7 @@
         border-style: dashed !important;
         border-width: 2px !important;
     }
-    
+
     /* Disabled button overlay with prohibition symbol */
     .btn:disabled::after,
     .btn.disabled::after {
@@ -1530,7 +1530,7 @@
         border: 2px solid white;
         box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
-    
+
     /* Mobile-specific tooltip styling */
     .mobile-tooltip {
         position: absolute;
@@ -1553,7 +1553,7 @@
         text-align: center;
         line-height: 1.3;
     }
-    
+
     .mobile-tooltip::after {
         content: '';
         position: absolute;
@@ -1563,11 +1563,11 @@
         border: 5px solid transparent;
         border-top-color: rgba(0, 0, 0, 0.9);
     }
-    
+
     .mobile-tooltip.show {
         opacity: 1;
     }
-    
+
     /* Show tooltip on disabled button click/tap */
     .btn:disabled:active .mobile-tooltip,
     .btn.disabled:active .mobile-tooltip,
@@ -1575,7 +1575,7 @@
     .btn.disabled.show-tooltip .mobile-tooltip {
         opacity: 1;
     }
-    
+
     .fixed-buttons-spacer {
         height: 80px;
     }
@@ -1588,12 +1588,12 @@
         right: 10px;
         padding: 8px 12px;
     }
-    
+
     .fixed-action-buttons .btn {
         padding: 8px 12px;
         font-size: 0.85rem;
     }
-    
+
     .fixed-buttons-spacer {
         height: 70px;
     }
@@ -1679,27 +1679,27 @@
   buttonsContainer.addEventListener('click', e => {
     if (e.target.classList.contains('category-btn') || e.target.closest('.category-btn')) {
       const btn = e.target.classList.contains('category-btn') ? e.target : e.target.closest('.category-btn');
-      
+
       // Add click animation
       btn.style.transform = 'scale(0.95)';
       setTimeout(() => {
         btn.style.transform = '';
       }, 100);
-      
+
       btn.classList.toggle('selected');
 
       const selected = Array.from(buttonsContainer.querySelectorAll('.category-btn.selected'))
                             .map(btn => btn.getAttribute('data-value'));
 
       hiddenInput.value = selected.join(';;');
-      
+
       // Update counter
       const counter = document.getElementById('selected-count');
       if (counter) {
         counter.textContent = selected.length;
         counter.parentElement.style.color = selected.length > 0 ? '#28a745' : '#6c757d';
       }
-      
+
       console.log('Hidden input value:', hiddenInput.value);
     }
   });
@@ -1728,22 +1728,22 @@
     // Check if song is admin checked (prevents deletions)
     const songAdminChecked = {{ 'true' if song.admin_checked else 'false' }};
     const songPrinted = {{ 'true' if song.printed else 'false' }};
-    
+
     // Check permissions and show appropriate messages
     if (songAdminChecked) {
       showDisabledButtonToast("Nemôžete vymazať súbory z piesne, ktorá už bola skontrolovaná administrátorom");
       return;
     }
-    
+
     if (songPrinted && (fileType === 'tex' || fileType === 'pdf_lyrics' || fileType === 'pdf_chords')) {
       showDisabledButtonToast("Nemôžete vymazať súbory z piesne, ktorá už bola vytlačená");
       return;
     }
-    
+
     // Provide helpful messages based on file type
     let confirmMessage = "Naozaj chcete vymazať tento súbor?";
     let fileName = filePath ? filePath.split('/').pop() : '';
-    
+
     switch(fileType) {
       case 'tex':
         confirmMessage = "Vymazať vygenerované LaTeX súbory? Budete ich musieť znovu vygenerovať.";
@@ -1767,7 +1767,7 @@
         confirmMessage = fileName ? `Vymazať MuseScore súbor "${fileName}"?` : "Vymazať tento MuseScore súbor?";
         break;
     }
-    
+
     if (confirm(confirmMessage)) {
       const form = document.createElement('form');
       form.method = 'POST';
@@ -1915,7 +1915,7 @@ document.addEventListener('DOMContentLoaded', function() {
       currentSongContainer = this.closest('.song-container');
       const songId = this.dataset.songId;
       document.getElementById('currentSongId').textContent = songId;
-      
+
       // Handle new song case
       if (songId === 'NEW') {
         // For new songs, get prefix from title's first letter
@@ -1928,7 +1928,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // Get first letter and normalize it
         const prefix = title.charAt(0).toUpperCase().replace(/[^\u0041-\u005A\u0061-\u007A\u00C0-\u017F]/u, 'A');
-        
+
         // Fetch songs for this prefix
         fetchSongsForAssociation(prefix, songId);
       } else {
@@ -2060,23 +2060,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
       }
     });
-    
+
     // Enhanced form submission with loading state
     const form = document.querySelector('form');
     const saveBtn = document.querySelector('.save-btn');
     const saveProgress = document.getElementById('save-progress');
-    
+
     if (form && saveBtn) {
       form.addEventListener('submit', function(e) {
         // Add loading state to save button
         saveBtn.classList.add('loading');
         saveBtn.disabled = true;
-        
+
         // Show progress indicator
         if (saveProgress) {
           saveProgress.style.display = 'block';
         }
-        
+
         // Update button text
         const saveText = saveBtn.querySelector('.save-text');
         if (saveText) {
@@ -2084,7 +2084,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     }
-    
+
     // Initialize category counter on page load
     const selectedCount = document.querySelectorAll('.category-btn.selected').length;
     const counter = document.getElementById('selected-count');
@@ -2092,27 +2092,27 @@ document.addEventListener('DOMContentLoaded', function () {
       counter.textContent = selectedCount;
       counter.parentElement.style.color = selectedCount > 0 ? '#28a745' : '#6c757d';
     }
-    
+
     // Enhanced printed status toggle
     const printedCheckbox = document.getElementById('printedBtn');
     const statusText = document.querySelector('.printed-status-text');
     const progressBar = document.querySelector('.printed-progress-bar');
     const iconContainer = document.querySelector('.printed-icon-container');
-    
+
     if (printedCheckbox && statusText && progressBar) {
       printedCheckbox.addEventListener('change', function() {
         const isChecked = this.checked;
-        
+
         // Add click animation
         iconContainer.style.transform = 'scale(0.9)';
         setTimeout(() => {
           iconContainer.style.transform = 'scale(1)';
         }, 150);
-        
+
         // Update text with animation
         statusText.style.opacity = '0';
         statusText.style.transform = 'translateY(-10px)';
-        
+
         setTimeout(() => {
           if (isChecked) {
             statusText.textContent = 'Vytlačené ✓';
@@ -2120,7 +2120,7 @@ document.addEventListener('DOMContentLoaded', function () {
             progressBar.style.width = '100%';
             progressBar.classList.remove('bg-secondary');
             progressBar.classList.add('bg-success');
-            
+
             // Update icon
             iconContainer.style.backgroundColor = 'rgba(40, 167, 69, 0.1)';
             iconContainer.querySelector('i').style.color = '#28a745';
@@ -2130,16 +2130,16 @@ document.addEventListener('DOMContentLoaded', function () {
             progressBar.style.width = '0%';
             progressBar.classList.remove('bg-success');
             progressBar.classList.add('bg-secondary');
-            
+
             // Update icon
             iconContainer.style.backgroundColor = 'rgba(13, 110, 253, 0.1)';
             iconContainer.querySelector('i').style.color = '#0d6efd';
           }
-          
+
           statusText.style.opacity = '1';
           statusText.style.transform = 'translateY(0)';
         }, 150);
-        
+
         // Show brief feedback
         const card = printedCheckbox.closest('.card');
         if (isChecked) {
@@ -2149,7 +2149,7 @@ document.addEventListener('DOMContentLoaded', function () {
           card.style.borderColor = '#6c757d';
           card.style.backgroundColor = 'rgba(108, 117, 125, 0.05)';
         }
-        
+
         setTimeout(() => {
           card.style.borderColor = 'transparent';
           card.style.backgroundColor = '';
@@ -2157,24 +2157,24 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   });
-  
+
   // Enhanced disabled button feedback for mobile
   // Add mobile tooltips to all disabled buttons
   function addMobileTooltips() {
     const disabledButtons = document.querySelectorAll('button:disabled, button.disabled, .btn:disabled, .btn.disabled');
-    
+
     disabledButtons.forEach(function(button) {
       // Skip if already has tooltip
       if (button.querySelector('.mobile-tooltip')) return;
-      
+
       // Get reason from title attribute or determine based on context
       let reason = button.getAttribute('title') || button.getAttribute('data-reason') || '';
-      
+
       // Determine reason based on button content and context if not explicitly set
       if (!reason) {
         const buttonText = button.textContent.trim().toLowerCase();
         const buttonIcon = button.querySelector('i');
-        
+
         if (buttonText.includes('tex') || (buttonIcon && buttonIcon.className.includes('file-code'))) {
           reason = 'Pieseň už bola skontrolovaná administrátorom';
         } else if (buttonText.includes('pdf') || (buttonIcon && buttonIcon.className.includes('file-pdf'))) {
@@ -2191,7 +2191,7 @@ document.addEventListener('DOMContentLoaded', function () {
           reason = 'Akcia nie je povolená';
         }
       }
-      
+
       // Create tooltip element
       const tooltip = document.createElement('div');
       tooltip.className = 'mobile-tooltip';
@@ -2200,35 +2200,35 @@ document.addEventListener('DOMContentLoaded', function () {
       button.style.position = 'relative';
     });
   }
-  
+
   // Handle disabled button clicks/taps
   function handleDisabledButtonClick(event) {
     const button = event.target.closest('button:disabled, button.disabled, .btn:disabled, .btn.disabled');
     if (!button) return;
-    
+
     event.preventDefault();
     event.stopPropagation();
-    
+
     // Get the reason from various possible sources
-    let reason = button.getAttribute('title') || 
+    let reason = button.getAttribute('title') ||
                 button.getAttribute('data-bs-original-title') ||
-                button.querySelector('.mobile-tooltip')?.textContent || 
+                button.querySelector('.mobile-tooltip')?.textContent ||
                 'Táto akcia nie je momentálne dostupná';
-    
+
     // Show toast notification for all screen sizes
     showDisabledButtonToast(reason);
-    
+
     // Add visual feedback with shake animation
     button.style.animation = 'shake 0.5s ease-in-out';
     setTimeout(() => {
       button.style.animation = '';
     }, 500);
-    
+
     // Vibrate on mobile if supported
     if (navigator.vibrate) {
       navigator.vibrate([100, 50, 100]);
     }
-    
+
     // Show tooltip temporarily if it exists
     const tooltip = button.querySelector('.mobile-tooltip');
     if (tooltip) {
@@ -2238,13 +2238,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 3000);
     }
   }
-  
+
   // Flash message function
   function showFlashMessage(message, type = 'info') {
     // Remove existing flash messages
     const existingFlash = document.querySelector('.temp-flash-message');
     if (existingFlash) existingFlash.remove();
-    
+
     // Create new flash message
     const flashDiv = document.createElement('div');
     flashDiv.className = `alert alert-${type} alert-dismissible fade show temp-flash-message`;
@@ -2254,9 +2254,9 @@ document.addEventListener('DOMContentLoaded', function () {
       ${message}
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
-    
+
     document.body.appendChild(flashDiv);
-    
+
     // Auto-remove after 5 seconds
     setTimeout(() => {
       if (flashDiv.parentNode) {
@@ -2264,7 +2264,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }, 5000);
   }
-  
+
   // Toast notification for disabled buttons
   function showDisabledButtonToast(message) {
     // Remove existing toast
@@ -2272,7 +2272,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (existingToast) {
         existingToast.remove();
     }
-    
+
     // Create toast element
     let toast = document.createElement('div');
     toast.className = 'disabled-button-toast';
@@ -2282,14 +2282,14 @@ document.addEventListener('DOMContentLoaded', function () {
             <span>${message}</span>
         </div>
     `;
-    
+
     document.body.appendChild(toast);
-    
+
     // Show toast with animation
     setTimeout(() => {
         toast.classList.add('show');
     }, 10);
-    
+
     // Auto-hide after 3 seconds
     setTimeout(() => {
         toast.classList.remove('show');
@@ -2300,10 +2300,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 300);
     }, 3000);
   }
-  
+
   // Initialize tooltips
   addMobileTooltips();
-  
+
   // Add shake animation CSS if not already present
   if (!document.querySelector('#shake-animation-styles')) {
     const shakeStyles = document.createElement('style');
@@ -2317,11 +2317,11 @@ document.addEventListener('DOMContentLoaded', function () {
     `;
     document.head.appendChild(shakeStyles);
   }
-  
+
   // Add event listeners for disabled button clicks
   document.addEventListener('click', handleDisabledButtonClick, true);
   document.addEventListener('touchstart', handleDisabledButtonClick, true);
-  
+
   // Re-initialize tooltips when content changes (for dynamic content)
   const observer = new MutationObserver(function(mutations) {
     let shouldUpdate = false;
@@ -2334,7 +2334,7 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(addMobileTooltips, 100);
     }
   });
-  
+
   observer.observe(document.body, {
     childList: true,
     subtree: true,
