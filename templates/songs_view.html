@@ -9,7 +9,7 @@
         <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
             <i class="bi bi-arrow-left me-1"></i>Späť na hlavný zoznam
         </a>
-        <button class="btn btn-outline-info" onclick="copyToClipboard('{{ url_for('songs_view', song_ids=song_ids, _external=True) }}', this)">
+    <button class="btn btn-outline-info" onclick="copyToClipboard(this.dataset.url, this)" data-url="{{ url_for('songs_view', song_ids=song_ids, _external=True) }}">
             <i class="bi bi-link me-1"></i>Kopírovať link
         </button>
     </div>
@@ -814,14 +814,14 @@
                 {% if song.pdf_lyrics_path or song.pdf_chords_path %}
                 <div class="btn-group btn-group-sm" role="group">
                   {% if song.pdf_lyrics_path %}
-                  <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}"
+                  <a href="{{ url_for('serve_upload', filename=song.pdf_lyrics_path) }}"
                      class="btn btn-outline-primary btn-sm"
                      title="Stiahnuť text piesne">
                     <i class="bi bi-file-text"></i> Text
                   </a>
                   {% endif %}
                   {% if song.pdf_chords_path %}
-                  <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}"
+                  <a href="{{ url_for('serve_upload', filename=song.pdf_chords_path) }}"
                      class="btn btn-outline-warning btn-sm"
                      title="Stiahnuť akordy">
                     <i class="bi bi-music-note-beamed"></i> Akordy
@@ -934,7 +934,7 @@
     <div class="mobile-song-actions-grid">
       <!-- 1. Slová (Lyrics) -->
       {% if song.pdf_lyrics_path %}
-      <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
+      <a href="{{ url_for('serve_upload', filename=song.pdf_lyrics_path) }}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
         <i class="bi bi-file-text"></i>
       </a>
       {% else %}
@@ -945,7 +945,7 @@
 
       <!-- 2. Akordy (Chords) -->
       {% if song.pdf_chords_path %}
-      <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
+      <a href="{{ url_for('serve_upload', filename=song.pdf_chords_path) }}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
         <i class="fa-solid fa-guitar"></i>
       </a>
       {% else %}

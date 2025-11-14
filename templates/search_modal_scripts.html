@@ -388,14 +388,14 @@ function initializeFixedSearch() {
     let fileDownloadsHtml = '';
     if (song.pdf_lyrics_path || song.pdf_chords_path) {
       const lyricsBtn = song.pdf_lyrics_path ?
-        `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}"
+        `<a href="/uploads/${song.pdf_lyrics_path}"
            class="btn btn-outline-primary btn-sm"
            title="Stiahnuť text piesne">
           <i class="bi bi-file-text"></i> Text
         </a>` : '';
 
       const chordsBtn = song.pdf_chords_path ?
-        `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}"
+        `<a href="/uploads/${song.pdf_chords_path}"
            class="btn btn-outline-warning btn-sm"
            title="Stiahnuť akordy">
           <i class="bi bi-music-note-beamed"></i> Akordy
@@ -652,7 +652,7 @@ function initializeFixedSearch() {
       <div class="mobile-song-actions-grid">
         <!-- 1. Slová (Lyrics) -->
         ${song.pdf_lyrics_path ?
-          `<a href="/static/uploads/${song.id}/${song.pdf_lyrics_path.split('/').pop()}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
+          `<a href="/uploads/${song.pdf_lyrics_path}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
             <i class="bi bi-file-text"></i>
           </a>` :
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
@@ -662,7 +662,7 @@ function initializeFixedSearch() {
 
         <!-- 2. Akordy (Chords) -->
         ${song.pdf_chords_path ?
-          `<a href="/static/uploads/${song.id}/${song.pdf_chords_path.split('/').pop()}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
+          `<a href="/uploads/${song.pdf_chords_path}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
             <i class="fa-solid fa-guitar"></i>
           </a>` :
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">

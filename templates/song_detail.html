@@ -242,8 +242,8 @@
       <!-- TeX File Actions -->
       <div class="tex-actions mb-3">
         <div class="btn-group" role="group">
-          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.tex_path.split('/')[-1]) }}" target="_blank"
-             class="btn btn-outline-warning btn-sm">
+       <a href="{{ url_for('serve_upload', filename=song.id|string + '/' + song.tex_path.split('/')[-1]) }}" target="_blank"
+         class="btn btn-outline-warning btn-sm">
             <i class="bi bi-download me-1"></i>Stiahnuť TeX
           </a>
 
@@ -318,7 +318,7 @@
 
         {% if song.pdf_lyrics_path %}
         <div class="file-actions d-flex gap-2">
-          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}"
+       <a href="{{ url_for('serve_upload', filename=song.pdf_lyrics_path) }}"
              class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" target="_blank">
             <i class="bi bi-download"></i>
             Stiahnuť
@@ -378,7 +378,7 @@
 
         {% if song.pdf_chords_path %}
         <div class="file-actions d-flex gap-2">
-          <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}"
+       <a href="{{ url_for('serve_upload', filename=song.pdf_chords_path) }}"
              class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" target="_blank">
             <i class="bi bi-download"></i>
             Stiahnuť
@@ -899,6 +899,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Hidden checkbox for force_replace - controlled by modal -->
+    <input type="checkbox" name="force_replace" value="true" id="force_replace" style="display: none;">
 
     <!-- Hidden submit button for form submission -->
     <button type="submit" id="hidden-submit" style="display: none;"></button>
@@ -2341,6 +2344,210 @@ document.addEventListener('DOMContentLoaded', function () {
     attributes: true,
     attributeFilter: ['disabled', 'class']
   });
+
+  // ============================================================================
+  // DUPLICATE FILE DETECTION MODAL
+  // ============================================================================
+
+  const mainForm = document.querySelector('form[method="post"]');
+  const saveButton = document.querySelector('.save-btn');
+  const forceReplaceCheckbox = document.getElementById('force_replace');
+  
+  if (mainForm && saveButton) {
+    // Intercept save button click
+    const originalSaveClick = saveButton.onclick;
+    saveButton.onclick = async function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Collect all files that will be uploaded
+      const filesToCheck = [];
+      const songId = {{ song.id if song.id else 'null' }};
+      
+      if (!songId) {
+        // New song - can't check duplicates yet, just submit
+        document.getElementById('hidden-submit').click();
+        return;
+      }
+      
+      // Check MP3s
+      const mp3Input = document.querySelector('input[name="mp3s"]');
+      if (mp3Input && mp3Input.files.length > 0) {
+        for (let file of mp3Input.files) {
+          filesToCheck.push({name: file.name, type: 'mp3s'});
+        }
+      }
+      
+      // Check MIDIs
+      const midiInput = document.querySelector('input[name="midis"]');
+      if (midiInput && midiInput.files.length > 0) {
+        for (let file of midiInput.files) {
+          filesToCheck.push({name: file.name, type: 'midis'});
+        }
+      }
+      
+      // Check sheet PDFs
+      const sheetPdfInput = document.querySelector('input[name="sheet_pdfs"]');
+      if (sheetPdfInput && sheetPdfInput.files.length > 0) {
+        for (let file of sheetPdfInput.files) {
+          filesToCheck.push({name: file.name, type: 'sheets'});
+        }
+      }
+      
+      // Check sheet MuseScore files
+      const sheetMsczInput = document.querySelector('input[name="sheet_mscz"]');
+      if (sheetMsczInput && sheetMsczInput.files.length > 0) {
+        for (let file of sheetMsczInput.files) {
+          filesToCheck.push({name: file.name, type: 'mscz'});
+        }
+      }
+      
+      // Check single files (tex, pdf_lyrics, pdf_chords) - stay in root folder
+      ['tex', 'pdf_lyrics', 'pdf_chords'].forEach(fieldName => {
+        const input = document.querySelector(`input[name="${fieldName}"]`);
+        if (input && input.files.length > 0) {
+          filesToCheck.push({name: input.files[0].name, type: ''});
+        }
+      });
+      
+      // If no files to upload, just submit
+      if (filesToCheck.length === 0) {
+        document.getElementById('hidden-submit').click();
+        return;
+      }
+      
+      // Call API to check for duplicates
+      try {
+        const response = await fetch('/api/check_file_exists', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            song_id: songId,
+            files: filesToCheck
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error('API call failed');
+        }
+        
+        const data = await response.json();
+        
+        if (data.exists && data.exists.length > 0) {
+          // Show modal with duplicate files
+          showDuplicateModal(data.exists);
+        } else {
+          // No duplicates, just submit
+          document.getElementById('hidden-submit').click();
+        }
+        
+      } catch (error) {
+        console.error('Error checking for duplicates:', error);
+        // On error, just submit anyway
+        document.getElementById('hidden-submit').click();
+      }
+    };
+  }
+  
+  function showDuplicateModal(existingFiles) {
+    // Create modal HTML
+    const modalHtml = `
+      <div class="modal fade" id="duplicateFilesModal" tabindex="-1" aria-labelledby="duplicateFilesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+              <h5 class="modal-title" id="duplicateFilesModalLabel">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                Súbory už existujú
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p class="mb-3">Nasledujúce súbory už existujú:</p>
+              <ul class="list-group mb-3">
+                ${existingFiles.map(file => `
+                  <li class="list-group-item d-flex align-items-center">
+                    <i class="bi bi-file-earmark me-2 text-warning"></i>
+                    <span class="text-break">${file.name}</span>
+                  </li>
+                `).join('')}
+              </ul>
+              <p class="text-muted small mb-0">
+                <i class="bi bi-info-circle me-1"></i>
+                Čo chcete urobiť?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                <i class="bi bi-x-circle me-1"></i>
+                Zrušiť
+              </button>
+              <button type="button" class="btn btn-primary" onclick="submitFormSkipDuplicates()">
+                <i class="bi bi-skip-forward me-1"></i>
+                Preskočiť existujúce
+              </button>
+              <button type="button" class="btn btn-warning" onclick="submitFormReplaceAll()">
+                <i class="bi bi-arrow-repeat me-1"></i>
+                Nahradiť všetky
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Remove existing modal if any
+    const existingModal = document.getElementById('duplicateFilesModal');
+    if (existingModal) {
+      existingModal.remove();
+    }
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('duplicateFilesModal'));
+    modal.show();
+  }
+  
+  function submitFormSkipDuplicates() {
+    // Uncheck force_replace if it was checked
+    if (forceReplaceCheckbox) {
+      forceReplaceCheckbox.checked = false;
+    }
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('duplicateFilesModal'));
+    if (modal) {
+      modal.hide();
+    }
+    
+    // Submit form
+    setTimeout(() => {
+      document.getElementById('hidden-submit').click();
+    }, 300);
+  }
+  
+  function submitFormReplaceAll() {
+    // Check force_replace
+    if (forceReplaceCheckbox) {
+      forceReplaceCheckbox.checked = true;
+    }
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('duplicateFilesModal'));
+    if (modal) {
+      modal.hide();
+    }
+    
+    // Submit form
+    setTimeout(() => {
+      document.getElementById('hidden-submit').click();
+    }, 300);
+  }
+
 </script>
 {% endblock %}
 

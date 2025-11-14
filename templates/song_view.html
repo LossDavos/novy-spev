@@ -262,7 +262,7 @@
           </div>
 
           <div class="file-actions">
-            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_lyrics_path.split('/')[-1]) }}"
+        <a href="{{ url_for('serve_upload', filename=song.pdf_lyrics_path) }}"
                class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1" target="_blank">
               <i class="bi bi-download"></i>
               Stiahnuť
@@ -302,7 +302,7 @@
           </div>
 
           <div class="file-actions">
-            <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + song.pdf_chords_path.split('/')[-1]) }}"
+        <a href="{{ url_for('serve_upload', filename=song.pdf_chords_path) }}"
                class="btn btn-outline-success btn-sm d-flex align-items-center gap-1" target="_blank">
               <i class="bi bi-download"></i>
               Stiahnuť
@@ -568,7 +568,7 @@
             </div>
 
             <div class="mscz-actions">
-              <a href="{{ url_for('static', filename='uploads/' + song.id|string + '/' + path.split('/')[-1]) }}"
+              <a href="{{ path | presigned_url }}"
                  class="btn btn-outline-info btn-sm d-flex align-items-center gap-1"
                  target="_blank" title="Stiahnuť MuseScore súbor">
                 <i class="bi bi-download"></i>

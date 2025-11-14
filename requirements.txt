@@ -8,3 +8,4 @@ reportlab
 Werkzeug
 MarkupSafe
 SQLAlchemy
+requests

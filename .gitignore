@@ -44,6 +44,8 @@ Thumbs.db
 # PDFs and TeX output
 *.pdf
 *.tex
+*.mp3
+*.mscz
 
 # Local config
 .env

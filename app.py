@@ -3,12 +3,12 @@ import json
 import shutil
 import subprocess
 import tempfile
-import boto3
-from dotenv import load_dotenv
-
-from flask import Flask, request, redirect, render_template, url_for, flash, jsonify
+import requests
+import io
+from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory
 from models import db, Song
 from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
 from datetime import datetime
 import sqlite3
 from markupsafe import Markup
@@ -18,65 +18,112 @@ from pathlib import Path
 from generate_tex import generate_latex_content
 from stamper import stamp_pdf
 
+# Import configuration and storage abstraction
+import config
+from storage import storage, init_storage
+
 # Base directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# S3 config
-load_dotenv(os.path.join(BASE_DIR, '.env'))
-
-S3_BUCKET = os.getenv("S3_BUCKET")
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_REGION = os.getenv("AWS_REGION")
-DELETE_SONG_PASSWORD = os.getenv("DELETE_SONG_PASSWORD")
-
-
-
-# Use session for explicit region and signature
-session = boto3.session.Session(
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_REGION
-)
-
-s3 = session.client(
-    "s3",
-    config=boto3.session.Config(
-        s3={'addressing_style': 'virtual'},
-        signature_version='s3v4'
-    )
-)
-
+# Legacy compatibility - still needed for some file operations
+DELETE_SONG_PASSWORD = config.DELETE_SONG_PASSWORD
+JSON_FOLDER = config.JSON_FOLDER
+BACKUP_FOLDER = config.BACKUP_FOLDER
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///songs.db'
-app.config['UPLOAD_FOLDER'] = f'{BASE_DIR}/static/uploads'
-app.secret_key = 'your-secret-key-here'
-ALLOWED_EXTENSIONS = {'mp3', 'pdf', 'midi', 'mid', 'tex', 'mscz'}
-JSON_FOLDER = 'songs'
-BACKUP_FOLDER = BASE_DIR + '/instance/backups'
+app.secret_key = config.SECRET_KEY
+app.config['MAX_CONTENT_LENGTH'] = config.MAX_CONTENT_LENGTH
+
+# IMPORTANT: Upload folder is now outside static/ 
+app.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDER
 
 db.init_app(app)
 
-# Ensure upload and backup folders exist
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+# Initialize storage backend (local or S3 based on config)
+init_storage()
+print(f"[Storage] Using {'S3' if config.USE_S3_STORAGE else 'Local'} storage backend")
+
+# Ensure folders exist
+os.makedirs(config.UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(BACKUP_FOLDER, exist_ok=True)
 os.makedirs(JSON_FOLDER, exist_ok=True)
 
-# Helper functions
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# ============================================================================
+# HELPER FUNCTIONS - File Handling
+# ============================================================================
 
-def upload_to_s3(file, folder='mp3s'):
-    try:
-        filename = secure_filename(file.filename)
-        key = f"{folder}/{filename}"
-        s3.upload_fileobj(file, S3_BUCKET, key, ExtraArgs={'ContentType': file.content_type})
-        return key
-    except Exception as e:
-        flash(f"S3 upload error: {e}")
+def allowed_file(filename, category=None):
+    """Check if file extension is allowed"""
+    if not filename or '.' not in filename:
+        return False
+    ext = filename.rsplit('.', 1)[1].lower()
+    return ext in config.ALLOWED_EXTENSIONS
 
-        return None
+
+def save_uploaded_file(file, song_id, subfolder='', force_replace=False):
+    """
+    Save an uploaded file using storage abstraction.
+    Checks if file already exists and can skip or replace based on force_replace flag.
+    
+    Args:
+        file: FileStorage object from request.files
+        song_id: Song ID (for folder organization)
+        subfolder: Optional subfolder (e.g., 'mp3s', 'midis', 'sheets')
+        force_replace: If True, replaces existing file. If False, skips if exists.
+    
+    Returns:
+        tuple: (path, already_existed) - path is the file path, already_existed is True if file was there
+    """
+    filename = secure_filename(file.filename)
+    folder = str(song_id)
+    if subfolder:
+        folder = f"{song_id}/{subfolder}"
+    
+    # Construct the full path to check if file already exists
+    file_path = f"{folder}/{filename}"
+    
+    # Check if file already exists
+    if storage().file_exists(file_path):
+        if force_replace:
+            print(f"[Upload] Replacing existing file: {file_path}")
+            # Delete old file first
+            delete_uploaded_file(file_path)
+            # Save new file
+            return (storage().save_file(file, folder, filename), True)
+        else:
+            print(f"[Upload] File already exists, skipping: {file_path}")
+            return (file_path, True)  # Return existing path with flag
+    
+    # File doesn't exist, save it
+    return (storage().save_file(file, folder, filename), False)
+
+
+def delete_uploaded_file(path):
+    """
+    Delete a file using storage abstraction
+    
+    Args:
+        path: Relative path/key of file to delete
+    
+    Returns:
+        bool: True if successful
+    """
+    return storage().delete_file(path)
+
+
+def get_file_url(path, expires_in=3600):
+    """
+    Get URL for a file (local route or S3 presigned URL)
+    
+    Args:
+        path: Relative path/key of file
+        expires_in: Expiration time for S3 URLs (ignored for local)
+    
+    Returns:
+        str: URL to access the file
+    """
+    return storage().get_url(path, expires_in)
 
 def stamp_uploaded_pdf(pdf_path, song_id, version_name=None):
     """
@@ -194,23 +241,37 @@ def download_original_sheet(song_id, sheet_filename):
     """
     song = Song.query.get_or_404(song_id)
 
-    # Check if file exists in current upload structure
-    current_file_path = os.path.join(app.config['UPLOAD_FOLDER'], str(song.id), sheet_filename)
-
-    if not os.path.exists(current_file_path):
-        flash("Sheet PDF not found!", "error")
+    # Find the full path from the database
+    sheet_pdfs = json.loads(song.sheet_pdf_paths or '[]')
+    
+    # Find the path that ends with the requested filename
+    relative_path = None
+    for path in sheet_pdfs:
+        if path.endswith(sheet_filename):
+            relative_path = path
+            break
+    
+    if not relative_path:
+        flash("Sheet PDF not found in database!", "error")
+        return redirect(url_for('song_detail', song_id=song.id))
+    
+    # Check if file exists using storage abstraction
+    if not storage().file_exists(relative_path):
+        flash("Sheet PDF file not found!", "error")
         return redirect(url_for('song_detail', song_id=song.id))
 
-    # Check if we have an original version stored
-    base_name = os.path.splitext(current_file_path)[0]
-    original_path = base_name + '_original.pdf'
+    # Check if we have an original version stored (same directory, _original suffix)
+    dir_path = os.path.dirname(relative_path)
+    base_name = os.path.splitext(sheet_filename)[0]
+    original_filename = base_name + '_original.pdf'
+    original_relative_path = f'{dir_path}/{original_filename}' if dir_path else original_filename
 
-    if os.path.exists(original_path):
+    if storage().file_exists(original_relative_path):
         # Return the original version
-        return redirect(url_for('static', filename=f'uploads/{song.id}/{os.path.basename(original_path)}'))
+        return redirect(get_file_url(original_relative_path))
     else:
         # Return the current file (might already be stamped)
-        return redirect(url_for('static', filename=f'uploads/{song.id}/{sheet_filename}'))
+        return redirect(get_file_url(relative_path))
 
 
 @app.route('/song/<int:song_id>/download_stamped_sheet/<path:sheet_filename>')
@@ -223,20 +284,48 @@ def download_stamped_sheet(song_id, sheet_filename):
 
     song = Song.query.get_or_404(song_id)
 
-    # Check if file exists in current upload structure
-    current_file_path = os.path.join(app.config['UPLOAD_FOLDER'], str(song.id), sheet_filename)
-
-    if not os.path.exists(current_file_path):
-        flash("Sheet PDF not found!", "error")
+    # Find the full path from the database
+    sheet_pdfs = json.loads(song.sheet_pdf_paths or '[]')
+    
+    # Find the path that ends with the requested filename
+    relative_path = None
+    for path in sheet_pdfs:
+        if path.endswith(sheet_filename):
+            relative_path = path
+            break
+    
+    if not relative_path:
+        flash("Sheet PDF not found in database!", "error")
+        return redirect(url_for('song_detail', song_id=song.id))
+    
+    # Check if file exists using storage abstraction
+    if not storage().file_exists(relative_path):
+        flash("Sheet PDF file not found!", "error")
         return redirect(url_for('song_detail', song_id=song.id))
 
     try:
+        # For local storage, get absolute path directly
+        if not config.USE_S3_STORAGE:
+            current_file_path = os.path.join(config.UPLOAD_FOLDER, relative_path)
+        else:
+            # For S3, download file to temp location first
+            with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as temp_input:
+                # Get presigned URL and download
+                s3_url = storage().get_url(relative_path)
+                import requests
+                response = requests.get(s3_url)
+                temp_input.write(response.content)
+                current_file_path = temp_input.name
+        
         # Create stamped version in memory using temporary file
         with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as temp_stamped:
             font_path = os.path.join(os.path.dirname(__file__), 'static', 'fonts')
             success = stamp_pdf(current_file_path, temp_stamped.name, song.song_id, song.version_name, font_path)
 
             if not success:
+                # Clean up temp files
+                if config.USE_S3_STORAGE and os.path.exists(current_file_path):
+                    os.unlink(current_file_path)
                 flash("Failed to create stamped version", "error")
                 return redirect(url_for('song_detail', song_id=song.id))
 
@@ -244,8 +333,10 @@ def download_stamped_sheet(song_id, sheet_filename):
             with open(temp_stamped.name, 'rb') as f:
                 pdf_data = f.read()
 
-            # Clean up temp file
+            # Clean up temp files
             os.unlink(temp_stamped.name)
+            if config.USE_S3_STORAGE and os.path.exists(current_file_path):
+                os.unlink(current_file_path)
 
             # Create filename for download
             base_name = os.path.splitext(sheet_filename)[0]
@@ -317,72 +408,66 @@ def download_blank_stamped(song_id):
 @app.template_filter('presigned_url')
 def presigned_url_filter(key, expires_in=3600):
     """
-    Usage in Jinja template:
+    Jinja template filter to get file URL (works with both local and S3 storage)
+    Usage in template:
         <a href="{{ 'uploads/44/adeste_hlasy.mid' | presigned_url }}">Download</a>
     """
-
     try:
-        url = s3.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': S3_BUCKET, 'Key': key},
-            ExpiresIn=expires_in
-        )
-        return Markup(url)
+        return Markup(get_file_url(key, expires_in))
     except Exception as e:
-        # Optional: return empty string or a placeholder URL if key not found
-        print(f"Error generating presigned URL for {key}: {e}")
+        print(f"Error generating URL for {key}: {e}")
         return ""
 
-@app.route('/api/presigned_url')
-def get_presigned_url():
-    """API endpoint to get presigned URL for S3 files"""
-    try:
-        key = request.args.get('key')
-        if not key:
-            return jsonify({'error': 'Missing key parameter'}), 400
 
-        expires_in = int(request.args.get('expires_in', 3600))
-
-        url = s3.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': S3_BUCKET, 'Key': key},
-            ExpiresIn=expires_in
-        )
-
-        return redirect(url)
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-def delete_from_s3(s3_key):
-    try:
-        s3.delete_object(Bucket=S3_BUCKET, Key=s3_key)
-        return True
-    except Exception as e:
-        flash(f"S3 delete error: {e}, {AWS_SECRET_ACCESS_KEY}")
-        return False
-
-def update_multi_files_s3(current_paths, new_files, folder='mp3s'):
+def update_multi_file_paths(current_paths, new_files, song_id, subfolder='', force_replace=False):
+    """
+    Upload multiple files and update path list
+    
+    Args:
+        current_paths: JSON string of existing paths
+        new_files: List of FileStorage objects
+        song_id: Song ID for folder organization
+        subfolder: Optional subfolder (e.g., 'mp3s', 'midis')
+        force_replace: If True, replaces existing files
+    
+    Returns:
+        str: JSON string of updated paths
+    """
     paths = json.loads(current_paths or '[]')
-
-    # Upload new files to S3
+    skipped_files = []
+    replaced_files = []
+    
     for file in new_files:
         if file and allowed_file(file.filename):
-            key = upload_to_s3(file, folder=folder)
-            if key:
-                paths.append(key)
-            else:
-                flash(f"S3 upload error: {file}")
-
-
+            try:
+                path, already_existed = save_uploaded_file(file, song_id, subfolder, force_replace=force_replace)
+                
+                if path:
+                    # Check if path is not already in the list to avoid duplicates
+                    if path not in paths:
+                        paths.append(path)
+                        if already_existed:
+                            if force_replace:
+                                replaced_files.append(file.filename)
+                            else:
+                                skipped_files.append(file.filename)
+                    else:
+                        print(f"[Upload] Path already in list: {path}")
+                        if not force_replace:
+                            skipped_files.append(file.filename)
+                else:
+                    flash(f"Failed to upload {file.filename}", "error")
+            except Exception as e:
+                flash(f"Upload error for {file.filename}: {e}", "error")
+    
+    # Show appropriate messages
+    if replaced_files:
+        flash(f"Files replaced: {', '.join(replaced_files)}", "success")
+    if skipped_files:
+        flash(f"Files already exist (skipped): {', '.join(skipped_files)}. Use 'Replace Existing Files' option to override.", "warning")
+    
     return json.dumps(paths, ensure_ascii=False)
 
-
-def get_song_upload_folder(song_id):
-    """Create song-specific upload folder path"""
-    song_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(song_id))
-    os.makedirs(song_folder, exist_ok=True)
-    return song_folder
 
 def backup_db(src_path, backup_folder):
     """Create database backup"""
@@ -398,39 +483,56 @@ def backup_db(src_path, backup_folder):
     return backup_path
 
 def delete_song_files(song_id):
-    """Delete all files associated with a song - both local and S3 files"""
-    # Get song data first to access S3 file paths
+    """Delete all files associated with a song"""
     song = Song.query.get(song_id)
 
     if song:
-        # Delete S3 files (MP3s and MIDIs)
+        # Delete all file types (MP3s, MIDIs, PDFs, etc.)
         try:
-            # Delete MP3 files from S3
+            # Delete MP3 files
             if song.mp3_paths:
                 mp3_paths = json.loads(song.mp3_paths)
-                for s3_key in mp3_paths:
-                    if s3_key:  # Make sure the key is not empty
-                        print(f"Deleting S3 MP3 file: {s3_key}")
-                        delete_from_s3(s3_key)
+                for path in mp3_paths:
+                    if path:
+                        print(f"Deleting MP3 file: {path}")
+                        delete_uploaded_file(path)
 
-            # Delete MIDI files from S3
+            # Delete MIDI files
             if song.midi_paths:
                 midi_paths = json.loads(song.midi_paths)
-                for s3_key in midi_paths:
-                    if s3_key:  # Make sure the key is not empty
-                        print(f"Deleting S3 MIDI file: {s3_key}")
-                        delete_from_s3(s3_key)
+                for path in midi_paths:
+                    if path:
+                        print(f"Deleting MIDI file: {path}")
+                        delete_uploaded_file(path)
+            
+            # Delete sheet PDFs
+            if song.sheet_pdf_paths:
+                sheet_paths = json.loads(song.sheet_pdf_paths)
+                for path in sheet_paths:
+                    if path:
+                        print(f"Deleting sheet PDF: {path}")
+                        delete_uploaded_file(path)
+            
+            # Delete other files (lyrics PDF, chords PDF, TeX, MuseScore, etc.)
+            for attr in ['pdf_lyrics_path', 'pdf_chords_path', 'tex_path', 'musescore_path']:
+                path = getattr(song, attr, None)
+                if path:
+                    print(f"Deleting {attr}: {path}")
+                    delete_uploaded_file(path)
 
         except (json.JSONDecodeError, TypeError) as e:
-            print(f"Error parsing S3 file paths for song {song_id}: {e}")
+            print(f"Error parsing file paths for song {song_id}: {e}")
         except Exception as e:
-            print(f"Error deleting S3 files for song {song_id}: {e}")
+            print(f"Error deleting files for song {song_id}: {e}")
 
-    # Delete local files (sheet PDFs, MuseScore files, TeX, generated PDFs, etc.)
-    song_folder = os.path.join(app.config['UPLOAD_FOLDER'], str(song_id))
+    # Delete local folder (if using local storage, this cleans up the directory)
+    song_folder = os.path.join(config.UPLOAD_FOLDER, str(song_id))
     if os.path.exists(song_folder):
         print(f"Deleting local song folder: {song_folder}")
-        shutil.rmtree(song_folder)
+        try:
+            shutil.rmtree(song_folder)
+        except Exception as e:
+            print(f"Error deleting folder {song_folder}: {e}")
 
 # Routes
 
@@ -438,28 +540,158 @@ def delete_song_files(song_id):
 def generate_tex(song_id):
     song = Song.query.get_or_404(song_id)
 
-    # Get save folder
-    folder = get_song_upload_folder(song.id)
-    os.makedirs(folder, exist_ok=True)
-
-    # Determine filename
+    # Determine filename and relative path
     tex_filename = f"{secure_filename(song.song_id or song.title)}.tex"
-    tex_path = os.path.join(folder, tex_filename)
-
-    # Prepare LaTeX content
-    latex = generate_latex_content(song)
-
-    # Write to .tex file
-    with open(tex_path, 'w', encoding='utf-8') as f:
-        f.write(latex)
-
-    # Save path in DB (convert to relative path for cross-environment compatibility)
-    song.tex_path = os.path.relpath(tex_path, BASE_DIR)
+    relative_path = f"{song.id}/{tex_filename}"
+    
+    # For local storage, write directly to file
+    if not config.USE_S3_STORAGE:
+        # Get absolute path for local storage
+        folder = os.path.join(config.UPLOAD_FOLDER, str(song.id))
+        os.makedirs(folder, exist_ok=True)
+        tex_path = os.path.join(folder, tex_filename)
+        
+        # Prepare LaTeX content
+        latex = generate_latex_content(song)
+        
+        # Write to .tex file
+        with open(tex_path, 'w', encoding='utf-8') as f:
+            f.write(latex)
+        
+        # Save relative path in DB
+        song.tex_path = relative_path
+    else:
+        # For S3 storage, create temp file and upload
+        import io
+        from werkzeug.datastructures import FileStorage
+        
+        # Prepare LaTeX content
+        latex = generate_latex_content(song)
+        
+        # Create file-like object
+        tex_file = FileStorage(
+            stream=io.BytesIO(latex.encode('utf-8')),
+            filename=tex_filename,
+            content_type='text/plain'
+        )
+        
+        # Upload to S3
+        saved_path = storage().save_file(tex_file, str(song.id), tex_filename)
+        song.tex_path = saved_path
+    
     db.session.commit()
 
     flash("TeX file generated successfully!", "success")
     return redirect(url_for('song_view', song_id=song_id))
 
+
+# ============================================================================
+# FILE SERVING ROUTES
+# ============================================================================
+
+@app.route('/uploads/<path:filename>')
+def serve_upload(filename):
+    """
+    Serve uploaded files from /uploads/ directory or S3
+    
+    This route handles all file serving, automatically using:
+    - Local filesystem when USE_S3_STORAGE=false
+    - S3 presigned URLs when USE_S3_STORAGE=true
+    
+    Security: Validates path to prevent directory traversal
+    """
+    if config.USE_S3_STORAGE:
+        # For S3: generate presigned URL and redirect
+        try:
+            url = storage().get_url(filename, expires_in=3600)
+            if url:
+                return redirect(url)
+            else:
+                return jsonify({'error': 'File not found in S3'}), 404
+        except Exception as e:
+            return jsonify({'error': f'S3 error: {str(e)}'}), 500
+    else:
+        # For local storage: serve directly from uploads folder
+        try:
+            # Security: send_from_directory prevents path traversal
+            return send_from_directory(config.UPLOAD_FOLDER, filename)
+        except FileNotFoundError:
+            return jsonify({'error': 'File not found'}), 404
+
+
+# Legacy route for presigned S3 URLs (kept for backward compatibility)
+@app.route('/api/presigned_url')
+def get_presigned_url():
+    """
+    Legacy API endpoint to get presigned URL for S3 files
+    Use /uploads/<path> route instead for new code
+    """
+    try:
+        key = request.args.get('key')
+        if not key:
+            return jsonify({'error': 'Missing key parameter'}), 400
+
+        expires_in = int(request.args.get('expires_in', 3600))
+        
+        if config.USE_S3_STORAGE:
+            url = storage().get_url(key, expires_in=expires_in)
+            if url:
+                return redirect(url)
+            else:
+                return jsonify({'error': 'File not found'}), 404
+        else:
+            # For local storage, redirect to /uploads/ route
+            return redirect(url_for('serve_upload', filename=key))
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/check_file_exists', methods=['POST'])
+def check_file_exists():
+    """
+    Check if files already exist before upload
+    Expects JSON: {song_id: 123, files: [{name: "file.mp3", type: "mp3s"}]}
+    Returns: {exists: [{name: "file.mp3", path: "123/mp3s/file.mp3"}]}
+    """
+    try:
+        data = request.get_json()
+        song_id = data.get('song_id')
+        files_to_check = data.get('files', [])
+        
+        if not song_id:
+            return jsonify({'error': 'Missing song_id'}), 400
+        
+        existing_files = []
+        
+        for file_info in files_to_check:
+            filename = secure_filename(file_info.get('name', ''))
+            file_type = file_info.get('type', '')  # 'mp3s', 'midis', 'sheets', etc.
+            
+            if filename:
+                # Construct the path
+                if file_type:
+                    file_path = f"{song_id}/{file_type}/{filename}"
+                else:
+                    file_path = f"{song_id}/{filename}"
+                
+                # Check if file exists
+                if storage().file_exists(file_path):
+                    existing_files.append({
+                        'name': filename,
+                        'path': file_path,
+                        'type': file_type
+                    })
+        
+        return jsonify({'exists': existing_files})
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# ============================================================================
+# MAIN ROUTES
+# ============================================================================
 
 @app.route('/')
 def index():
@@ -647,32 +879,23 @@ def delete_file(song_id, file_type):
     if file_type == 'tex':
         print(f"DEBUG: Deleting TeX file. song.tex_path = {song.tex_path}", flush=True)
         if song.tex_path:
-            # Convert relative path to absolute path
-            actual_path = os.path.join(BASE_DIR, song.tex_path)
-
-            print(f"DEBUG: Checking if file exists: {os.path.exists(actual_path)}", flush=True)
-            if os.path.exists(actual_path):
-                print(f"DEBUG: Removing TeX file: {actual_path}", flush=True)
-                os.remove(actual_path)
+            # Use storage abstraction to delete
+            if storage().delete_file(song.tex_path):
                 song.tex_path = None
                 print("DEBUG: TeX file removed and path cleared", flush=True)
 
                 # Also remove generated PDFs when TeX is deleted
                 if song.pdf_lyrics_path:
-                    pdf_path = os.path.join(BASE_DIR, song.pdf_lyrics_path)
-                    if os.path.exists(pdf_path):
-                        print(f"DEBUG: Removing lyrics PDF: {pdf_path}", flush=True)
-                        os.remove(pdf_path)
-                    song.pdf_lyrics_path = None
+                    if storage().delete_file(song.pdf_lyrics_path):
+                        print(f"DEBUG: Removing lyrics PDF: {song.pdf_lyrics_path}", flush=True)
+                        song.pdf_lyrics_path = None
 
                 if song.pdf_chords_path:
-                    pdf_path = os.path.join(BASE_DIR, song.pdf_chords_path)
-                    if os.path.exists(pdf_path):
-                        print(f"DEBUG: Removing chords PDF: {pdf_path}", flush=True)
-                        os.remove(pdf_path)
-                    song.pdf_chords_path = None
+                    if storage().delete_file(song.pdf_chords_path):
+                        print(f"DEBUG: Removing chords PDF: {song.pdf_chords_path}", flush=True)
+                        song.pdf_chords_path = None
             else:
-                print(f"DEBUG: TeX file not found at path: {actual_path}", flush=True)
+                print(f"DEBUG: TeX file not found at path: {song.tex_path}", flush=True)
                 flash(f"TeX file not found", "error")
         else:
             print("DEBUG: No TeX path set for this song", flush=True)
@@ -680,17 +903,23 @@ def delete_file(song_id, file_type):
 
     elif file_type == 'pdf_lyrics':
         if song.pdf_lyrics_path:
-            actual_path = os.path.join(BASE_DIR, song.pdf_lyrics_path)
-            if os.path.exists(actual_path):
-                os.remove(actual_path)
-        song.pdf_lyrics_path = None
+            if storage().delete_file(song.pdf_lyrics_path):
+                song.pdf_lyrics_path = None
+                flash("PDF lyrics file deleted.", "success")
+            else:
+                flash("PDF lyrics file not found.", "error")
+        else:
+            flash("No PDF lyrics file to delete.", "error")
 
     elif file_type == 'pdf_chords':
         if song.pdf_chords_path:
-            actual_path = os.path.join(BASE_DIR, song.pdf_chords_path)
-            if os.path.exists(actual_path):
-                os.remove(actual_path)
-        song.pdf_chords_path = None
+            if storage().delete_file(song.pdf_chords_path):
+                song.pdf_chords_path = None
+                flash("PDF chords file deleted.", "success")
+            else:
+                flash("PDF chords file not found.", "error")
+        else:
+            flash("No PDF chords file to delete.", "error")
     elif file_type in ['mp3', 'midi', 'sheet_pdfs', 'sheet_mscz']:
         path_to_delete = request.form.get('path')
 
@@ -698,21 +927,20 @@ def delete_file(song_id, file_type):
         attr_mapping = {
             'mp3': 'mp3_paths',
             'midi': 'midi_paths',
-            'sheet_pdfs': 'sheet_pdf_paths',  # Assuming you have this attribute
-            'sheet_mscz': 'sheet_mscz_paths'              # Assuming you have this attribute
+            'sheet_pdfs': 'sheet_pdf_paths',
+            'sheet_mscz': 'sheet_mscz_paths'
         }
 
         attr = attr_mapping[file_type]
         paths = json.loads(getattr(song, attr) or '[]')
 
         if path_to_delete in paths:
-            if file_type in ['mp3', 'midi'] and delete_from_s3(path_to_delete):
+            # Use storage abstraction to delete files
+            if delete_uploaded_file(path_to_delete):
                 paths.remove(path_to_delete)
-            elif file_type in ['sheet_pdfs', 'sheet_mscz'] and os.path.exists(path_to_delete):
-                os.remove(path_to_delete)
-                paths.remove(path_to_delete)
+                flash(f"{file_type.upper()} file deleted.")
             else:
-                flash(f"{file_type.upper()} file couldnt be deleted.")
+                flash(f"{file_type.upper()} file couldn't be deleted.")
 
             setattr(song, attr, json.dumps(paths, ensure_ascii=False))
 
@@ -773,18 +1001,29 @@ def song_detail(song_id):
             db.session.add(song)
             db.session.commit()  # Commit to get song ID
 
-        song_folder = get_song_upload_folder(song.id)
+        # Check if user confirmed to replace existing files
+        force_replace = request.form.get('force_replace') == 'true'
 
         # Handle file uploads (works for both new and existing songs)
         def handle_file_update(current_path, file, field_name):
+            """Update single file (PDF, TeX, etc.)"""
             if file and allowed_file(file.filename):
-                # Delete old file if exists (only for existing songs)
-                if not is_new_song and current_path and os.path.exists(current_path):
-                    os.remove(current_path)
-                # Save new file
                 filename = secure_filename(file.filename)
-                path = os.path.join(song_folder, filename)
-                file.save(path)
+                new_path = f"{song.id}/{filename}"
+                
+                # If the new file has the same name as current, show warning unless force_replace
+                if current_path and current_path == new_path and not force_replace:
+                    flash(f"File '{filename}' already exists (skipped). Use 'Replace Existing Files' option to override.", "warning")
+                    return current_path
+                
+                # Delete old file if it exists and is different
+                if current_path and current_path != new_path:
+                    delete_uploaded_file(current_path)
+                
+                # Save new file (will replace if force_replace is True)
+                path, already_existed = save_uploaded_file(file, song.id, '', force_replace=force_replace)
+                if already_existed and not force_replace:
+                    flash(f"File '{filename}' already exists (skipped). Use 'Replace Existing Files' option to override.", "warning")
                 return path
             return current_path
 
@@ -793,28 +1032,11 @@ def song_detail(song_id):
         song.pdf_lyrics_path = handle_file_update(song.pdf_lyrics_path, request.files.get('pdf_lyrics'), 'pdf_lyrics')
         song.pdf_chords_path = handle_file_update(song.pdf_chords_path, request.files.get('pdf_chords'), 'pdf_chords')
 
-        # Handle multiple files (works for both new and existing songs)
-        def update_multi_files(current_paths, new_files, field_name):
-            paths = json.loads(current_paths or '[]')
-
-            # Handle deletions (only for existing songs)
-            if not is_new_song:
-                paths = [p for p in paths if os.path.exists(p)]  # Remove any deleted files
-
-            # Add new files
-            for file in new_files:
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    path = os.path.join(song_folder, filename)
-                    file.save(path)
-                    paths.append(path)
-
-            return json.dumps(paths, ensure_ascii=False)
-
-        song.mp3_paths = update_multi_files_s3(song.mp3_paths, request.files.getlist('mp3s'), folder=f'mp3s/{song.id}')
-        song.midi_paths = update_multi_files_s3(song.midi_paths, request.files.getlist('midis'), folder=f'midis/{song.id}')
-        song.sheet_pdf_paths = update_multi_files(song.sheet_pdf_paths, request.files.getlist('sheet_pdfs'), 'sheet_pdfs')
-        song.sheet_mscz_paths = update_multi_files(song.sheet_mscz_paths, request.files.getlist('sheet_mscz'), 'sheet_mscz')
+        # Handle multiple files (MP3s, MIDIs, sheet PDFs, MuseScore files)
+        song.mp3_paths = update_multi_file_paths(song.mp3_paths, request.files.getlist('mp3s'), song.id, 'mp3s', force_replace=force_replace)
+        song.midi_paths = update_multi_file_paths(song.midi_paths, request.files.getlist('midis'), song.id, 'midis', force_replace=force_replace)
+        song.sheet_pdf_paths = update_multi_file_paths(song.sheet_pdf_paths, request.files.getlist('sheet_pdfs'), song.id, 'sheets', force_replace=force_replace)
+        song.sheet_mscz_paths = update_multi_file_paths(song.sheet_mscz_paths, request.files.getlist('sheet_mscz'), song.id, 'mscz', force_replace=force_replace)
 
         if 'associated_song_id' in request.form:
             associated_song_id = request.form['associated_song_id']
@@ -1112,87 +1334,123 @@ def generate_pdfs(song_id):
         flash("TeX file not found for this song.", "error")
         return redirect(url_for('song_view', song_id=song_id))
 
-    # Convert relative path to absolute for file operations
-    tex_file_absolute = os.path.join(BASE_DIR, song.tex_path)
-    if not os.path.exists(tex_file_absolute):
-        flash("TeX file not found for this song.", "error")
-        return redirect(url_for('song_view', song_id=song_id))
+    # Get TeX file - works with both local and S3 storage
+    if not config.USE_S3_STORAGE:
+        # For local storage, use direct path
+        tex_file_absolute = os.path.join(config.UPLOAD_FOLDER, song.tex_path)
+        if not os.path.exists(tex_file_absolute):
+            flash("TeX file not found for this song.", "error")
+            return redirect(url_for('song_view', song_id=song_id))
+    else:
+        # For S3, download to temp file
+        if not storage().file_exists(song.tex_path):
+            flash("TeX file not found in storage.", "error")
+            return redirect(url_for('song_view', song_id=song_id))
+        
+        # Download from S3 to temp file
+        with tempfile.NamedTemporaryFile(suffix='.tex', delete=False) as temp_tex:
+            s3_url = storage().get_url(song.tex_path)
+            response = requests.get(s3_url)
+            temp_tex.write(response.content)
+            tex_file_absolute = temp_tex.name
 
-    song_folder = get_song_upload_folder(song.id)
-    tex_file = tex_file_absolute
-    basename = os.path.splitext(os.path.basename(tex_file))[0]
+    try:
+        # Create output folder for PDFs (local temp location)
+        with tempfile.TemporaryDirectory() as output_dir:
+            pdf_lyrics_path = os.path.join(output_dir, 'lyrics.pdf')
+            pdf_chords_path = os.path.join(output_dir, 'lyrics_chords.pdf')
 
-    pdf_lyrics_path = os.path.join(song_folder, 'lyrics.pdf')
-    pdf_chords_path = os.path.join(song_folder, 'lyrics_chords.pdf')
+            def run_latex(tex_path, set_chords_bool, output_filename):
+                with open(tex_path, 'r', encoding='utf-8') as f:
+                    tex_content = f.read()
 
-    def run_latex(tex_path, set_chords_bool, output_filename):
-        with open(tex_path, 'r', encoding='utf-8') as f:
-            tex_content = f.read()
+                # Replace \setboolean{showchords}
+                replacement = r'\\setboolean{showchords}{' + ('True' if set_chords_bool else 'False') + '}'
+                tex_content = re.sub(r'\\setboolean\{showchords\}\{.*?\}', replacement, tex_content)
 
-        # Replace \setboolean{showchords}
-        replacement = r'\\setboolean{showchords}{' + ('True' if set_chords_bool else 'False') + '}'
-        tex_content = re.sub(r'\\setboolean\{showchords\}\{.*?\}', replacement, tex_content)
+                # Create absolute path to fonts
+                fonts_src = os.path.join(BASE_DIR, 'static/fonts')
 
-        # Create absolute path to fonts
-        fonts_src = os.path.join(BASE_DIR, 'static/fonts')
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    # Copy preamble
+                    shutil.copy(os.path.join(BASE_DIR, "preamble.tex"), tmpdir)
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            # Copy preamble
-            shutil.copy(os.path.join(BASE_DIR, "preamble.tex"), tmpdir)
+                    # Create fonts directory structure in temp dir
+                    fonts_dest = os.path.join(tmpdir, 'fonts')
+                    os.makedirs(fonts_dest, exist_ok=True)
 
-            # Create fonts directory structure in temp dir
-            fonts_dest = os.path.join(tmpdir, 'fonts')
-            os.makedirs(fonts_dest, exist_ok=True)
+                    # Copy all font files
+                    for font_file in os.listdir(fonts_src):
+                        if font_file.endswith(('.ttf', '.otf')):
+                            shutil.copy(os.path.join(fonts_src, font_file), fonts_dest)
 
-            # Copy all font files
-            for font_file in os.listdir(fonts_src):
-                if font_file.endswith(('.ttf', '.otf')):
-                    shutil.copy(os.path.join(fonts_src, font_file), fonts_dest)
-
-            # Update font path in tex content to use absolute path
-            tex_content = tex_content.replace(
-                'Path=./fonts/',
-                f'Path={fonts_dest}/'
-            )
-
-            tmp_tex_path = os.path.join(tmpdir, "song.tex")
-            # flash(f"Fonts directory contents: { os.listdir(fonts_dest)}")
-            # flash(f"Modified tex_content snippet: {tex_content[:500]}")
-            with open(tmp_tex_path, "w", encoding='utf-8') as f:
-                f.write(tex_content)
-
-            try:
-                required_fonts = ['Poppins-Regular.ttf', 'Poppins-Bold.ttf', 'Poppins-Italic.ttf']
-                for font in required_fonts:
-                    if not os.path.exists(os.path.join(fonts_dest, font)):
-                        raise RuntimeError(f"Missing font file: {font}")
-                for _ in range(2):
-                    result = subprocess.run(
-                        ["lualatex", "-interaction=nonstopmode", "song.tex"],
-                        cwd=tmpdir,
-                        check=True,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        text=True  # This means output is already strings
+                    # Update font path in tex content to use absolute path
+                    tex_content = tex_content.replace(
+                        'Path=./fonts/',
+                        f'Path={fonts_dest}/'
                     )
-                print("LaTeX Output:\n", result.stdout)  # No .decode() needed
-                print("LaTeX Errors:\n", result.stderr)   # No .decode() needed
-            except subprocess.CalledProcessError as e:
-                flash(f"STDOUT: {str(e.stdout)}")  # Remove .decode()
-                flash(f"STDERR:\n { str(e.stderr)}")  # Remove .decode()
-                raise RuntimeError(f"LaTeX compilation failed {e.stdout} {e.stderr}")
 
-            # Copy result to final path
-            generated_pdf = os.path.join(tmpdir, "song.pdf")
-            os.makedirs(os.path.dirname(output_filename), exist_ok=True)
-            shutil.copyfile(generated_pdf, output_filename)
+                    tmp_tex_path = os.path.join(tmpdir, "song.tex")
+                    with open(tmp_tex_path, "w", encoding='utf-8') as f:
+                        f.write(tex_content)
 
-    run_latex(tex_file, set_chords_bool=False, output_filename=pdf_lyrics_path)
-    run_latex(tex_file, set_chords_bool=True, output_filename=pdf_chords_path)
+                    try:
+                        required_fonts = ['Poppins-Regular.ttf', 'Poppins-Bold.ttf', 'Poppins-Italic.ttf']
+                        for font in required_fonts:
+                            if not os.path.exists(os.path.join(fonts_dest, font)):
+                                raise RuntimeError(f"Missing font file: {font}")
+                        for _ in range(2):
+                            result = subprocess.run(
+                                ["/usr/bin/lualatex", "-interaction=nonstopmode", "song.tex"],
+                                cwd=tmpdir,
+                                check=True,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                text=True
+                            )
+                        print("LaTeX Output:\n", result.stdout)
+                        print("LaTeX Errors:\n", result.stderr)
+                    except subprocess.CalledProcessError as e:
+                        flash(f"STDOUT: {str(e.stdout)}")
+                        flash(f"STDERR:\n { str(e.stderr)}")
+                        raise RuntimeError(f"LaTeX compilation failed {e.stdout} {e.stderr}")
 
-    # Update DB (convert to relative paths for cross-environment compatibility)
-    song.pdf_lyrics_path = os.path.relpath(pdf_lyrics_path, BASE_DIR)
-    song.pdf_chords_path = os.path.relpath(pdf_chords_path, BASE_DIR)
+                    # Copy result to final path
+                    generated_pdf = os.path.join(tmpdir, "song.pdf")
+                    os.makedirs(os.path.dirname(output_filename), exist_ok=True)
+                    shutil.copyfile(generated_pdf, output_filename)
+
+            run_latex(tex_file_absolute, set_chords_bool=False, output_filename=pdf_lyrics_path)
+            run_latex(tex_file_absolute, set_chords_bool=True, output_filename=pdf_chords_path)
+
+            # Now save/upload the PDFs using storage abstraction
+            # Save lyrics PDF
+            with open(pdf_lyrics_path, 'rb') as f:
+                pdf_content = f.read()
+                lyrics_file = FileStorage(
+                    stream=io.BytesIO(pdf_content),
+                    filename='lyrics.pdf',
+                    content_type='application/pdf'
+                )
+                lyrics_saved_path = storage().save_file(lyrics_file, str(song.id), 'lyrics.pdf')
+                song.pdf_lyrics_path = lyrics_saved_path
+            
+            # Save chords PDF
+            with open(pdf_chords_path, 'rb') as f:
+                pdf_content = f.read()
+                chords_file = FileStorage(
+                    stream=io.BytesIO(pdf_content),
+                    filename='lyrics_chords.pdf',
+                    content_type='application/pdf'
+                )
+                chords_saved_path = storage().save_file(chords_file, str(song.id), 'lyrics_chords.pdf')
+                song.pdf_chords_path = chords_saved_path
+
+    finally:
+        # Clean up temp TeX file if it was downloaded from S3
+        if config.USE_S3_STORAGE and os.path.exists(tex_file_absolute):
+            os.unlink(tex_file_absolute)
+
     db.session.commit()
 
     flash("PDFs generated successfully!", "success")
