@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="refresh" content="10;url=https://spievaj.me">
+    <title>Stránka sa presťahovala - Jednotný Brezovický Spevník</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notice-container {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+            border: 3px solid #3498db;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notice-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12, #e74c3c);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .icon-large {
+            font-size: 5rem;
+            color: #f39c12;
+            margin-bottom: 1.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: var(--dark);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .lead {
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .new-url {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3498db;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+            border: 2px solid #3498db;
+            word-break: break-word;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.5);
+            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+        }
+
+        .countdown {
+            margin-top: 2rem;
+            font-size: 1rem;
+            color: #777;
+        }
+
+        .countdown-number {
+            font-weight: 700;
+            color: #e74c3c;
+            font-size: 1.5rem;
+        }
+
+        .info-box {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-radius: 15px;
+            border-left: 5px solid #f39c12;
+        }
+
+        .info-box h5 {
+            color: #856404;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box p {
+            color: #856404;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                margin: 0;
+                padding: 1rem;
+                border-radius: 0;
+            }
+
+            .notice-container {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .new-url {
+                font-size: 1.5rem;
+                padding: 1rem;
+            }
+
+            .icon-large {
+                font-size: 4rem;
+            }
+        }
+
+        /* Loading animation for the icon */
+        .rotating {
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="notice-container">
+        <i class="bi bi-box-arrow-up-right icon-large"></i>
+        
+        <h1>📚 Stránka sa presťahovala</h1>
+        <p class="lead">Jednotný Brezovický Spevník je teraz dostupný na novej adrese</p>
+        
+        <div class="new-url">
+            <i class="bi bi-globe2 me-2"></i>
+            <a href="https://spievaj.me" style="color: inherit; text-decoration: none;">
+                spievaj.me
+            </a>
+        </div>
+        
+        <a href="https://spievaj.me" class="btn btn-primary">
+            <i class="bi bi-arrow-right-circle me-2"></i>
+            Prejsť na novú stránku
+        </a>
+        
+        <div class="countdown">
+            Budete presmerovaní automaticky o <span class="countdown-number" id="countdown">10</span> sekúnd...
+        </div>
+        
+        <div class="info-box">
+            <h5>
+                <i class="bi bi-info-circle-fill me-2"></i>
+                Prosím, aktualizujte si záložky
+            </h5>
+            <p>
+                Stará adresa už nie je aktívna. Všetky piesne a materiály nájdete na <strong>spievaj.me</strong>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Get the current path and search parameters
+        const currentPath = window.location.pathname + window.location.search + window.location.hash;
+        const newUrl = 'https://spievaj.me' + currentPath;
+        
+        // Update the meta refresh to include the path
+        const metaRefresh = document.querySelector('meta[http-equiv="refresh"]');
+        if (metaRefresh) {
+            metaRefresh.setAttribute('content', '10;url=' + newUrl);
+        }
+        
+        // Update the displayed URL and button link
+        const urlDisplay = document.querySelector('.new-url a');
+        const redirectButton = document.querySelector('.btn-primary');
+        
+        if (currentPath !== '/') {
+            if (urlDisplay) {
+                urlDisplay.href = newUrl;
+                urlDisplay.textContent = 'spievaj.me' + currentPath;
+            }
+            if (redirectButton) {
+                redirectButton.href = newUrl;
+            }
+        }
+        
+        // Countdown timer
+        let seconds = 10;
+        const countdownElement = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(timer);
+                countdownElement.textContent = '0';
+            }
+        }, 1000);
+        
+        // Auto-redirect after 10 seconds (backup to meta refresh)
+        setTimeout(() => {
+            window.location.href = newUrl;
+        }, 10000);
+    </script>
+</body>
+</html>
