@@ -4,14 +4,89 @@
 
 </head>
 <body>
-    <div class="header text-center mb-4">
-        <h1>📚 Hrajte, zdieľajte, tvorte - <strong>SPIEVAJ.TE</strong></h1>
-        <p class="lead mb-3">Spevník zboru <strong>CD Brezovica</strong></p>
-
+<nav class="navbar-header">
+  <div class="brand">
+    <div class="brand-lines">
+      <div class="first-line">Hrajme, tvorme, zdieľajme</div>
+      <div class="second-line">
+        <strong>spievaj.<span class="suffix-wheel"></span></strong>
+      </div>
+    </div>
+    <div class="brand-subtitle">
+      Spevník od zboru <strong>CD Brezovica</strong>
+    </div>
+  </div>
+</nav>
 
 <style>
 .bg-success-light {
   background-color:rgb(127, 202, 145);
+}
+
+
+/* Simple scrolling wheel suffix */
+.suffix-wheel {
+  display: inline-block;
+  overflow: hidden;
+  height: 1.2em;
+  width: 2.5em;
+  vertical-align: baseline;
+  position: relative;
+}
+
+.suffix-wheel::after {
+  content: "si\amu\ate\ame"; /* Removed duplicate */
+  white-space: pre-line;
+  position: absolute;
+  left: 0;
+  top: 0.25em;
+  color: #e74c3c;
+  font-weight: 800;
+  animation: spin-wheel 4s ease-in-out forwards;
+  line-height: 1.2em;
+  width: 100%;
+  text-align: left;
+}
+
+@keyframes spin-wheel {
+  0%   { transform: translateY(0); }          /* Show "si" */
+  33%  { transform: translateY(-1.2em); }     /* Show "mu" */
+  66%  { transform: translateY(-2.4em); }     /* Show "te" */
+  100% { transform: translateY(-3.6em); }     /* Show "me" and stop */
+}
+
+/* Modern simple navbar */
+.navbar-header {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  padding: 1.5rem;
+  border-radius: 0 0 20px 20px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.brand-lines {
+  margin-bottom: 0.5rem;
+}
+
+.first-line {
+  font-size: 1.3rem;
+  opacity: 0.9;
+}
+
+.second-line {
+  font-size: 2rem;
+}
+
+.brand-subtitle {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .second-line { font-size: 1.5rem; }
+  .suffix-wheel { width: 2.5rem; }
 }
 
 
