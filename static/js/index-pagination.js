@@ -758,9 +758,9 @@ function initializeMainPageLazyLoading() {
               }
             </div>
 
-            <!-- Song ID and Title on the right -->
+            <!-- Song ID and Title side by side -->
             <div class="flex-grow-1">
-              <div class="d-flex align-items-start gap-2 mb-1 flex-wrap">
+              <div class="d-flex align-items-start gap-2 mb-1">
                 <span class="mobile-song-id">${escapeHtml(song.song_id || '')}</span>
                 <div class="mobile-song-title">${escapeHtml(song.title || '')}</div>
               </div>
