@@ -811,24 +811,26 @@ function initializeMainPageLazyLoading() {
         <div class="collapse mobile-expanded-content" id="mobile-collapse-${song.id}">
           <!-- Action Buttons -->
           <div class="mobile-files-grid">
-            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm">
-              <i class="bi bi-eye me-1"></i>Detaily
+            <!-- View (icon only) -->
+            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm icon-only" title="Detaily">
+              <i class="bi bi-eye"></i>
             </a>
 
-            <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm">
-              <i class="bi bi-pencil-square me-1"></i>Upraviť
+            <!-- Edit (icon only) -->
+            <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm icon-only" title="Upraviť">
+              <i class="bi bi-pencil-square"></i>
             </a>
 
-            <!-- Generate TeX Button - Same as table -->
+            <!-- Generate TeX Button (compact) -->
             <form method="POST" action="/song/${song.id}/generate_tex#mobile-song-${song.id}" class="d-inline">
-              <button type="submit" class="btn btn-outline-warning btn-sm ${song.admin_checked ? 'disabled' : ''}" ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+              <button type="submit" class="btn btn-outline-warning btn-sm compact ${song.admin_checked ? 'disabled' : ''}" ${song.admin_checked ? 'title="Admin already checked this song"' : 'title="Generovať TeX súbor"'}>
                 <i class="bi bi-file-code"></i>TeX
               </button>
             </form>
 
-            <!-- Generate PDF Button - Same as table -->
+            <!-- Generate PDF Button (compact) -->
             <form method="GET" action="/generate_pdfs/${song.id}#mobile-song-${song.id}" class="d-inline">
-              <button type="submit" class="btn btn-primary btn-sm ${!song.tex_path || song.admin_checked ? 'disabled' : ''}" style="background-color: #9b59b6; border-color: #9b59b6;" ${!song.tex_path ? 'title="First generate TeX files"' : ''} ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
+              <button type="submit" class="btn btn-primary btn-sm compact ${!song.tex_path || song.admin_checked ? 'disabled' : ''}" style="background-color: #9b59b6; border-color: #9b59b6;" ${!song.tex_path ? 'title="First generate TeX files"' : song.admin_checked ? 'title="Admin already checked this song"' : 'title="Generovať PDF súbor"'}>
                 <i class="bi bi-file-pdf"></i>PDF
               </button>
             </form>
