@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/category-animations.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/status-filters.css') }}">
 
+<!-- Include Search Modal Styles -->
+{% include 'search_modal_styles.html' %}">
+
 <style>
 .bg-success-light {
   background-color:rgb(127, 202, 145);
@@ -26,8 +29,6 @@ body {
 </style>
 
 <div class="container-fluid">
-
-<a href="{{ url_for('song_detail', song_id='new') }}" class="btn btn-primary mb-3">+ Pridaj novú pieseň</a>
 
 <!-- Category Filters Section -->
 {% include 'category_filters.html' %}
@@ -179,5 +180,8 @@ body {
 <script src="{{ url_for('static', filename='js/fast_search.js') }}"></script>
 <script src="{{ url_for('static', filename='js/index-pagination.js') }}"></script>
 <script src="{{ url_for('static', filename='js/index-init.js') }}"></script>
+
+<!-- Include Search Modal JavaScript -->
+{% include 'search_modal_scripts.html' %}
 
 {% endblock %}

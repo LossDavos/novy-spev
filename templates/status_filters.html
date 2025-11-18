@@ -1,32 +1,65 @@
 <!-- Status Filter Section -->
-<div class="card border-0 shadow-sm rounded-4" style="background: linear-gradient(135deg, #fff8f0 0%, #ffffff 100%);">
+<div class="card border-0 shadow-sm rounded-4 mb-4" style="background: linear-gradient(135deg, #fff8f0 0%, #ffffff 100%);">
   <div class="card-body p-3">
-    <div class="d-flex align-items-center justify-content-between">
-      <h6 class="mb-0 fw-bold text-dark">
-        <i class="bi bi-funnel-fill text-warning me-2"></i>
-        Status filtre
-      </h6>
-      <div class="status-buttons d-flex gap-2" id="statusFilters">
-        <button class="status-filter-btn btn btn-sm rounded-pill"
+    <div class="status-filters-layout">
+      <div class="d-flex align-items-center justify-content-between mb-2 d-md-none">
+        <h6 class="mb-0 fw-bold text-dark">
+          <i class="bi bi-funnel-fill text-warning me-2"></i>
+          Status filtre
+        </h6>
+        <button id="clearStatusFilters" class="btn btn-outline-secondary btn-sm rounded-pill" style="display: none;">
+          <i class="bi bi-x-circle me-1"></i>
+          Vyčistiť
+        </button>
+      </div>
+      
+      <div class="d-none d-md-flex align-items-center justify-content-between">
+        <h6 class="mb-0 fw-bold text-dark">
+          <i class="bi bi-funnel-fill text-warning me-2"></i>
+          Status filtre
+        </h6>
+        <div class="status-buttons d-flex gap-2" id="statusFilters">
+          <button class="status-filter-btn btn btn-sm rounded-pill"
+                  data-status="unchecked"
+                  title="Zobraziť len neskontrolované piesne">
+            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+            Neskontrolované
+            <span class="status-count badge bg-light text-dark ms-1" id="uncheckedCount">{{ total_songs - total_admin_checked }}</span>
+          </button>
+
+          <button class="status-filter-btn btn btn-sm rounded-pill"
+                  data-status="unprinted"
+                  title="Zobraziť len nevytlačené piesne">
+            <i class="bi bi-printer me-1"></i>
+            Nevytlačené
+            <span class="status-count badge bg-light text-dark ms-1" id="unprintedCount">{{ total_songs - total_printed }}</span>
+          </button>
+        </div>
+        <button id="clearStatusFilters" class="btn btn-outline-secondary btn-sm rounded-pill" style="display: none;">
+          <i class="bi bi-x-circle me-1"></i>
+          Vyčistiť
+        </button>
+      </div>
+      
+      <div class="status-buttons-mobile d-flex d-md-none gap-2">
+        <button class="status-filter-btn btn btn-sm rounded-pill flex-fill"
                 data-status="unchecked"
                 title="Zobraziť len neskontrolované piesne">
           <i class="bi bi-exclamation-triangle-fill me-1"></i>
-          Neskontrolované
-          <span class="status-count badge bg-light text-dark ms-1" id="uncheckedCount">{{ total_songs - total_admin_checked }}</span>
+          <span class="d-none d-md-inline">Neskontrolované</span>
+          <span class="d-md-none">Neskontr.</span>
+          <span class="status-count badge bg-light text-dark ms-1">{{ total_songs - total_admin_checked }}</span>
         </button>
 
-        <button class="status-filter-btn btn btn-sm rounded-pill"
+        <button class="status-filter-btn btn btn-sm rounded-pill flex-fill"
                 data-status="unprinted"
                 title="Zobraziť len nevytlačené piesne">
           <i class="bi bi-printer me-1"></i>
-          Nevytlačené
-          <span class="status-count badge bg-light text-dark ms-1" id="unprintedCount">{{ total_songs - total_printed }}</span>
+          <span class="d-none d-md-inline">Nevytlačené</span>
+          <span class="d-md-none">Nevytl.</span>
+          <span class="status-count badge bg-light text-dark ms-1">{{ total_songs - total_printed }}</span>
         </button>
       </div>
-      <button id="clearStatusFilters" class="btn btn-outline-secondary btn-sm rounded-pill" style="display: none;">
-        <i class="bi bi-x-circle me-1"></i>
-        Vyčistiť
-      </button>
     </div>
   </div>
 </div>
