@@ -1,0 +1,493 @@
+/* ================================================
+   SPECIAL CATEGORY ANIMATIONS
+   ================================================ */
+
+/* Special styling for specific categories */
+
+/* Adorácia - Deep Navy Blue with Burning Match Animation */
+.category-filter-btn[data-category="adorácia"] {
+  background: linear-gradient(135deg, rgba(0, 0, 128, 0.2) 0%, rgba(25, 25, 112, 0.25) 50%, rgba(0, 0, 139, 0.2) 100%);
+  border-color: #000080;
+  color: #000080;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-filter-btn[data-category="adorácia"]:hover {
+  background: linear-gradient(135deg, rgba(0, 0, 128, 0.35) 0%, rgba(25, 25, 112, 0.4) 50%, rgba(0, 0, 139, 0.35) 100%);
+  border-color: #00008b;
+  color: #00008b;
+}
+
+.category-filter-btn[data-category="adorácia"].active {
+  background: linear-gradient(135deg, #000080 0%, #191970 50%, #00008b 100%);
+  border-color: #000033;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 128, 0.5);
+}
+
+/* Adorácia Flame Animation */
+.category-filter-btn[data-category="adorácia"] > * {
+  position: relative;
+  z-index: 1;
+}
+
+.category-filter-btn[data-category="adorácia"] .mo-fire {
+  width: 80px;
+  height: auto;
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  filter: blur(0.5px);
+}
+
+.category-filter-btn[data-category="adorácia"] .mo-fire svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Flame animations */
+.flame {
+  animation-name: flamefly;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0;
+  transform-origin: 50% 50% 0;
+}
+
+.flame.one {
+  animation-delay: 1s;
+  animation-duration: 3s;
+}
+
+.flame.two{
+  animation-duration: 5s;
+  animation-delay: 1s;
+}
+
+.flame-main {
+  animation-name: flameWobble;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.flame-main.one {
+  animation-duration: 4s;
+  animation-delay: 1s;
+}
+
+.flame-main.two {
+  animation-duration: 3s;
+  animation-delay: 2s;
+}
+
+@keyframes flameWobble {
+  50% {
+    transform: scale(1,1.2) translate(0, -30px) rotate(-2deg);
+  }
+}
+
+@keyframes flamefly {
+  0%{
+    transform: translate(0, 20px) rotate(180deg);
+  }
+   50% {
+     opacity: 1;
+  }
+  100% {
+    transform: translate(-20px, -80px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* Vianoce - Christmas Red & Green with Snow */
+.category-filter-btn[data-category="vianoce"] {
+  background: linear-gradient(135deg, rgba(171, 21, 21, 0.7) 0%, rgba(200, 216, 233, 0.3) 100%);
+  border: 2px solid #ffd700;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(220, 20, 60, 0.2);
+  font-weight: 600;
+}
+
+.category-filter-btn[data-category="vianoce"] > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Snow animation for Vianoce */
+.category-filter-btn[data-category="vianoce"]::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.9) 0%, transparent 4px),
+              radial-gradient(circle at 30% 10%, rgba(255, 255, 255, 0.8) 0%, transparent 3px),
+              radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 5px),
+              radial-gradient(circle at 70% 15%, rgba(255, 255, 255, 0.7) 0%, transparent 2.5px),
+              radial-gradient(circle at 90% 25%, rgba(255, 255, 255, 0.8) 0%, transparent 3.5px),
+              radial-gradient(circle at 20% 60%, rgba(255, 255, 255, 0.8) 0%, transparent 3px),
+              radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.9) 0%, transparent 4.5px),
+              radial-gradient(circle at 60% 50%, rgba(255, 255, 255, 0.7) 0%, transparent 2px),
+              radial-gradient(circle at 80% 65%, rgba(255, 255, 255, 0.8) 0%, transparent 3.5px),
+              radial-gradient(circle at 15% 90%, rgba(255, 255, 255, 0.8) 0%, transparent 4px);
+  animation: snowfall 6s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.95;
+  filter: blur(0.4px);
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Veľká noc - Easter with Cave and Sunrise */
+.category-filter-btn[data-category="veľká noc"] {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.3) 50%, rgba(248, 249, 250, 0.8) 100%);
+  border-color: #ffd700;
+  color: #495057;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2), 0 0 15px rgba(255, 215, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  animation: smooth-breathing 16s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+.category-filter-btn[data-category="veľká noc"].active {
+  background: linear-gradient(135deg, #ffffff 0%, #fff8dc 50%, #f8f9fa 100%);
+  border-color: #b8860b;
+  color: #212529;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.2);
+}
+
+/* Cave opening effect */
+.category-filter-btn[data-category="veľká noc"]::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  right: 8px;
+  width: 18px;
+  height: 24px;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(83, 53, 27, 0.75) 15%, rgba(139, 69, 19, 0.6) 40%, rgba(160, 82, 45, 0.4) 70%, transparent 100%);
+  border-radius: 40% 60% 45% 55% / 45% 65% 35% 55%;
+  transform: rotate(-8deg) scale(0.75);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.8;
+  filter: blur(0.2px);
+}
+
+/* Rising sun through cave */
+.category-filter-btn[data-category="veľká noc"]::after {
+  content: '';
+  position: absolute;
+  top: 35%;
+  right: 14px;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 223, 0, 0.35) 30%, transparent 100%);
+  border-radius: 50%;
+  animation: soft-breathing 12s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(0.2px);
+}
+
+@keyframes smooth-breathing {
+  0%, 100% {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.28) 50%, rgba(248, 249, 250, 0.8) 100%);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.18), 0 0 13px rgba(255, 215, 0, 0.07);
+  }
+  50% {
+    background: linear-gradient(135deg, rgba(255, 251, 240, 0.96) 0%, rgba(255, 235, 180, 0.33) 50%, rgba(252, 247, 235, 0.82) 100%);
+    box-shadow: 0 2.5px 9px rgba(255, 185, 0, 0.2), 0 0 14px rgba(255, 180, 0, 0.08);
+  }
+}
+
+@keyframes soft-breathing {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translateY(2px) scale(0.96);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(0px) scale(1.0);
+  }
+}
+
+/* Growing plant inside cave animation */
+.category-filter-btn[data-category="veľká noc"] .cave-plant {
+  position: absolute;
+  top: -15%;
+  right: -5%;
+  width: 80px;
+  height: 60px;
+  pointer-events: none;
+  z-index: 1;
+  transform: scale(0.8) rotate(5deg);
+  opacity: 0.9;
+}
+
+.cave-plant svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Plant animation styles - Clean structured version with looping */
+.cave-plant .stem {
+  stroke-dasharray: 450;
+  stroke-dashoffset: -450;
+  stroke-width: 4px;
+  animation: draw 8s ease-in-out infinite;
+}
+
+@keyframes draw {
+  0% {
+    stroke-dashoffset: -450;
+    stroke-width: 4px;
+  }
+  40% {
+    stroke-dashoffset: 0;
+    stroke-width: 5px;
+  }
+  60% {
+    stroke-dashoffset: 0;
+    stroke-width: 5px;
+  }
+  100% {
+    stroke-dashoffset: -450;
+    stroke-width: 4px;
+  }
+}
+
+.cave-plant .st0 {
+  transform-box: fill-box;
+  fill: #157425;
+  opacity: 0;
+  animation: leafs 8s ease-in-out infinite;
+}
+
+@keyframes leafs {
+  0% { transform: scale(0, 0); opacity: 0; }
+  30% { transform: scale(0, 0); opacity: 0; }
+  40% { transform: scale(0, 0); opacity: 1; }
+  60% { transform: scale(2.5, -1.5); opacity: 1; }
+  80% { transform: scale(2.5, -1.5); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st0a {
+  transform-box: fill-box;
+  fill: #157425;
+  opacity: 0;
+  animation: leafa 8s ease-in-out infinite;
+}
+
+@keyframes leafa {
+  0% { transform: scale(0, 0); opacity: 0; }
+  30% { transform: scale(0, 0); opacity: 0; }
+  40% { transform: scale(0, 0); opacity: 1; }
+  60% { transform: scale(1.5, -1.5); opacity: 1; }
+  80% { transform: scale(1.5, -1.5); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st0b {
+  transform-box: fill-box;
+  fill: #10a128;
+  opacity: 0;
+  animation: leafb 8s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes leafb {
+  0% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0, 0); opacity: 0; }
+  45% { transform: scale(0, 0); opacity: 1; }
+  65% { transform: scale(1, -1); opacity: 1; }
+  80% { transform: scale(1, -1); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st0l {
+  transform-box: fill-box;
+  fill: #16a72e;
+  opacity: 0;
+  animation: leafc 8s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+@keyframes leafc {
+  0% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0, 0); opacity: 0; }
+  45% { transform: scale(0, 0); opacity: 1; }
+  65% { transform: scale(1.05, -1.03); opacity: 1; }
+  80% { transform: scale(1.05, -1.03); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st1 {
+  transform-box: fill-box;
+  fill: #157425;
+  opacity: 0;
+  animation: leaf1 8s ease-in-out infinite;
+}
+
+@keyframes leaf1 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  30% { transform: scale(0, 0); opacity: 0; }
+  35% { transform: scale(0.2, 0.2); opacity: 1; }
+  55% { transform: scale(1.2, 1.2); opacity: 1; }
+  80% { transform: scale(1.2, 1.2); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st2 {
+  transform-box: fill-box;
+  fill: #0f8320;
+  opacity: 0;
+  animation: leaf2 8s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+@keyframes leaf2 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  32% { transform: scale(0, 0); opacity: 0; }
+  37% { transform: scale(0.2, 0.2); opacity: 1; }
+  57% { transform: scale(1.1, 1.1); opacity: 1; }
+  80% { transform: scale(1.1, 1.1); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st3 {
+  transform-box: fill-box;
+  fill: #228B22;
+  opacity: 0;
+  animation: leaf3 8s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+@keyframes leaf3 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  34% { transform: scale(0, 0); opacity: 0; }
+  39% { transform: scale(0.2, 0.2); opacity: 1; }
+  59% { transform: scale(1.0, 1.0); opacity: 1; }
+  80% { transform: scale(1.0, 1.0); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st4 {
+  transform-box: fill-box;
+  fill: #32CD32;
+  opacity: 0;
+  animation: leaf4 8s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+@keyframes leaf4 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  36% { transform: scale(0, 0); opacity: 0; }
+  41% { transform: scale(0.2, 0.2); opacity: 1; }
+  61% { transform: scale(0.9, 0.9); opacity: 1; }
+  80% { transform: scale(0.9, 0.9); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+.cave-plant .st5 {
+  transform-box: fill-box;
+  fill: #90EE90;
+  opacity: 0;
+  animation: leaf5 8s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+@keyframes leaf5 {
+  0% { transform: scale(0, 0); opacity: 0; }
+  38% { transform: scale(0, 0); opacity: 0; }
+  43% { transform: scale(0.2, 0.2); opacity: 1; }
+  63% { transform: scale(0.8, 0.8); opacity: 1; }
+  80% { transform: scale(0.8, 0.8); opacity: 1; }
+  100% { transform: scale(0, 0); opacity: 0; }
+}
+
+/* Other category styles (Advent, Pôst, Cez rok, etc.) */
+.category-filter-btn[data-category="advent"] {
+  background: linear-gradient(135deg, rgba(156, 39, 176, 0.15) 0%, rgba(243, 229, 245, 0.3) 100%);
+  border-color: #9c27b0;
+  color: #7b1fa2;
+}
+
+.category-filter-btn[data-category="pôst"] {
+  background: linear-gradient(135deg, rgba(74, 20, 140, 0.2) 0%, rgba(98, 0, 234, 0.15) 50%, rgba(55, 0, 179, 0.25) 100%);
+  border-color: #4a148c;
+  color: #4a148c;
+}
+
+.category-filter-btn[data-category="cez rok"] {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(232, 245, 233, 0.3) 100%);
+  border-color: #4caf50;
+  color: #388e3c;
+}
+
+.category-filter-btn[data-category="mariánske"] {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.15) 0%, rgba(227, 242, 253, 0.3) 100%);
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+/* Taizé - Same flame as adorácia but with orange theme */
+.category-filter-btn[data-category="Taizé"] {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 243, 224, 0.3) 100%);
+  border-color: #ff9800;
+  color: #f57c00;
+  position: relative;
+  overflow: hidden;
+}
+
+.category-filter-btn[data-category="Taizé"] > * {
+  position: relative;
+  z-index: 1;
+}
+
+.category-filter-btn[data-category="Taizé"] .mo-fire {
+  width: 80px;
+  height: auto;
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  filter: blur(0.5px);
+}
+
+.category-filter-btn[data-category="Taizé"] .mo-fire svg {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
