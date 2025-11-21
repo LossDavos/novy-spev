@@ -5,13 +5,14 @@ import subprocess
 import tempfile
 import requests
 import io
+import html
 from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory
 from models import db, Song
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from datetime import datetime
 import sqlite3
-from markupsafe import Markup
+from markupsafe import Markup, escape
 import re
 from sqlalchemy import case
 from pathlib import Path
@@ -40,6 +41,28 @@ app.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDER
 
 db.init_app(app)
 
+# Add security headers to prevent XSS attacks
+@app.after_request
+def add_security_headers(response):
+    """Add security headers to all responses"""
+    # Content Security Policy - prevent inline scripts
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; "
+        "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
+        "img-src 'self' data: https:; "
+        "connect-src 'self'; "
+        "frame-ancestors 'none';"
+    )
+    # Prevent MIME type sniffing
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    # Enable XSS protection in browsers
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    # Prevent clickjacking
+    response.headers['X-Frame-Options'] = 'DENY'
+    return response
+
 # Initialize storage backend (local or S3 based on config)
 init_storage()
 print(f"[Storage] Using {'S3' if config.USE_S3_STORAGE else 'Local'} storage backend")
@@ -48,6 +71,39 @@ print(f"[Storage] Using {'S3' if config.USE_S3_STORAGE else 'Local'} storage bac
 os.makedirs(config.UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(BACKUP_FOLDER, exist_ok=True)
 os.makedirs(JSON_FOLDER, exist_ok=True)
+
+# ============================================================================
+# HELPER FUNCTIONS - Security
+# ============================================================================
+
+def sanitize_input(text, field_name="input"):
+    """
+    Sanitize user input to prevent XSS attacks.
+    Returns sanitized text or raises ValueError if malicious content detected.
+    """
+    if not text:
+        return text
+    
+    # Check for script tags and other dangerous patterns
+    dangerous_patterns = [
+        r'<script[^>]*>',
+        r'javascript:',
+        r'onerror\s*=',
+        r'onload\s*=',
+        r'onclick\s*=',
+        r'eval\s*\(',
+        r'window\.location',
+        r'document\.cookie',
+    ]
+    
+    text_lower = text.lower()
+    for pattern in dangerous_patterns:
+        if re.search(pattern, text_lower, re.IGNORECASE):
+            raise ValueError(f"Malicious content detected in {field_name}. Script tags and JavaScript are not allowed.")
+    
+    # HTML escape the input
+    return html.escape(text.strip())
+
 
 # ============================================================================
 # HELPER FUNCTIONS - File Handling
@@ -967,34 +1023,47 @@ def song_detail(song_id):
             return redirect(url_for('index'))
 
     if request.method == 'POST':
-        # Update song fields
-        song.title = request.form['title']
-        song.author = request.form['author'].strip() if request.form['author'] and request.form['author'].strip() else None
-        song.version_name = request.form['version_name']
+        try:
+            # Update song fields - SANITIZE ALL TEXT INPUTS TO PREVENT XSS
+            song.title = sanitize_input(request.form['title'], "title")
+            song.author = sanitize_input(request.form['author'], "author") if request.form.get('author') and request.form.get('author').strip() else None
+            song.version_name = sanitize_input(request.form.get('version_name', ''), "version_name") if request.form.get('version_name') else None
 
-        song.title_original = request.form.get('title_original', '')
-        song.author_original = request.form.get('author_original', '')
-        song.admin_checked = 'admin_checked' in request.form
-        song.printed = 'printed' in request.form
+            song.title_original = sanitize_input(request.form.get('title_original', ''), "original title")
+            song.author_original = sanitize_input(request.form.get('author_original', ''), "original author")
+            song.admin_checked = 'admin_checked' in request.form
+            song.printed = 'printed' in request.form
 
-        song.categories = ';;'.join(request.form.get('categories', '').split(','))
-        song.alternative_titles = ';;'.join(request.form.getlist('alternative_titles'))
+            # Sanitize categories and alternative titles
+            categories = request.form.get('categories', '').split(',')
+            song.categories = ';;'.join([sanitize_input(cat, "category") for cat in categories if cat.strip()])
+            
+            alt_titles = request.form.getlist('alternative_titles')
+            song.alternative_titles = ';;'.join([sanitize_input(title, "alternative title") for title in alt_titles if title.strip()])
+        
+        except ValueError as e:
+            flash(str(e), "error")
+            return redirect(url_for('song_detail', song_id=song.id if not is_new_song else 'new'))
 
-        # Handle song parts
-        parts = []
-        idx = 0
-        while True:
-            part_type = request.form.get(f'part_type_{idx}')
-            part_lines = request.form.get(f'part_lines_{idx}')
-            if part_type and part_lines:
-                parts.append({
-                    'type': part_type,
-                    'lines': [line.strip() for line in part_lines.splitlines() if line.strip()]
-                })
-                idx += 1
-            else:
-                break
-        song.song_parts = json.dumps(parts, ensure_ascii=False)
+        # Handle song parts - SANITIZE ALL TEXT TO PREVENT XSS
+        try:
+            parts = []
+            idx = 0
+            while True:
+                part_type = request.form.get(f'part_type_{idx}')
+                part_lines = request.form.get(f'part_lines_{idx}')
+                if part_type and part_lines:
+                    parts.append({
+                        'type': sanitize_input(part_type, f"part type {idx}"),
+                        'lines': [sanitize_input(line, f"part line {idx}") for line in part_lines.splitlines() if line.strip()]
+                    })
+                    idx += 1
+                else:
+                    break
+            song.song_parts = json.dumps(parts, ensure_ascii=False)
+        except ValueError as e:
+            flash(str(e), "error")
+            return redirect(url_for('song_detail', song_id=song.id if not is_new_song else 'new'))
 
         # For new songs, add to session first to get an ID
         if is_new_song:
