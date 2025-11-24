@@ -7,7 +7,7 @@ import requests
 import io
 import html
 from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory
-from models import db, Song
+from models import db, Song, ConcertSong
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from datetime import datetime
@@ -1524,6 +1524,87 @@ def generate_pdfs(song_id):
 
     flash("PDFs generated successfully!", "success")
     return redirect(url_for('song_view', song_id=song_id))
+
+@app.route('/api/concert/add_song', methods=['POST'])
+def add_concert_song():
+    data = request.get_json()
+    song_id = data.get('song_id')
+    section = data.get('section')
+    
+    if not song_id or not section:
+        return jsonify({'error': 'Missing song_id or section'}), 400
+        
+    # Get max order for this section
+    max_order = db.session.query(db.func.max(ConcertSong.order)).filter_by(section=section).scalar() or 0
+    
+    concert_song = ConcertSong(
+        song_id=song_id,
+        section=section,
+        order=max_order + 1
+    )
+    db.session.add(concert_song)
+    db.session.commit()
+    
+    return jsonify({'success': True, 'id': concert_song.id})
+
+@app.route('/api/concert/remove_song', methods=['POST'])
+def remove_concert_song():
+    data = request.get_json()
+    concert_song_id = data.get('id')
+    
+    if not concert_song_id:
+        return jsonify({'error': 'Missing id'}), 400
+        
+    concert_song = ConcertSong.query.get(concert_song_id)
+    if concert_song:
+        db.session.delete(concert_song)
+        db.session.commit()
+        return jsonify({'success': True})
+    
+    return jsonify({'error': 'Song not found'}), 404
+
+@app.route('/api/concert/reorder_songs', methods=['POST'])
+def reorder_concert_songs():
+    data = request.get_json()
+    ordered_ids = data.get('ordered_ids', [])
+    
+    for index, cs_id in enumerate(ordered_ids):
+        concert_song = ConcertSong.query.get(cs_id)
+        if concert_song:
+            concert_song.order = index
+            
+    db.session.commit()
+    return jsonify({'success': True})
+
+@app.route('/koncert')
+def koncert():
+    """Concert page with falling snowflakes and concert materials"""
+    
+    # Helper to get songs for a section
+    def get_songs_for_section(section_name):
+        # Join with Song to get song details, order by ConcertSong.order
+        results = db.session.query(Song, ConcertSong).join(ConcertSong).filter(ConcertSong.section == section_name).order_by(ConcertSong.order).all()
+        # Return list of songs, but we might need the ConcertSong ID for removal/reordering
+        # So let's attach it to the song object temporarily or return a structure
+        songs_with_meta = []
+        for song, concert_song in results:
+            song.concert_song_id = concert_song.id # Attach the ID for the frontend to use
+            songs_with_meta.append(song)
+        return songs_with_meta
+
+    shared_songs = get_songs_for_section('shared')
+    maria_songs = get_songs_for_section('maria')
+    tristianus_songs = get_songs_for_section('tristianus')
+    bozskeho_srdca_songs = get_songs_for_section('bozskeho_srdca')
+    cd_brezovica_songs = get_songs_for_section('cd_brezovica')
+    
+    return render_template('koncert.html',
+                         shared_songs=shared_songs,
+                         maria_songs=maria_songs,
+                         tristianus_songs=tristianus_songs,
+                         bozskeho_srdca_songs=bozskeho_srdca_songs,
+                         cd_brezovica_songs=cd_brezovica_songs)
+
 
 @app.route('/api/category_counts')
 def get_category_counts():

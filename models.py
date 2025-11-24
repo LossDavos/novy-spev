@@ -90,6 +90,15 @@ class Song(db.Model):
         # Join all parts with spaces and normalize whitespace
         self.search_text = " ".join(filter(None, parts))
         self.search_text = re.sub(r'\s+', ' ', self.search_text).strip()
+
+class ConcertSong(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    song_id = db.Column(db.Integer, db.ForeignKey('song.id'), nullable=False)
+    section = db.Column(db.String(50), nullable=False)
+    order = db.Column(db.Integer, default=0)
+    
+    song = db.relationship('Song', backref=db.backref('concert_songs', lazy=True))
+
 from sqlalchemy import event
 from sqlalchemy.orm import Session
 import json
