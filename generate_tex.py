@@ -14,11 +14,15 @@ def generate_latex_content(song):
     def escape_latex(text):
         if not text:
             return ""
+        # First convert HTML entities to their text equivalents
+        import html
+        text = html.unescape(text)
+        
         # First protect chord content before general escaping
         protected = []
         for segment in re.split(r'(\[[^\]]+\])', text):
             if segment.startswith('[') and segment.endswith(']'):
-                # Chord content - escape backslashes and special LaTeX chars including #
+                # Chord content - escape special LaTeX chars
                 chord_content = segment[1:-1]
                 # Escape LaTeX special chars inside chord:
                 chord_content = (chord_content
@@ -35,15 +39,20 @@ def generate_latex_content(song):
                 )
                 protected.append(f'[{chord_content}]')
             else:
-                # Normal text - full escaping
-                protected.append(
-                    segment.replace('&', '\\&').replace('%', '\\%')
-                        .replace('$', '\\$').replace('#', '\\#')
-                        .replace('_', '\\_').replace('{', '\\{')
-                        .replace('}', '\\}').replace('~', '\\textasciitilde{}')
-                        .replace('^', '\\textasciicircum{}')
-                        .replace('\\', '\\textbackslash{}')
+                # Normal text - full escaping (backslash must be first!)
+                escaped = (segment
+                    .replace('\\', '\\textbackslash{}')
+                    .replace('&', '\\&')
+                    .replace('%', '\\%')
+                    .replace('$', '\\$')
+                    .replace('#', '\\#')
+                    .replace('_', '\\_')
+                    .replace('{', '\\{')
+                    .replace('}', '\\}')
+                    .replace('~', '\\textasciitilde{}')
+                    .replace('^', '\\textasciicircum{}')
                 )
+                protected.append(escaped)
         return ''.join(protected)
 
     def convert_chords(line):
