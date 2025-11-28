@@ -1576,6 +1576,26 @@ def reorder_concert_songs():
     db.session.commit()
     return jsonify({'success': True})
 
+@app.route('/api/concert/update_online_link', methods=['POST'])
+def update_concert_online_link():
+    """Update the online MuseScore link for a concert song"""
+    data = request.get_json()
+    concert_song_id = data.get('id')
+    online_link = data.get('online_link', '').strip()
+    
+    if not concert_song_id:
+        return jsonify({'error': 'Missing concert song id'}), 400
+    
+    concert_song = ConcertSong.query.get(concert_song_id)
+    if not concert_song:
+        return jsonify({'error': 'Concert song not found'}), 404
+    
+    # Update the online link (can be empty to remove)
+    concert_song.mscz_online_link = online_link if online_link else None
+    db.session.commit()
+    
+    return jsonify({'success': True, 'online_link': concert_song.mscz_online_link})
+
 @app.route('/koncert')
 def koncert():
     """Concert page with falling snowflakes and concert materials"""
@@ -1589,6 +1609,7 @@ def koncert():
         songs_with_meta = []
         for song, concert_song in results:
             song.concert_song_id = concert_song.id # Attach the ID for the frontend to use
+            song.mscz_online_link = concert_song.mscz_online_link # Attach online link from ConcertSong
             songs_with_meta.append(song)
         return songs_with_meta
 

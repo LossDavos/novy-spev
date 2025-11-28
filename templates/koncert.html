@@ -716,6 +716,10 @@
             background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
         }
 
+        .song-btn-online {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        }
+
         .song-btn:disabled {
             opacity: 0.25;
             cursor: not-allowed;
@@ -1014,13 +1018,13 @@
                             <div class="instrument-card" onclick="toggleInstrument(this)">
                                 <div class="instrument-icon">🎻</div>
                                 <div class="instrument-name">Husle</div>
-                                <div class="instrument-count">3 huslisti</div>
+                                <div class="instrument-count">4 huslisti</div>
                                 <div class="instrument-names">
                                     <ul>
+                                        <li>Milanko Paľo (Trstená)</li>
                                         <li>Ema Maťusová (Brezovica)</li>
                                         <li>Ela Lužbeťáková (Brezovica)</li>
                                         <li>Sofia Kaníková (Brezovica)</li>
-                                        <li>? Milanko Paľo (Trstená)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1069,23 +1073,13 @@
                                 </div>
                             </div>
                             <div class="instrument-card uncertain" onclick="toggleInstrument(this)">
-                                <div class="instrument-icon">🥁</div>
-                                <div class="instrument-name">Bubny</div>
-                                <div class="instrument-count">1 bubeník</div>
-                                <div class="instrument-names">
-                                    <ul>
-                                        <li>? (Trstená)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="instrument-card uncertain" onclick="toggleInstrument(this)">
                                 <div class="instrument-icon">🪈</div>
                                 <div class="instrument-name">Flauty</div>
                                 <div class="instrument-count">TBD</div>
                                 <div class="instrument-names">
                                     <ul>
-                                        <li>ZUŠ Trstená (možno)</li>
-                                        <li>Zuzka Nogová (možno)</li>
+                                        <li>ZUŠ Trstená (zistiť)</li>
+                                        <li>Zuzka Nogová (zistiť)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1269,6 +1263,13 @@
                                                 {% endif %}
                                             {% else %}
                                             <button class="song-btn song-btn-mscz" title="MSCZ" disabled><i class="bi bi-file-earmark-music"></i></button>
+                                            {% endif %}
+
+                                         
+                                            {% if song.mscz_online_link %}
+                                            <a href="{{ song.mscz_online_link }}" class="song-btn song-btn-online" title="Online" target="_blank" onclick="event.stopPropagation();"><i class="bi bi-link-45deg"></i>Ms</a>
+                                            {% else %}
+                                            <button class="song-btn song-btn-online" title="Pridať online link" onclick="openOnlineLinkModal({{ song.concert_song_id }}, '{{ song.title|replace("'", "\\'") }}', '{{ song.mscz_online_link or "" }}')"><i class="bi bi-link-45deg"></i>Ms</button>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -1645,6 +1646,12 @@
                                             {% else %}
                                             <button class="song-btn song-btn-mscz" title="MSCZ" disabled><i class="bi bi-file-earmark-music"></i></button>
                                             {% endif %}
+                                            
+                                            {% if song.mscz_online_link %}
+                                            <a href="{{ song.mscz_online_link }}" class="song-btn song-btn-online" title="Online" target="_blank" onclick="event.stopPropagation();"><i class="bi bi-link-45deg"></i> Ms</a>
+                                            {% else %}
+                                            <button class="song-btn song-btn-online" title="Pridať online link" onclick="openOnlineLinkModal({{ song.concert_song_id }}, '{{ song.title|replace("'", "\\'") }}', '{{ song.mscz_online_link or "" }}')"><i class="bi bi-link-45deg"></i> Ms</button>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     {% endfor %}
@@ -1675,8 +1682,62 @@
         </div>
     </div>
 
+    <div class="modal fade" id="onlineLinkModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background: #2c3e50; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <h5 class="modal-title">Online MuseScore link - <span id="onlineLinkSongName"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="url" id="onlineLinkInput" class="form-control" placeholder="https://musescore.com/..." style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
+                    <small class="text-muted d-block mt-2">Zadajte URL adresu online MuseScore linku</small>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zrušiť</button>
+                    <button type="button" class="btn btn-primary" onclick="saveOnlineLink()">Uložiť</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentSection = '';
+        let currentConcertSongId = null;
+
+        function openOnlineLinkModal(concertSongId, songName, currentLink) {
+            currentConcertSongId = concertSongId;
+            document.getElementById('onlineLinkSongName').textContent = songName;
+            document.getElementById('onlineLinkInput').value = currentLink || '';
+            new bootstrap.Modal(document.getElementById('onlineLinkModal')).show();
+        }
+
+        function saveOnlineLink() {
+            const link = document.getElementById('onlineLinkInput').value.trim();
+            
+            fetch('/api/concert/update_online_link', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: currentConcertSongId,
+                    online_link: link
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Chyba pri ukladaní linku');
+                }
+            })
+            .catch(error => {
+                alert('Chyba pri ukladaní linku');
+                console.error(error);
+            });
+        }
 
         function openAddSongModal(section, sectionName) {
             currentSection = section;
@@ -1847,5 +1908,29 @@
     
     <!-- Bootstrap JS Bundle (includes Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Footer -->
+    <footer style="position: relative; z-index: 3; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border-top: 2px solid rgba(255, 255, 255, 0.1); padding: 2rem 1rem; margin-top: 3rem;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h4 style="color: white; font-size: 1.3rem; margin-bottom: 1rem; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);">📞 Kontakt</h4>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.5rem; color: rgba(255, 255, 255, 0.9);">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="bi bi-person-circle" style="font-size: 1.2rem; color: #d9b861;"></i>
+                    <span><strong>Dávid Števaňák</strong></span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="bi bi-envelope-fill" style="font-size: 1rem; color: #d9b861;"></i>
+                    <a href="mailto:david.stevanak@gmail.com" style="color: rgba(255, 255, 255, 0.9); text-decoration: none; transition: color 0.3s;">david.stevanak@gmail.com</a>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="bi bi-telephone-fill" style="font-size: 1rem; color: #d9b861;"></i>
+                    <a href="tel:+421904606991" style="color: rgba(255, 255, 255, 0.9); text-decoration: none; transition: color 0.3s;">+421 904 606 991</a>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6); font-size: 0.9rem;">
+                © 2026 Benefičný Koncert
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

@@ -96,6 +96,7 @@ class ConcertSong(db.Model):
     song_id = db.Column(db.Integer, db.ForeignKey('song.id'), nullable=False)
     section = db.Column(db.String(50), nullable=False)
     order = db.Column(db.Integer, default=0)
+    mscz_online_link = db.Column(db.String(500), nullable=True)
     
     song = db.relationship('Song', backref=db.backref('concert_songs', lazy=True))
 
