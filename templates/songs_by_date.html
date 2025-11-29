@@ -1,0 +1,767 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="header text-center mb-4">
+    <h1><i class="bi bi-tag-fill me-2"></i> Štítkovač</h1>
+    <p class="lead mb-3">
+        {% if sort_by == 'created' %}
+        Zoradené podľa <strong>dátumu vytvorenia</strong>
+        {% else %}
+        Zoradené podľa <strong>poslednej úpravy</strong>
+        {% endif %}
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 mb-3 flex-wrap">
+        <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-1"></i>Späť na hlavný zoznam
+        </a>
+        
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('songs_by_date', sort_by='created', order=order) }}" 
+               class="btn {% if sort_by == 'created' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                <i class="bi bi-calendar-plus me-1"></i>Podľa vytvorenia
+            </a>
+            <a href="{{ url_for('songs_by_date', sort_by='modified', order=order) }}" 
+               class="btn {% if sort_by == 'modified' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                <i class="bi bi-calendar-check me-1"></i>Podľa úpravy
+            </a>
+        </div>
+
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('songs_by_date', sort_by=sort_by, order='desc') }}" 
+               class="btn {% if order == 'desc' %}btn-info{% else %}btn-outline-info{% endif %}">
+                <i class="bi bi-sort-down me-1"></i>Najnovšie
+            </a>
+            <a href="{{ url_for('songs_by_date', sort_by=sort_by, order='asc') }}" 
+               class="btn {% if order == 'asc' %}btn-info{% else %}btn-outline-info{% endif %}">
+                <i class="bi bi-sort-up me-1"></i>Najstaršie
+            </a>
+        </div>
+    </div>
+
+    <!-- Selected songs panel -->
+    <div class="card mt-3" id="selectedSongsPanel">
+        <div class="card-header bg-info text-white">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                    <strong><i class="bi bi-check2-square me-1"></i>Vybrané piesne na štítky:</strong> <span id="selectedCount">0</span>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-success btn-sm" onclick="generateLabels()">
+                        <i class="bi bi-file-pdf me-1"></i>Generovať PDF štítky
+                    </button>
+                    <button class="btn btn-outline-light btn-sm" onclick="clearSelection()">
+                        <i class="bi bi-x-circle me-1"></i>Vyčistiť výber
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Search bar for adding songs -->
+            <div class="mb-3">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" id="songSearchInput" 
+                           placeholder="Vyhľadať pieseň podľa názvu, autora, textu..." 
+                           oninput="filterTableBySearch()">
+                    <button class="btn btn-outline-secondary" onclick="clearSearchFilter()">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+                <small class="text-muted mt-1 d-block">
+                    <span id="searchResultsCount"></span>
+                </small>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- List of selected songs -->
+            <div id="selectedSongsList" class="d-flex flex-wrap gap-2">
+                <small class="text-muted">Zatiaľ nie sú vybrané žiadne piesne</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Position Selection Modal -->
+<div class="modal fade" id="positionModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-grid-3x3 me-2"></i>Vyberte pozície štítkov na liste
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="alert alert-info">
+                        <strong>Počet vybraných piesní:</strong> <span id="modalSongCount"></span><br>
+                        <strong>Počet potrebných štítkov:</strong> <span id="modalLabelCount"></span> (2 štítky na pieseň)<br>
+                        <strong>Počet stránok:</strong> <span id="modalPageCount"></span><br>
+                        <small class="text-muted">Kliknite na políčka pre výber pozícií. Zelená = text štítok, Modrá = štítok s ikonou</small>
+                    </div>
+                    <div class="d-flex gap-2 mb-3 flex-wrap">
+                        <button class="btn btn-sm btn-outline-primary" onclick="selectAllPositions()">
+                            <i class="bi bi-check-all"></i> Vybrať všetky na stránke
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="clearAllPositions()">
+                            <i class="bi bi-x-circle"></i> Zrušiť výber na stránke
+                        </button>
+                        <button class="btn btn-sm btn-outline-success" onclick="autoFillPositions()">
+                            <i class="bi bi-magic"></i> Automaticky vyplniť
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Page navigation -->
+                <div class="d-flex justify-content-between align-items-center mb-3" id="pageNavigation" style="display: none !important;">
+                    <button class="btn btn-outline-secondary" onclick="previousPage()" id="prevPageBtn">
+                        <i class="bi bi-chevron-left"></i> Predchádzajúca stránka
+                    </button>
+                    <span class="fw-bold">
+                        Stránka <span id="currentPageNum"></span> z <span id="totalPagesNum"></span>
+                    </span>
+                    <button class="btn btn-outline-secondary" onclick="nextPage()" id="nextPageBtn">
+                        Ďalšia stránka <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- 5x13 Grid -->
+                <div id="labelGrid" class="label-grid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zrušiť</button>
+                <button type="button" class="btn btn-success" onclick="confirmGeneration()">
+                    <i class="bi bi-file-pdf me-1"></i>Generovať PDF
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.song-table {
+  border-radius: 1rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+}
+
+.song-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.song-table tbody tr:hover {
+  background-color: rgba(52, 152, 219, 0.08) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.label-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.label-cell {
+    aspect-ratio: 37.8 / 21.25;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    background: white;
+    position: relative;
+}
+
+.label-cell:hover {
+    border-color: #666;
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.label-cell.selected-text {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border-color: #28a745;
+    color: #155724;
+}
+
+.label-cell.selected-icon {
+    background: linear-gradient(135deg, #cfe2ff 0%, #b6d4fe 100%);
+    border-color: #0d6efd;
+    color: #084298;
+}
+
+.label-cell.selected-text::after,
+.label-cell.selected-icon::after {
+    content: '✓';
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 0.9rem;
+}
+
+.label-cell .cell-number {
+    opacity: 0.5;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+}
+
+.date-badge {
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  color: white;
+  font-weight: 500;
+}
+
+.timestamp-cell {
+  white-space: nowrap;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.song-id-cell {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.song-title-cell {
+  font-weight: 500;
+}
+
+.author-cell {
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.selected-song-badge {
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.selected-song-badge .remove-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.selected-song-badge .remove-btn:hover {
+  background: rgba(255,255,255,0.4);
+  opacity: 1;
+}
+
+.song-row-hidden {
+  display: none !important;
+}
+
+#searchResults .list-group-item {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#searchResults .list-group-item:hover {
+  background-color: #f0f0f0;
+}
+</style>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="card shadow-lg">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover song-table mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th style="width: 5%">
+                                        <input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)">
+                                    </th>
+                                    <th style="width: 15%">ID</th>
+                                    <th style="width: 40%">Názov</th>
+                                    <th style="width: 20%">Vytvorené</th>
+                                    <th style="width: 20%">Upravené</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for song in songs %}
+                                <tr class="song-row" 
+                                    data-song-id="{{ song.song_id }}"
+                                    data-title="{{ song.title|lower }}"
+                                    data-author="{{ (song.author or '')|lower }}"
+                                    data-search-text="{{ (song.search_text or '')|lower }}">
+                                    <td class="text-center">
+                                        <input type="checkbox" class="song-checkbox" 
+                                               data-song-id="{{ song.song_id }}" 
+                                               data-version="{{ song.version_name or '' }}"
+                                               data-db-id="{{ song.id }}"
+                                               data-title="{{ song.title }}"
+                                               onclick="updateSelection()">
+                                    </td>
+                                    <td class="song-id-cell">
+                                        <a href="{{ url_for('song_detail', song_id=song.id) }}" class="text-decoration-none">
+                                            {{ song.song_id }}
+                                        </a>
+                                        {% if song.version_name %}
+                                        <br><small class="text-muted">({{ song.version_name }})</small>
+                                        {% endif %}
+                                    </td>
+                                    <td class="song-title-cell">
+                                        <a href="{{ url_for('song_detail', song_id=song.id) }}" class="text-decoration-none text-dark">
+                                            {{ song.title }}
+                                        </a>
+                                        {% if song.author %}
+                                        <br><small class="text-muted">{{ song.author }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td class="timestamp-cell">
+                                        {% if song.created_at %}
+                                            <span class="badge date-badge">
+                                                {{ song.created_at.strftime('%d.%m.%Y') }}
+                                            </span>
+                                            <br>
+                                            <small class="text-muted">{{ song.created_at.strftime('%H:%M') }}</small>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="timestamp-cell">
+                                        {% if song.last_modified %}
+                                            <span class="badge date-badge">
+                                                {{ song.last_modified.strftime('%d.%m.%Y') }}
+                                            </span>
+                                            <br>
+                                            <small class="text-muted">{{ song.last_modified.strftime('%H:%M') }}</small>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <p class="mb-0 text-muted">
+                        <strong>{{ songs|length }}</strong> piesní celkom
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedSongs = new Map(); // Use Map to store song details
+
+// Save selection to sessionStorage
+function saveSelection() {
+    const selection = Array.from(selectedSongs.values());
+    sessionStorage.setItem('selectedSongsForLabels', JSON.stringify(selection));
+}
+
+// Load selection from sessionStorage
+function loadSelection() {
+    const saved = sessionStorage.getItem('selectedSongsForLabels');
+    if (saved) {
+        try {
+            const selection = JSON.parse(saved);
+            selectedSongs.clear();
+            selection.forEach(song => {
+                selectedSongs.set(song.id, song);
+            });
+            
+            // Check the checkboxes for loaded songs
+            document.querySelectorAll('.song-checkbox').forEach(checkbox => {
+                if (selectedSongs.has(checkbox.dataset.dbId)) {
+                    checkbox.checked = true;
+                }
+            });
+            
+            updateSelection();
+        } catch (e) {
+            console.error('Error loading selection:', e);
+        }
+    }
+}
+
+// Load selection when page loads
+document.addEventListener('DOMContentLoaded', loadSelection);
+
+function normalizeText(text) {
+    if (!text) return '';
+    // Remove diacritics and normalize
+    return text.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[,.\-_;]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+function updateSelection() {
+    selectedSongs.clear();
+    document.querySelectorAll('.song-checkbox:checked').forEach(checkbox => {
+        selectedSongs.set(checkbox.dataset.dbId, {
+            id: checkbox.dataset.dbId,
+            song_id: checkbox.dataset.songId,
+            version: checkbox.dataset.version,
+            title: checkbox.dataset.title
+        });
+    });
+    
+    const count = selectedSongs.size;
+    document.getElementById('selectedCount').textContent = count;
+    
+    // Update selected songs list display
+    updateSelectedSongsList();
+    
+    // Save to sessionStorage
+    saveSelection();
+}
+
+function updateSelectedSongsList() {
+    const listContainer = document.getElementById('selectedSongsList');
+    listContainer.innerHTML = '';
+    
+    if (selectedSongs.size === 0) {
+        listContainer.innerHTML = '<small class="text-muted">Zatiaľ nie sú vybrané žiadne piesne</small>';
+        return;
+    }
+    
+    selectedSongs.forEach((song, id) => {
+        const badge = document.createElement('span');
+        badge.className = 'badge bg-primary d-flex align-items-center gap-2';
+        badge.innerHTML = `
+            <span>${song.song_id}${song.version ? ' - ' + song.version : ''}</span>
+            <button type="button" class="btn-close btn-close-white" 
+                    style="font-size: 0.7rem;" 
+                    onclick="removeSongFromSelection('${id}')" 
+                    aria-label="Odstrániť"></button>
+        `;
+        listContainer.appendChild(badge);
+    });
+}
+
+function removeSongFromSelection(dbId) {
+    // Uncheck the checkbox
+    const checkbox = document.querySelector(`.song-checkbox[data-db-id="${dbId}"]`);
+    if (checkbox) {
+        checkbox.checked = false;
+    }
+    updateSelection();
+}
+
+function toggleSelectAll(selectAllCheckbox) {
+    const checkboxes = document.querySelectorAll('.song-checkbox');
+    const visibleCheckboxes = Array.from(checkboxes).filter(cb => {
+        const row = cb.closest('tr');
+        return row && row.style.display !== 'none';
+    });
+    
+    visibleCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+    updateSelection();
+}
+
+function clearSelection() {
+    document.querySelectorAll('.song-checkbox').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    document.getElementById('selectAll').checked = false;
+    selectedSongs.clear();
+    sessionStorage.removeItem('selectedSongsForLabels'); // Clear saved selection
+    updateSelection();
+}
+
+function filterTableBySearch() {
+    const searchInput = document.getElementById('songSearchInput');
+    const searchTerm = normalizeText(searchInput.value);
+    const rows = document.querySelectorAll('.song-row');
+    let visibleCount = 0;
+    
+    rows.forEach(row => {
+        if (!searchTerm) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            const songId = normalizeText(row.dataset.songId || '');
+            const title = normalizeText(row.dataset.title || '');
+            const author = normalizeText(row.dataset.author || '');
+            const searchText = normalizeText(row.dataset.searchText || '');
+            
+            // Search in all fields
+            const matches = songId.includes(searchTerm) || 
+                          title.includes(searchTerm) || 
+                          author.includes(searchTerm) || 
+                          searchText.includes(searchTerm);
+            
+            if (matches) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+    
+    // Update results count
+    const resultsCount = document.getElementById('searchResultsCount');
+    if (searchTerm) {
+        resultsCount.textContent = `Nájdených: ${visibleCount} piesní`;
+    } else {
+        resultsCount.textContent = '';
+    }
+    
+    // Update "Select All" checkbox to reflect visible rows
+    updateSelectAllState();
+}
+
+function clearSearchFilter() {
+    document.getElementById('songSearchInput').value = '';
+    filterTableBySearch();
+}
+
+function updateSelectAllState() {
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const visibleCheckboxes = Array.from(document.querySelectorAll('.song-checkbox')).filter(cb => {
+        const row = cb.closest('tr');
+        return row && row.style.display !== 'none';
+    });
+    
+    if (visibleCheckboxes.length === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+    } else {
+        const checkedCount = visibleCheckboxes.filter(cb => cb.checked).length;
+        selectAllCheckbox.checked = checkedCount === visibleCheckboxes.length;
+        selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < visibleCheckboxes.length;
+    }
+}
+
+function generateLabels() {
+    const selectedIds = Array.from(selectedSongs.keys());
+    
+    if (selectedIds.length === 0) {
+        alert('Prosím vyberte aspoň jednu pieseň');
+        return;
+    }
+    
+    // Show position selection modal
+    showPositionModal(selectedIds);
+}
+
+// Grid state
+const COLUMNS = 5;
+const ROWS = 13;
+const POSITIONS_PER_PAGE = COLUMNS * ROWS; // 65 positions per page
+let selectedPositions = new Set();
+let currentSongIds = [];
+let currentPage = 0;
+let totalPages = 1;
+
+function showPositionModal(songIds) {
+    currentSongIds = songIds;
+    const labelCount = songIds.length * 2; // 2 labels per song
+    
+    // Calculate number of pages needed
+    totalPages = Math.ceil(labelCount / POSITIONS_PER_PAGE);
+    currentPage = 0;
+    
+    document.getElementById('modalSongCount').textContent = songIds.length;
+    document.getElementById('modalLabelCount').textContent = labelCount;
+    document.getElementById('modalPageCount').textContent = totalPages;
+    
+    selectedPositions.clear();
+    
+    // Show/hide page navigation
+    const pageNav = document.getElementById('pageNavigation');
+    if (totalPages > 1) {
+        pageNav.style.display = 'flex';
+    } else {
+        pageNav.style.display = 'none';
+    }
+    
+    renderCurrentPage();
+    
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('positionModal'));
+    modal.show();
+}
+
+function renderCurrentPage() {
+    const grid = document.getElementById('labelGrid');
+    grid.innerHTML = '';
+    
+    const pageOffset = currentPage * POSITIONS_PER_PAGE;
+    const selectedArray = Array.from(selectedPositions).sort((a, b) => a - b);
+    
+    for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col < COLUMNS; col++) {
+            const localIndex = row * COLUMNS + col;
+            const globalIndex = pageOffset + localIndex;
+            const cell = document.createElement('div');
+            cell.className = 'label-cell';
+            cell.dataset.globalIndex = globalIndex;
+            cell.dataset.localIndex = localIndex;
+            
+            // Check if this position is selected
+            if (selectedPositions.has(globalIndex)) {
+                const positionInSelection = selectedArray.indexOf(globalIndex);
+                const isIcon = positionInSelection % 2 === 1;
+                const songNum = Math.floor(positionInSelection / 2) + 1;
+                cell.classList.add(isIcon ? 'selected-icon' : 'selected-text');
+                cell.innerHTML = isIcon ? 
+                    `<span>🎵 ${songNum}</span>` :
+                    `<span>${songNum}</span>`;
+            } else {
+                cell.innerHTML = `<span class="cell-number">${globalIndex + 1}</span>`;
+            }
+            
+            cell.onclick = () => togglePosition(globalIndex);
+            grid.appendChild(cell);
+        }
+    }
+    
+    // Update page navigation
+    if (totalPages > 1) {
+        document.getElementById('currentPageNum').textContent = currentPage + 1;
+        document.getElementById('totalPagesNum').textContent = totalPages;
+        document.getElementById('prevPageBtn').disabled = currentPage === 0;
+        document.getElementById('nextPageBtn').disabled = currentPage === totalPages - 1;
+    }
+}
+
+function previousPage() {
+    if (currentPage > 0) {
+        currentPage--;
+        renderCurrentPage();
+    }
+}
+
+function nextPage() {
+    if (currentPage < totalPages - 1) {
+        currentPage++;
+        renderCurrentPage();
+    }
+}
+
+function togglePosition(index) {
+    if (selectedPositions.has(index)) {
+        selectedPositions.delete(index);
+    } else {
+        // Check if we've reached the maximum number of labels
+        const maxLabels = currentSongIds.length * 2;
+        if (selectedPositions.size >= maxLabels) {
+            alert(`Už ste vybrali maximálny počet pozícií (${maxLabels} štítkov pre ${currentSongIds.length} piesní)`);
+            return;
+        }
+        selectedPositions.add(index);
+    }
+    
+    // Re-render current page to update all labels
+    renderCurrentPage();
+}
+
+function updatePositionLabels() {
+    // This function is now handled by renderCurrentPage()
+}
+
+function selectAllPositions() {
+    const maxLabels = currentSongIds.length * 2;
+    const pageOffset = currentPage * POSITIONS_PER_PAGE;
+    
+    for (let i = 0; i < POSITIONS_PER_PAGE; i++) {
+        if (selectedPositions.size >= maxLabels) {
+            break;
+        }
+        selectedPositions.add(pageOffset + i);
+    }
+    renderCurrentPage();
+}
+
+function clearAllPositions() {
+    const pageOffset = currentPage * POSITIONS_PER_PAGE;
+    for (let i = 0; i < POSITIONS_PER_PAGE; i++) {
+        selectedPositions.delete(pageOffset + i);
+    }
+    renderCurrentPage();
+}
+
+function autoFillPositions() {
+    selectedPositions.clear();
+    const labelCount = currentSongIds.length * 2;
+    for (let i = 0; i < labelCount; i++) {
+        selectedPositions.add(i);
+    }
+    renderCurrentPage();
+}
+
+function confirmGeneration() {
+    if (selectedPositions.size === 0) {
+        alert('Prosím vyberte aspoň jednu pozíciu');
+        return;
+    }
+    
+    const labelCount = currentSongIds.length * 2;
+    if (selectedPositions.size < labelCount) {
+        if (!confirm(`Vybrali ste len ${selectedPositions.size} pozícií, ale potrebujete ${labelCount}. Chcete pokračovať?`)) {
+            return;
+        }
+    }
+    
+    // Create form and submit
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ url_for("generate_labels_pdf") }}';
+    form.target = '_blank';
+    
+    const songIdsInput = document.createElement('input');
+    songIdsInput.type = 'hidden';
+    songIdsInput.name = 'song_ids';
+    songIdsInput.value = currentSongIds.join(',');
+    
+    const positionsInput = document.createElement('input');
+    positionsInput.type = 'hidden';
+    positionsInput.name = 'positions';
+    positionsInput.value = Array.from(selectedPositions).sort((a, b) => a - b).join(',');
+    
+    form.appendChild(songIdsInput);
+    form.appendChild(positionsInput);
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+    
+    // Close modal
+    bootstrap.Modal.getInstance(document.getElementById('positionModal')).hide();
+}
+
+</script>
+
+{% endblock %}

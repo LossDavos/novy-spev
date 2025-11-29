@@ -6,7 +6,7 @@ import tempfile
 import requests
 import io
 import html
-from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory
+from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory, send_file
 from models import db, Song
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
@@ -900,6 +900,83 @@ def songs_view(song_ids):
     ordered_songs = [songs_dict[sid] for sid in song_id_list if sid in songs_dict]
 
     return render_template('songs_view.html', songs=ordered_songs, song_ids=song_ids)
+
+@app.route('/stitkovac')
+def songs_by_date():
+    """
+    Display all songs sorted by created_at or last_modified timestamp
+    Parameters:
+        - sort_by: 'created' or 'modified' (default: 'modified')
+        - order: 'asc' or 'desc' (default: 'desc')
+    """
+    sort_by = request.args.get('sort_by', 'modified')
+    order = request.args.get('order', 'desc')
+    
+    # Validate parameters
+    if sort_by not in ['created', 'modified']:
+        sort_by = 'modified'
+    if order not in ['asc', 'desc']:
+        order = 'desc'
+    
+    # Build the query
+    if sort_by == 'created':
+        if order == 'desc':
+            songs = Song.query.order_by(Song.created_at.desc()).all()
+        else:
+            songs = Song.query.order_by(Song.created_at.asc()).all()
+    else:  # modified
+        if order == 'desc':
+            songs = Song.query.order_by(Song.last_modified.desc()).all()
+        else:
+            songs = Song.query.order_by(Song.last_modified.asc()).all()
+    
+    return render_template('songs_by_date.html', 
+                         songs=songs, 
+                         sort_by=sort_by, 
+                         order=order)
+
+@app.route('/generate-labels-pdf', methods=['POST'])
+def generate_labels_pdf():
+    """Generate PDF labels for selected songs"""
+    try:
+        from label_generator import LabelGenerator
+        
+        # Get selected song IDs
+        song_ids_str = request.form.get('song_ids', '')
+        if not song_ids_str:
+            flash('Nie sú vybrané žiadne piesne', 'error')
+            return redirect(url_for('songs_by_date'))
+        
+        song_ids = [int(sid.strip()) for sid in song_ids_str.split(',') if sid.strip()]
+        
+        # Get selected positions (optional)
+        positions_str = request.form.get('positions', '')
+        positions = None
+        if positions_str:
+            positions = [int(p.strip()) for p in positions_str.split(',') if p.strip()]
+        
+        # Fetch songs from database, sorted by song_id
+        songs = Song.query.filter(Song.id.in_(song_ids)).order_by(Song.song_id).all()
+        
+        if not songs:
+            flash('Neboli nájdené žiadne piesne', 'error')
+            return redirect(url_for('songs_by_date'))
+        
+        # Generate PDF
+        generator = LabelGenerator(BASE_DIR)
+        pdf_buffer = generator.generate_labels(songs, positions=positions)
+        
+        # Send PDF
+        return send_file(
+            pdf_buffer,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=f'stitky_{len(songs)}_songs.pdf'
+        )
+        
+    except Exception as e:
+        flash(f'Chyba pri generovaní PDF: {str(e)}', 'error')
+        return redirect(url_for('songs_by_date'))
 
 @app.route('/load_songs')
 def load_songs():

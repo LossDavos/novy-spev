@@ -45,6 +45,10 @@ class Song(db.Model):
 
     # Add normalized search fields for fast searching
     search_text = db.Column(db.Text, nullable=True)  # Pre-normalized searchable text
+    
+    # Timestamp fields
+    created_at = db.Column(db.DateTime, nullable=True)
+    last_modified = db.Column(db.DateTime, nullable=True)
 
     __table_args__ = (
         UniqueConstraint('song_id', 'version_name', name='uix_song_id_version'),
@@ -155,8 +159,23 @@ def update_search_text_listener(mapper, connection, target):
     """Update search text before inserting or updating"""
     target.update_search_text()
 
+def set_created_at_listener(mapper, connection, target):
+    """Set created_at timestamp when creating a new song"""
+    from datetime import datetime
+    if not target.created_at:
+        target.created_at = datetime.now()
+    if not target.last_modified:
+        target.last_modified = datetime.now()
+
+def set_last_modified_listener(mapper, connection, target):
+    """Update last_modified timestamp when updating a song"""
+    from datetime import datetime
+    target.last_modified = datetime.now()
+
 event.listen(Song, 'before_insert', generate_song_id)
 event.listen(Song, 'before_update', handle_song_update)
 event.listen(Song, 'before_insert', update_search_text_listener)
 event.listen(Song, 'before_update', update_search_text_listener)
+event.listen(Song, 'before_insert', set_created_at_listener)
+event.listen(Song, 'before_update', set_last_modified_listener)
 

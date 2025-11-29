@@ -30,6 +30,14 @@ body {
 
 <div class="container-fluid">
 
+<!-- Quick Navigation Section -->
+<div class="text-center my-3">
+  <a href="{{ url_for('songs_by_date') }}" class="btn btn-info btn-lg rounded-pill shadow-sm">
+    <i class="bi bi-tag-fill me-2"></i>
+    <strong>Štítkovač</strong>
+  </a>
+</div>
+
 <!-- Category Filters Section -->
 {% include 'category_filters.html' %}
 
