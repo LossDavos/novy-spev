@@ -56,7 +56,7 @@ Thumbs.db
 
 # Database files
 instance/
-# *.db
+*.db
 *.sqlite
 *.sqlite3
 
