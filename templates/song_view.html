@@ -692,7 +692,7 @@
       <i class="bi bi-pencil-square"></i>
     </a>
     
-    <button type="button" class="btn {% if song.admin_checked %}btn-success{% else %}btn-warning{% endif %} action-btn-compact" onclick="toggleAdminCheck()" id="adminCheckBtn" title="{% if song.admin_checked %}Overené adminom{% else %}Overiť pieseň{% endif %}">
+    <button type="button" class="btn {% if song.admin_checked %}btn-success{% else %}btn-warning{% endif %} action-btn-compact" onclick="toggleAdminCheck()" id="adminCheckBtn" title="{% if song.admin_checked %}{% else %}Overiť pieseň{% endif %}" {% if song.admin_checked %}disabled{% endif %}>
       <i class="bi bi-{% if song.admin_checked %}check-circle-fill{% else %}shield-check{% endif %}"></i>
     </button>
     
@@ -1887,7 +1887,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (buttonText.includes('delete') || (buttonIcon && buttonIcon.className.includes('trash'))) {
                     reason = 'Súbor neexistuje alebo nemáte oprávnenie';
                 } else {
-                    reason = 'Akcia nie je povolená';
+                    reason = '';
                 }
             }
 
@@ -2262,15 +2262,13 @@ let currentAdminChecked = {{ 'true' if song.admin_checked else 'false' }};
 let currentPrinted = {{ 'true' if song.printed else 'false' }};
 
 function toggleAdminCheck() {
-    const newState = !currentAdminChecked;
-    
-    // If trying to check (not uncheck), require password
-    if (newState) {
-        showAdminCheckPasswordModal();
-    } else {
-        // If unchecking, allow without password
-        updateAdminCheckStatus(false, '');
+    // If already checked, don't allow unchecking
+    if (currentAdminChecked) {
+        return;
     }
+    
+    // Only allow checking (not unchecking), require password
+    showAdminCheckPasswordModal();
 }
 
 function togglePrinted() {

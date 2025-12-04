@@ -37,6 +37,14 @@ ADMIN_EMAIL = config.ADMIN_EMAIL
 JSON_FOLDER = config.JSON_FOLDER
 BACKUP_FOLDER = config.BACKUP_FOLDER
 
+# SMTP Configuration
+SMTP_SERVER = config.SMTP_SERVER
+SMTP_PORT = config.SMTP_PORT
+SMTP_USERNAME = config.SMTP_USERNAME
+SMTP_PASSWORD = config.SMTP_PASSWORD
+SMTP_USE_TLS = config.SMTP_USE_TLS
+EMAIL_FROM = config.EMAIL_FROM
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///songs.db'
 app.secret_key = config.SECRET_KEY
@@ -113,17 +121,126 @@ def sanitize_input(text, field_name="input"):
 def send_edit_notification_email(song, form_data):
     """Send email notification to admin about song edit request"""
     try:
-        # Create email content
+        changes = []
+        
+        # Define field mappings: form_field -> (db_field, label, processor)
+        field_mappings = {
+            'title': ('title', 'Názov', lambda x: x.strip()),
+            'author': ('author', 'Autor', lambda x: x.strip() if x else None),
+            'version_name': ('version_name', 'Verzia', lambda x: x.strip() if x else None),
+            'title_original': ('title_original', 'Pôvodný názov', lambda x: x.strip()),
+            'author_original': ('author_original', 'Pôvodný autor', lambda x: x.strip()),
+        }
+        
+        # Check simple fields
+        for form_field, (db_field, label, processor) in field_mappings.items():
+            form_value = processor(form_data.get(form_field, ''))
+            db_value = getattr(song, db_field) or ''
+            if form_value != db_value:
+                changes.append(f"{label}: '{db_value or '(prázdne)'}' → '{form_value or '(prázdne)'}'")
+        
+        # Check categories (special processing)
+        new_categories = ';;'.join([cat.strip() for cat in form_data.get('categories', '').split(',') if cat.strip()])
+        if new_categories != (song.categories or ''):
+            changes.append(f"Kategórie: '{song.categories or '(prázdne)'}' → '{new_categories or '(prázdne)'}'")
+        
+        # Check alternative titles (special processing)
+        new_alt_titles = ';;'.join([t.strip() for t in form_data.getlist('alternative_titles') if t.strip()])
+        if new_alt_titles != (song.alternative_titles or ''):
+            changes.append(f"Alt. názvy: '{song.alternative_titles or '(prázdne)'}' → '{new_alt_titles or '(prázdne)'}'")
+        
+        # Check song parts (lyrics/structure)
+        parts = []
+        idx = 0
+        while True:
+            part_type = form_data.get(f'part_type_{idx}')
+            part_lines = form_data.get(f'part_lines_{idx}')
+            if part_type and part_lines:
+                parts.append({'type': part_type, 'lines': [l.strip() for l in part_lines.splitlines() if l.strip()]})
+                idx += 1
+            else:
+                break
+        
+        new_song_parts = json.dumps(parts, ensure_ascii=False)
+        lyrics_diff = ""
+        if new_song_parts != song.song_parts:
+            # Generate detailed diff for song text
+            try:
+                old_parts = json.loads(song.song_parts)
+                
+                # Compare parts
+                diff_lines = []
+                max_parts = max(len(old_parts), len(parts))
+                
+                for i in range(max_parts):
+                    old_part = old_parts[i] if i < len(old_parts) else None
+                    new_part = parts[i] if i < len(parts) else None
+                    
+                    if old_part and not new_part:
+                        # Section removed
+                        diff_lines.append(f"  ❌ Odstránená sekcia [{old_part['type']}]:")
+                        for line in old_part['lines'][:5]:
+                            diff_lines.append(f"     - {line}")
+                        if len(old_part['lines']) > 5:
+                            diff_lines.append(f"     ... ({len(old_part['lines']) - 5} ďalších riadkov)")
+                    elif new_part and not old_part:
+                        # New section added
+                        diff_lines.append(f"  ✅ Nová sekcia [{new_part['type']}]:")
+                        for line in new_part['lines'][:5]:
+                            diff_lines.append(f"     + {line}")
+                        if len(new_part['lines']) > 5:
+                            diff_lines.append(f"     ... ({len(new_part['lines']) - 5} ďalších riadkov)")
+                    elif old_part['type'] != new_part['type'] or old_part['lines'] != new_part['lines']:
+                        # Section changed
+                        if old_part['type'] != new_part['type']:
+                            diff_lines.append(f"  🔄 Typ sekcie zmenený: [{old_part['type']}] → [{new_part['type']}]")
+                        else:
+                            diff_lines.append(f"  📝 Sekcia [{new_part['type']}] upravená:")
+                        
+                        # Show line-by-line changes
+                        max_lines = max(len(old_part['lines']), len(new_part['lines']))
+                        shown_lines = 0
+                        for j in range(max_lines):
+                            if shown_lines >= 10:  # Limit to 10 line changes shown
+                                diff_lines.append(f"     ... (ďalšie zmeny)")
+                                break
+                            
+                            old_line = old_part['lines'][j] if j < len(old_part['lines']) else None
+                            new_line = new_part['lines'][j] if j < len(new_part['lines']) else None
+                            
+                            if old_line and not new_line:
+                                diff_lines.append(f"     - {old_line}")
+                                shown_lines += 1
+                            elif new_line and not old_line:
+                                diff_lines.append(f"     + {new_line}")
+                                shown_lines += 1
+                            elif old_line != new_line:
+                                diff_lines.append(f"     - {old_line}")
+                                diff_lines.append(f"     + {new_line}")
+                                shown_lines += 2
+                
+                lyrics_diff = "\n" + "\n".join(diff_lines)
+            except:
+                lyrics_diff = ""
+            
+            changes.append(f"Text piesne: ZMENENÝ{lyrics_diff}")
+        
+        # If no changes, skip email
+        if not changes:
+            print("No changes detected, skipping email notification")
+            return True
+        
+        # Create email
         subject = f"Žiadosť o úpravu piesne: {song.title}"
+        changes_text = "\n".join([f"- {change}" for change in changes])
         
         body = f"""
 Nová žiadosť o úpravu piesne v systéme Nový Spev.
 
 Pieseň: {song.title} (ID: {song.id})
-Upravované polia:
-- Názov: {form_data.get('title', '')}
-- Autor: {form_data.get('author', '')}
-- Kategórie: {form_data.get('categories', '')}
+
+Navrhované zmeny:
+{changes_text}
 
 Pre schválenie zmien sa prihláste do systému s administrátorským heslom.
 
@@ -135,28 +252,29 @@ Automatický email z aplikácie Nový Spev
         
         # Create message
         msg = MIMEMultipart()
-        msg['From'] = ADMIN_EMAIL
+        msg['From'] = EMAIL_FROM
         msg['To'] = ADMIN_EMAIL
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'plain', 'utf-8'))
         
-        # Note: This is a placeholder - you'll need to configure SMTP settings
-        # For now, just log it
-        print(f"EMAIL NOTIFICATION: {subject}")
-        print(body)
-        
-        # TODO: Add actual SMTP configuration if needed
-        # smtp_server = "smtp.gmail.com"
-        # smtp_port = 587
-        # with smtplib.SMTP(smtp_server, smtp_port) as server:
-        #     server.starttls()
-        #     server.login(ADMIN_EMAIL, os.getenv('EMAIL_PASSWORD'))
-        #     server.send_message(msg)
+        # Send email via SMTP
+        if SMTP_PASSWORD:
+            with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+                if SMTP_USE_TLS:
+                    server.starttls()
+                server.login(SMTP_USERNAME, SMTP_PASSWORD)
+                server.send_message(msg)
+            print(f"Email sent successfully: {subject}")
+        else:
+            # If no SMTP password configured, just log the email
+            print(f"EMAIL NOTIFICATION (SMTP not configured): {subject}")
+            print(body)
         
         return True
     except Exception as e:
         print(f"Error sending email: {str(e)}")
-        raise
+        # Don't raise - we don't want email failures to break the app
+        return False
 
 
 # ============================================================================
@@ -1181,11 +1299,9 @@ def song_detail(song_id):
 
             song.title_original = sanitize_input(request.form.get('title_original', ''), "original title")
             song.author_original = sanitize_input(request.form.get('author_original', ''), "original author")
-            
-            # Automatically uncheck admin_checked when saving edits
+
+            # Reset admin_checked when song is edited (requires re-verification)
             song.admin_checked = False
-            
-            song.printed = 'printed' in request.form
 
             # Sanitize categories and alternative titles
             categories = request.form.get('categories', '').split(',')
