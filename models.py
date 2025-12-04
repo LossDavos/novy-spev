@@ -180,7 +180,24 @@ def set_created_at_listener(mapper, connection, target):
 def set_last_modified_listener(mapper, connection, target):
     """Update last_modified timestamp when updating a song"""
     from datetime import datetime
-    target.last_modified = datetime.now()
+    from sqlalchemy import inspect
+    
+    # Check if any attributes have actually changed
+    state = inspect(target)
+    has_changes = False
+    
+    for attr in state.attrs:
+        # Skip checking the last_modified field itself
+        if attr.key == 'last_modified':
+            continue
+        # Check if this attribute has changed
+        if attr.history.has_changes():
+            has_changes = True
+            break
+    
+    # Only update last_modified if something actually changed
+    if has_changes:
+        target.last_modified = datetime.now()
 
 event.listen(Song, 'before_insert', generate_song_id)
 event.listen(Song, 'before_update', handle_song_update)
