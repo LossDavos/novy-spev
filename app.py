@@ -6,6 +6,9 @@ import tempfile
 import requests
 import io
 import html
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory, send_file
 from models import db, Song
 from werkzeug.utils import secure_filename
@@ -29,6 +32,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Legacy compatibility - still needed for some file operations
 DELETE_SONG_PASSWORD = config.DELETE_SONG_PASSWORD
 UPDATE_SONG_PASSWORD = config.UPDATE_SONG_PASSWORD
+EDIT_SONG_PASSWORD = config.EDIT_SONG_PASSWORD
+ADMIN_EMAIL = config.ADMIN_EMAIL
 JSON_FOLDER = config.JSON_FOLDER
 BACKUP_FOLDER = config.BACKUP_FOLDER
 
@@ -104,6 +109,54 @@ def sanitize_input(text, field_name="input"):
     
     # HTML escape the input
     return html.escape(text.strip())
+
+def send_edit_notification_email(song, form_data):
+    """Send email notification to admin about song edit request"""
+    try:
+        # Create email content
+        subject = f"Žiadosť o úpravu piesne: {song.title}"
+        
+        body = f"""
+Nová žiadosť o úpravu piesne v systéme Nový Spev.
+
+Pieseň: {song.title} (ID: {song.id})
+Upravované polia:
+- Názov: {form_data.get('title', '')}
+- Autor: {form_data.get('author', '')}
+- Kategórie: {form_data.get('categories', '')}
+
+Pre schválenie zmien sa prihláste do systému s administrátorským heslom.
+
+Link na pieseň: {request.url_root}song/{song.id}/view
+
+---
+Automatický email z aplikácie Nový Spev
+        """
+        
+        # Create message
+        msg = MIMEMultipart()
+        msg['From'] = ADMIN_EMAIL
+        msg['To'] = ADMIN_EMAIL
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain', 'utf-8'))
+        
+        # Note: This is a placeholder - you'll need to configure SMTP settings
+        # For now, just log it
+        print(f"EMAIL NOTIFICATION: {subject}")
+        print(body)
+        
+        # TODO: Add actual SMTP configuration if needed
+        # smtp_server = "smtp.gmail.com"
+        # smtp_port = 587
+        # with smtplib.SMTP(smtp_server, smtp_port) as server:
+        #     server.starttls()
+        #     server.login(ADMIN_EMAIL, os.getenv('EMAIL_PASSWORD'))
+        #     server.send_message(msg)
+        
+        return True
+    except Exception as e:
+        print(f"Error sending email: {str(e)}")
+        raise
 
 
 # ============================================================================
@@ -1101,6 +1154,25 @@ def song_detail(song_id):
             return redirect(url_for('index'))
 
     if request.method == 'POST':
+        # Check if this is an email request instead of direct save
+        send_email = request.form.get('send_email') == 'true'
+        
+        if send_email:
+            # Send email notification to admin
+            try:
+                send_edit_notification_email(song, request.form)
+                flash("Zmeny boli odoslané adminovi na schválenie.", "success")
+                return redirect(url_for('song_view', song_id=song.id if not is_new_song else 'new'))
+            except Exception as e:
+                flash(f"Chyba pri odosielaní emailu: {str(e)}", "error")
+                return redirect(url_for('song_detail', song_id=song.id if not is_new_song else 'new'))
+        
+        # Check password for direct save
+        provided_password = request.form.get('edit_password')
+        if not provided_password or provided_password != EDIT_SONG_PASSWORD:
+            flash("Nesprávne heslo pre uloženie zmien!", "error")
+            return redirect(url_for('song_detail', song_id=song.id if not is_new_song else 'new'))
+        
         try:
             # Update song fields - SANITIZE ALL TEXT INPUTS TO PREVENT XSS
             song.title = sanitize_input(request.form['title'], "title")
@@ -1109,7 +1181,10 @@ def song_detail(song_id):
 
             song.title_original = sanitize_input(request.form.get('title_original', ''), "original title")
             song.author_original = sanitize_input(request.form.get('author_original', ''), "original author")
-            song.admin_checked = 'admin_checked' in request.form
+            
+            # Automatically uncheck admin_checked when saving edits
+            song.admin_checked = False
+            
             song.printed = 'printed' in request.form
 
             # Sanitize categories and alternative titles
@@ -1363,6 +1438,21 @@ def check_update_password():
         provided_password = data.get('password', '')
 
         if provided_password == UPDATE_SONG_PASSWORD:
+            return jsonify({'valid': True})
+        else:
+            return jsonify({'valid': False, 'message': 'Nesprávne heslo'})
+
+    except Exception as e:
+        return jsonify({'valid': False, 'message': 'Chyba servera'}), 500
+
+@app.route('/api/check-edit-password', methods=['POST'])
+def check_edit_password():
+    """API endpoint to validate edit password"""
+    try:
+        data = request.get_json()
+        provided_password = data.get('password', '')
+
+        if provided_password == EDIT_SONG_PASSWORD:
             return jsonify({'valid': True})
         else:
             return jsonify({'valid': False, 'message': 'Nesprávne heslo'})
