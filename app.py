@@ -1271,6 +1271,25 @@ def toggle_admin_check(song_id):
         'message': 'Pieseň označená ako skontrolovaná' if new_state else 'Označenie kontroly zrušené'
     })
 
+@app.route('/song/<int:song_id>/toggle-printed', methods=['POST'])
+def toggle_printed(song_id):
+    """Toggle printed status"""
+    song = Song.query.get_or_404(song_id)
+    
+    # Get the desired state
+    data = request.get_json()
+    new_state = data.get('printed', False)
+    
+    # Update the state
+    song.printed = new_state
+    db.session.commit()
+    
+    return jsonify({
+        'success': True, 
+        'printed': song.printed,
+        'message': 'Pieseň označená ako vytlačená' if new_state else 'Označenie tlače zrušené'
+    })
+
 @app.route('/song/<int:song_id>/view')
 def song_view(song_id):
     """Read-only detailed view of a song - no editing capabilities"""

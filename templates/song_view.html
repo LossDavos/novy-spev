@@ -681,36 +681,32 @@
   {% endif %}
 </div>
 
-<!-- Fixed Action Buttons at Bottom -->
-<div class="fixed-action-buttons">
-  <div class="d-flex gap-2 justify-content-center flex-wrap">
-    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg shadow-lg">
-      <i class="bi bi-arrow-left me-2"></i>
-      <span class="d-none d-sm-inline">Späť na zoznam</span>
-      <span class="d-sm-none">Späť</span>
+<!-- Fixed Action Footer at Bottom -->
+<div class="fixed-action-footer">
+  <div class="d-flex justify-content-center align-items-center gap-2 w-100">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary action-btn-compact" title="Späť na zoznam">
+      <i class="bi bi-arrow-left"></i>
     </a>
-
-    <button type="button" class="btn {% if song.admin_checked %}btn-success{% else %}btn-warning{% endif %} btn-lg shadow-lg" onclick="toggleAdminCheck()" id="adminCheckBtn">
-      <i class="bi bi-{% if song.admin_checked %}check-circle-fill{% else %}shield-check{% endif %} me-2"></i>
-      <span class="d-none d-sm-inline">{% if song.admin_checked %}Skontrolované ✓{% else %}Označiť ako skontrolované{% endif %}</span>
-      <span class="d-sm-none">{% if song.admin_checked %}✓{% else %}Skontrolovať{% endif %}</span>
+    
+    <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-primary action-btn-compact" title="Upraviť pieseň">
+      <i class="bi bi-pencil-square"></i>
+    </a>
+    
+    <button type="button" class="btn {% if song.admin_checked %}btn-success{% else %}btn-warning{% endif %} action-btn-compact" onclick="toggleAdminCheck()" id="adminCheckBtn" title="{% if song.admin_checked %}Overené adminom{% else %}Overiť pieseň{% endif %}">
+      <i class="bi bi-{% if song.admin_checked %}check-circle-fill{% else %}shield-check{% endif %}"></i>
     </button>
-
-    <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-primary btn-lg shadow-lg">
-      <i class="bi bi-pencil-square me-2"></i>
-      <span class="d-none d-sm-inline">Upraviť pieseň</span>
-      <span class="d-sm-none">Upraviť</span>
-    </a>
-
-    <button type="button" class="btn btn-danger btn-lg shadow-lg" onclick="confirmDeleteSong()">
-      <i class="bi bi-trash me-2"></i>
-      <span class="d-none d-sm-inline">Vymazať pieseň</span>
-      <span class="d-sm-none">Vymazať</span>
+    
+    <button type="button" class="btn {% if song.printed %}btn-info{% else %}btn-secondary{% endif %} action-btn-compact" onclick="togglePrinted()" id="printedBtn" title="{% if song.printed %}Vytlačené{% else %}Označiť ako vytlačené{% endif %}">
+      <i class="bi bi-{% if song.printed %}printer-fill{% else %}printer{% endif %}"></i>
+    </button>
+    
+    <button type="button" class="btn btn-danger action-btn-compact" onclick="confirmDeleteSong()" title="Vymazať pieseň">
+      <i class="bi bi-trash"></i>
     </button>
   </div>
 </div>
 
-<!-- Spacer to prevent content from being hidden behind fixed buttons -->
+<!-- Spacer to prevent content from being hidden behind fixed footer -->
 <div class="fixed-buttons-spacer"></div>
 
 <style>
@@ -1538,58 +1534,94 @@ html {
     }
 }
 
-/* Fixed Action Buttons */
-.fixed-action-buttons {
+/* Fixed Action Footer */
+.fixed-action-footer {
     position: fixed;
-    bottom: 20px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1050;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
-    padding: 12px 20px;
+    padding: 6px 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(102, 126, 234, 0.2);
     border-radius: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
     animation: slideUpFade 0.5s ease-out;
+    width: auto;
+    display: inline-flex;
 }
 
-.fixed-action-buttons .btn {
-    border-radius: 30px;
-    font-weight: 600;
-    padding: 12px 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.action-btn-compact {
+    min-width: 48px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     border: none;
-    min-width: 120px;
 }
 
-.fixed-action-buttons .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+.action-btn-compact i {
+    font-size: 1.2rem;
 }
 
-.fixed-action-buttons .btn-primary {
+.action-btn-compact:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.action-btn-compact:active {
+    transform: scale(0.95);
+}
+
+.fixed-action-footer .btn-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.fixed-action-buttons .btn-outline-secondary {
-    background: rgba(255, 255, 255, 0.9);
+.fixed-action-footer .btn-outline-secondary {
+    background: white;
     border: 2px solid #6c757d;
     color: #6c757d;
 }
 
-.fixed-action-buttons .btn-outline-secondary:hover {
+.fixed-action-footer .btn-outline-secondary:hover {
     background: #6c757d;
     color: white;
     border-color: #6c757d;
 }
 
-/* Spacer to prevent content overlap */
-.fixed-buttons-spacer {
-    height: 100px;
+.fixed-action-footer .btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: #000;
 }
 
-/* Animation for fixed buttons */
+.fixed-action-footer .btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.fixed-action-footer .btn-info {
+    background: linear-gradient(135deg, #40a164 0%, #066e48 100%);
+    color:white;
+}
+
+.fixed-action-footer .btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+}
+
+.fixed-action-footer .btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+/* Spacer to prevent content overlap */
+.fixed-buttons-spacer {
+    height: 60px;
+}
+
+/* Animation for fixed footer */
 @keyframes slideUpFade {
     from {
         opacity: 0;
@@ -1601,46 +1633,64 @@ html {
     }
 }
 
-/* Mobile responsive for fixed buttons */
+/* Mobile responsive for fixed footer */
 @media (max-width: 768px) {
-    .fixed-action-buttons {
-        bottom: 15px;
-        left: 15px;
-        right: 15px;
-        transform: none;
-        width: auto;
-        border-radius: 15px;
-        padding: 10px 15px;
+    .fixed-action-footer {
+        padding: 8px 30px;
+        bottom: 8px;
     }
 
-    .fixed-action-buttons .d-flex {
-        justify-content: space-between;
-        gap: 10px;
+    .action-btn-compact {
+        min-width: 45px;
+        height: 38px;
+        padding: 6px 10px;
     }
 
-    .fixed-action-buttons .btn {
-        flex: 1;
-        min-width: auto;
-        padding: 10px 15px;
-        font-size: 0.9rem;
+    .action-btn-compact i {
+        font-size: 1.1rem;
     }
 
     .fixed-buttons-spacer {
-        height: 80px;
+        height: 55px;
     }
 }
 
 @media (max-width: 480px) {
-    .fixed-action-buttons {
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        padding: 8px 12px;
+    .fixed-action-footer {
+        padding: 6px 30px;
+        bottom: 6px;
     }
 
-    .fixed-action-buttons .btn {
-        padding: 8px 12px;
-        font-size: 0.85rem;
+    .action-btn-compact {
+        min-width: 42px;
+        height: 36px;
+        padding: 5px 8px;
+        border-radius: 6px;
+    }
+
+    .action-btn-compact i {
+        font-size: 1rem;
+    }
+
+    .fixed-buttons-spacer {
+        height: 50px;
+    }
+}
+
+/* Desktop - slightly larger with more spacing */
+@media (min-width: 992px) {
+    .fixed-action-footer {
+        padding: 12px 30px;
+    }
+
+    .action-btn-compact {
+        min-width: 55px;
+        height: 45px;
+        padding: 10px 16px;
+    }
+
+    .action-btn-compact i {
+        font-size: 1.3rem;
     }
 
     .fixed-buttons-spacer {
@@ -1650,7 +1700,7 @@ html {
 
 /* Print styles */
 @media print {
-    .song-view-header, .fixed-action-buttons {
+    .song-view-header, .fixed-action-footer {
         display: none;
     }
 
@@ -2209,6 +2259,7 @@ async function executeDelete() {
 
 // Admin Check Toggle with Password Protection
 let currentAdminChecked = {{ 'true' if song.admin_checked else 'false' }};
+let currentPrinted = {{ 'true' if song.printed else 'false' }};
 
 function toggleAdminCheck() {
     const newState = !currentAdminChecked;
@@ -2220,6 +2271,11 @@ function toggleAdminCheck() {
         // If unchecking, allow without password
         updateAdminCheckStatus(false, '');
     }
+}
+
+function togglePrinted() {
+    const newState = !currentPrinted;
+    updatePrintedStatus(newState);
 }
 
 function showAdminCheckPasswordModal() {
@@ -2370,19 +2426,13 @@ async function updateAdminCheckStatus(checked, password) {
             // Update button appearance
             const btn = document.getElementById('adminCheckBtn');
             if (checked) {
-                btn.className = 'btn btn-success btn-lg shadow-lg';
-                btn.innerHTML = `
-                    <i class=\"bi bi-check-circle-fill me-2\"></i>
-                    <span class=\"d-none d-sm-inline\">Skontrolované ✓</span>
-                    <span class=\"d-sm-none\">✓</span>
-                `;
+                btn.className = 'btn btn-success action-btn-compact';
+                btn.title = 'Overené adminom';
+                btn.innerHTML = '<i class=\"bi bi-check-circle-fill\"></i>';
             } else {
-                btn.className = 'btn btn-warning btn-lg shadow-lg';
-                btn.innerHTML = `
-                    <i class=\"bi bi-shield-check me-2\"></i>
-                    <span class=\"d-none d-sm-inline\">Označiť ako skontrolované</span>
-                    <span class=\"d-sm-none\">Skontrolovať</span>
-                `;
+                btn.className = 'btn btn-warning action-btn-compact';
+                btn.title = 'Overiť pieseň';
+                btn.innerHTML = '<i class=\"bi bi-shield-check\"></i>';
             }
             
             // Update badge in header
@@ -2441,6 +2491,97 @@ async function updateAdminCheckStatus(checked, password) {
             <i class=\"bi bi-exclamation-triangle-fill me-2\"></i>
             Chyba pri aktualizácii stavu. Skúste znovu.
             <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => alertDiv.remove(), 3000);
+    }
+}
+
+async function updatePrintedStatus(printed) {
+    try {
+        const response = await fetch('/song/{{ song.id }}/toggle-printed', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                printed: printed
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            currentPrinted = printed;
+            
+            // Update button appearance
+            const btn = document.getElementById('printedBtn');
+            if (printed) {
+                btn.className = 'btn btn-info action-btn-compact';
+                btn.title = 'Vytlačené';
+                btn.innerHTML = '<i class="bi bi-printer-fill"></i>';
+            } else {
+                btn.className = 'btn btn-secondary action-btn-compact';
+                btn.title = 'Označiť ako vytlačené';
+                btn.innerHTML = '<i class="bi bi-printer"></i>';
+            }
+            
+            // Update badge in header
+            const badges = document.querySelector('.song-view-header .d-flex.gap-1');
+            if (badges) {
+                const printedBadge = badges.querySelector('span.badge:nth-child(1)');
+                if (printedBadge) {
+                    if (printed) {
+                        printedBadge.className = 'badge bg-success px-2 py-1 fs-7 fs-md-6';
+                        printedBadge.innerHTML = `
+                            <i class="bi bi-printer-fill me-1"></i>
+                            <span class="d-none d-sm-inline">Vytlačené</span>
+                            <span class="d-sm-none">✓</span>
+                        `;
+                    } else {
+                        printedBadge.className = 'badge bg-warning px-2 py-1 fs-7 fs-md-6';
+                        printedBadge.innerHTML = `
+                            <i class="bi bi-printer me-1"></i>
+                            <span class="d-none d-sm-inline">Nevytlačené</span>
+                            <span class="d-sm-none">⚠</span>
+                        `;
+                    }
+                }
+            }
+            
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.innerHTML = `
+                <i class="bi bi-check-circle-fill me-2"></i>
+                ${data.message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        } else {
+            // Show error message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.innerHTML = `
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                ${data.message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+    } catch (error) {
+        console.error('Error updating printed status:', error);
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+        alertDiv.style.zIndex = '9999';
+        alertDiv.innerHTML = `
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Chyba pri aktualizácii stavu. Skúste znovu.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
         document.body.appendChild(alertDiv);
         setTimeout(() => alertDiv.remove(), 3000);
