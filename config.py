@@ -31,6 +31,7 @@ DATABASE_URI = 'sqlite:///songs.db'
 # Security
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 DELETE_SONG_PASSWORD = os.getenv("DELETE_SONG_PASSWORD")
+UPDATE_SONG_PASSWORD = os.getenv("UPDATE_SONG_PASSWORD")
 
 # File upload settings
 ALLOWED_EXTENSIONS = {'mp3', 'pdf', 'midi', 'mid', 'tex', 'mscz'}

@@ -683,12 +683,18 @@
 
 <!-- Fixed Action Buttons at Bottom -->
 <div class="fixed-action-buttons">
-  <div class="d-flex gap-2 justify-content-center">
+  <div class="d-flex gap-2 justify-content-center flex-wrap">
     <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg shadow-lg">
       <i class="bi bi-arrow-left me-2"></i>
       <span class="d-none d-sm-inline">Späť na zoznam</span>
       <span class="d-sm-none">Späť</span>
     </a>
+
+    <button type="button" class="btn {% if song.admin_checked %}btn-success{% else %}btn-warning{% endif %} btn-lg shadow-lg" onclick="toggleAdminCheck()" id="adminCheckBtn">
+      <i class="bi bi-{% if song.admin_checked %}check-circle-fill{% else %}shield-check{% endif %} me-2"></i>
+      <span class="d-none d-sm-inline">{% if song.admin_checked %}Skontrolované ✓{% else %}Označiť ako skontrolované{% endif %}</span>
+      <span class="d-sm-none">{% if song.admin_checked %}✓{% else %}Skontrolovať{% endif %}</span>
+    </button>
 
     <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-primary btn-lg shadow-lg">
       <i class="bi bi-pencil-square me-2"></i>
@@ -2198,6 +2204,246 @@ async function executeDelete() {
         // Reset button
         deleteBtn.innerHTML = '<i class="bi bi-trash me-1"></i>Vymazať pieseň';
         deleteBtn.disabled = false;
+    }
+}
+
+// Admin Check Toggle with Password Protection
+let currentAdminChecked = {{ 'true' if song.admin_checked else 'false' }};
+
+function toggleAdminCheck() {
+    const newState = !currentAdminChecked;
+    
+    // If trying to check (not uncheck), require password
+    if (newState) {
+        showAdminCheckPasswordModal();
+    } else {
+        // If unchecking, allow without password
+        updateAdminCheckStatus(false, '');
+    }
+}
+
+function showAdminCheckPasswordModal() {
+    const modalHTML = `
+        <div class="modal fade" id="adminCheckPasswordModal" tabindex="-1" aria-labelledby="adminCheckPasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-warning">
+                    <div class="modal-header bg-warning text-dark">
+                        <h5 class="modal-title" id="adminCheckPasswordModalLabel">
+                            <i class="bi bi-shield-check me-2"></i>
+                            Overenie kontroly admina
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+                            <div>
+                                <strong>Pozor!</strong> Označením tejto piesne ako "skontrolovaná adminom" 
+                                ju označíte ako finálnu a overitenú.
+                            </div>
+                        </div>
+
+                        <p class="mb-3">Pre potvrdenie zadajte heslo:</p>
+
+                        <div class="mb-3">
+                            <label for="adminCheckPassword" class="form-label fw-bold">Heslo pre kontrolu admina:</label>
+                            <input type="password" class="form-control" id="adminCheckPassword"
+                                   placeholder="Zadajte heslo..." autocomplete="off">
+                            <div class="invalid-feedback" id="adminPasswordError">
+                                Nesprávne heslo. Skúste znovu.
+                            </div>
+                        </div>
+
+                        <div class="text-muted small">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Toto heslo je potrebné na zabezpečenie kvality a integrity obsahu.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Zrušiť
+                        </button>
+                        <button type="button" class="btn btn-warning" id="confirmAdminCheckBtn" onclick="executeAdminCheck()">
+                            <i class="bi bi-shield-check me-1"></i>Overiť a označiť
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Remove existing modal if any
+    const existingModal = document.getElementById('adminCheckPasswordModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('adminCheckPasswordModal'));
+    modal.show();
+
+    // Focus on password input when modal is shown
+    document.getElementById('adminCheckPasswordModal').addEventListener('shown.bs.modal', function () {
+        document.getElementById('adminCheckPassword').focus();
+    });
+
+    // Allow Enter key to trigger validation
+    document.getElementById('adminCheckPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            executeAdminCheck();
+        }
+    });
+}
+
+async function executeAdminCheck() {
+    const password = document.getElementById('adminCheckPassword').value;
+    const confirmBtn = document.getElementById('confirmAdminCheckBtn');
+    const passwordField = document.getElementById('adminCheckPassword');
+    const errorDiv = document.getElementById('adminPasswordError');
+
+    if (!password.trim()) {
+        passwordField.classList.add('is-invalid');
+        errorDiv.textContent = 'Zadajte heslo.';
+        return;
+    }
+
+    // Disable button during validation
+    confirmBtn.disabled = true;
+    confirmBtn.innerHTML = '<span class=\"spinner-border spinner-border-sm me-2\"></span>Overujem...';
+
+    try {
+        // First validate password
+        const validateResponse = await fetch('/api/check-update-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password: password })
+        });
+
+        const validateData = await validateResponse.json();
+
+        if (validateData.valid) {
+            // Password is correct, now update the admin check status
+            await updateAdminCheckStatus(true, password);
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('adminCheckPasswordModal'));
+            modal.hide();
+        } else {
+            // Wrong password
+            passwordField.classList.add('is-invalid');
+            errorDiv.textContent = validateData.message || 'Nesprávne heslo.';
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<i class=\"bi bi-shield-check me-1\"></i>Overiť a označiť';
+        }
+    } catch (error) {
+        console.error('Error validating password:', error);
+        passwordField.classList.add('is-invalid');
+        errorDiv.textContent = 'Chyba pri overovaní. Skúste znovu.';
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = '<i class=\"bi bi-shield-check me-1\"></i>Overiť a označiť';
+    }
+}
+
+async function updateAdminCheckStatus(checked, password) {
+    try {
+        const response = await fetch('/song/{{ song.id }}/toggle-admin-check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                checked: checked,
+                password: password 
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            currentAdminChecked = checked;
+            
+            // Update button appearance
+            const btn = document.getElementById('adminCheckBtn');
+            if (checked) {
+                btn.className = 'btn btn-success btn-lg shadow-lg';
+                btn.innerHTML = `
+                    <i class=\"bi bi-check-circle-fill me-2\"></i>
+                    <span class=\"d-none d-sm-inline\">Skontrolované ✓</span>
+                    <span class=\"d-sm-none\">✓</span>
+                `;
+            } else {
+                btn.className = 'btn btn-warning btn-lg shadow-lg';
+                btn.innerHTML = `
+                    <i class=\"bi bi-shield-check me-2\"></i>
+                    <span class=\"d-none d-sm-inline\">Označiť ako skontrolované</span>
+                    <span class=\"d-sm-none\">Skontrolovať</span>
+                `;
+            }
+            
+            // Update badge in header
+            const badges = document.querySelector('.song-view-header .d-flex.gap-1');
+            if (badges) {
+                const adminBadge = badges.querySelector('span.badge:nth-child(2)');
+                if (adminBadge) {
+                    if (checked) {
+                        adminBadge.className = 'badge bg-success px-2 py-1 fs-7 fs-md-6';
+                        adminBadge.innerHTML = `
+                            <i class=\"bi bi-check-circle-fill me-1\"></i>
+                            <span class=\"d-none d-sm-inline\">Skontrolované</span>
+                            <span class=\"d-sm-none\">✓</span>
+                        `;
+                    } else {
+                        adminBadge.className = 'badge bg-warning px-2 py-1 fs-7 fs-md-6';
+                        adminBadge.innerHTML = `
+                            <i class=\"bi bi-exclamation-triangle me-1\"></i>
+                            <span class=\"d-none d-sm-inline\">Čaká na kontrolu</span>
+                            <span class=\"d-sm-none\">⏳</span>
+                        `;
+                    }
+                }
+            }
+            
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.innerHTML = `
+                <i class=\"bi bi-check-circle-fill me-2\"></i>
+                ${data.message}
+                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        } else {
+            // Show error message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.innerHTML = `
+                <i class=\"bi bi-exclamation-triangle-fill me-2\"></i>
+                ${data.message}
+                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+    } catch (error) {
+        console.error('Error updating admin check status:', error);
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+        alertDiv.style.zIndex = '9999';
+        alertDiv.innerHTML = `
+            <i class=\"bi bi-exclamation-triangle-fill me-2\"></i>
+            Chyba pri aktualizácii stavu. Skúste znovu.
+            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => alertDiv.remove(), 3000);
     }
 }
 </script>

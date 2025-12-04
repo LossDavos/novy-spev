@@ -28,6 +28,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Legacy compatibility - still needed for some file operations
 DELETE_SONG_PASSWORD = config.DELETE_SONG_PASSWORD
+UPDATE_SONG_PASSWORD = config.UPDATE_SONG_PASSWORD
 JSON_FOLDER = config.JSON_FOLDER
 BACKUP_FOLDER = config.BACKUP_FOLDER
 
@@ -1245,6 +1246,31 @@ def song_detail(song_id):
                          sheet_mscz=sheet_mscz,
                          is_edit=not is_new_song)
 
+@app.route('/song/<int:song_id>/toggle-admin-check', methods=['POST'])
+def toggle_admin_check(song_id):
+    """Toggle admin_checked status with password protection"""
+    song = Song.query.get_or_404(song_id)
+    
+    # Get the desired state and password
+    data = request.get_json()
+    new_state = data.get('checked', False)
+    provided_password = data.get('password', '')
+    
+    # If trying to check (not uncheck) and it wasn't checked before, require password
+    if new_state and not song.admin_checked:
+        if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+            return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
+    
+    # Update the state
+    song.admin_checked = new_state
+    db.session.commit()
+    
+    return jsonify({
+        'success': True, 
+        'checked': song.admin_checked,
+        'message': 'Pieseň označená ako skontrolovaná' if new_state else 'Označenie kontroly zrušené'
+    })
+
 @app.route('/song/<int:song_id>/view')
 def song_view(song_id):
     """Read-only detailed view of a song - no editing capabilities"""
@@ -1303,6 +1329,21 @@ def check_delete_password():
         provided_password = data.get('password', '')
 
         if provided_password == DELETE_SONG_PASSWORD:
+            return jsonify({'valid': True})
+        else:
+            return jsonify({'valid': False, 'message': 'Nesprávne heslo'})
+
+    except Exception as e:
+        return jsonify({'valid': False, 'message': 'Chyba servera'}), 500
+
+@app.route('/api/check-update-password', methods=['POST'])
+def check_update_password():
+    """API endpoint to validate update/admin check password"""
+    try:
+        data = request.get_json()
+        provided_password = data.get('password', '')
+
+        if provided_password == UPDATE_SONG_PASSWORD:
             return jsonify({'valid': True})
         else:
             return jsonify({'valid': False, 'message': 'Nesprávne heslo'})
