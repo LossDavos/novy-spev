@@ -53,7 +53,7 @@
 {% endif %}
 
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="song-form" onsubmit="return false;">
     <div class="mb-3">
        <div class="song-container d-flex align-items-start gap-2 mb-3">
           {% if song.song_id %}
@@ -176,43 +176,6 @@
 
   <!-- Content with white background -->
   <div class="card-body bg-white p-4">
-
-<div class="printed-status-container mb-4">
-  <div class="card border-0 shadow-sm rounded-3 p-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
-    <div class="d-flex align-items-center justify-content-between">
-      <div class="d-flex align-items-center gap-3">
-        <div class="printed-icon-container p-2 rounded-circle bg-primary bg-opacity-10">
-          <i class="bi bi-printer-fill fs-4 text-primary"></i>
-        </div>
-        <div>
-          <div class="fw-semibold text-dark">Stav tlače</div>
-          <small class="text-muted">Označte ak je pieseň už vytlačená</small>
-        </div>
-      </div>
-
-      <!-- Custom Toggle Switch -->
-      <div class="form-check form-switch form-check-reverse">
-        <input class="form-check-input custom-switch" type="checkbox" id="printedBtn" name="printed"
-               {% if song.printed %}checked{% endif %} style="width: 3em; height: 1.5em; cursor: pointer;">
-        <label class="form-check-label fw-semibold ms-2" for="printedBtn" style="cursor: pointer;">
-          <span class="printed-status-text">
-            {% if song.printed %}Vytlačené ✓{% else %}Nevytlačené{% endif %}
-          </span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Status indicator bar -->
-    <div class="mt-3">
-      <div class="progress" style="height: 4px;">
-        <div class="progress-bar printed-progress-bar {% if song.printed %}bg-success{% else %}bg-secondary{% endif %}"
-             role="progressbar"
-             style="width: {% if song.printed %}100{% else %}0{% endif %}%; transition: all 0.5s ease;">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
   <!-- === TeX & PDF Files Management === -->
   <div class="tex-pdf-management-section mb-4">
@@ -870,59 +833,34 @@
       <!-- Always at the bottom -->
       <button type="button" id="add-part" class="btn btn-outline-secondary mb-4">+ Pridaj časť</button>
     </div>
-    <!--<div class="form-check">-->
-    <!--    <input class="form-check-input" type="checkbox" name="checked" {% if song.checked %}checked{% endif %}>-->
-    <!--    <label class="form-check-label "><strong>Označ ako Skontrolované</strong></label>-->
-    <!--</div>-->
-
-    <div class="admin-check-section mt-4 mb-4">
-        <div class="card border-warning bg-warning-subtle">
-            <div class="card-body py-3">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="flex-grow-1">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-shield-check me-2 text-warning-emphasis fs-5"></i>
-                            <label class="form-label fw-semibold text-warning-emphasis mb-0" for="admin_checked">
-                                Finálne skontrolované adminom
-                            </label>
-                        </div>
-                        <small class="text-muted mt-1 d-block">
-                            <i class="bi bi-exclamation-triangle me-1"></i>
-                            Označte len po kompletnej kontrole obsahu
-                        </small>
-                    </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="admin_checked" id="admin_checked"
-                               {% if song.admin_checked %}checked{% endif %} style="transform: scale(1.3);">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Hidden checkbox for force_replace - controlled by modal -->
     <input type="checkbox" name="force_replace" value="true" id="force_replace" style="display: none;">
 
+    <!-- Hidden input for edit password -->
+    <input type="hidden" name="edit_password" id="edit_password" value="">
+    <input type="hidden" name="send_email" id="send_email" value="false">
+
     <!-- Hidden submit button for form submission -->
     <button type="submit" id="hidden-submit" style="display: none;"></button>
+
+    <!-- Fixed Action Buttons at Bottom -->
+    <div class="fixed-action-buttons">
+      <div class="d-flex gap-2 justify-content-center">
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg shadow-lg">
+          <i class="bi bi-x-circle me-2"></i>
+          <span class="d-none d-sm-inline">Zrušiť</span>
+          <span class="d-sm-none">Zrušiť</span>
+        </a>
+
+        <button type="button" class="btn btn-success btn-lg shadow-lg save-btn" id="save-button">
+          <i class="bi bi-floppy me-2"></i>
+          <span class="d-none d-sm-inline">Uložiť zmeny</span>
+          <span class="d-sm-none">Uložiť</span>
+        </button>
+      </div>
+    </div>
 </form>
-
-<!-- Fixed Action Buttons at Bottom -->
-<div class="fixed-action-buttons">
-  <div class="d-flex gap-2 justify-content-center">
-    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg shadow-lg">
-      <i class="bi bi-x-circle me-2"></i>
-      <span class="d-none d-sm-inline">Zrušiť</span>
-      <span class="d-sm-none">Zrušiť</span>
-    </a>
-
-    <button type="button" class="btn btn-success btn-lg shadow-lg save-btn" onclick="document.getElementById('hidden-submit').click();">
-      <i class="bi bi-floppy me-2"></i>
-      <span class="d-none d-sm-inline">Uložiť zmeny</span>
-      <span class="d-sm-none">Uložiť</span>
-    </button>
-  </div>
-</div>
 
 <!-- Spacer to prevent content from being hidden behind fixed buttons -->
 <div class="fixed-buttons-spacer"></div>
@@ -1675,7 +1613,27 @@
 </style>
 
 <script>
-   // Categories buttons logic (same as before)
+  console.log('Song detail script loaded');
+  
+  // Attach save button handler
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, attaching save button handler');
+    const saveButton = document.getElementById('save-button');
+    if (saveButton) {
+      console.log('Save button found');
+      saveButton.addEventListener('click', function(e) {
+        console.log('Save button clicked!');
+        e.preventDefault();
+        e.stopPropagation();
+        showSavePasswordModal();
+        return false;
+      });
+    } else {
+      console.error('Save button NOT found!');
+    }
+  });
+  
+  // Categories buttons logic (same as before)
   const buttonsContainer = document.getElementById('categories-buttons');
   const hiddenInput = document.getElementById('categories-input');
 
@@ -2545,6 +2503,149 @@ document.addEventListener('DOMContentLoaded', function () {
     // Submit form
     setTimeout(() => {
       document.getElementById('hidden-submit').click();
+    }, 300);
+  }
+
+  // Save password modal functionality
+  function showSavePasswordModal() {
+    console.log('=== showSavePasswordModal called ===');
+    console.log('Function is executing');
+    
+    const modalHtml = `
+      <div class="modal fade" id="savePasswordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+              <h5 class="modal-title">Uložiť zmeny</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <p class="mb-3">Pre uloženie zmien zadajte heslo:</p>
+              <input type="password" class="form-control mb-3" id="savePasswordInput" placeholder="Heslo...">
+              <div id="savePasswordError" class="alert alert-danger d-none"></div>
+              <hr>
+              <p class="text-muted small mb-2">Ak nemáte heslo, môžete odoslať zmeny adminovi na schválenie:</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zrušiť</button>
+              <button type="button" class="btn btn-info" onclick="sendChangesToAdmin()">
+                <i class="fas fa-envelope"></i> Poslať adminovi
+              </button>
+              <button type="button" class="btn btn-success" onclick="validateAndSave()">
+                <i class="fas fa-save"></i> Uložiť
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Remove existing modal if present
+    const existingSaveModal = document.getElementById('savePasswordModal');
+    if (existingSaveModal) {
+      existingSaveModal.remove();
+    }
+    
+    // Add modal to page
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    console.log('Modal HTML added to DOM');
+    
+    // Show modal with a slight delay to ensure DOM is ready
+    setTimeout(() => {
+      const modalElement = document.getElementById('savePasswordModal');
+      console.log('Modal element:', modalElement);
+      
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        console.log('Bootstrap modal instance created');
+        modal.show();
+        
+        // Focus on password input after modal is shown
+        modalElement.addEventListener('shown.bs.modal', function () {
+          document.getElementById('savePasswordInput').focus();
+        });
+      } else {
+        console.error('Modal element not found!');
+      }
+    }, 100);
+    
+    // Allow Enter key to submit
+    setTimeout(() => {
+      const passwordInput = document.getElementById('savePasswordInput');
+      if (passwordInput) {
+        passwordInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            validateAndSave();
+          }
+        });
+      }
+    }, 150);
+  }
+
+  async function validateAndSave() {
+    const password = document.getElementById('savePasswordInput').value;
+    const errorDiv = document.getElementById('savePasswordError');
+    
+    if (!password) {
+      errorDiv.textContent = 'Zadajte heslo';
+      errorDiv.classList.remove('d-none');
+      return;
+    }
+    
+    try {
+      const response = await fetch('/api/check-edit-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: password })
+      });
+      
+      const data = await response.json();
+      
+      if (data.valid) {
+        // Set password in hidden field
+        document.getElementById('edit_password').value = password;
+        document.getElementById('send_email').value = 'false';
+        
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('savePasswordModal'));
+        if (modal) {
+          modal.hide();
+        }
+        
+        // Submit form after a brief delay
+        setTimeout(() => {
+          const form = document.getElementById('song-form');
+          form.onsubmit = null; // Remove the prevention
+          form.submit(); // Use native submit
+        }, 300);
+      } else {
+        errorDiv.textContent = data.message || 'Nesprávne heslo';
+        errorDiv.classList.remove('d-none');
+      }
+    } catch (error) {
+      errorDiv.textContent = 'Chyba servera';
+      errorDiv.classList.remove('d-none');
+    }
+  }
+
+  function sendChangesToAdmin() {
+    // Set flag to send email instead of saving
+    document.getElementById('send_email').value = 'true';
+    document.getElementById('edit_password').value = '';
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('savePasswordModal'));
+    if (modal) {
+      modal.hide();
+    }
+    
+    // Submit form after a brief delay
+    setTimeout(() => {
+      const form = document.getElementById('song-form');
+      form.onsubmit = null; // Remove the prevention
+      form.submit(); // Use native submit
     }, 300);
   }
 

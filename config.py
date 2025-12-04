@@ -31,6 +31,17 @@ DATABASE_URI = 'sqlite:///songs.db'
 # Security
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 DELETE_SONG_PASSWORD = os.getenv("DELETE_SONG_PASSWORD")
+UPDATE_SONG_PASSWORD = os.getenv("UPDATE_SONG_PASSWORD")
+EDIT_SONG_PASSWORD = os.getenv("EDIT_SONG_PASSWORD")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "david.stevanak@gmail.com")
+
+# Email/SMTP Configuration
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", ADMIN_EMAIL)
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
+EMAIL_FROM = os.getenv("EMAIL_FROM", ADMIN_EMAIL)
 
 # File upload settings
 ALLOWED_EXTENSIONS = {'mp3', 'pdf', 'midi', 'mid', 'tex', 'mscz'}
