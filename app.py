@@ -1043,33 +1043,30 @@ def get_songs_paginated():
 @app.route('/songs/<song_ids>')
 def songs_view(song_ids):
     """
-    Display specific songs based on comma-separated song IDs in URL
-    Example: /songs/A-001,B-002,C-003
+    Display specific songs based on comma-separated database IDs in URL
+    Example: /songs/1,5,23
     """
-    # Parse the song IDs from the URL
-    song_id_list = [sid.strip() for sid in song_ids.split(',') if sid.strip()]
+    # Parse the IDs from the URL
+    try:
+        id_list = [int(sid.strip()) for sid in song_ids.split(',') if sid.strip()]
+    except ValueError:
+        flash("Invalid song IDs provided", "error")
+        return redirect(url_for('index'))
 
-    if not song_id_list:
+    if not id_list:
         flash("No song IDs provided", "error")
         return redirect(url_for('index'))
 
     # Query songs based on the provided IDs
-    songs = Song.query.filter(Song.song_id.in_(song_id_list)).all()
-
-    # Check for missing songs
-    found_ids = [song.song_id for song in songs]
-    missing_ids = [sid for sid in song_id_list if sid not in found_ids]
-
-    if missing_ids:
-        flash(f"Songs not found: {', '.join(missing_ids)}", "warning")
+    songs = Song.query.filter(Song.id.in_(id_list)).all()
 
     if not songs:
         flash("No songs found with the provided IDs", "error")
         return redirect(url_for('index'))
 
     # Sort songs to match the order from the URL
-    songs_dict = {song.song_id: song for song in songs}
-    ordered_songs = [songs_dict[sid] for sid in song_id_list if sid in songs_dict]
+    songs_dict = {song.id: song for song in songs}
+    ordered_songs = [songs_dict[sid] for sid in id_list if sid in songs_dict]
 
     return render_template('songs_view.html', songs=ordered_songs, song_ids=song_ids)
 
