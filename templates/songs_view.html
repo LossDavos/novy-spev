@@ -745,29 +745,13 @@
                     </a>
 
                   {% else %}
-                    <!-- Multiple MP3 files - dropdown button -->
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-success btn-sm dropdown-toggle d-flex align-items-center gap-1"
-                              data-bs-toggle="dropdown" aria-expanded="false"
-                              title="{{ mp3_files|length }} MP3 súborov">
-                        <i class="bi bi-music-note-list"></i>
-                        <span class="small">{{ mp3_files|length }}× MP3</span>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-end">
-                        <li><h6 class="dropdown-header"><i class="bi bi-file-music text-success me-1"></i>MP3 Súbory</h6></li>
-                        {% for mp3_file in mp3_files %}
-                          <li>
-                            <a class="dropdown-item d-flex align-items-center gap-2"
-                               href="{{ mp3_file | presigned_url }}"
-                               target="_blank"
-                               title="Prehrať {{ mp3_file.split('/')[-1] }}">
-                              <i class="bi bi-play-circle-fill text-success"></i>
-                              <span class="text-truncate">{{ mp3_file.split('/')[-1] }}</span>
-                            </a>
-                          </li>
-                        {% endfor %}
-                      </ul>
-                    </div>
+                    <!-- Multiple MP3 files - modal button -->
+                    <button type="button" class="btn btn-success btn-sm d-flex align-items-center gap-1"
+                            data-bs-toggle="modal" data-bs-target="#mp3Modal{{ song.id }}"
+                            title="{{ mp3_files|length }} MP3 súborov">
+                      <i class="bi bi-music-note-list"></i>
+                      <span class="small">{{ mp3_files|length }}× MP3</span>
+                    </button>
                   {% endif %}
                 {% else %}
                   <span class="text-muted small">
@@ -841,7 +825,7 @@
 
             <td class="text-center px-3 py-3">
                 <div class="btn-group-vertical btn-group-sm" role="group">
-                    <a href="{{ url_for('song_detail', song_id=song.id) }}"
+                    <a href="{{ url_for('song_view', song_id=song.id) }}"
                        class="btn btn-outline-info btn-sm mb-1">
                        <i class="bi bi-eye me-1"></i>Detaily
                     </a>
@@ -962,21 +946,9 @@
           <i class="fa-solid fa-music"></i>
         </a>
         {% else %}
-        <div class="btn-group w-100">
-          <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-solid fa-music"></i>
-          </button>
-          <ul class="dropdown-menu w-100">
-            <li><h6 class="dropdown-header">Noty súbory</h6></li>
-            {% for sheet_pdf in sheet_pdfs %}
-            <li>
-              <a href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=sheet_pdf.split('/')[-1]) }}" class="dropdown-item" target="_blank">
-                <i class="fa-solid fa-music text-danger me-2"></i>{{ sheet_pdf.split('/')[-1] }}
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
+        <button type="button" class="btn btn-outline-danger btn-sm w-100" data-bs-toggle="modal" data-bs-target="#sheetModal{{ song.id }}">
+          <i class="fa-solid fa-music"></i> {{ sheet_pdfs|length }}×
+        </button>
         {% endif %}
       {% else %}
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne noty">
@@ -991,21 +963,9 @@
           <i class="bi bi-volume-up-fill"></i>
         </a>
         {% else %}
-        <div class="btn-group w-100">
-          <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="{{ mp3_files|length }} MP3 súborov">
-            <i class="bi bi-volume-up-fill"></i>
-          </button>
-          <ul class="dropdown-menu w-100">
-            <li><h6 class="dropdown-header">MP3 Súbory</h6></li>
-            {% for mp3_file in mp3_files %}
-            <li>
-              <a class="dropdown-item" href="{{ mp3_file | presigned_url }}" target="_blank">
-                <i class="bi bi-volume-up-fill text-success me-2"></i>{{ mp3_file.split('/')[-1] }}
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
+        <button type="button" class="btn btn-success btn-sm w-100" data-bs-toggle="modal" data-bs-target="#mp3Modal{{ song.id }}" title="{{ mp3_files|length }} MP3 súborov">
+          <i class="bi bi-volume-up-fill"></i> {{ mp3_files|length }}×
+        </button>
         {% endif %}
       {% else %}
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne MP3 súbory">
@@ -1025,7 +985,7 @@
 
         <!-- Action Buttons -->
         <div class="mobile-files-grid">
-          <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-outline-info btn-sm">
+          <a href="{{ url_for('song_view', song_id=song.id) }}" class="btn btn-outline-info btn-sm">
             <i class="bi bi-eye me-1"></i>Detaily
           </a>
 
@@ -1228,5 +1188,64 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<!-- Modals for file selection -->
+{% for song in songs %}
+  <!-- MP3 Files Modal -->
+  {% set mp3_files = mp3s if loop.index0 == 0 else (song.mp3_paths | from_json if song.mp3_paths else []) %}
+  {% if mp3_files|length > 1 %}
+  <div class="modal fade" id="mp3Modal{{ song.id }}" tabindex="-1" aria-labelledby="mp3ModalLabel{{ song.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="mp3ModalLabel{{ song.id }}">
+            <i class="bi bi-music-note-list me-2"></i>MP3 Súbory - {{ song.title }}
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="list-group">
+            {% for mp3_file in mp3_files %}
+            <a href="{{ mp3_file | presigned_url }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+              <i class="bi bi-play-circle-fill text-success fs-4"></i>
+              <span class="flex-grow-1">{{ mp3_file.split('/')[-1] }}</span>
+              <i class="bi bi-box-arrow-up-right text-muted"></i>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Sheet Music Files Modal -->
+  {% set sheet_pdfs = sheet_pdfs if loop.index0 == 0 else (song.sheet_pdf_paths | from_json if song.sheet_pdf_paths else []) %}
+  {% if sheet_pdfs|length > 1 %}
+  <div class="modal fade" id="sheetModal{{ song.id }}" tabindex="-1" aria-labelledby="sheetModalLabel{{ song.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="sheetModalLabel{{ song.id }}">
+            <i class="bi bi-file-music me-2"></i>Noty - {{ song.title }}
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="list-group">
+            {% for sheet_pdf in sheet_pdfs %}
+            <a href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=sheet_pdf.split('/')[-1]) }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+              <i class="bi bi-file-pdf text-danger fs-4"></i>
+              <span class="flex-grow-1">{{ sheet_pdf.split('/')[-1] }}</span>
+              <i class="bi bi-box-arrow-up-right text-muted"></i>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+{% endfor %}
 
 {% endblock %}
