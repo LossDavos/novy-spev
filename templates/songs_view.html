@@ -512,6 +512,59 @@
     border-width: 2px !important;
 }
 
+/* File selection modal styling */
+.modal-body .list-group {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.modal-body .list-group-item {
+  width: 100% !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal !important;
+  padding: 1rem 0.75rem;
+}
+
+.modal-body .list-group-item span {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.modal-body .list-group-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(2px);
+  transition: all 0.2s ease;
+}
+
+/* Mobile specific modal fixes */
+@media (max-width: 767px) {
+  .modal-dialog {
+    margin: 0.5rem !important;
+    max-width: calc(100% - 1rem) !important;
+  }
+  
+  .modal-body {
+    padding: 0.75rem !important;
+  }
+  
+  .modal-body .list-group {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .modal-body .list-group-item {
+    border-left: none !important;
+    border-right: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+}
+
 /* Disabled button overlay with prohibition symbol */
 .btn:disabled::after,
 .btn.disabled::after {
@@ -750,7 +803,6 @@
                             data-bs-toggle="modal" data-bs-target="#mp3Modal{{ song.id }}"
                             title="{{ mp3_files|length }} MP3 súborov">
                       <i class="bi bi-music-note-list"></i>
-                      <span class="small">{{ mp3_files|length }}× MP3</span>
                     </button>
                   {% endif %}
                 {% else %}
@@ -947,7 +999,7 @@
         </a>
         {% else %}
         <button type="button" class="btn btn-outline-danger btn-sm w-100" data-bs-toggle="modal" data-bs-target="#sheetModal{{ song.id }}">
-          <i class="fa-solid fa-music"></i> {{ sheet_pdfs|length }}×
+          <i class="fa-solid fa-music"></i>
         </button>
         {% endif %}
       {% else %}
@@ -964,7 +1016,7 @@
         </a>
         {% else %}
         <button type="button" class="btn btn-success btn-sm w-100" data-bs-toggle="modal" data-bs-target="#mp3Modal{{ song.id }}" title="{{ mp3_files|length }} MP3 súborov">
-          <i class="bi bi-volume-up-fill"></i> {{ mp3_files|length }}×
+          <i class="bi bi-volume-up-fill"></i>
         </button>
         {% endif %}
       {% else %}
@@ -1192,7 +1244,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Modals for file selection -->
 {% for song in songs %}
   <!-- MP3 Files Modal -->
-  {% set mp3_files = mp3s if loop.index0 == 0 else (song.mp3_paths | from_json if song.mp3_paths else []) %}
+  {% set mp3_files = song.mp3_paths|parse_json %}
   {% if mp3_files|length > 1 %}
   <div class="modal fade" id="mp3Modal{{ song.id }}" tabindex="-1" aria-labelledby="mp3ModalLabel{{ song.id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -1220,7 +1272,7 @@ document.addEventListener('DOMContentLoaded', function() {
   {% endif %}
 
   <!-- Sheet Music Files Modal -->
-  {% set sheet_pdfs = sheet_pdfs if loop.index0 == 0 else (song.sheet_pdf_paths | from_json if song.sheet_pdf_paths else []) %}
+  {% set sheet_pdfs = song.sheet_pdf_paths|parse_json %}
   {% if sheet_pdfs|length > 1 %}
   <div class="modal fade" id="sheetModal{{ song.id }}" tabindex="-1" aria-labelledby="sheetModalLabel{{ song.id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

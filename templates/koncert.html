@@ -1023,7 +1023,7 @@
                                     <ul>
                                         <li>Milanko Paľo (Trstená)</li>
                                         <li>Ema Maťusová (Brezovica)</li>
-                                        <li>Ela Lužbeťáková (Brezovica)</li>
+                                        <li>Martinka Gašperová (Brezovica)</li>
                                         <li>Sofia Kaníková (Brezovica)</li>
                                     </ul>
                                 </div>
@@ -1034,7 +1034,7 @@
                                 <div class="instrument-count">1 gitarista</div>
                                 <div class="instrument-names">
                                     <ul>
-                                        <li>? Dávid Gálik (Brezovica)</li>
+                                        <li>Miroslav Števaňák (Brezovica)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1058,6 +1058,17 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="instrument-card " onclick="toggleInstrument(this)">
+                                <div class="instrument-icon">🪈</div>
+                                <div class="instrument-name">Flauty</div>
+                                <div class="instrument-count">2 Flauty</div>
+                                <div class="instrument-names">
+                                    <ul>
+                                        <li>Anežka Ražková</li>
+                                        <li>Chlebnice</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="section-subheader">⏳ Zatiaľ neobsadené nástroje</div>
@@ -1068,34 +1079,13 @@
                                 <div class="instrument-count">1 perkusista</div>
                                 <div class="instrument-names">
                                     <ul>
-                                        <li>? Tobiáš (Trstená)</li>
+                                        <li></li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="instrument-card uncertain" onclick="toggleInstrument(this)">
-                                <div class="instrument-icon">🪈</div>
-                                <div class="instrument-name">Flauty</div>
-                                <div class="instrument-count">TBD</div>
-                                <div class="instrument-names">
-                                    <ul>
-                                        <li>ZUŠ Trstená (zistiť)</li>
-                                        <li>Zuzka Nogová (zistiť)</li>
-                                    </ul>
-                                </div>
-                            </div>
+                            
 
-                            <div class="instrument-card uncertain" onclick="toggleInstrument(this)">
-                                <div class="instrument-icon">
-                                    <img src="{{ url_for('static', filename='img/klarinet.png') }}" alt="Klarinet" style="height: 1.5em; width: auto; vertical-align: middle;">
-                                </div>
-                                <div class="instrument-name">Klarinet</div>
-                                <div class="instrument-count">TBD</div>
-                                <div class="instrument-names">
-                                    <ul>
-                                        <li>ZUŠ Trstená (možno)</li>
-                                    </ul>
-                                </div>
-                            </div>
+                            
                         </div>
                         
                         <h3 style="color: white; margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1.3rem;">🎤 Moderovanie</h3>
@@ -1117,11 +1107,11 @@
                                 <div class="rehearsal-info">
                                     <div class="rehearsal-item">
                                         <span class="rehearsal-label">Dátum</span>
-                                        <span class="rehearsal-value">December?</span>
+                                        <span class="rehearsal-value">Piatok 3.1.2026</span>
                                     </div>
                                     <div class="rehearsal-item">
                                         <span class="rehearsal-label">Čas</span>
-                                        <span class="rehearsal-value">TBD</span>
+                                        <span class="rehearsal-value">15:00</span>
                                     </div>
                                     <div class="rehearsal-item">
                                         <span class="rehearsal-label">Miesto</span>
@@ -1145,11 +1135,11 @@
                                 <div class="rehearsal-info">
                                     <div class="rehearsal-item">
                                         <span class="rehearsal-label">Dátum</span>
-                                        <span class="rehearsal-value">3.1.2026</span>
+                                        <span class="rehearsal-value">Piatok 3.1.2026</span>
                                     </div>
                                     <div class="rehearsal-item">
                                         <span class="rehearsal-label">Čas</span>
-                                        <span class="rehearsal-value">TBD</span>
+                                        <span class="rehearsal-value">16:00</span>
                                     </div>
                                     <div class="rehearsal-item">
                                         <span class="rehearsal-label">Miesto</span>
@@ -1172,8 +1162,8 @@
                         
                         
                         <h3 style="color: white; margin-top: 1.5rem; margin-bottom: 1rem; font-size: 1.3rem;">🎛️ Technické vybavenie</h3>
-                        <p><strong>Dostupné:</strong> 4× AKG C1000S, dynamické mikrofóny (7), kopák (1)<br>
-                        <strong>Potrebné dohodnúť:</strong> Zvučenie nástrojov </p>
+                        <p><strong>Dostupné:</strong> 4× AKG C1000S, 2x (+1)  t.bone Lucan System CC 200 RC, dynamické mikrofóny (6x + 1x nastrojovy Shure Beta), kopák (1)<br>
+                        <strong>Potrebné dohodnúť:</strong> Zvučenie nástrojov pred koncertom </p>
                         
                     </div>
                     <div class="tab-panel">
@@ -1367,6 +1357,41 @@
                                         </div>
                                     </div>
                                     {% endfor %}
+                                    
+                                    <!-- Manual songs (not in database) -->
+                                    <div class="song-card" style="opacity: 0.85; border-left: 3px solid #f39c12;">
+                                        <div class="song-card-header">
+                                            <div class="song-card-info">
+                                                <div class="song-card-title">Tajomná zvesť</div>
+                                                <div class="song-card-meta">Autor TBD</div>
+                                                <div class="song-card-id" style="background: #f39c12;">MANUAL</div>
+                                            </div>
+                                        </div>
+                                        <div class="song-card-actions">
+                                            <button class="song-btn song-btn-lyrics" title="Slová" disabled><i class="bi bi-file-text"></i></button>
+                                            <button class="song-btn song-btn-chords" title="Akordy" disabled><i class="fa-solid fa-guitar"></i></button>
+                                            <button class="song-btn song-btn-notes" title="Noty" disabled><i class="bi bi-music-note-beamed"></i></button>
+                                            <button class="song-btn song-btn-mp3" title="MP3" disabled><i class="bi bi-volume-up-fill"></i></button>
+                                            <button class="song-btn song-btn-mscz" title="MSCZ" disabled><i class="bi bi-file-earmark-music"></i></button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="song-card" style="opacity: 0.85; border-left: 3px solid #f39c12;">
+                                        <div class="song-card-header">
+                                            <div class="song-card-info">
+                                                <div class="song-card-title">Zanesiem</div>
+                                                <div class="song-card-meta">M. Lizbetin</div>
+                                                <div class="song-card-id" style="background: #f39c12;">MANUAL</div>
+                                            </div>
+                                        </div>
+                                        <div class="song-card-actions">
+                                            <button class="song-btn song-btn-lyrics" title="Slová" disabled><i class="bi bi-file-text"></i></button>
+                                            <button class="song-btn song-btn-chords" title="Akordy" disabled><i class="fa-solid fa-guitar"></i></button>
+                                            <button class="song-btn song-btn-notes" title="Noty" disabled><i class="bi bi-music-note-beamed"></i></button>
+                                            <button class="song-btn song-btn-mp3" title="MP3" disabled><i class="bi bi-volume-up-fill"></i></button>
+                                            <button class="song-btn song-btn-mscz" title="MSCZ" disabled><i class="bi bi-file-earmark-music"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1555,6 +1580,58 @@
                                         </div>
                                     </div>
                                     {% endfor %}
+                                    
+                                    <!-- Manual songs for Zabiedovo (not in database) -->
+                                    <div class="song-card" style="opacity: 0.85; border-left: 3px solid #9b59b6;">
+                                        <div class="song-card-header">
+                                            <div class="song-card-info">
+                                                <div class="song-card-title">Nádherná noc</div>
+                                                <div class="song-card-meta">Autor TBD</div>
+                                                <div class="song-card-id" style="background: #9b59b6;">ZABIEDOVO</div>
+                                            </div>
+                                        </div>
+                                        <div class="song-card-actions">
+                                            <button class="song-btn song-btn-lyrics" title="Slová" disabled><i class="bi bi-file-text"></i></button>
+                                            <button class="song-btn song-btn-chords" title="Akordy" disabled><i class="fa-solid fa-guitar"></i></button>
+                                            <button class="song-btn song-btn-notes" title="Noty" disabled><i class="bi bi-music-note-beamed"></i></button>
+                                            <button class="song-btn song-btn-mp3" title="MP3" disabled><i class="bi bi-volume-up-fill"></i></button>
+                                            <button class="song-btn song-btn-mscz" title="MSCZ" disabled><i class="bi bi-file-earmark-music"></i></button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="song-card" style="opacity: 0.85; border-left: 3px solid #9b59b6;">
+                                        <div class="song-card-header">
+                                            <div class="song-card-info">
+                                                <div class="song-card-title">Dnes zažiari nad nami svetlo</div>
+                                                <div class="song-card-meta">Autor TBD</div>
+                                                <div class="song-card-id" style="background: #9b59b6;">ZABIEDOVO</div>
+                                            </div>
+                                        </div>
+                                        <div class="song-card-actions">
+                                            <button class="song-btn song-btn-lyrics" title="Slová" disabled><i class="bi bi-file-text"></i></button>
+                                            <button class="song-btn song-btn-chords" title="Akordy" disabled><i class="fa-solid fa-guitar"></i></button>
+                                            <button class="song-btn song-btn-notes" title="Noty" disabled><i class="bi bi-music-note-beamed"></i></button>
+                                            <button class="song-btn song-btn-mp3" title="MP3" disabled><i class="bi bi-volume-up-fill"></i></button>
+                                            <button class="song-btn song-btn-mscz" title="MSCZ" disabled><i class="bi bi-file-earmark-music"></i></button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="song-card" style="opacity: 0.85; border-left: 3px solid #9b59b6;">
+                                        <div class="song-card-header">
+                                            <div class="song-card-info">
+                                                <div class="song-card-title">Ô poďme všetci</div>
+                                                <div class="song-card-meta">Autor TBD</div>
+                                                <div class="song-card-id" style="background: #9b59b6;">ZABIEDOVO</div>
+                                            </div>
+                                        </div>
+                                        <div class="song-card-actions">
+                                            <button class="song-btn song-btn-lyrics" title="Slová" disabled><i class="bi bi-file-text"></i></button>
+                                            <button class="song-btn song-btn-chords" title="Akordy" disabled><i class="fa-solid fa-guitar"></i></button>
+                                            <button class="song-btn song-btn-notes" title="Noty" disabled><i class="bi bi-music-note-beamed"></i></button>
+                                            <button class="song-btn song-btn-mp3" title="MP3" disabled><i class="bi bi-volume-up-fill"></i></button>
+                                            <button class="song-btn song-btn-mscz" title="MSCZ" disabled><i class="bi bi-file-earmark-music"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -46,6 +46,8 @@ Thumbs.db
 *.tex
 *.mp3
 *.mscz
+*.mid
+*.midi
 
 # Local config
 .env
