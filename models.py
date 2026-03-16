@@ -49,6 +49,10 @@ class Song(db.Model):
     # Timestamp fields
     created_at = db.Column(db.DateTime, nullable=True)
     last_modified = db.Column(db.DateTime, nullable=True)
+    
+    # Print tracking fields
+    lyrics_copies = db.Column(db.Integer, default=10)
+    chords_copies = db.Column(db.Integer, default=5)
 
     __table_args__ = (
         UniqueConstraint('song_id', 'version_name', name='uix_song_id_version'),
