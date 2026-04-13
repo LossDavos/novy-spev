@@ -604,8 +604,80 @@ body {
     border-color: #f5c6cb;
   }
 }
+
+/* File selection modal styling (same behavior as songs_view) */
+.modal-body .list-group {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.modal-body .list-group-item {
+  width: 100% !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal !important;
+  padding: 1rem 0.75rem;
+}
+
+.modal-body .list-group-item span {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+.modal-body .list-group-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(2px);
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 767px) {
+  .modal-dialog {
+    margin: 0.5rem !important;
+    max-width: calc(100% - 1rem) !important;
+  }
+
+  .modal-body {
+    padding: 0.75rem !important;
+  }
+
+  .modal-body .list-group {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .modal-body .list-group-item {
+    border-left: none !important;
+    border-right: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+}
 </style>
 
+</div>
+
+<!-- File List Modal (MP3 / Noty) -->
+<div class="modal fade" id="fileSelectionModal" tabindex="-1" aria-labelledby="fileSelectionModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white" id="fileSelectionModalHeader">
+        <h5 class="modal-title" id="fileSelectionModalTitle">
+          <i class="bi bi-music-note-list me-2" id="fileSelectionModalIcon"></i>
+          Súbory
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="fileSelectionModalBody">
+        <div class="list-group">
+          <p class="text-muted mb-0">Žiadne súbory.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- JavaScript Variables -->

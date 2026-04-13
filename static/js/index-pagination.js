@@ -45,6 +45,12 @@ function initializeMainPageLazyLoading() {
   const loadedSongsCount = document.getElementById('loadedSongsCount');
   const totalSongsCount = document.getElementById('totalSongsCount');
   const allSongsLoaded = document.getElementById('allSongsLoaded');
+  const fileSelectionModalEl = document.getElementById('fileSelectionModal');
+  const fileSelectionModalHeader = document.getElementById('fileSelectionModalHeader');
+  const fileSelectionModalIcon = document.getElementById('fileSelectionModalIcon');
+  const fileSelectionModalTitle = document.getElementById('fileSelectionModalTitle');
+  const fileSelectionModalBody = document.getElementById('fileSelectionModalBody');
+  const fileSelectionModal = fileSelectionModalEl ? new bootstrap.Modal(fileSelectionModalEl) : null;
 
   const initialBatchSize = window.INITIAL_BATCH_SIZE;
   const totalSongs = window.TOTAL_SONGS;
@@ -77,6 +83,72 @@ function initializeMainPageLazyLoading() {
     }
     console.log('Pagination state reset to initial values');
   };
+
+  function decodeFilePaths(encodedPaths) {
+    if (!encodedPaths) return [];
+    try {
+      const parsed = JSON.parse(decodeURIComponent(encodedPaths));
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      console.error('Unable to decode file paths:', error);
+      return [];
+    }
+  }
+
+  function openFileListModal(kind, songId, encodedPaths, songTitle) {
+    if (!fileSelectionModal || !fileSelectionModalTitle || !fileSelectionModalBody || !fileSelectionModalHeader || !fileSelectionModalIcon) return;
+
+    const files = decodeFilePaths(encodedPaths);
+    const isMp3 = kind === 'mp3';
+
+    fileSelectionModalHeader.classList.remove('bg-success', 'bg-danger', 'text-white');
+    fileSelectionModalHeader.classList.add(isMp3 ? 'bg-success' : 'bg-danger', 'text-white');
+    fileSelectionModalIcon.className = isMp3 ? 'bi bi-music-note-list me-2' : 'bi bi-file-music me-2';
+
+    const cleanSongTitle = (songTitle || '').trim();
+    fileSelectionModalTitle.textContent = isMp3
+      ? `MP3 Súbory${cleanSongTitle ? ` - ${cleanSongTitle}` : ''}`
+      : `Noty${cleanSongTitle ? ` - ${cleanSongTitle}` : ''}`;
+
+    if (!files.length) {
+      fileSelectionModalBody.innerHTML = '<p class="text-muted mb-0">Žiadne súbory.</p>';
+      fileSelectionModal.show();
+      return;
+    }
+
+    const itemsHtml = files.map(filePath => {
+      const filename = filePath.split('/').pop() || filePath;
+      const href = isMp3
+        ? `/api/presigned_url?key=${encodeURIComponent(filePath)}`
+        : `/song/${songId}/download_sheet/${encodeURIComponent(filename)}`;
+
+      return `
+        <a href="${href}"
+           target="_blank"
+           class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+          <i class="${isMp3 ? 'bi bi-play-circle-fill text-success fs-4' : 'bi bi-file-pdf text-danger fs-4'}"></i>
+          <span class="flex-grow-1 min-w-0 text-break">${escapeHtml(filename)}</span>
+          <i class="bi bi-box-arrow-up-right text-muted"></i>
+        </a>
+      `;
+    }).join('');
+
+    fileSelectionModalBody.innerHTML = `<div class="list-group">${itemsHtml}</div>`;
+    fileSelectionModal.show();
+  }
+
+  document.addEventListener('click', function(event) {
+    const trigger = event.target.closest('.js-open-file-modal');
+    if (!trigger) return;
+
+    event.preventDefault();
+    openFileListModal(
+      trigger.getAttribute('data-file-kind'),
+      trigger.getAttribute('data-song-id'),
+      trigger.getAttribute('data-file-paths'),
+      trigger.getAttribute('data-song-title')
+    );
+  });
 
   // Load initial batch from server data
   if (window.INITIAL_SONGS && window.INITIAL_SONGS.length > 0) {
@@ -441,46 +513,19 @@ function initializeMainPageLazyLoading() {
     // Build MP3 files display
     let mp3Html = '';
     if (song.mp3_paths && song.mp3_paths.length > 0) {
-      if (song.mp3_paths.length === 1) {
-        const mp3File = song.mp3_paths[0];
-        const filename = mp3File.split('/').pop();
-        mp3Html = `
-          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}"
-             class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-1"
-             title="Prehrať MP3: ${escapeHtml(filename)}"
-             target="_blank">
-            <i class="bi bi-volume-up-fill"></i>
-            <span class="small">MP3</span>
-          </a>`;
-      } else {
-        const mp3List = song.mp3_paths.map(mp3File => {
-          const filename = mp3File.split('/').pop();
-          return `
-            <li>
-              <a class="dropdown-item d-flex align-items-center gap-2"
-                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}"
-                 target="_blank"
-                 title="Prehrať ${escapeHtml(filename)}">
-                <i class="bi bi-volume-up-fill text-success"></i>
-                <span class="text-truncate">${escapeHtml(filename)}</span>
-              </a>
-            </li>`;
-        }).join('');
-
-        mp3Html = `
-          <div class="btn-group">
-            <button type="button" class="btn btn-success btn-sm dropdown-toggle d-flex align-items-center gap-1"
-                    data-bs-toggle="dropdown" aria-expanded="false"
-                    title="${song.mp3_paths.length} MP3 súborov">
-              <i class="bi bi-volume-up-fill"></i>
-              <span class="small">${song.mp3_paths.length}× MP3</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><h6 class="dropdown-header"><i class="bi bi-file-music text-success me-1"></i>MP3 Súbory</h6></li>
-              ${mp3List}
-            </ul>
-          </div>`;
-      }
+      const encodedMp3Paths = encodeURIComponent(JSON.stringify(song.mp3_paths));
+      const mp3Label = song.mp3_paths.length === 1 ? 'MP3' : `${song.mp3_paths.length}× MP3`;
+      mp3Html = `
+        <button type="button"
+                class="btn btn-success btn-sm d-flex align-items-center justify-content-center gap-1 js-open-file-modal"
+                data-file-kind="mp3"
+                data-song-id="${song.id}"
+                data-file-paths="${encodedMp3Paths}"
+                data-song-title="${escapeHtml(song.title || '')}"
+                title="Zobraziť MP3 súbory">
+          <i class="bi bi-volume-up-fill"></i>
+          <span class="small">${mp3Label}</span>
+        </button>`;
     } else {
       mp3Html = `
         <span class="text-muted small">
@@ -650,44 +695,18 @@ function initializeMainPageLazyLoading() {
     // Build MP3 buttons/dropdowns for actions grid
     let mp3Button = '';
     if (mp3Count > 0) {
-      if (mp3Count === 1) {
-        const mp3File = song.mp3_paths[0];
-        mp3Button = `
-          <a href="/api/presigned_url?key=${encodeURIComponent(mp3File)}"
-             class="btn btn-success btn-sm"
-             title="Prehrať MP3: ${escapeHtml(mp3File.split('/').pop())}"
-             target="_blank">
-            <i class="bi bi-volume-up-fill"></i>
-          </a>
-        `;
-      } else {
-        const mp3List = song.mp3_paths.map(mp3File => {
-          const filename = mp3File.split('/').pop();
-          return `
-            <li>
-              <a class="dropdown-item"
-                 href="/api/presigned_url?key=${encodeURIComponent(mp3File)}"
-                 target="_blank">
-                <i class="bi bi-volume-up-fill text-success me-2"></i>${escapeHtml(filename)}
-              </a>
-            </li>
-          `;
-        }).join('');
-
-        mp3Button = `
-          <div class="btn-group w-100">
-            <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                    data-bs-toggle="dropdown" aria-expanded="false"
-                    title="${mp3Count} MP3 súborov">
-              <i class="bi bi-volume-up-fill"></i>
-            </button>
-            <ul class="dropdown-menu w-100">
-              <li><h6 class="dropdown-header">MP3 Súbory</h6></li>
-              ${mp3List}
-            </ul>
-          </div>
-        `;
-      }
+      const encodedMp3Paths = encodeURIComponent(JSON.stringify(song.mp3_paths));
+      mp3Button = `
+        <button type="button"
+                class="btn btn-success btn-sm js-open-file-modal"
+                title="Zobraziť MP3 súbory"
+                data-file-kind="mp3"
+                data-song-id="${song.id}"
+                data-song-title="${escapeHtml(song.title || '')}"
+                data-file-paths="${encodedMp3Paths}">
+          <i class="bi bi-volume-up-fill"></i>
+        </button>
+      `;
     } else {
       mp3Button = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
@@ -699,42 +718,18 @@ function initializeMainPageLazyLoading() {
     // Build sheet music button
     let sheetButton = '';
     if (song.sheet_pdf_paths && song.sheet_pdf_paths.length > 0) {
-      if (song.sheet_pdf_paths.length === 1) {
-        sheetButton = `
-          <a href="/song/${song.id}/download_sheet/${song.sheet_pdf_paths[0].split('/').pop()}"
-             class="btn btn-outline-danger btn-sm"
-             title="Stiahnuť noty"
-             target="_blank">
-            <i class="fa-solid fa-music"></i>
-          </a>
-        `;
-      } else {
-        const sheetList = song.sheet_pdf_paths.map(sheet => {
-          const filename = sheet.split('/').pop();
-          return `
-            <li>
-              <a href="/song/${song.id}/download_sheet/${filename}"
-                 class="dropdown-item"
-                 target="_blank">
-                <i class="fa-solid fa-music text-danger me-2"></i>${escapeHtml(filename)}
-              </a>
-            </li>
-          `;
-        }).join('');
-
-        sheetButton = `
-          <div class="btn-group w-100">
-            <button type="button" class="btn btn-outline-danger btn-sm dropdown-toggle"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-music"></i>
-            </button>
-            <ul class="dropdown-menu w-100">
-              <li><h6 class="dropdown-header">Noty súbory</h6></li>
-              ${sheetList}
-            </ul>
-          </div>
-        `;
-      }
+      const encodedSheetPaths = encodeURIComponent(JSON.stringify(song.sheet_pdf_paths));
+      sheetButton = `
+        <button type="button"
+                class="btn btn-outline-danger btn-sm js-open-file-modal"
+                title="Zobraziť notové súbory"
+                data-file-kind="sheet"
+                data-song-id="${song.id}"
+                data-song-title="${escapeHtml(song.title || '')}"
+                data-file-paths="${encodedSheetPaths}">
+          <i class="fa-solid fa-music"></i>
+        </button>
+      `;
     } else {
       sheetButton = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
