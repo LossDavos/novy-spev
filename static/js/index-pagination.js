@@ -187,7 +187,6 @@ function initializeMainPageLazyLoading() {
   // Render initial songs from server
   function renderInitialSongs(songs) {
     songs.forEach(song => {
-      renderDesktopSong(song);
       renderMobileSong(song);
     });
     updateLoadedCount();
@@ -457,7 +456,6 @@ function initializeMainPageLazyLoading() {
         console.log('Adding', data.songs.length, 'new songs');
 
         data.songs.forEach(song => {
-          renderDesktopSong(song);
           renderMobileSong(song);
         });
 
@@ -705,12 +703,14 @@ function initializeMainPageLazyLoading() {
                 data-song-title="${escapeHtml(song.title || '')}"
                 data-file-paths="${encodedMp3Paths}">
           <i class="bi bi-volume-up-fill"></i>
+          <span class="action-label d-none d-lg-inline">MP3</span>
         </button>
       `;
     } else {
       mp3Button = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
           <i class="bi bi-volume-mute"></i>
+          <span class="action-label d-none d-lg-inline">MP3</span>
         </button>
       `;
     }
@@ -728,12 +728,14 @@ function initializeMainPageLazyLoading() {
                 data-song-title="${escapeHtml(song.title || '')}"
                 data-file-paths="${encodedSheetPaths}">
           <i class="fa-solid fa-music"></i>
+          <span class="action-label d-none d-lg-inline">Noty</span>
         </button>
       `;
     } else {
       sheetButton = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
           <i class="fa-solid fa-music"></i>
+          <span class="action-label d-none d-lg-inline">Noty</span>
         </button>
       `;
     }
@@ -773,9 +775,11 @@ function initializeMainPageLazyLoading() {
         ${song.pdf_lyrics_path ?
           `<a href="/uploads/${song.pdf_lyrics_path}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
             <i class="bi bi-file-text"></i>
+            <span class="action-label d-none d-lg-inline">Slová</span>
           </a>` :
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
             <i class="bi bi-file-text"></i>
+            <span class="action-label d-none d-lg-inline">Slová</span>
           </button>`
         }
 
@@ -783,9 +787,11 @@ function initializeMainPageLazyLoading() {
         ${song.pdf_chords_path ?
           `<a href="/uploads/${song.pdf_chords_path}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
             <i class="fa-solid fa-guitar"></i>
+            <span class="action-label d-none d-lg-inline">Akordy</span>
           </a>` :
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
             <i class="fa-solid fa-guitar"></i>
+            <span class="action-label d-none d-lg-inline">Akordy</span>
           </button>`
         }
 
