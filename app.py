@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory, send_file
-from models import db, Song
+from models import db, Song, Event, EventSection, EventSectionSong
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from datetime import datetime
@@ -46,7 +46,10 @@ SMTP_USE_TLS = config.SMTP_USE_TLS
 EMAIL_FROM = config.EMAIL_FROM
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///songs.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = config.DATABASE_URI
+app.config['SQLALCHEMY_BINDS'] = {
+    'events': config.EVENTS_DATABASE_URI
+}
 app.secret_key = config.SECRET_KEY
 app.config['MAX_CONTENT_LENGTH'] = config.MAX_CONTENT_LENGTH
 
@@ -54,6 +57,13 @@ app.config['MAX_CONTENT_LENGTH'] = config.MAX_CONTENT_LENGTH
 app.config['UPLOAD_FOLDER'] = config.UPLOAD_FOLDER
 
 db.init_app(app)
+app._databases_initialized = False
+
+@app.before_request
+def init_databases():
+    if not app._databases_initialized:
+        db.create_all()
+        app._databases_initialized = True
 
 # Add security headers to prevent XSS attacks
 @app.after_request
@@ -117,6 +127,84 @@ def sanitize_input(text, field_name="input"):
     
     # HTML escape the input
     return html.escape(text.strip())
+
+
+# ============================================================================
+# EVENTS MODULE - Helpers
+# ============================================================================
+
+DEFAULT_EVENT_SECTIONS = [
+    "Uvod",
+    "Kyrie",
+    "Gloria",
+    "Zalm",
+    "Aleluja",
+    "Kredo",
+    "Obetovanie",
+    "Svaty",
+    "Otce Nas",
+    "Baranok",
+    "Prijimanie",
+    "Podakovanie po prijimani",
+    "Zaver",
+    "Ine"
+]
+
+
+def resolve_song_identifier(token):
+    """Resolve a user-provided token to a Song object."""
+    if not token:
+        return None
+
+    cleaned = token.strip()
+    if not cleaned:
+        return None
+
+    if cleaned.isdigit():
+        return Song.query.get(int(cleaned))
+
+    match = re.search(r"([A-Za-z]-\d{3})", cleaned)
+    if match:
+        code = match.group(1).upper()
+        return Song.query.filter_by(song_id=code).first()
+
+    return None
+
+
+def parse_section_songs(raw_text):
+    """Parse a section textarea into ordered Song objects."""
+    if not raw_text:
+        return [], []
+
+    tokens = [t.strip() for t in re.split(r"[\n,]+", raw_text) if t.strip()]
+    songs = []
+    errors = []
+    for token in tokens:
+        song = resolve_song_identifier(token)
+        if not song:
+            errors.append(token)
+        else:
+            songs.append(song)
+    return songs, errors
+
+
+def parse_section_song_ids(raw_ids):
+    if not raw_ids:
+        return [], []
+
+    ids = [token.strip() for token in raw_ids.split(',') if token.strip()]
+    songs = []
+    errors = []
+    for token in ids:
+        if not token.isdigit():
+            errors.append(token)
+            continue
+        song = Song.query.get(int(token))
+        if not song:
+            errors.append(token)
+        else:
+            songs.append(song)
+    return songs, errors
 
 def send_edit_notification_email(song, form_data):
     """Send email notification to admin about song edit request"""
@@ -918,6 +1006,283 @@ def check_file_exists():
 
 
 # ============================================================================
+# EVENTS MODULE - Routes
+# ============================================================================
+
+@app.route('/api/song_lookup')
+def song_lookup():
+    query = request.args.get('q', '').strip()
+    if not query:
+        return jsonify({'songs': []})
+
+    from unidecode import unidecode
+    from sqlalchemy import or_
+
+    query_no_chords = re.sub(r'\[[^\]]*\]', '', query)
+    normalized_query = unidecode(query_no_chords.lower()).replace(",", " ").replace(".", " ").replace("-", " ").replace("_", " ").replace(";", " ").strip()
+    normalized_query = re.sub(r'\s+', ' ', normalized_query)
+
+    filters = []
+    if normalized_query:
+        filters.append(Song.search_text.like(f'%{normalized_query}%'))
+
+    code_match = re.search(r"([A-Za-z]-\d{3})", query)
+    if code_match:
+        code = code_match.group(1).upper()
+        filters.append(Song.song_id == code)
+
+    if query.isdigit():
+        filters.append(Song.id == int(query))
+
+    if filters:
+        songs = Song.query.filter(or_(*filters)).order_by(Song.song_id).limit(25).all()
+    else:
+        songs = []
+
+    results = []
+    for song in songs:
+        label = f"{song.song_id} — {song.title}"
+        if song.version_name:
+            label = f"{label} ({song.version_name})"
+        results.append({'id': song.id, 'label': label})
+
+    return jsonify({'songs': results})
+
+@app.route('/events')
+def events_list():
+    events = Event.query.order_by(Event.event_time.desc()).all()
+    return render_template('events_list.html', events=events)
+
+
+def build_section_form_data(section_names, section_songs, section_names_custom=None):
+    section_data = []
+    section_names_custom = section_names_custom or []
+    for index, (name, songs_text) in enumerate(zip(section_names, section_songs)):
+        custom_name = section_names_custom[index] if index < len(section_names_custom) else ''
+        song_items = []
+        songs, _ = parse_section_song_ids(songs_text)
+        for song in songs:
+            label = f"{song.song_id} — {song.title}"
+            if song.version_name:
+                label = f"{label} ({song.version_name})"
+            song_items.append({'id': song.id, 'label': label})
+        section_data.append({
+            'name': name,
+            'custom_name': custom_name,
+            'songs': song_items,
+            'songs_text': songs_text
+        })
+    return section_data
+
+
+def build_section_data_from_event(event):
+    section_data = []
+    for section in event.sections:
+        songs = EventSectionSong.query.filter_by(section_id=section.id).order_by(EventSectionSong.position).all()
+        song_items = []
+        for song in songs:
+            label = f"{song.song_code or song.song_db_id} - {song.song_title}"
+            if song.song_version_name:
+                label = f"{label} ({song.song_version_name})"
+            song_items.append({
+                'id': song.song_db_id,
+                'label': label
+            })
+        section_name = section.name
+        custom_name = ''
+        if section_name not in DEFAULT_EVENT_SECTIONS:
+            custom_name = section_name
+            section_name = '__custom__'
+
+        section_data.append({
+            'name': section_name,
+            'custom_name': custom_name,
+            'songs': song_items,
+            'songs_text': ''
+        })
+    return section_data
+
+
+def save_event_from_form(event=None):
+    title = request.form.get('title', '').strip()
+    event_time_str = request.form.get('event_time', '').strip()
+    place = request.form.get('place', '').strip()
+    notes = request.form.get('notes', '').strip()
+
+    section_names = request.form.getlist('section_name')
+    section_names_custom = request.form.getlist('section_name_custom')
+    section_songs = request.form.getlist('section_song_ids')
+
+    if not title or not event_time_str or not place:
+        flash('Vyplňte názov, dátum/čas a miesto.', 'error')
+        return None, build_section_form_data(section_names, section_songs, section_names_custom)
+
+    try:
+        event_time = datetime.fromisoformat(event_time_str)
+    except ValueError:
+        flash('Neplatný dátum alebo čas.', 'error')
+        return None, build_section_form_data(section_names, section_songs, section_names_custom)
+
+    invalid_tokens = []
+    sections_payload = []
+    for index, (name, songs_text) in enumerate(zip(section_names, section_songs)):
+        name_clean = name.strip()
+        custom_name = section_names_custom[index].strip() if index < len(section_names_custom) else ''
+        if name_clean == '__custom__':
+            name_clean = custom_name
+        songs, errors = parse_section_song_ids(songs_text)
+        if errors:
+            invalid_tokens.extend(errors)
+        if name_clean or songs:
+            sections_payload.append({
+                'name': name_clean or 'Sekcia',
+                'songs': songs,
+                'raw_text': songs_text
+            })
+
+    if invalid_tokens:
+        flash(f"Neznáme piesne: {', '.join(invalid_tokens)}", 'error')
+        return None, build_section_form_data(section_names, section_songs, section_names_custom)
+
+    if event is None:
+        event = Event(title=title, event_time=event_time, place=place, notes=notes)
+        db.session.add(event)
+    else:
+        event.title = title
+        event.event_time = event_time
+        event.place = place
+        event.notes = notes
+
+    event.sections.clear()
+    db.session.flush()
+
+    for section_index, payload in enumerate(sections_payload):
+        section = EventSection(event=event, name=payload['name'], position=section_index)
+        db.session.add(section)
+        for song_index, song in enumerate(payload['songs']):
+            db.session.add(EventSectionSong(
+                section=section,
+                position=song_index,
+                song_db_id=song.id,
+                song_code=song.song_id,
+                song_title=song.title,
+                song_version_name=song.version_name
+            ))
+
+    db.session.commit()
+    return event, None
+
+
+@app.route('/events/new', methods=['GET', 'POST'])
+def event_create():
+    if request.method == 'POST':
+        event, section_data = save_event_from_form()
+        if event:
+            flash('Udalosť bola uložená.', 'success')
+            return redirect(url_for('event_edit', event_id=event.id))
+
+        return render_template('event_form.html', event=None, section_data=section_data, section_options=DEFAULT_EVENT_SECTIONS)
+
+    section_data = [{'name': name, 'songs_text': '', 'songs': [], 'custom_name': ''} for name in DEFAULT_EVENT_SECTIONS]
+    return render_template('event_form.html', event=None, section_data=section_data, section_options=DEFAULT_EVENT_SECTIONS)
+
+
+@app.route('/events/<int:event_id>', methods=['GET', 'POST'])
+def event_edit(event_id):
+    event = Event.query.get_or_404(event_id)
+    if request.method == 'POST':
+        updated_event, section_data = save_event_from_form(event)
+        if updated_event:
+            flash('Udalosť bola aktualizovaná.', 'success')
+            return redirect(url_for('event_edit', event_id=event.id))
+        return render_template('event_form.html', event=event, section_data=section_data, section_options=DEFAULT_EVENT_SECTIONS)
+
+    section_data = build_section_data_from_event(event)
+    if not section_data:
+        section_data = [{'name': name, 'songs_text': '', 'songs': [], 'custom_name': ''} for name in DEFAULT_EVENT_SECTIONS]
+    return render_template('event_form.html', event=event, section_data=section_data, section_options=DEFAULT_EVENT_SECTIONS)
+
+
+@app.route('/events/<int:event_id>/view')
+def event_view(event_id):
+    event = Event.query.get_or_404(event_id)
+
+    song_ids = []
+    for section in event.sections:
+        for esong in section.songs:
+            song_ids.append(esong.song_db_id)
+
+    songs_by_id = {}
+    if song_ids:
+        songs = Song.query.filter(Song.id.in_(song_ids)).all()
+        songs_by_id = {song.id: song for song in songs}
+
+    from urllib.parse import quote
+    sections_data = []
+    for section in event.sections:
+        section_songs = []
+        for esong in section.songs:
+            song = songs_by_id.get(esong.song_db_id)
+            if song:
+                try:
+                    mp3_paths = json.loads(song.mp3_paths or '[]')
+                except (json.JSONDecodeError, TypeError):
+                    mp3_paths = []
+                try:
+                    sheet_pdf_paths = json.loads(song.sheet_pdf_paths or '[]')
+                except (json.JSONDecodeError, TypeError):
+                    sheet_pdf_paths = []
+
+                section_songs.append({
+                    'id': song.id,
+                    'song_id': song.song_id,
+                    'title': song.title,
+                    'author': song.author,
+                    'version_name': song.version_name,
+                    'printed': song.printed,
+                    'admin_checked': song.admin_checked,
+                    'pdf_lyrics_path': song.pdf_lyrics_path,
+                    'pdf_chords_path': song.pdf_chords_path,
+                    'mp3_paths': mp3_paths,
+                    'sheet_pdf_paths': sheet_pdf_paths,
+                    'mp3_paths_encoded': quote(json.dumps(mp3_paths)),
+                    'sheet_pdf_paths_encoded': quote(json.dumps(sheet_pdf_paths))
+                })
+            else:
+                section_songs.append({
+                    'id': esong.song_db_id,
+                    'song_id': esong.song_code,
+                    'title': esong.song_title,
+                    'author': None,
+                    'version_name': esong.song_version_name,
+                    'printed': False,
+                    'admin_checked': False,
+                    'pdf_lyrics_path': None,
+                    'pdf_chords_path': None,
+                    'mp3_paths': [],
+                    'sheet_pdf_paths': [],
+                    'mp3_paths_encoded': quote(json.dumps([])),
+                    'sheet_pdf_paths_encoded': quote(json.dumps([]))
+                })
+
+        sections_data.append({
+            'name': section.name,
+            'songs': section_songs
+        })
+
+    return render_template('event_detail.html', event=event, sections_data=sections_data)
+
+
+@app.route('/events/<int:event_id>/delete', methods=['POST'])
+def event_delete(event_id):
+    event = Event.query.get_or_404(event_id)
+    db.session.delete(event)
+    db.session.commit()
+    flash('Udalosť bola odstránená.', 'success')
+    return redirect(url_for('events_list'))
+
+
+# ============================================================================
 # MAIN ROUTES
 # ============================================================================
 
@@ -1039,6 +1404,7 @@ def get_songs_paginated():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/songs/<song_ids>')
 def songs_view(song_ids):

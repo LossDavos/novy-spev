@@ -200,3 +200,88 @@ event.listen(Song, 'before_update', update_search_text_listener)
 event.listen(Song, 'before_insert', set_created_at_listener)
 event.listen(Song, 'before_update', set_last_modified_listener)
 
+
+# ==============================
+# Events module (separate DB)
+# ==============================
+
+class Event(db.Model):
+    __bind_key__ = 'events'
+    __tablename__ = 'events'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    event_time = db.Column(db.DateTime, nullable=False)
+    place = db.Column(db.String(200), nullable=False)
+    notes = db.Column(db.Text, nullable=True)
+
+    created_at = db.Column(db.DateTime, nullable=True)
+    last_modified = db.Column(db.DateTime, nullable=True)
+
+    sections = db.relationship(
+        'EventSection',
+        backref='event',
+        cascade='all, delete-orphan',
+        order_by='EventSection.position'
+    )
+
+
+class EventSection(db.Model):
+    __bind_key__ = 'events'
+    __tablename__ = 'event_sections'
+
+    id = db.Column(db.Integer, primary_key=True)
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
+    name = db.Column(db.String(120), nullable=False)
+    position = db.Column(db.Integer, nullable=False, default=0)
+
+    songs = db.relationship(
+        'EventSectionSong',
+        backref='section',
+        cascade='all, delete-orphan',
+        order_by='EventSectionSong.position'
+    )
+
+
+class EventSectionSong(db.Model):
+    __bind_key__ = 'events'
+    __tablename__ = 'event_section_songs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    section_id = db.Column(db.Integer, db.ForeignKey('event_sections.id'), nullable=False)
+    position = db.Column(db.Integer, nullable=False, default=0)
+
+    # Reference to the songs database (no FK, separate DB)
+    song_db_id = db.Column(db.Integer, nullable=False)
+    song_code = db.Column(db.String(10), nullable=True)
+    song_title = db.Column(db.String(300), nullable=False)
+    song_version_name = db.Column(db.String(100), nullable=True)
+
+
+def set_event_created_at_listener(mapper, connection, target):
+    from datetime import datetime
+    if not target.created_at:
+        target.created_at = datetime.now()
+    if not target.last_modified:
+        target.last_modified = datetime.now()
+
+
+def set_event_last_modified_listener(mapper, connection, target):
+    from datetime import datetime
+    from sqlalchemy import inspect
+
+    state = inspect(target)
+    has_changes = False
+    for attr in state.attrs:
+        if attr.key == 'last_modified':
+            continue
+        if attr.history.has_changes():
+            has_changes = True
+            break
+    if has_changes:
+        target.last_modified = datetime.now()
+
+
+event.listen(Event, 'before_insert', set_event_created_at_listener)
+event.listen(Event, 'before_update', set_event_last_modified_listener)
+
