@@ -603,17 +603,38 @@ body {
 }
 
 /* File selection modal styling (same behavior as songs_view) */
+.modal-body#fileSelectionModalBody,
+#fileSelectionModal .modal-body {
+  padding: 0 !important;
+}
+
 .modal-body .list-group {
   width: 100% !important;
   margin: 0 !important;
 }
 
+#fileSelectionModal .modal-body {
+  display: block !important;
+}
+
+#fileSelectionModal .list-group {
+  width: 100% !important;
+  max-width: 100% !important;
+  align-items: stretch !important;
+}
+
 .modal-body .list-group-item {
   width: 100% !important;
+  max-width: 100% !important;
+  align-self: stretch !important;
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal !important;
   padding: 1rem 0.75rem;
+  border-left: none !important;
+  border-right: none !important;
+  margin: 0 !important;
+  box-sizing: border-box;
 }
 
 .modal-body .list-group-item span {
@@ -625,11 +646,15 @@ body {
 
 .modal-body .list-group-item:hover {
   background-color: #f8f9fa;
-  transform: translateX(2px);
+  transform: none;
   transition: all 0.2s ease;
 }
 
-@media (max-width: 767px) {
+#fileSelectionModal .modal-content {
+  overflow: visible;
+}
+
+@media (max-width: 768px) {
   .modal-dialog {
     margin: 0.5rem !important;
     max-width: calc(100% - 1rem) !important;
@@ -637,6 +662,20 @@ body {
 
   .modal-body {
     padding: 0.75rem !important;
+  }
+
+  #fileSelectionModal .modal-body {
+    padding: 0.5rem !important;
+  }
+
+  #fileSelectionModal .modal-dialog {
+    margin: 0.5rem !important;
+    width: calc(100% - 1rem) !important;
+    max-width: calc(100% - 1rem) !important;
+  }
+
+  #fileSelectionModal .modal-content {
+    border-radius: 1rem !important;
   }
 
   .modal-body .list-group {
@@ -668,8 +707,8 @@ body {
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body" id="fileSelectionModalBody">
-        <div class="list-group">
+      <div class="modal-body p-0" id="fileSelectionModalBody">
+        <div class="list-group list-group-flush">
           <p class="text-muted mb-0">Žiadne súbory.</p>
         </div>
       </div>

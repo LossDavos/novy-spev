@@ -125,7 +125,7 @@ function initializeMainPageLazyLoading() {
       return `
         <a href="${href}"
            target="_blank"
-           class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+           class="list-group-item list-group-item-action d-flex align-items-center gap-3 w-100">
           <i class="${isMp3 ? 'bi bi-play-circle-fill text-success fs-4' : 'bi bi-file-pdf text-danger fs-4'}"></i>
           <span class="flex-grow-1 min-w-0 text-break">${escapeHtml(filename)}</span>
           <i class="bi bi-box-arrow-up-right text-muted"></i>
@@ -133,7 +133,7 @@ function initializeMainPageLazyLoading() {
       `;
     }).join('');
 
-    fileSelectionModalBody.innerHTML = `<div class="list-group">${itemsHtml}</div>`;
+    fileSelectionModalBody.innerHTML = `<div class="list-group list-group-flush w-100">${itemsHtml}</div>`;
     fileSelectionModal.show();
   }
 
