@@ -78,6 +78,56 @@
   cursor: grab;
 }
 
+.events-cards {
+  display: none;
+  gap: 1rem;
+}
+
+.event-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.event-card-header h5 {
+  margin: 0;
+}
+
+.event-card-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  padding: 0.25rem 0;
+}
+
+.event-card-row .label {
+  color: #6c757d;
+  margin-right: 0.5rem;
+}
+
+.event-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.event-card.empty {
+  text-align: center;
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .events-table {
+    display: none;
+  }
+
+  .events-cards {
+    display: grid;
+  }
+}
+
 .song-chip {
   display: inline-flex;
   align-items: center;
