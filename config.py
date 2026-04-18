@@ -27,6 +27,7 @@ JSON_FOLDER = os.path.join(BASE_DIR, 'songs')
 
 # Database
 DATABASE_URI = 'sqlite:///songs.db'
+EVENTS_DATABASE_URI = 'sqlite:///events.db'
 
 # Security
 SECRET_KEY = os.getenv('SECRET_KEY', '')

@@ -38,6 +38,10 @@ body {
     <i class="bi bi-tag-fill me-2"></i>
     <strong>Štítkovač</strong>
   </a>
+  <a href="{{ url_for('events_list') }}" class="btn btn-primary btn-lg rounded-pill shadow-sm ms-2">
+    <i class="bi bi-calendar-event me-2"></i>
+    <strong>Udalosti</strong>
+  </a>
 
     <!-- Category Filters Section -->
     {% include 'category_filters.html' %}

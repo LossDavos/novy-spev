@@ -1,0 +1,454 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% include 'navbar.html' %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/events.css') }}">
+
+<div class="container-fluid">
+  <div class="d-flex flex-wrap justify-content-between align-items-center my-3">
+    <h2 class="mb-0">{% if event %}Upraviť udalosť{% else %}Nová udalosť{% endif %}</h2>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('events_list') }}" class="btn btn-outline-secondary">Späť na udalosti</a>
+      {% if event %}
+        <form action="{{ url_for('event_delete', event_id=event.id) }}" method="POST" onsubmit="return confirm('Naozaj odstrániť udalosť?');">
+          <button type="submit" class="btn btn-outline-danger">Zmazať</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} mt-2">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" class="event-form">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Názov udalosti</label>
+            <input type="text" name="title" class="form-control" required value="{{ event.title if event else '' }}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Dátum a čas</label>
+            <input type="datetime-local" name="event_time" class="form-control" required value="{{ event.event_time.strftime('%Y-%m-%dT%H:%M') if event else '' }}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Miesto</label>
+            <input type="text" name="place" class="form-control" required value="{{ event.place if event else '' }}">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Poznámky</label>
+            <textarea name="notes" class="form-control" rows="2">{{ event.notes if event else '' }}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h4 class="mb-0">Liturgia a piesne</h4>
+      <button type="button" class="btn btn-outline-primary" id="addSectionBtn" data-bs-toggle="modal" data-bs-target="#addSectionModal">
+        <i class="bi bi-plus-circle me-1"></i>Pridať sekciu
+      </button>
+    </div>
+
+    <p class="text-muted">Vyberte časť liturgie z rozbaľovacieho zoznamu a pridajte piesne cez vyhľadávací výber.</p>
+
+    <div id="sectionsContainer" class="d-none">
+      {% for section in section_data %}
+        <div class="section-input" data-index="{{ loop.index0 }}">
+          <input type="hidden" name="section_name" value="{{ section.name }}">
+          <input type="hidden" name="section_name_custom" value="{{ section.custom_name }}">
+          <input type="hidden" name="section_song_ids" value="{{ section.songs | map(attribute='id') | join(',') }}">
+        </div>
+      {% endfor %}
+    </div>
+
+    <div id="sectionsPreview" class="event-preview-list">
+      {% for section in section_data %}
+        <div class="event-preview-section" data-index="{{ loop.index0 }}" data-name="{{ section.name }}" data-custom="{{ section.custom_name }}" data-songs='{{ section.songs | tojson }}'>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <strong>{{ section.custom_name if section.name == '__custom__' else section.name }}</strong>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-outline-primary edit-section">Upraviť</button>
+              <button type="button" class="btn btn-sm btn-outline-danger remove-section">Odstrániť</button>
+            </div>
+          </div>
+          <ol class="mb-0">
+            {% for song in section.songs %}
+              <li>{{ song.label }}</li>
+            {% else %}
+              <li class="text-muted">Bez piesní</li>
+            {% endfor %}
+          </ol>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-end mt-3">
+      <button type="submit" class="btn btn-success btn-lg">Uložiť</button>
+    </div>
+  </form>
+
+</div>
+
+
+<div class="modal fade" id="addSectionModal" tabindex="-1" aria-labelledby="addSectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addSectionModalLabel">Pridať sekciu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Sekcia liturgie</label>
+          <select id="modalSectionSelect" class="form-select">
+            {% for option in section_options %}
+              <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+            <option value="__custom__">Iné (vlastné)</option>
+          </select>
+        </div>
+        <div class="mb-3" id="modalSectionCustomWrapper" style="display:none;">
+          <label class="form-label">Vlastný názov</label>
+          <input type="text" class="form-control" id="modalSectionCustom" placeholder="Názov sekcie">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Vyhľadať pieseň</label>
+          <div class="song-search-wrapper">
+            <input type="text" class="form-control song-search-input" id="modalSongSearch" placeholder="Názov, autor alebo kód">
+            <div class="song-search-results" id="modalSongResults"></div>
+          </div>
+        </div>
+        <div class="row g-2 align-items-end mb-3">
+          <div class="col-4 d-grid ms-auto">
+            <button type="button" class="btn btn-outline-primary" id="modalAddSong">Pridať</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Vybrané piesne</label>
+          <div class="selected-songs" id="modalSelectedSongs"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zrušiť</button>
+        <button type="button" class="btn btn-primary" id="modalCreateSection">Pridať sekciu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('sectionsContainer');
+    const addButton = document.getElementById('addSectionBtn');
+    const sectionsContainer = document.getElementById('sectionsContainer');
+    const sectionsPreview = document.getElementById('sectionsPreview');
+    const addSectionModalEl = document.getElementById('addSectionModal');
+    const addSectionModal = addSectionModalEl ? new bootstrap.Modal(addSectionModalEl) : null;
+    const modalSectionSelect = document.getElementById('modalSectionSelect');
+    const modalSectionCustomWrapper = document.getElementById('modalSectionCustomWrapper');
+    const modalSectionCustom = document.getElementById('modalSectionCustom');
+    const modalSongSearch = document.getElementById('modalSongSearch');
+    const modalSongResults = document.getElementById('modalSongResults');
+    const modalAddSong = document.getElementById('modalAddSong');
+    const modalSelectedSongs = document.getElementById('modalSelectedSongs');
+    const modalCreateSection = document.getElementById('modalCreateSection');
+    let activeEditSection = null;
+
+    function buildSongChip(id, label, onRemove) {
+      const chip = document.createElement('span');
+      chip.className = 'song-chip';
+      chip.dataset.id = id;
+      chip.innerHTML = `<span class="drag-handle">⠿</span>${label} <button type="button" class="btn btn-sm btn-link remove-song">&times;</button>`;
+      chip.querySelector('.remove-song').addEventListener('click', function () {
+        chip.remove();
+        if (onRemove) onRemove();
+      });
+      return chip;
+    }
+
+    function readSectionInputs(index) {
+      const sectionEl = sectionsContainer.querySelector(`[data-index="${index}"]`);
+      if (!sectionEl) return null;
+      const name = sectionEl.querySelector('input[name="section_name"]').value;
+      const custom = sectionEl.querySelector('input[name="section_name_custom"]').value;
+      const ids = sectionEl.querySelector('input[name="section_song_ids"]').value;
+      return { name, custom, ids };
+    }
+
+    function writeSectionInputs(index, name, custom, ids) {
+      let sectionEl = sectionsContainer.querySelector(`[data-index="${index}"]`);
+      if (!sectionEl) {
+        sectionEl = document.createElement('div');
+        sectionEl.className = 'section-input';
+        sectionEl.dataset.index = index;
+        sectionEl.innerHTML = `
+          <input type="hidden" name="section_name" value="">
+          <input type="hidden" name="section_name_custom" value="">
+          <input type="hidden" name="section_song_ids" value="">
+        `;
+        sectionsContainer.appendChild(sectionEl);
+      }
+      sectionEl.querySelector('input[name="section_name"]').value = name;
+      sectionEl.querySelector('input[name="section_name_custom"]').value = custom;
+      sectionEl.querySelector('input[name="section_song_ids"]').value = ids;
+    }
+
+    function updatePreviewSection(sectionEl, name, custom, songs) {
+      const displayName = name === '__custom__' ? custom : name;
+      sectionEl.dataset.name = name;
+      sectionEl.dataset.custom = custom;
+      sectionEl.dataset.songs = JSON.stringify(songs);
+      sectionEl.querySelector('strong').textContent = displayName;
+      const list = sectionEl.querySelector('ol');
+      list.innerHTML = '';
+      if (!songs.length) {
+        const li = document.createElement('li');
+        li.className = 'text-muted';
+        li.textContent = 'Bez piesní';
+        list.appendChild(li);
+        return;
+      }
+      songs.forEach(song => {
+        const li = document.createElement('li');
+        li.textContent = song.label;
+        list.appendChild(li);
+      });
+    }
+
+    function toggleModalCustom() {
+      if (modalSectionSelect.value === '__custom__') {
+        modalSectionCustomWrapper.style.display = '';
+      } else {
+        modalSectionCustomWrapper.style.display = 'none';
+        modalSectionCustom.value = '';
+      }
+    }
+
+    let modalDebounce;
+    let modalResults = [];
+    let modalActiveIndex = -1;
+
+    function renderModalResults() {
+      if (!modalSongResults) {
+        return;
+      }
+      modalSongResults.innerHTML = '';
+      if (!modalResults.length) {
+        modalSongResults.classList.remove('show');
+        return;
+      }
+      modalResults.forEach((song, index) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = `song-search-item${index === modalActiveIndex ? ' active' : ''}`;
+        item.dataset.id = song.id;
+        item.dataset.label = song.label;
+        item.innerHTML = `<span>${song.label}</span>`;
+        item.addEventListener('click', function () {
+          addSongFromResult(song.id, song.label);
+        });
+        modalSongResults.appendChild(item);
+      });
+      modalSongResults.classList.add('show');
+    }
+
+    function addSongFromResult(songId, label) {
+      if (!modalSelectedSongs) return;
+      if (!songId) return;
+      const existing = modalSelectedSongs.querySelector(`[data-id="${songId}"]`);
+      if (existing) return;
+      const chip = buildSongChip(songId, label, null);
+      modalSelectedSongs.appendChild(chip);
+      modalSongSearch.value = '';
+      modalResults = [];
+      modalActiveIndex = -1;
+      renderModalResults();
+    }
+
+    function searchSongsInModal() {
+      if (!modalSongResults) return;
+      const query = modalSongSearch.value.trim();
+      clearTimeout(modalDebounce);
+      modalDebounce = setTimeout(() => {
+        if (query.length < 2) {
+          modalResults = [];
+          modalActiveIndex = -1;
+          renderModalResults();
+          return;
+        }
+        fetch(`/api/song_lookup?q=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            modalResults = data.songs || [];
+            modalActiveIndex = modalResults.length ? 0 : -1;
+            renderModalResults();
+          });
+      }, 250);
+    }
+
+    modalSectionSelect.addEventListener('change', toggleModalCustom);
+    if (modalSongSearch) {
+      modalSongSearch.addEventListener('input', searchSongsInModal);
+      modalSongSearch.addEventListener('keydown', function (event) {
+      if (!modalResults.length) return;
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        modalActiveIndex = (modalActiveIndex + 1) % modalResults.length;
+        renderModalResults();
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        modalActiveIndex = (modalActiveIndex - 1 + modalResults.length) % modalResults.length;
+        renderModalResults();
+      } else if (event.key === 'Enter') {
+        event.preventDefault();
+        const song = modalResults[modalActiveIndex] || modalResults[0];
+        if (song) {
+          addSongFromResult(song.id, song.label);
+        }
+      }
+    });
+      modalSongSearch.addEventListener('blur', function () {
+        setTimeout(() => {
+          modalResults = [];
+          modalActiveIndex = -1;
+          renderModalResults();
+        }, 150);
+      });
+    }
+
+    modalAddSong.addEventListener('click', function () {
+      if (!modalResults.length) return;
+      const song = modalResults[modalActiveIndex] || modalResults[0];
+      if (song) {
+        addSongFromResult(song.id, song.label);
+      }
+    });
+
+    if (window.Sortable) {
+      new Sortable(modalSelectedSongs, {
+        handle: '.drag-handle',
+        animation: 150
+      });
+    }
+
+    modalCreateSection.addEventListener('click', function () {
+      const name = modalSectionSelect.value;
+      const custom = modalSectionCustom.value.trim();
+      const songs = Array.from(modalSelectedSongs.querySelectorAll('.song-chip')).map(chip => ({
+        id: chip.dataset.id,
+        label: chip.textContent.replace('×', '').replace('⠿', '').trim()
+      }));
+      const ids = songs.map(song => song.id).join(',');
+
+      if (activeEditSection) {
+        const index = activeEditSection.dataset.index;
+        writeSectionInputs(index, name, custom, ids);
+        updatePreviewSection(activeEditSection, name, custom, songs);
+      } else {
+        const index = sectionsContainer.children.length;
+        writeSectionInputs(index, name, custom, ids);
+        const preview = document.createElement('div');
+        preview.className = 'event-preview-section';
+        preview.dataset.index = index;
+        preview.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <strong></strong>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-outline-primary edit-section">Upraviť</button>
+              <button type="button" class="btn btn-sm btn-outline-danger remove-section">Odstrániť</button>
+            </div>
+          </div>
+          <ol class="mb-0"></ol>
+        `;
+        sectionsPreview.appendChild(preview);
+        updatePreviewSection(preview, name, custom, songs);
+      }
+
+      if (modalSongSearch) {
+        modalSongSearch.value = '';
+      }
+      modalResults = [];
+      modalActiveIndex = -1;
+      renderModalResults();
+      modalSelectedSongs.innerHTML = '';
+      modalSectionSelect.value = '{{ section_options[0] if section_options else "__custom__" }}';
+      modalSectionCustom.value = '';
+      toggleModalCustom();
+      activeEditSection = null;
+
+      if (addSectionModal) {
+        addSectionModal.hide();
+      }
+    });
+
+    sectionsPreview.addEventListener('click', function (event) {
+      const removeButton = event.target.closest('.remove-section');
+      if (removeButton) {
+        const sectionEl = removeButton.closest('.event-preview-section');
+        if (!sectionEl) return;
+        const index = sectionEl.dataset.index;
+        const inputEl = sectionsContainer.querySelector(`[data-index="${index}"]`);
+        if (inputEl) inputEl.remove();
+        sectionEl.remove();
+        return;
+      }
+
+      const editButton = event.target.closest('.edit-section');
+      if (!editButton) return;
+      const sectionEl = editButton.closest('.event-preview-section');
+      if (!sectionEl) return;
+
+      activeEditSection = sectionEl;
+      const name = sectionEl.dataset.name || '{{ section_options[0] if section_options else "__custom__" }}';
+      const custom = sectionEl.dataset.custom || '';
+      const songs = sectionEl.dataset.songs ? JSON.parse(sectionEl.dataset.songs) : [];
+
+      modalSectionSelect.value = name;
+      modalSectionCustom.value = custom;
+      toggleModalCustom();
+      modalSelectedSongs.innerHTML = '';
+      songs.forEach(song => {
+        const chip = buildSongChip(song.id, song.label, null);
+        modalSelectedSongs.appendChild(chip);
+      });
+
+      modalSongSearch.value = '';
+      modalResults = [];
+      modalActiveIndex = -1;
+      renderModalResults();
+
+      if (addSectionModal) {
+        addSectionModal.show();
+      }
+    });
+
+    addSectionModalEl.addEventListener('show.bs.modal', function () {
+      if (!activeEditSection) {
+        modalSectionSelect.value = '{{ section_options[0] if section_options else "__custom__" }}';
+        modalSectionCustom.value = '';
+        toggleModalCustom();
+        if (modalSongSearch) {
+          modalSongSearch.value = '';
+        }
+        modalResults = [];
+        modalActiveIndex = -1;
+        renderModalResults();
+        modalSelectedSongs.innerHTML = '';
+      }
+    });
+  });
+</script>
+
+{% endblock %}
