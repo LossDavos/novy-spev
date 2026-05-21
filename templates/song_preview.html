@@ -46,8 +46,10 @@
     {% for part in data %}
     <article class="preview-part part-{{ part.type | lower | replace(' ', '-') }}">
       <header class="preview-part-header">
-        <span class="preview-part-badge">{{ part.type }}</span>
-        <span class="preview-part-index">{{ loop.index }} / {{ data|length }}</span>
+        <span class="preview-part-title">{{ part.type }}</span>
+        <button class="preview-pin" type="button" aria-label="Pripnut" title="Pripnut">
+          <i class="bi bi-pin-angle"></i>
+        </button>
       </header>
       <div class="preview-lines">
         {% for line in part.lines %}
@@ -75,6 +77,28 @@
   <button class="transpose-btn" type="button" id="transposeDown" title="Transpozicia dole" aria-label="Transpozicia dole">
     <i class="bi bi-chevron-down"></i>
   </button>
+  <div class="transpose-popover-wrap">
+    <button class="transpose-more" type="button" id="transposeMore" title="Viac" aria-label="Viac">
+      <i class="bi bi-three-dots"></i>
+    </button>
+    <div class="transpose-popover" id="transposePopover" aria-hidden="true">
+      {% if song.pdf_lyrics_path %}
+      <a class="transpose-popover-link" href="{{ url_for('serve_upload', filename=song.pdf_lyrics_path) }}" target="_blank">
+        <i class="bi bi-file-text"></i>
+        Slova
+      </a>
+      {% endif %}
+      {% if song.pdf_chords_path %}
+      <a class="transpose-popover-link" href="{{ url_for('serve_upload', filename=song.pdf_chords_path) }}" target="_blank">
+        <i class="bi bi-music-note-beamed"></i>
+        Akordy
+      </a>
+      {% endif %}
+      {% if not song.pdf_lyrics_path and not song.pdf_chords_path %}
+      <div class="transpose-popover-empty">Ziadne PDF</div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 
 <style>
@@ -210,41 +234,167 @@
   text-align: center;
 }
 
+.transpose-popover-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transpose-more {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transpose-popover {
+  position: absolute;
+  bottom: 44px;
+  right: 0;
+  min-width: 140px;
+  background: #111827;
+  color: #fff;
+  border-radius: 14px;
+  padding: 0.35rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  z-index: 1060;
+}
+
+.transpose-popover.is-open {
+  display: flex;
+}
+
+.transpose-popover-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.transpose-popover-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.transpose-popover-empty {
+  padding: 0.5rem 0.6rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .song-preview-content {
   display: grid;
-  gap: 1.5rem;
+  gap: 0;
+  padding-bottom: var(--pinned-offset, 0px);
 }
 
 .preview-part {
-  background: #fff;
-  border-radius: 16px;
-  padding: 1.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background: #fbfbfd;
+  border-radius: 12px;
+  padding: 0.3rem 0.5rem 0;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
 }
 
 .preview-part-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.preview-part-badge {
-  background: #0d6efd;
+  margin: -0.3rem -0.5rem 0.6rem;
+  padding: 0.3rem 0.6rem 0.15rem;
   color: #fff;
-  padding: 0.4rem 0.9rem;
-  border-radius: 999px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
 }
 
-.preview-part-index {
-  color: #6c757d;
-  font-weight: 600;
-  font-size: 0.85rem;
+.preview-part-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.preview-pin {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-pin.is-active {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.part-verse .preview-part-header {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+.part-chorus .preview-part-header {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.part-bridge .preview-part-header {
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.part-intro .preview-part-header,
+.part-outro .preview-part-header,
+.part-coda .preview-part-header {
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  color: #1f2937;
+}
+
+.preview-part.pinned {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(860px, calc(100vw - 48px));
+  z-index: 1040;
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.25);
+}
+
+.preview-part-placeholder {
+  min-height: 34px;
+  padding: 0.35rem 0.6rem;
+  border: 1px dashed rgba(15, 23, 42, 0.2);
+  border-radius: 12px;
+  margin: 0;
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.03),
+    rgba(15, 23, 42, 0.03) 10px,
+    rgba(255, 255, 255, 0.4) 10px,
+    rgba(255, 255, 255, 0.4) 20px
+  );
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(15, 23, 42, 0.55);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .preview-lines {
@@ -254,7 +404,7 @@
 }
 
 .preview-line {
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.1rem;
 }
 
 .song-preview-content sup {
@@ -268,7 +418,12 @@
 
 .part-chorus {
   border-left: 4px solid #cf2222;
-  background: linear-gradient(135deg, rgba(207, 34, 34, 0.08), rgba(255, 255, 255, 0.9));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(255, 255, 255, 0.96)
+  ),
+  linear-gradient(135deg, rgba(207, 34, 34, 0.12), rgba(255, 255, 255, 0.65));
 }
 
 .part-verse {
@@ -277,6 +432,33 @@
 
 .part-bridge {
   border-left: 4px solid #20c997;
+}
+
+.part-prechorus {
+  border-left: 4px solid #cf2222;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(255, 255, 255, 0.96)
+  ),
+  linear-gradient(135deg, rgba(207, 34, 34, 0.1), rgba(255, 255, 255, 0.7));
+}
+
+.part-prechorus .preview-part-header {
+  background: linear-gradient(90deg, #fca5a5, #f87171);
+  color: #7f1d1d;
+}
+
+.prechorus-inline {
+  margin: 0.35rem 0 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    rgba(207, 34, 34, 0.05),
+    rgba(255, 255, 255, 0.95)
+  );
+  border: 1px solid rgba(207, 34, 34, 0.1);
 }
 
 .part-intro,
@@ -328,6 +510,26 @@
 
 <script>
   (function () {
+    const prechorusParts = Array.from(document.querySelectorAll('.preview-part.part-prechorus'));
+    prechorusParts.forEach((prechorus) => {
+      const next = prechorus.nextElementSibling;
+      if (next && next.classList.contains('part-chorus')) {
+        const preLines = prechorus.querySelector('.preview-lines');
+        if (preLines) {
+          const inline = document.createElement('div');
+          inline.className = 'prechorus-inline';
+          inline.appendChild(preLines);
+          const chorusLines = next.querySelector('.preview-lines');
+          if (chorusLines) {
+            next.insertBefore(inline, chorusLines);
+          } else {
+            next.appendChild(inline);
+          }
+        }
+        prechorus.remove();
+      }
+    });
+
     const transposeUp = document.getElementById('transposeUp');
     const transposeDown = document.getElementById('transposeDown');
     const transposeKeyEl = document.getElementById('transposeKey');
@@ -451,6 +653,80 @@
 
     transposeUp.addEventListener('click', () => applyTranspose(1));
     transposeDown.addEventListener('click', () => applyTranspose(-1));
+
+    const transposeMore = document.getElementById('transposeMore');
+    const transposePopover = document.getElementById('transposePopover');
+
+    if (transposeMore && transposePopover) {
+      function closePopover() {
+        transposePopover.classList.remove('is-open');
+        transposePopover.setAttribute('aria-hidden', 'true');
+      }
+
+      transposeMore.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = transposePopover.classList.toggle('is-open');
+        transposePopover.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!transposePopover.contains(event.target) && event.target !== transposeMore) {
+          closePopover();
+        }
+      });
+    }
+
+    const previewParts = Array.from(document.querySelectorAll('.preview-part'));
+    const pinButtons = Array.from(document.querySelectorAll('.preview-pin'));
+    let pinnedPart = null;
+    let pinnedPlaceholder = null;
+
+    function updatePinnedPadding() {
+      if (pinnedPart) {
+        const height = pinnedPart.getBoundingClientRect().height;
+        document.documentElement.style.setProperty('--pinned-offset', `${height + 40}px`);
+      }
+    }
+
+    function clearPinnedPart() {
+      if (pinnedPart) {
+        pinnedPart.classList.remove('pinned');
+        pinnedPart = null;
+      }
+      if (pinnedPlaceholder) {
+        pinnedPlaceholder.remove();
+        pinnedPlaceholder = null;
+      }
+      document.documentElement.style.removeProperty('--pinned-offset');
+      pinButtons.forEach((item) => item.classList.remove('is-active'));
+    }
+
+    pinButtons.forEach((button, index) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        const part = previewParts[index];
+        const isPinned = pinnedPart === part;
+
+        clearPinnedPart();
+
+        if (isPinned) {
+          return;
+        }
+
+        pinnedPlaceholder = document.createElement('div');
+        pinnedPlaceholder.className = 'preview-part-placeholder';
+        pinnedPlaceholder.innerHTML = '<i class="bi bi-pin-angle"></i> Pripnute dole';
+        part.insertAdjacentElement('afterend', pinnedPlaceholder);
+
+        pinnedPart = part;
+        pinnedPart.classList.add('pinned');
+        updatePinnedPadding();
+        button.classList.add('is-active');
+      });
+    });
+
+    window.addEventListener('resize', updatePinnedPadding);
+
   })();
 </script>
 {% endblock %}
