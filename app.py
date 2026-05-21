@@ -218,6 +218,7 @@ def send_edit_notification_email(song, form_data):
             'version_name': ('version_name', 'Verzia', lambda x: x.strip() if x else None),
             'title_original': ('title_original', 'Pôvodný názov', lambda x: x.strip()),
             'author_original': ('author_original', 'Pôvodný autor', lambda x: x.strip()),
+            'song_key': ('song_key', 'Tonina', lambda x: x.strip() if x else None),
         }
         
         # Check simple fields
@@ -1662,6 +1663,7 @@ def song_detail(song_id):
 
             song.title_original = sanitize_input(request.form.get('title_original', ''), "original title")
             song.author_original = sanitize_input(request.form.get('author_original', ''), "original author")
+            song.song_key = sanitize_input(request.form.get('song_key', ''), "song key") if request.form.get('song_key') and request.form.get('song_key').strip() else None
 
             # Reset admin_checked when song is edited (requires re-verification)
             song.admin_checked = False
@@ -1862,6 +1864,18 @@ def song_view(song_id):
     sheet_mscz = json.loads(song.sheet_mscz_paths or '[]')
 
     return render_template('song_view.html', song=song, data=data, mp3s=mp3s, midis=midis, sheet_pdfs=sheet_pdfs, sheet_mscz=sheet_mscz)
+
+@app.route('/song/<int:song_id>/preview')
+def song_preview(song_id):
+    """Minimal, styled preview of lyrics with enlarged chords."""
+    song = Song.query.get_or_404(song_id)
+
+    try:
+        data = json.loads(song.song_parts or '[]')
+    except (json.JSONDecodeError, TypeError):
+        data = []
+
+    return render_template('song_preview.html', song=song, data=data, back_url=request.referrer)
 
 @app.route('/song/delete/<int:song_id>', methods=['POST'])
 def delete_song(song_id):

@@ -26,6 +26,7 @@ class Song(db.Model):
     author = db.Column(db.String, nullable=True)
     title_original = db.Column(db.String, nullable=True)
     author_original = db.Column(db.String, nullable=True)
+    song_key = db.Column(db.String(10), nullable=True)
     categories = db.Column(db.String, nullable=True)
     # Store alternative titles as comma-separated string
     alternative_titles = db.Column(db.String, nullable=True)

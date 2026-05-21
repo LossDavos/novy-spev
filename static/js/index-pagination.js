@@ -625,6 +625,10 @@ function initializeMainPageLazyLoading() {
 
       <td class="text-center px-3 py-3">
         <div class="btn-group-vertical btn-group-sm" role="group">
+          <a href="/song/${song.id}/preview" class="btn btn-outline-dark btn-sm mb-1">
+            <i class="bi bi-music-note-beamed me-1"></i>Nahlad
+          </a>
+
           <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm mb-1">
             <i class="bi bi-eye me-1"></i>Detaily
           </a>
@@ -812,6 +816,11 @@ function initializeMainPageLazyLoading() {
         <div class="collapse mobile-expanded-content" id="mobile-collapse-${song.id}">
           <!-- Action Buttons -->
           <div class="mobile-files-grid">
+            <!-- Preview (icon only) -->
+            <a href="/song/${song.id}/preview" class="btn btn-outline-dark btn-sm icon-only" title="Nahlad">
+              <i class="bi bi-music-note-beamed"></i>
+            </a>
+
             <!-- View (icon only) -->
             <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm icon-only" title="Detaily">
               <i class="bi bi-eye"></i>

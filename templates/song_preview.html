@@ -1,0 +1,456 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="song-preview-hero card border-0 shadow-lg rounded-4 mb-4">
+  <div class="preview-hero-inner p-4 p-md-5">
+    <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+      <div class="preview-header-main">
+        <div class="preview-title-row">
+          <span class="preview-song-id badge">{{ song.song_id }}</span>
+          <h1 class="preview-title">{{ song.title }}</h1>
+          {% if song.version_name %}
+          <span class="preview-version">{{ song.version_name }}</span>
+          {% endif %}
+        </div>
+        <div class="preview-meta-row">
+          {% set display_author = song.author if song.author else "Neznámy" %}
+          {% if display_author == "Neznámy" and song.author_original %}
+          <span class="preview-meta">
+            <span class="meta-label">Autor:</span>
+            <span class="meta-value">{{ song.author_original }}</span>
+          </span>
+          {% else %}
+          <span class="preview-meta">
+            <span class="meta-label">Autor:</span>
+            <span class="meta-value">
+              {{ display_author }}
+              {% if song.author_original %} ({{ song.author_original }}){% endif %}
+            </span>
+          </span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="preview-actions d-flex gap-2">
+        <a class="btn btn-outline-light btn-sm icon-only" href="{{ back_url if back_url else url_for('index') }}" title="Späť">
+          <i class="bi bi-arrow-left"></i>
+        </a>
+        <a class="btn btn-light btn-sm icon-only" href="{{ url_for('song_detail', song_id=song.id) }}" title="Upraviť">
+          <i class="bi bi-pencil-square"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="song-preview-content">
+  {% if data %}
+    {% for part in data %}
+    <article class="preview-part part-{{ part.type | lower | replace(' ', '-') }}">
+      <header class="preview-part-header">
+        <span class="preview-part-badge">{{ part.type }}</span>
+        <span class="preview-part-index">{{ loop.index }} / {{ data|length }}</span>
+      </header>
+      <div class="preview-lines">
+        {% for line in part.lines %}
+          <div class="preview-line">{{ line | replace_chords | safe }}</div>
+        {% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  {% else %}
+    <div class="no-parts-placeholder text-center py-5">
+      <i class="bi bi-music-note-list fs-1 text-muted"></i>
+      <h5 class="text-muted mt-3">Žiadne časti piesne</h5>
+      <p class="text-muted">Text piesne ešte nebol zadaný alebo spracovaný.</p>
+    </div>
+  {% endif %}
+</section>
+
+<div class="transpose-widget" id="transposeWidget">
+  <button class="transpose-btn" type="button" id="transposeUp" title="Transpozicia hore" aria-label="Transpozicia hore">
+    <i class="bi bi-chevron-up"></i>
+  </button>
+  <div class="transpose-key" id="transposeKey" data-base-key="{{ song.song_key if song.song_key else '' }}">
+    {{ song.song_key if song.song_key else '--' }}
+  </div>
+  <button class="transpose-btn" type="button" id="transposeDown" title="Transpozicia dole" aria-label="Transpozicia dole">
+    <i class="bi bi-chevron-down"></i>
+  </button>
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Poppins:wght@400;600;700&display=swap');
+
+.song-preview-hero {
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.3), transparent 55%),
+    linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+  color: #fff;
+  overflow: hidden;
+}
+
+.preview-hero-inner {
+  position: relative;
+}
+
+.preview-song-id {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.preview-title {
+  font-family: "Fraunces", "Georgia", serif;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.preview-version {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-left: 0.5rem;
+}
+
+.preview-header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.preview-title-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.preview-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  row-gap: 0.2rem;
+}
+
+.preview-meta {
+  font-size: 0.95rem;
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+
+.meta-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+  opacity: 0.85;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+}
+
+.preview-actions .btn {
+  font-weight: 600;
+}
+
+.preview-actions .icon-only {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.transpose-widget {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.7rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.transpose-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: none;
+  background: #111827;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.transpose-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.transpose-key {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #111827;
+  min-width: 38px;
+  text-align: center;
+}
+
+.song-preview-content {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.preview-part {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.preview-part-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.preview-part-badge {
+  background: #0d6efd;
+  color: #fff;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+
+.preview-part-index {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.preview-lines {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  font-size: 1.15rem;
+  line-height: 2.35;
+}
+
+.preview-line {
+  margin-bottom: 0.2rem;
+}
+
+.song-preview-content sup {
+  color: #ff6b35 !important;
+  font-weight: 700;
+  font-size: 1.7em !important;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  padding: 0 0.1rem;
+  letter-spacing: 0.02em;
+}
+
+.part-chorus {
+  border-left: 4px solid #cf2222;
+  background: linear-gradient(135deg, rgba(207, 34, 34, 0.08), rgba(255, 255, 255, 0.9));
+}
+
+.part-verse {
+  border-left: 4px solid #1f6feb;
+}
+
+.part-bridge {
+  border-left: 4px solid #20c997;
+}
+
+.part-intro,
+.part-outro,
+.part-coda {
+  border-left: 4px solid #f59e0b;
+}
+
+@media (max-width: 768px) {
+  .preview-hero-inner {
+    padding: 1.5rem;
+  }
+
+  .preview-header-main {
+    padding-right: 3.25rem;
+  }
+
+  .preview-actions {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    margin-left: 0;
+    align-self: flex-start;
+  }
+
+  .preview-title-row {
+    gap: 0.4rem;
+  }
+
+  .preview-meta-row {
+    gap: 0.5rem;
+  }
+
+  .preview-lines {
+    font-size: 1.05rem;
+    line-height: 2.2;
+  }
+
+  .transpose-widget {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .song-preview-content sup {
+    font-size: 1.5em !important;
+  }
+}
+</style>
+
+<script>
+  (function () {
+    const transposeUp = document.getElementById('transposeUp');
+    const transposeDown = document.getElementById('transposeDown');
+    const transposeKeyEl = document.getElementById('transposeKey');
+    const chordEls = Array.from(document.querySelectorAll('.song-preview-content sup'));
+
+    if (!transposeUp || !transposeDown || !transposeKeyEl || chordEls.length === 0) {
+      return;
+    }
+
+    const noteIndex = {
+      C: 0, 'C#': 1, Db: 1,
+      D: 2, 'D#': 3, Eb: 3,
+      E: 4,
+      F: 5, 'F#': 6, Gb: 6,
+      G: 7, 'G#': 8, Ab: 8,
+      A: 9, 'A#': 10, B: 10,
+      H: 11
+    };
+
+    const notesSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H'];
+    const notesFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'B', 'H'];
+
+    function parseRoot(chordPart) {
+      const match = chordPart.match(/^([A-H])([#b]?)(.*)$/);
+      if (!match) {
+        return null;
+      }
+      return {
+        root: match[1] + (match[2] || ''),
+        accidental: match[2] || '',
+        rest: match[3] || ''
+      };
+    }
+
+    function transposeRoot(root, steps, preferFlats) {
+      const idx = noteIndex[root];
+      if (idx === undefined) {
+        return root;
+      }
+      const nextIndex = (idx + steps + 12) % 12;
+      return preferFlats ? notesFlat[nextIndex] : notesSharp[nextIndex];
+    }
+
+    function transposeChord(chord, steps) {
+      if (!chord) {
+        return chord;
+      }
+
+      const parts = chord.split('/');
+      const main = parts[0];
+      const bass = parts[1];
+
+      const mainParsed = parseRoot(main.trim());
+      if (!mainParsed) {
+        return chord;
+      }
+      const preferFlatsMain = mainParsed.accidental === 'b' || mainParsed.root === 'B';
+      const mainTransposed = transposeRoot(mainParsed.root, steps, preferFlatsMain) + mainParsed.rest;
+
+      if (!bass) {
+        return mainTransposed;
+      }
+
+      const bassParsed = parseRoot(bass.trim());
+      if (!bassParsed) {
+        return `${mainTransposed}/${bass}`;
+      }
+      const preferFlatsBass = bassParsed.accidental === 'b' || bassParsed.root === 'B';
+      const bassTransposed = transposeRoot(bassParsed.root, steps, preferFlatsBass) + bassParsed.rest;
+
+      return `${mainTransposed}/${bassTransposed}`;
+    }
+
+    function setChordText(el, value) {
+      const strong = el.querySelector('strong');
+      if (strong) {
+        strong.textContent = value;
+      } else {
+        el.textContent = value;
+      }
+    }
+
+    function updateChords(steps) {
+      chordEls.forEach((el) => {
+        if (!el.dataset.baseChord) {
+          el.dataset.baseChord = el.textContent.trim();
+        }
+        const base = el.dataset.baseChord;
+        const nextChord = transposeChord(base, steps);
+        setChordText(el, nextChord);
+      });
+    }
+
+    function updateKey(steps) {
+      const baseKey = transposeKeyEl.dataset.baseKey;
+      if (!baseKey) {
+        transposeKeyEl.textContent = '--';
+        return;
+      }
+      const baseTrimmed = baseKey.trim();
+      const preferFlatsKey = baseTrimmed.includes('b') || baseTrimmed === 'B';
+      const parsed = parseRoot(baseTrimmed);
+      if (!parsed) {
+        transposeKeyEl.textContent = baseTrimmed;
+        return;
+      }
+      const nextKey = transposeRoot(parsed.root, steps, preferFlatsKey) + parsed.rest;
+      transposeKeyEl.textContent = nextKey;
+    }
+
+    let transposeSteps = 0;
+
+    function applyTranspose(stepDelta) {
+      transposeSteps += stepDelta;
+      updateChords(transposeSteps);
+      updateKey(transposeSteps);
+    }
+
+    updateChords(transposeSteps);
+    updateKey(transposeSteps);
+
+    transposeUp.addEventListener('click', () => applyTranspose(1));
+    transposeDown.addEventListener('click', () => applyTranspose(-1));
+  })();
+</script>
+{% endblock %}

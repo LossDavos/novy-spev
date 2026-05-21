@@ -114,6 +114,11 @@
         <input class="form-control" name="author_original" value="{{ song.author_original if song.author_original }}">
     </div>
 
+    <div class="mb-3">
+      <label>Tonina / Key</label>
+      <input class="form-control" name="song_key" value="{{ song.song_key if song.song_key }}" placeholder="C, Am, Dm, F#...">
+    </div>
+
     <div class="mb-4">
   <label class="form-label fw-semibold mb-3">
     <i class="bi bi-tags-fill text-primary me-2"></i>
