@@ -3501,7 +3501,7 @@ function initializeMainPageLazyLoading() {
     if (song.sheet_pdf_paths && song.sheet_pdf_paths.length > 0) {
       if (song.sheet_pdf_paths.length === 1) {
         sheetButton = `
-          <a href="/song/${song.id}/download_sheet/${song.sheet_pdf_paths[0].split('/').pop()}"
+          <a href="/song/${song.id}/download_stamped_sheet/${song.sheet_pdf_paths[0].split('/').pop()}"
              class="btn btn-outline-danger btn-sm"
              title="Stiahnuť noty"
              target="_blank">
@@ -3513,7 +3513,7 @@ function initializeMainPageLazyLoading() {
           const filename = sheet.split('/').pop();
           return `
             <li>
-              <a href="/song/${song.id}/download_sheet/${filename}"
+              <a href="/song/${song.id}/download_stamped_sheet/${filename}"
                  class="dropdown-item"
                  target="_blank">
                 <i class="fa-solid fa-music text-danger me-2"></i>${escapeHtml(filename)}

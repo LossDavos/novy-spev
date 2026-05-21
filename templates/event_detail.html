@@ -194,7 +194,7 @@
         const filename = filePath.split('/').pop() || filePath;
         const href = isMp3
           ? `/api/presigned_url?key=${encodeURIComponent(filePath)}`
-          : `/song/${songId}/download_sheet/${encodeURIComponent(filename)}`;
+          : `/song/${songId}/download_stamped_sheet/${encodeURIComponent(filename)}`;
 
         return `
           <a href="${href}"
