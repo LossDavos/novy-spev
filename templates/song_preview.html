@@ -29,13 +29,32 @@
           {% endif %}
         </div>
       </div>
-      <div class="preview-actions d-flex gap-2">
-        <a class="btn btn-outline-light btn-sm icon-only" href="{{ back_url if back_url else url_for('index') }}" title="Späť">
+      <div class="preview-actions">
+        <a class="preview-action-btn" href="{{ back_url if back_url else url_for('index') }}" title="Späť">
           <i class="bi bi-arrow-left"></i>
         </a>
-        <a class="btn btn-light btn-sm icon-only" href="{{ url_for('song_detail', song_id=song.id) }}" title="Upraviť">
+        <span class="preview-action-divider"></span>
+        <a class="preview-action-btn" href="{{ url_for('song_detail', song_id=song.id) }}" title="Upraviť">
           <i class="bi bi-pencil-square"></i>
         </a>
+        <span class="preview-action-divider"></span>
+        <div class="position-relative" id="headerDownloadWrap">
+          <button class="preview-action-btn" type="button" id="headerDownloadBtn" title="Stiahnut">
+            <i class="bi bi-download"></i>
+          </button>
+          <div class="transpose-popover" id="headerDownloadPopover" aria-hidden="true" style="right:0;left:auto;bottom:auto;top:48px;">
+            {% if song.pdf_lyrics_path %}
+            <a class="transpose-popover-link" href="{{ url_for('serve_upload', filename=song.pdf_lyrics_path) }}" target="_blank">
+              <i class="bi bi-file-text"></i>
+              Slova
+            </a>
+            {% endif %}
+            <button class="transpose-popover-link" type="button" id="headerDownloadChordsTrigger">
+              <i class="bi bi-music-note-beamed"></i>
+              Akordy
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -53,7 +72,7 @@
       </header>
       <div class="preview-lines">
         {% for line in part.lines %}
-          <div class="preview-line">{{ line | replace_chords | safe }}</div>
+          <div class="preview-line {% if not show_chords %}chords-hidden{% endif %}">{{ line | replace_chords | safe }}</div>
         {% endfor %}
       </div>
     </article>
@@ -68,35 +87,72 @@
 </section>
 
 <div class="transpose-widget" id="transposeWidget">
-  <button class="transpose-btn" type="button" id="transposeUp" title="Transpozicia hore" aria-label="Transpozicia hore">
-    <i class="bi bi-chevron-up"></i>
-  </button>
-  <div class="transpose-key" id="transposeKey" data-base-key="{{ song.song_key if song.song_key else '' }}">
-    {{ song.song_key if song.song_key else '--' }}
-  </div>
-  <button class="transpose-btn" type="button" id="transposeDown" title="Transpozicia dole" aria-label="Transpozicia dole">
-    <i class="bi bi-chevron-down"></i>
-  </button>
-  <div class="transpose-popover-wrap">
-    <button class="transpose-more" type="button" id="transposeMore" title="Viac" aria-label="Viac">
-      <i class="bi bi-three-dots"></i>
+  <div class="transpose-expand-wrap">
+    <button class="transpose-btn" type="button" id="transposeUp" title="Transpozicia hore" aria-label="Transpozicia hore">
+      <i class="bi bi-chevron-up"></i>
     </button>
-    <div class="transpose-popover" id="transposePopover" aria-hidden="true">
-      {% if song.pdf_lyrics_path %}
-      <a class="transpose-popover-link" href="{{ url_for('serve_upload', filename=song.pdf_lyrics_path) }}" target="_blank">
-        <i class="bi bi-file-text"></i>
-        Slova
-      </a>
-      {% endif %}
-      {% if song.pdf_chords_path %}
-      <a class="transpose-popover-link" href="{{ url_for('serve_upload', filename=song.pdf_chords_path) }}" target="_blank">
-        <i class="bi bi-music-note-beamed"></i>
-        Akordy
-      </a>
-      {% endif %}
-      {% if not song.pdf_lyrics_path and not song.pdf_chords_path %}
-      <div class="transpose-popover-empty">Ziadne PDF</div>
-      {% endif %}
+  </div>
+  <div class="transpose-key" id="transposeKey" data-base-key="{{ song.song_key if song.song_key else '' }}">
+    {{ song.song_key if song.song_key else '0' }}
+  </div>
+  <div class="transpose-expand-wrap">
+    <button class="transpose-btn" type="button" id="transposeDown" title="Transpozicia dole" aria-label="Transpozicia dole">
+      <i class="bi bi-chevron-down"></i>
+    </button>
+  </div>
+</div>
+
+<div class="chords-download-modal" id="chordsDownloadModal" data-song-id="{{ song.id }}" data-original-key="{{ song.song_key if song.song_key else '' }}" aria-hidden="true">
+  <div class="chords-download-backdrop" data-close="true"></div>
+  <div class="chords-download-panel" role="dialog" aria-modal="true" aria-labelledby="chordsDownloadTitle">
+    <div class="chords-download-header">
+      <h3 id="chordsDownloadTitle">Stiahnut akordy</h3>
+      <button type="button" class="chords-download-close" id="chordsDownloadClose" aria-label="Zatvorit">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+    <div class="chords-download-options">
+      <div class="chords-mode-row" role="radiogroup" aria-label="Zdroj kluca">
+        <label class="chords-mode-option">
+          <input type="radio" name="chordsKeyMode" value="original">
+          Povodny
+        </label>
+        <label class="chords-mode-option">
+          <input type="radio" name="chordsKeyMode" value="current">
+          Aktualny
+        </label>
+        <label class="chords-mode-option">
+          <input type="radio" name="chordsKeyMode" value="custom">
+          Vlastny
+        </label>
+      </div>
+      <div class="chords-key-row">
+        <span>Povodny kluc</span>
+        <strong id="chordsOriginalKey">{{ song.song_key if song.song_key else '--' }}</strong>
+      </div>
+      <div class="chords-key-row">
+        <span>Aktualny kluc</span>
+        <strong id="chordsCurrentKeyDisplay">--</strong>
+      </div>
+      <div class="chords-slider-row">
+        <label for="chordsKeyShift">Posun (poltony)</label>
+        <div class="chords-slider-control">
+          <div class="chords-slider-track-wrap">
+            <input type="range" id="chordsKeyShift" min="-11" max="11" step="1" value="0">
+            <div class="chords-slider-current" id="chordsCurrentMarker" aria-hidden="true"><span class="chords-current-flag">&#9660;</span></div>
+          </div>
+          <span class="chords-shift-value" id="chordsShiftValue">0</span>
+        </div>
+      </div>
+      <div class="chords-target-row">
+        Cielovy kluc
+        <strong id="chordsTargetKey">--</strong>
+      </div>
+      <div class="chords-download-error" id="chordsDownloadError" aria-live="polite"></div>
+    </div>
+    <div class="chords-download-actions">
+      <button type="button" class="chords-download-btn ghost" id="chordsDownloadCancel">Zrusit</button>
+      <button type="button" class="chords-download-btn" id="chordsDownloadConfirm">Stiahnut PDF</button>
     </div>
   </div>
 </div>
@@ -108,7 +164,7 @@
   background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.3), transparent 55%),
     linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
   color: #fff;
-  overflow: hidden;
+  position: relative;
 }
 
 .preview-hero-inner {
@@ -176,18 +232,45 @@
   font-size: 0.95rem;
 }
 
-.preview-actions .btn {
-  font-weight: 600;
+.preview-actions {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  padding: 0.25rem;
+  gap: 0;
+  backdrop-filter: blur(6px);
 }
 
-.preview-actions .icon-only {
+.preview-action-btn {
   width: 36px;
   height: 36px;
-  padding: 0;
-  display: inline-flex;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #fff;
+  display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.preview-action-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.preview-action-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+  margin: 0 0.1rem;
 }
 
 .transpose-widget {
@@ -198,19 +281,50 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0;
   padding: 0.6rem 0.7rem;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 999px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: padding 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.transpose-widget.is-expanded {
+  gap: 0.35rem;
+}
+
+.transpose-expand-wrap {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: height 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.22s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.transpose-widget.is-expanded .transpose-expand-wrap {
+  height: 38px;
+  opacity: 1;
+  pointer-events: auto;
+  overflow: visible;
 }
 
 .transpose-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px;
+  min-height: 34px;
+  aspect-ratio: 1 / 1;
+  padding: 0 !important;
+  border-radius: 50% !important;
   border: none;
   background: #111827;
   color: #fff;
@@ -218,6 +332,7 @@
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
 }
 
 .transpose-btn:hover {
@@ -232,6 +347,8 @@
   color: #111827;
   min-width: 38px;
   text-align: center;
+  user-select: none;
+  cursor: pointer;
 }
 
 .transpose-popover-wrap {
@@ -296,6 +413,197 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
+.chords-download-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.chords-download-modal.is-open {
+  display: flex;
+}
+
+.chords-download-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.chords-download-panel {
+  position: relative;
+  width: min(92vw, 420px);
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.3rem 1.4rem 1.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.chords-download-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.chords-download-header h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #1f1f1f;
+}
+
+.chords-download-close {
+  border: none;
+  background: transparent;
+  font-size: 1.3rem;
+  color: #666;
+  cursor: pointer;
+}
+
+.chords-download-options {
+  display: grid;
+  gap: 0.75rem;
+  font-size: 0.96rem;
+  color: #333;
+}
+
+.chords-key-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 10px;
+  background: #f7f7f8;
+  font-weight: 600;
+}
+
+.chords-mode-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.chords-mode-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.4rem;
+  border-radius: 999px;
+  background: #f3f4f6;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.chords-mode-option input {
+  accent-color: #111827;
+}
+
+.chords-key-row strong {
+  font-size: 1rem;
+}
+
+.chords-slider-row {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.chords-slider-row label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.chords-slider-control {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chords-slider-track-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.chords-slider-control input[type="range"] {
+  width: 100%;
+}
+
+.chords-slider-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: #777;
+  padding: 0 0.1rem;
+}
+
+.chords-slider-current {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.chords-current-flag {
+  font-size: 1rem;
+  color: #ee0979;
+  line-height: 1;
+  filter: drop-shadow(0 1px 3px rgba(238,9,121,0.45));
+}
+
+.chords-shift-value {
+  min-width: 2.5rem;
+  text-align: center;
+  font-weight: 700;
+  color: #111827;
+}
+
+.chords-target-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: #111827;
+}
+
+.chords-download-error {
+  color: #b00020;
+  font-size: 0.85rem;
+  min-height: 1.1rem;
+}
+
+.chords-download-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.chords-download-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  background: #ff6a00;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chords-download-btn.ghost {
+  background: #f0f0f0;
+  color: #333;
+}
+
 .song-preview-content {
   display: grid;
   gap: 0;
@@ -315,7 +623,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: -0.3rem -0.5rem 0.6rem;
+  margin: -0.3rem -0.5rem 1.1rem;
   padding: 0.3rem 0.6rem 0.15rem;
   color: #fff;
   font-weight: 700;
@@ -405,6 +713,10 @@
 
 .preview-line {
   margin-bottom: 0.1rem;
+}
+
+.preview-line.chords-hidden sup.chord {
+  display: none;
 }
 
 .song-preview-content sup {
@@ -545,22 +857,23 @@
       E: 4,
       F: 5, 'F#': 6, Gb: 6,
       G: 7, 'G#': 8, Ab: 8,
-      A: 9, 'A#': 10, B: 10,
-      H: 11
+      A: 9, 'A#': 10, Bb: 10,
+      B: 11, H: 11
     };
 
-    const notesSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H'];
-    const notesFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'B', 'H'];
+    const notesSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const notesFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
     function parseRoot(chordPart) {
-      const match = chordPart.match(/^([A-H])([#b]?)(.*)$/);
+      const match = chordPart.match(/^([A-Ha-h])([#b]?)(.*)$/);
       if (!match) {
         return null;
       }
       return {
-        root: match[1] + (match[2] || ''),
+        root: match[1].toUpperCase() + (match[2] || ''),
         accidental: match[2] || '',
-        rest: match[3] || ''
+        rest: match[3] || '',
+        isLower: match[1] === match[1].toLowerCase()
       };
     }
 
@@ -578,7 +891,11 @@
         return chord;
       }
 
-      const parts = chord.split('/');
+      const trimmed = chord.trim();
+      const optional = trimmed.startsWith('(') && trimmed.endsWith(')') && trimmed.length > 2;
+      const body = optional ? trimmed.slice(1, -1).trim() : trimmed;
+
+      const parts = body.split('/');
       const main = parts[0];
       const bass = parts[1];
 
@@ -587,7 +904,11 @@
         return chord;
       }
       const preferFlatsMain = mainParsed.accidental === 'b' || mainParsed.root === 'B';
-      const mainTransposed = transposeRoot(mainParsed.root, steps, preferFlatsMain) + mainParsed.rest;
+      let mainRoot = transposeRoot(mainParsed.root, steps, preferFlatsMain);
+      if (mainParsed.isLower) {
+        mainRoot = mainRoot.toLowerCase();
+      }
+      const mainTransposed = mainRoot + mainParsed.rest;
 
       if (!bass) {
         return mainTransposed;
@@ -598,17 +919,44 @@
         return `${mainTransposed}/${bass}`;
       }
       const preferFlatsBass = bassParsed.accidental === 'b' || bassParsed.root === 'B';
-      const bassTransposed = transposeRoot(bassParsed.root, steps, preferFlatsBass) + bassParsed.rest;
+      let bassRoot = transposeRoot(bassParsed.root, steps, preferFlatsBass);
+      if (bassParsed.isLower) {
+        bassRoot = bassRoot.toLowerCase();
+      }
+      const bassTransposed = bassRoot + bassParsed.rest;
 
-      return `${mainTransposed}/${bassTransposed}`;
+      const combined = `${mainTransposed}/${bassTransposed}`;
+      return optional ? `(${combined})` : combined;
+    }
+
+    function buildChordHtml(chord) {
+      const trimmed = chord.trim();
+      const optional = trimmed.startsWith('(') && trimmed.endsWith(')') && trimmed.length > 2;
+      const body = optional ? trimmed.slice(1, -1).trim() : trimmed;
+      const match = body.match(/[A-Ha-h]/);
+      if (!match) {
+        return optional ? `(${body})` : body;
+      }
+
+      const index = match.index || 0;
+      const prefix = body.slice(0, index);
+      const rootLetter = body.slice(index, index + 1);
+      const rest = body.slice(index + 1);
+      const rootHtml = `<span class="chord-root" style="font-size:1em">${rootLetter}</span>`;
+      const extHtml = rest
+        ? `<span class="chord-ext" style="font-size:0.6em; vertical-align:super">${rest}</span>`
+        : '';
+      const combined = `${prefix}${rootHtml}${extHtml}`;
+      return optional ? `(${combined})` : combined;
     }
 
     function setChordText(el, value) {
       const strong = el.querySelector('strong');
+      const htmlValue = buildChordHtml(value);
       if (strong) {
-        strong.textContent = value;
+        strong.innerHTML = htmlValue;
       } else {
-        el.textContent = value;
+        el.innerHTML = `<strong>${htmlValue}</strong>`;
       }
     }
 
@@ -626,7 +974,7 @@
     function updateKey(steps) {
       const baseKey = transposeKeyEl.dataset.baseKey;
       if (!baseKey) {
-        transposeKeyEl.textContent = '--';
+        transposeKeyEl.textContent = steps === 0 ? '0' : (steps > 0 ? `+${steps}` : `${steps}`);
         return;
       }
       const baseTrimmed = baseKey.trim();
@@ -651,8 +999,23 @@
     updateChords(transposeSteps);
     updateKey(transposeSteps);
 
-    transposeUp.addEventListener('click', () => applyTranspose(1));
-    transposeDown.addEventListener('click', () => applyTranspose(-1));
+    const transposeWidget = document.getElementById('transposeWidget');
+    const transposeKey2 = document.getElementById('transposeKey');
+
+    if (transposeWidget) {
+      transposeKey2.addEventListener('click', (e) => {
+        e.stopPropagation();
+        transposeWidget.classList.toggle('is-expanded');
+      });
+      document.addEventListener('click', (e) => {
+        if (transposeWidget.classList.contains('is-expanded') && !transposeWidget.contains(e.target)) {
+          transposeWidget.classList.remove('is-expanded');
+        }
+      });
+    }
+
+    transposeUp.addEventListener('click', (e) => { e.stopPropagation(); applyTranspose(1); });
+    transposeDown.addEventListener('click', (e) => { e.stopPropagation(); applyTranspose(-1); });
 
     const transposeMore = document.getElementById('transposeMore');
     const transposePopover = document.getElementById('transposePopover');
@@ -673,6 +1036,198 @@
         if (!transposePopover.contains(event.target) && event.target !== transposeMore) {
           closePopover();
         }
+      });
+    }
+
+    const downloadChordsTrigger = document.getElementById('downloadChordsTrigger');
+    const chordsModal = document.getElementById('chordsDownloadModal');
+    const chordsClose = document.getElementById('chordsDownloadClose');
+    const chordsCancel = document.getElementById('chordsDownloadCancel');
+    const chordsConfirm = document.getElementById('chordsDownloadConfirm');
+    const chordsError = document.getElementById('chordsDownloadError');
+    const chordsShiftInput = document.getElementById('chordsKeyShift');
+    const chordsShiftValue = document.getElementById('chordsShiftValue');
+    const chordsTargetKey = document.getElementById('chordsTargetKey');
+    const chordsCurrentKeyDisplay = document.getElementById('chordsCurrentKeyDisplay');
+    const chordsOriginalKeyDisplay = document.getElementById('chordsOriginalKey');
+    const chordsCurrentMarker = document.getElementById('chordsCurrentMarker');
+    const chordsModeInputs = chordsModal ? chordsModal.querySelectorAll('input[name="chordsKeyMode"]') : [];
+
+    function getOriginalKey() {
+      return (chordsModal?.dataset.originalKey || '').trim();
+    }
+
+    function getCurrentKey() {
+      return (transposeKeyEl ? transposeKeyEl.textContent.trim() : '') || '';
+    }
+
+    function getSelectedMode() {
+      const selected = chordsModal?.querySelector('input[name="chordsKeyMode"]:checked');
+      return selected ? selected.value : 'original';
+    }
+
+    function setMode(mode) {
+      if (!chordsModeInputs.length) {
+        return;
+      }
+      chordsModeInputs.forEach((input) => {
+        input.checked = input.value === mode;
+      });
+    }
+
+    function openChordsModal() {
+      if (!chordsModal) {
+        return;
+      }
+      chordsError.textContent = '';
+      const originalKey = getOriginalKey();
+      if (chordsOriginalKeyDisplay) {
+        chordsOriginalKeyDisplay.textContent = originalKey.trim() || '--';
+      }
+      const currentKeyValue = getCurrentKey();
+      if (chordsCurrentKeyDisplay) {
+        chordsCurrentKeyDisplay.textContent = currentKeyValue.trim() || '--';
+      }
+      setMode('current');
+      applyMode();
+      chordsModal.classList.add('is-open');
+      chordsModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeChordsModal() {
+      if (!chordsModal) {
+        return;
+      }
+      chordsModal.classList.remove('is-open');
+      chordsModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function updateTargetKey() {
+      if (!chordsShiftInput || !chordsTargetKey) {
+        return;
+      }
+      const shift = parseInt(chordsShiftInput.value, 10) || 0;
+      if (chordsShiftValue) {
+        chordsShiftValue.textContent = String(shift);
+      }
+      const currentKeyValue = getCurrentKey();
+      if (!currentKeyValue) {
+        chordsTargetKey.textContent = '--';
+      } else {
+        const parsed = parseRoot(currentKeyValue);
+        if (!parsed) {
+          chordsTargetKey.textContent = currentKeyValue;
+        } else {
+          const preferFlatsKey = parsed.accidental === 'b' || parsed.root === 'B';
+          let nextRoot = transposeRoot(parsed.root, shift, preferFlatsKey);
+          if (parsed.isLower) {
+            nextRoot = nextRoot.toLowerCase();
+          }
+          chordsTargetKey.textContent = `${nextRoot}${parsed.rest}`;
+        }
+      }
+      if (chordsCurrentMarker) {
+        const currentShift = transposeSteps;
+        const position = ((currentShift + 11) / 22) * 100;
+        chordsCurrentMarker.style.display = 'block';
+        chordsCurrentMarker.style.left = `${Math.min(100, Math.max(0, position))}%`;
+      }
+    }
+
+    function applyMode() {
+      if (!chordsShiftInput) {
+        return;
+      }
+      const mode = getSelectedMode();
+      if (mode === 'original') {
+        chordsShiftInput.value = '0';
+        chordsShiftInput.disabled = true;
+      } else if (mode === 'current') {
+        chordsShiftInput.value = String(transposeSteps);
+        chordsShiftInput.disabled = true;
+      } else {
+        chordsShiftInput.disabled = false;
+        if (!chordsShiftInput.value) {
+          chordsShiftInput.value = '0';
+        }
+      }
+      updateTargetKey();
+    }
+
+    if (downloadChordsTrigger && chordsModal) {
+      downloadChordsTrigger.addEventListener('click', () => {
+        if (transposePopover) {
+          transposePopover.classList.remove('is-open');
+          transposePopover.setAttribute('aria-hidden', 'true');
+        }
+        openChordsModal();
+      });
+    }
+
+    const headerDownloadBtn = document.getElementById('headerDownloadBtn');
+    const headerDownloadPopover = document.getElementById('headerDownloadPopover');
+    const headerDownloadChordsTrigger = document.getElementById('headerDownloadChordsTrigger');
+
+    if (headerDownloadBtn && headerDownloadPopover) {
+      headerDownloadBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = headerDownloadPopover.classList.toggle('is-open');
+        headerDownloadPopover.setAttribute('aria-hidden', String(!isOpen));
+        // close the transpose popover if open
+        if (transposePopover) {
+          transposePopover.classList.remove('is-open');
+          transposePopover.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
+
+    if (headerDownloadChordsTrigger && chordsModal) {
+      headerDownloadChordsTrigger.addEventListener('click', () => {
+        if (headerDownloadPopover) {
+          headerDownloadPopover.classList.remove('is-open');
+          headerDownloadPopover.setAttribute('aria-hidden', 'true');
+        }
+        openChordsModal();
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      if (headerDownloadPopover && headerDownloadPopover.classList.contains('is-open')) {
+        if (!document.getElementById('headerDownloadWrap').contains(e.target)) {
+          headerDownloadPopover.classList.remove('is-open');
+          headerDownloadPopover.setAttribute('aria-hidden', 'true');
+        }
+      }
+    });
+
+    [chordsClose, chordsCancel].forEach((btn) => {
+      if (btn) {
+        btn.addEventListener('click', closeChordsModal);
+      }
+    });
+
+    if (chordsModal) {
+      chordsModal.addEventListener('click', (event) => {
+        if (event.target.dataset.close) {
+          closeChordsModal();
+        }
+      });
+
+      if (chordsShiftInput) {
+        chordsShiftInput.addEventListener('input', updateTargetKey);
+      }
+      chordsModeInputs.forEach((input) => {
+        input.addEventListener('change', applyMode);
+      });
+    }
+
+    if (chordsConfirm) {
+      chordsConfirm.addEventListener('click', () => {
+        const songId = chordsModal.dataset.songId;
+        const shiftSteps = parseInt(chordsShiftInput.value, 10) || 0;
+        const url = `/song/${songId}/download_chords_pdf?shift_steps=${encodeURIComponent(shiftSteps)}`;
+        window.open(url, '_blank');
+        closeChordsModal();
       });
     }
 

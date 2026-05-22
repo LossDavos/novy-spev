@@ -580,37 +580,13 @@ function initializeFixedSearch() {
         </div>
       </div>
 
-      <!-- Essential Actions (Always Visible) - 4 evenly spaced buttons -->
+      <!-- Essential Actions (Always Visible) -->
       <div class="mobile-song-actions-grid">
-        <!-- 1. Slová (Lyrics) -->
-        ${song.pdf_lyrics_path ?
-          `<a href="/uploads/${song.pdf_lyrics_path}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
-            <i class="bi bi-file-text"></i>
-            <span class="action-label d-none d-lg-inline">Slová</span>
-          </a>` :
-          `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
-            <i class="bi bi-file-text"></i>
-            <span class="action-label d-none d-lg-inline">Slová</span>
-          </button>`
-        }
-
-        <!-- 2. Akordy (Chords) -->
-        ${song.pdf_chords_path ?
-          `<a href="/uploads/${song.pdf_chords_path}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
-            <i class="fa-solid fa-guitar"></i>
-            <span class="action-label d-none d-lg-inline">Akordy</span>
-          </a>` :
-          `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
-            <i class="fa-solid fa-guitar"></i>
-            <span class="action-label d-none d-lg-inline">Akordy</span>
-          </button>`
-        }
-
-        <!-- 3. Noty (Sheet Music) -->
-        ${sheetButton}
-
-        <!-- 4. MP3 -->
-        ${mp3Button}
+        <!-- Náhľad -->
+        <a href="/song/${song.id}/preview" class="btn btn-outline-dark btn-sm" title="Náhľad">
+          <i class="bi bi-music-note-beamed"></i>
+          <span class="action-label">Náhľad</span>
+        </a>
       </div>
 
       <!-- Expandable Section for Additional Functionality -->
@@ -623,10 +599,6 @@ function initializeFixedSearch() {
         <div class="collapse mobile-expanded-content" id="mobile-collapse-${song.id}">
           <!-- Action Buttons -->
           <div class="mobile-files-grid">
-            <a href="/song/${song.id}/preview" class="btn btn-outline-dark btn-sm">
-              <i class="bi bi-music-note-beamed me-1"></i>Nahlad
-            </a>
-
             <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm">
               <i class="bi bi-eye me-1"></i>Detaily
             </a>
@@ -634,20 +606,6 @@ function initializeFixedSearch() {
             <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm">
               <i class="bi bi-pencil-square me-1"></i>Upraviť
             </a>
-
-            <!-- Generate TeX Button - Same as table -->
-            <form method="POST" action="/song/${song.id}/generate_tex#mobile-song-${song.id}" class="d-inline">
-              <button type="submit" class="btn btn-outline-warning btn-sm ${song.admin_checked ? 'disabled' : ''}" ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
-                <i class="bi bi-file-code"></i>TeX
-              </button>
-            </form>
-
-            <!-- Generate PDF Button - Same as table -->
-            <form method="GET" action="/generate_pdfs/${song.id}#mobile-song-${song.id}" class="d-inline">
-              <button type="submit" class="btn btn-primary btn-sm ${!song.tex_path || song.admin_checked ? 'disabled' : ''}" style="background-color: #9b59b6; border-color: #9b59b6;" ${!song.tex_path ? 'title="First generate TeX files"' : ''} ${song.admin_checked ? 'title="Admin already checked this song"' : ''}>
-                <i class="bi bi-file-pdf"></i>PDF
-              </button>
-            </form>
           </div>
 
           <!-- Categories -->

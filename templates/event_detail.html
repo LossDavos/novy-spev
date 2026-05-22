@@ -62,7 +62,7 @@
 
               <div class="mobile-song-actions-grid">
                 {% if song.pdf_lyrics_path %}
-                  <a href="/uploads/{{ song.pdf_lyrics_path }}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
+                  <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=0" class="btn btn-outline-primary btn-sm" title="Zobraziť text piesne (bez akordov)">
                     <i class="bi bi-file-text"></i>
                     <span class="action-label d-none d-lg-inline">Slová</span>
                   </a>
@@ -74,7 +74,7 @@
                 {% endif %}
 
                 {% if song.pdf_chords_path %}
-                  <a href="/uploads/{{ song.pdf_chords_path }}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
+                  <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=1" class="btn btn-outline-warning btn-sm" title="Zobraziť akordy">
                     <i class="fa-solid fa-guitar"></i>
                     <span class="action-label d-none d-lg-inline">Akordy</span>
                   </a>

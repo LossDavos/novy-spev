@@ -46,10 +46,63 @@ def generate_latex_content(song):
                 )
         return ''.join(protected)
 
+    def format_chord_display(chord_text):
+        raw = chord_text.strip()
+        if not raw:
+            return raw
+
+        optional = raw.startswith('(') and raw.endswith(')') and len(raw) > 2
+        inner = raw[1:-1].strip() if optional else raw
+        inner = inner.replace('\\', '/')
+
+        def normalize_part(part):
+            match = re.match(r'^([A-Ha-h])([#b]?)(.*)$', part)
+            if not match:
+                return part
+            letter, accidental, rest = match.groups()
+            is_lower = letter.islower()
+            letter = letter.upper()
+            rest = rest.strip()
+            rest_lower = rest.lower()
+
+            if rest in ('2', '4'):
+                rest = rest
+            elif rest_lower == 'sus2':
+                rest = '2'
+            elif rest_lower == 'sus4':
+                rest = '4'
+
+            is_minor = False
+            if rest_lower.startswith('min'):
+                is_minor = True
+                rest = rest[3:]
+            elif rest_lower.startswith('m') and not rest_lower.startswith('maj'):
+                is_minor = True
+                rest = rest[1:]
+
+            if is_minor:
+                letter = letter.lower()
+            elif is_lower:
+                letter = letter.lower()
+
+            root = f"{letter}{accidental}"
+            return f"{root}{rest}"
+
+        parts = [p.strip() for p in inner.split('/')]
+        normalized_parts = [normalize_part(p) for p in parts if p]
+        normalized = '/'.join(normalized_parts) if normalized_parts else inner
+
+        if optional:
+            normalized = f"({normalized})"
+        return normalized
+
     def convert_chords(line):
-        # First properly escape the entire line (handling chords specially)
-        escaped_line = escape_latex(line)
-        # Now convert chord markers to LaTeX commands
+        normalized_line = re.sub(
+            r'\[([^\]]+)\]',
+            lambda m: f"[{format_chord_display(m.group(1))}]",
+            line,
+        )
+        escaped_line = escape_latex(normalized_line)
         return re.sub(r'\[([^\]]+)\]', r'\\chord{\1}', escaped_line)
 
     def format_block(block):

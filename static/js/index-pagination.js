@@ -555,16 +555,16 @@ function initializeMainPageLazyLoading() {
     let fileDownloadsHtml = '';
     if (song.pdf_lyrics_path || song.pdf_chords_path) {
       const lyricsBtn = song.pdf_lyrics_path ?
-        `<a href="/uploads/${song.pdf_lyrics_path}"
+        `<a href="/song/${song.id}/preview?chords=0"
            class="btn btn-outline-primary btn-sm"
-           title="Stiahnuť text piesne">
+           title="Zobraziť text piesne (bez akordov)">
           <i class="bi bi-file-text"></i> Text
         </a>` : '';
 
       const chordsBtn = song.pdf_chords_path ?
-        `<a href="/uploads/${song.pdf_chords_path}"
+        `<a href="/song/${song.id}/preview?chords=1"
            class="btn btn-outline-warning btn-sm"
-           title="Stiahnuť akordy">
+           title="Zobraziť akordy">
           <i class="fa-solid fa-guitar"></i> Akordy
         </a>` : '';
 
@@ -777,7 +777,7 @@ function initializeMainPageLazyLoading() {
       <div class="mobile-song-actions-grid">
         <!-- 1. Slová (Lyrics) -->
         ${song.pdf_lyrics_path ?
-          `<a href="/uploads/${song.pdf_lyrics_path}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
+          `<a href="/song/${song.id}/preview?chords=0" class="btn btn-outline-primary btn-sm" title="Zobraziť text piesne (bez akordov)">
             <i class="bi bi-file-text"></i>
             <span class="action-label d-none d-lg-inline">Slová</span>
           </a>` :
@@ -789,7 +789,7 @@ function initializeMainPageLazyLoading() {
 
         <!-- 2. Akordy (Chords) -->
         ${song.pdf_chords_path ?
-          `<a href="/uploads/${song.pdf_chords_path}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
+          `<a href="/song/${song.id}/preview?chords=1" class="btn btn-outline-warning btn-sm" title="Zobraziť akordy">
             <i class="fa-solid fa-guitar"></i>
             <span class="action-label d-none d-lg-inline">Akordy</span>
           </a>` :
@@ -815,35 +815,16 @@ function initializeMainPageLazyLoading() {
 
         <div class="collapse mobile-expanded-content" id="mobile-collapse-${song.id}">
           <!-- Action Buttons -->
-          <div class="mobile-files-grid">
-            <!-- Preview (icon only) -->
-            <a href="/song/${song.id}/preview" class="btn btn-outline-dark btn-sm icon-only" title="Nahlad">
-              <i class="bi bi-music-note-beamed"></i>
+          <div class="d-flex gap-2">
+            <!-- View -->
+            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm flex-fill" title="Detaily">
+              <i class="bi bi-eye me-1"></i>Detaily
             </a>
 
-            <!-- View (icon only) -->
-            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm icon-only" title="Detaily">
-              <i class="bi bi-eye"></i>
+            <!-- Edit -->
+            <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm flex-fill" title="Upraviť">
+              <i class="bi bi-pencil-square me-1"></i>Upraviť
             </a>
-
-            <!-- Edit (icon only) -->
-            <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm icon-only" title="Upraviť">
-              <i class="bi bi-pencil-square"></i>
-            </a>
-
-            <!-- Generate TeX Button (compact) -->
-            <form method="POST" action="/song/${song.id}/generate_tex#mobile-song-${song.id}" class="d-inline">
-              <button type="submit" class="btn btn-outline-warning btn-sm compact ${song.admin_checked ? 'disabled' : ''}" ${song.admin_checked ? 'title="Admin already checked this song"' : 'title="Generovať TeX súbor"'}>
-                <i class="bi bi-file-code"></i>TeX
-              </button>
-            </form>
-
-            <!-- Generate PDF Button (compact) -->
-            <form method="GET" action="/generate_pdfs/${song.id}#mobile-song-${song.id}" class="d-inline">
-              <button type="submit" class="btn btn-primary btn-sm compact ${!song.tex_path || song.admin_checked ? 'disabled' : ''}" style="background-color: #9b59b6; border-color: #9b59b6;" ${!song.tex_path ? 'title="First generate TeX files"' : song.admin_checked ? 'title="Admin already checked this song"' : 'title="Generovať PDF súbor"'}>
-                <i class="bi bi-file-pdf"></i>PDF
-              </button>
-            </form>
           </div>
 
           <!-- Categories -->
