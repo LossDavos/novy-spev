@@ -911,7 +911,7 @@
       const mainTransposed = mainRoot + mainParsed.rest;
 
       if (!bass) {
-        return mainTransposed;
+        return optional ? `(${mainTransposed})` : mainTransposed;
       }
 
       const bassParsed = parseRoot(bass.trim());
