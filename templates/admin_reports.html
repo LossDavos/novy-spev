@@ -1,0 +1,445 @@
+{% extends "layout.html" %}
+{% block title %}Admin – Hlásenia chýb{% endblock %}
+{% block content %}
+
+<style>
+#pw-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: #fff; border-bottom: 1px solid #dee2e6;
+}
+.type-badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.2rem 0.55rem; border-radius: 20px;
+  font-size: 0.78rem; font-weight: 600; white-space: nowrap;
+}
+.tb-key    { background: #fff3cd; color: #856404; }
+.tb-lyrics { background: #d1ecf1; color: #0c5460; }
+.tb-chords { background: #d4edda; color: #155724; }
+.tb-author { background: #e2d9f3; color: #432874; }
+.tb-other  { background: #e9ecef; color: #495057; }
+.resolved-row td { opacity: .45; }
+.report-msg { font-size: .85rem; color: #495057; max-width: 320px; word-break: break-word; }
+.action-btn {
+  padding: .2rem .55rem; border-radius: 6px; border: none;
+  font-size: .8rem; cursor: pointer; white-space: nowrap;
+}
+.btn-resolve { background: #d4edda; color: #155724; }
+.btn-delete  { background: #f8d7da; color: #842029; }
+.filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.filter-link {
+  padding: .25rem .7rem; border-radius: 20px; font-size: .82rem;
+  text-decoration: none; border: 1px solid #dee2e6; color: #495057;
+}
+.filter-link.active { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+.count-chip {
+  display: inline-block; min-width: 18px; height: 18px; line-height: 18px;
+  background: #dc3545; color: #fff; border-radius: 99px;
+  font-size: .7rem; text-align: center; padding: 0 4px; margin-left: 2px;
+}
+/* inline resolve panel */
+.resolve-panel-row td {
+  padding: 0 !important; border-top: none !important;
+  background: transparent;
+}
+.resolve-panel {
+  border: 1.5px solid #dee2e6; border-radius: 10px;
+  background: #fff; padding: 1rem 1.1rem; margin: 0 0.25rem 0.5rem;
+  animation: rp-in .15s ease;
+}
+@keyframes rp-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.resolve-choices {
+  display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: .75rem;
+}
+.resolve-choice {
+  flex: 1; min-width: 130px; padding: .55rem .8rem;
+  border-radius: 8px; border: 2px solid transparent;
+  cursor: pointer; font-weight: 600; font-size: .88rem;
+  display: flex; align-items: center; gap: .4rem;
+  transition: border-color .15s, box-shadow .15s;
+  background: #f8f9fa; color: #495057;
+}
+.resolve-choice.accept  { background: #d4edda; color: #155724; }
+.resolve-choice.decline { background: #fff3cd; color: #856404; }
+.resolve-choice.active  { border-color: currentColor; box-shadow: 0 0 0 3px rgba(0,0,0,.07); }
+.resolve-note-label { font-size: .8rem; font-weight: 600; color: #495057; margin-bottom: .3rem; }
+.resolve-note { width: 100%; border: 1px solid #dee2e6; border-radius: 6px; padding: .4rem .6rem;
+  font-size: .85rem; resize: vertical; outline: none; min-height: 52px; }
+.resolve-note:focus { border-color: #86b7fe; box-shadow: 0 0 0 3px rgba(13,110,253,.15); }
+.resolve-actions { display: flex; gap: .5rem; margin-top: .6rem; }
+.rp-btn { padding: .3rem .8rem; border-radius: 6px; border: none; cursor: pointer; font-size: .85rem; font-weight: 600; }
+.rp-btn.confirm { background: #0d6efd; color: #fff; }
+.rp-btn.confirm:disabled { opacity: .6; cursor: default; }
+.rp-btn.cancel  { background: #e9ecef; color: #495057; }
+.rp-btn.del     { background: #f8d7da; color: #842029; margin-left: auto; }
+/* per-correction review rows */
+.corr-review-list { display: flex; flex-direction: column; gap: .4rem; margin-bottom: .65rem; }
+.corr-review-row {
+  display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  background: #f8f9fa; border: 1.5px solid #dee2e6; border-radius: 7px;
+  padding: .35rem .65rem; transition: border-color .12s, background .12s;
+}
+.corr-review-row.is-accepted { border-color: #c3e6cb; background: #f0fff4; }
+.corr-review-row.is-declined { border-color: #f5c6cb; background: #fff5f5; }
+.corr-review-row.is-declined .corr-review-text { opacity: .5; text-decoration: line-through; }
+.corr-review-text {
+  display: flex; align-items: center; gap: .35rem; flex: 1; flex-wrap: wrap; min-width: 0;
+}
+.corr-review-btns { display: flex; gap: .3rem; flex-shrink: 0; }
+.crb {
+  padding: .2rem .55rem; border-radius: 5px; border: 1.5px solid #dee2e6;
+  font-size: .78rem; cursor: pointer; font-weight: 600;
+  background: #fff; color: #6c757d; transition: all .1s;
+}
+.crb:hover { border-color: #adb5bd; }
+.crb.accept.active  { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+.crb.decline.active { background: #f8d7da; color: #842029; border-color: #f5c6cb; }
+</style>
+
+<!-- sticky password bar -->
+<div id="pw-bar" class="py-2 px-3 mb-3 d-flex align-items-center gap-3 shadow-sm">
+  <i class="bi bi-shield-lock text-warning"></i>
+  <input id="adminPw" type="password" class="form-control form-control-sm" style="max-width:200px" placeholder="Admin heslo…">
+  <span id="pwStatus" class="badge bg-secondary">nezadané</span>
+  <span class="ms-auto text-muted small">Otvorených: <strong>{{ total_open }}</strong></span>
+</div>
+
+<div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-3">
+  <h4 class="mb-0"><i class="bi bi-flag me-2 text-danger"></i>Hlásenia chýb</h4>
+</div>
+
+<!-- filters -->
+<div class="filter-bar mb-3">
+  <span class="text-muted small me-1">Stav:</span>
+  <a href="{{ url_for('admin_reports', type=type_filter, status='open') }}"
+     class="filter-link {% if status_filter == 'open' %}active{% endif %}">Otvorené</a>
+  <a href="{{ url_for('admin_reports', type=type_filter, status='resolved') }}"
+     class="filter-link {% if status_filter == 'resolved' %}active{% endif %}">Vyriešené</a>
+  <a href="{{ url_for('admin_reports', type=type_filter, status='all') }}"
+     class="filter-link {% if status_filter == 'all' %}active{% endif %}">Všetky</a>
+
+  <span class="text-muted small ms-2 me-1">Typ:</span>
+  <a href="{{ url_for('admin_reports', type='', status=status_filter) }}"
+     class="filter-link {% if not type_filter %}active{% endif %}">Všetky</a>
+  {% for val, icon, label in [
+    ('key',    'bi-music-note',        'Tónina'),
+    ('lyrics', 'bi-file-text',         'Slová'),
+    ('chords', 'bi-music-note-beamed', 'Akordy'),
+    ('author', 'bi-person',            'Autor'),
+    ('other',  'bi-three-dots',        'Iné'),
+  ] %}
+  <a href="{{ url_for('admin_reports', type=val, status=status_filter) }}"
+     class="filter-link {% if type_filter == val %}active{% endif %}">
+    <i class="bi {{ icon }}"></i> {{ label }}
+    {% if type_counts.get(val) %}<span class="count-chip">{{ type_counts[val] }}</span>{% endif %}
+  </a>
+  {% endfor %}
+</div>
+
+{% if reports %}
+<div class="table-responsive">
+  <table class="table table-hover align-middle" id="reportsTable">
+    <thead class="table-light">
+      <tr>
+        <th style="width:80px">#</th>
+        <th>Pieseň</th>
+        <th>Typ</th>
+        <th>Správa</th>
+        <th>Meno</th>
+        <th style="width:130px">Dátum</th>
+        <th style="width:160px">Akcia</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in reports %}
+      <tr class="{% if r.resolved %}resolved-row{% endif %}" id="row-{{ r.id }}">
+        <td class="text-muted small">{{ r.id }}</td>
+        <td>
+          <a href="{{ url_for('song_preview', song_id=r.song_db_id) }}" target="_blank"
+             class="text-decoration-none fw-semibold">
+            {{ r.song.song_id }} – {{ r.song.title }}
+          </a>
+        </td>
+        <td>
+          {% set type_meta = {
+            'key':    ('tb-key',    'bi-music-note',        'Tónina'),
+            'lyrics': ('tb-lyrics', 'bi-file-text',         'Slová'),
+            'chords': ('tb-chords', 'bi-music-note-beamed', 'Akordy'),
+            'author': ('tb-author', 'bi-person',            'Autor'),
+            'other':  ('tb-other',  'bi-three-dots',        'Iné'),
+          } %}
+          {% set cls, icon, label = type_meta.get(r.report_type, ('tb-other','bi-three-dots','?')) %}
+          <span class="type-badge {{ cls }}"><i class="bi {{ icon }}"></i> {{ label }}</span>
+        </td>
+        <td>
+          <span class="report-msg" style="white-space: pre-wrap;">{{ r.message or '—' }}</span>
+          {% if r.resolved_note %}
+          <div class="mt-1 text-success small"><i class="bi bi-check-circle"></i> {{ r.resolved_note }}</div>
+          {% endif %}
+        </td>
+        <td class="small">{{ r.reporter_name or '—' }}</td>
+        <td class="small text-muted">{{ r.created_at.strftime('%d.%m.%Y %H:%M') if r.created_at else '—' }}</td>
+        <td>
+          {% if not r.resolved %}
+          <div class="d-flex gap-1 flex-wrap">
+            <button class="action-btn btn-resolve"
+              data-id="{{ r.id }}"
+              data-song-id="{{ r.song_db_id }}"
+              data-type="{{ r.report_type }}"
+              data-message="{{ r.message | e if r.message else '' }}"
+              onclick="resolveReport(this)">
+              <i class="bi bi-check-lg"></i> Vyriešiť
+            </button>
+            <button class="action-btn btn-delete" onclick="deleteReport({{ r.id }}, this, null, null)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+          {% else %}
+          <span class="text-success small"><i class="bi bi-check-circle-fill"></i> Vyriešené</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="text-center py-5">
+  <i class="bi bi-check-circle-fill text-success fs-1"></i>
+  <h5 class="mt-3 text-success">Žiadne hlásenia</h5>
+</div>
+{% endif %}
+
+<script>
+  const pwInput = document.getElementById('adminPw');
+  const pwStatus = document.getElementById('pwStatus');
+
+  async function verifyPw() {
+    const pw = pwInput.value;
+    if (!pw) { pwStatus.textContent = 'nezadané'; pwStatus.className = 'badge bg-secondary'; return false; }
+    try {
+      const res = await fetch('/api/check-update-password', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ password: pw })
+      });
+      const d = await res.json();
+      if (d.valid) { pwStatus.textContent = 'overené ✓'; pwStatus.className = 'badge bg-success'; return true; }
+      pwStatus.textContent = 'nesprávne ✗'; pwStatus.className = 'badge bg-danger'; return false;
+    } catch { return false; }
+  }
+  pwInput.addEventListener('change', verifyPw);
+  pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') verifyPw(); });
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function resolveReport(btn) {
+    const id = parseInt(btn.dataset.id);
+    const songId = parseInt(btn.dataset.songId);
+    const reportType = btn.dataset.type || '';
+    const reportMessage = btn.dataset.message || '';
+    const pw = pwInput.value;
+    if (!pw) { alert('Najprv zadaj heslo!'); pwInput.focus(); return; }
+
+    document.querySelectorAll('.resolve-panel-row').forEach(r => r.remove());
+    document.querySelectorAll('.action-btn.resolving').forEach(b => { b.classList.remove('resolving'); b.disabled = false; });
+    btn.classList.add('resolving');
+    btn.disabled = true;
+
+    const row = document.getElementById(`row-${id}`);
+    const colspan = row.cells.length;
+    const panelRow = document.createElement('tr');
+    panelRow.className = 'resolve-panel-row';
+
+    // Parse structured corrections from message (lyrics/chords reports)
+    const corrItems = [];
+    let extraNote = '';
+    if ((reportType === 'lyrics' || reportType === 'chords') && reportMessage) {
+      const msgLines = reportMessage.split('\n');
+      const nonCorr = [];
+      msgLines.forEach(line => {
+        const m = line.match(/^\[(.+?)\]\s+"(.+?)"(\s+\(#\d+\))?\s+→\s+"(.+?)"$/);
+        if (m) {
+          corrItems.push({ location: m[1], original: m[2], occNote: (m[3] || '').trim(), replacement: m[4] });
+        } else if (line.trim()) {
+          nonCorr.push(line);
+        }
+      });
+      extraNote = nonCorr.join('\n');
+    }
+
+    let innerHtml = '';
+    if (corrItems.length > 0) {
+      innerHtml = '<div class="corr-review-list">' +
+        corrItems.map((c, i) =>
+          `<div class="corr-review-row" data-idx="${i}">` +
+          `<div class="corr-review-text">` +
+          `<span class="report-correction-location">${escHtml(c.location)}</span>` +
+          `<span class="report-correction-original">${escHtml(c.original)}${c.occNote ? ` <span class="report-correction-occ">${escHtml(c.occNote)}</span>` : ''}</span>` +
+          `<span class="report-correction-arrow">→</span>` +
+          `<span class="report-correction-replacement">${escHtml(c.replacement)}</span>` +
+          `</div>` +
+          `<div class="corr-review-btns">` +
+          `<button type="button" class="crb accept active" data-choice="accept"><i class="bi bi-check-lg"></i> Prijať</button>` +
+          `<button type="button" class="crb decline" data-choice="decline"><i class="bi bi-x-lg"></i> Zamietnuť</button>` +
+          `</div></div>`
+        ).join('') +
+        '</div>';
+    } else {
+      innerHtml =
+        `<div class="resolve-choices">` +
+        `<button type="button" class="resolve-choice accept" data-note="Opravené."><i class="bi bi-check-lg"></i> Prijať – opravené</button>` +
+        `<button type="button" class="resolve-choice decline" data-note="Zamietnuté – pravdepodobne nie je chyba."><i class="bi bi-x-lg"></i> Zamietnuť – nie je chyba</button>` +
+        `</div>`;
+    }
+    innerHtml +=
+      `<div class="resolve-note-label">Poznámka:</div>` +
+      `<textarea class="resolve-note" rows="2" placeholder="Voliteľná poznámka…"></textarea>` +
+      `<div class="resolve-actions">` +
+      `<button type="button" class="rp-btn confirm"><i class="bi bi-check2"></i> Potvrdiť</button>` +
+      `<button type="button" class="rp-btn cancel">Zrušiť</button>` +
+      `<button type="button" class="rp-btn del"><i class="bi bi-trash"></i> Vymazať hlásenie</button>` +
+      `</div>`;
+
+    panelRow.innerHTML = `<td colspan="${colspan}"><div class="resolve-panel">${innerHtml}</div></td>`;
+    row.after(panelRow);
+
+    const noteEl = panelRow.querySelector('.resolve-note');
+    const confirmBtn = panelRow.querySelector('.rp-btn.confirm');
+    if (extraNote) noteEl.value = extraNote;
+
+    // Wire per-correction accept/decline toggles
+    panelRow.querySelectorAll('.corr-review-row').forEach(rowEl => {
+      rowEl.querySelectorAll('.crb').forEach(crb => {
+        crb.addEventListener('click', () => {
+          rowEl.querySelectorAll('.crb').forEach(x => x.classList.remove('active'));
+          crb.classList.add('active');
+          rowEl.classList.toggle('is-accepted', crb.dataset.choice === 'accept');
+          rowEl.classList.toggle('is-declined', crb.dataset.choice === 'decline');
+        });
+      });
+    });
+
+    // Wire simple accept/decline (non-correction case)
+    panelRow.querySelectorAll('.resolve-choice').forEach(c => {
+      c.addEventListener('click', () => {
+        panelRow.querySelectorAll('.resolve-choice').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+        if (!noteEl.dataset.edited) { noteEl.value = c.dataset.note; }
+        noteEl.focus();
+      });
+    });
+    noteEl.addEventListener('input', () => { noteEl.dataset.edited = '1'; });
+
+    panelRow.querySelector('.rp-btn.cancel').addEventListener('click', () => {
+      panelRow.remove();
+      btn.classList.remove('resolving');
+      btn.disabled = false;
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+      let note = noteEl.value.trim();
+      const accepted = [], declined = [];
+
+      if (corrItems.length > 0) {
+        panelRow.querySelectorAll('.corr-review-row').forEach((rowEl, i) => {
+          const choice = rowEl.querySelector('.crb.active')?.dataset.choice || 'decline';
+          (choice === 'accept' ? accepted : declined).push(corrItems[i]);
+        });
+        const parts = [];
+        if (accepted.length) parts.push('Prijaté: ' + accepted.map(c => `"${c.original}"${c.occNote ? ' ' + c.occNote : ''} → "${c.replacement}"`).join(', '));
+        if (declined.length) parts.push('Zamietnuté: ' + declined.map(c => `"${c.original}"${c.occNote ? ' ' + c.occNote : ''}`).join(', '));
+        if (note) parts.push(note);
+        note = parts.join('\n');
+      }
+
+      confirmBtn.disabled = true;
+
+      // Apply accepted corrections to the song text
+      if (accepted.length > 0) {
+        const payload = accepted.map(c => {
+          // Parse occurrenceIdx from occNote like "(#2)"
+          const occMatch = c.occNote && c.occNote.match(/#(\d+)/);
+          const occurrenceIdx = occMatch ? parseInt(occMatch[1]) - 1 : 0;
+          // Parse location: new format "label #partIdx r.lineNum", old format "label, r.lineNum" or "label r.lineNum"
+          const locNew = c.location && c.location.match(/^(.+?)\s+#(\d+)\s+r\.(\d+)$/);
+          const locOld = c.location && c.location.match(/^(.+?),?\s+r\.(\d+)$/);
+          let partIdx = null, partLabel = null, lineIdx = 0;
+          if (locNew) {
+            partLabel = locNew[1].trim();
+            partIdx = parseInt(locNew[2]);
+            lineIdx = parseInt(locNew[3]) - 1;
+          } else if (locOld) {
+            partLabel = locOld[1].trim();
+            lineIdx = parseInt(locOld[2]) - 1;
+          }
+          const entry = { lineIdx, original: c.original, replacement: c.replacement, occurrenceIdx };
+          if (partIdx !== null) entry.partIdx = partIdx;
+          else entry.partLabel = partLabel;
+          return entry;
+        });
+        try {
+          const applyRes = await fetch(`/api/song/${songId}/correct-lyrics`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pw, report_type: reportType, corrections: payload, message: '', reporter_name: 'admin (resolve)' }),
+          });
+          const applyData = await applyRes.json();
+          if (!applyData.success) {
+            alert('Chyba pri ukladaní opráv: ' + (applyData.message || ''));
+            confirmBtn.disabled = false;
+            return;
+          }
+        } catch { alert('Sieťová chyba pri ukladaní opráv'); confirmBtn.disabled = false; return; }
+      }
+
+      try {
+        const res = await fetch(`/api/report/${id}/resolve`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ password: pw, note })
+        });
+        const d = await res.json();
+        if (d.success) {
+          panelRow.remove();
+          row.classList.add('resolved-row');
+          row.querySelector('td:last-child').innerHTML =
+            `<span class="text-success small"><i class="bi bi-check-circle-fill"></i> Vyriešené</span>` +
+            (note ? `<div class="mt-1 text-muted small" style="white-space:pre-wrap">${escHtml(note)}</div>` : '');
+        } else {
+          alert(d.message || 'Chyba!');
+          confirmBtn.disabled = false;
+        }
+      } catch { alert('Sieťová chyba'); confirmBtn.disabled = false; }
+    });
+
+    panelRow.querySelector('.rp-btn.del').addEventListener('click', () => {
+      if (!confirm('Naozaj vymazať toto hlásenie?')) return;
+      deleteReport(id, panelRow.querySelector('.rp-btn.del'), panelRow, btn);
+    });
+  }
+
+  async function deleteReport(id, btn, panelRow, resolveBtn) {
+    if (!panelRow && !confirm('Naozaj vymazať toto hlásenie?')) return;
+    const pw = pwInput.value;
+    if (!pw) { alert('Najprv zadaj heslo!'); pwInput.focus(); return; }
+    btn.disabled = true;
+    try {
+      const res = await fetch(`/api/report/${id}`, {
+        method: 'DELETE', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ password: pw })
+      });
+      const d = await res.json();
+      if (d.success) {
+        if (panelRow) panelRow.remove();
+        document.getElementById(`row-${id}`).remove();
+      } else {
+        alert(d.message || 'Chyba!');
+        btn.disabled = false;
+        if (resolveBtn) resolveBtn.disabled = false;
+      }
+    } catch { alert('Sieťová chyba'); btn.disabled = false; }
+  }
+</script>
+{% endblock %}

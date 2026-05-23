@@ -10,7 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory, send_file
-from models import db, Song, Event, EventSection, EventSectionSong
+from models import db, Song, Event, EventSection, EventSectionSong, SongReport
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from datetime import datetime
@@ -2021,6 +2021,207 @@ def song_detail(song_id):
                          sheet_pdfs=sheet_pdfs,
                          sheet_mscz=sheet_mscz,
                          is_edit=not is_new_song)
+
+@app.route('/api/song/<int:song_id>/report', methods=['POST'])
+def submit_report(song_id):
+    """Submit a report (wrong key / lyrics / chords / author / other)."""
+    from datetime import datetime
+    song = Song.query.get_or_404(song_id)
+    data = request.get_json() or {}
+    report_type = data.get('type', 'other').strip()
+    if report_type not in ('key', 'lyrics', 'chords', 'author', 'other'):
+        return jsonify({'success': False, 'message': 'Neplatný typ hlásenia'}), 400
+    message = (data.get('message') or '').strip()[:500]
+    reporter_name = (data.get('reporter_name') or '').strip()[:100]
+    # For key reports also flag the song column for the widget
+    if report_type == 'key':
+        song.key_reported = True
+    report = SongReport(
+        song_db_id=song.id,
+        report_type=report_type,
+        message=message or None,
+        reporter_name=reporter_name or None,
+        created_at=datetime.utcnow(),
+    )
+    db.session.add(report)
+    db.session.commit()
+    return jsonify({'success': True})
+
+
+@app.route('/api/report/<int:report_id>/resolve', methods=['POST'])
+def resolve_report(report_id):
+    """Admin: mark a report as resolved (optionally with a note)."""
+    report = SongReport.query.get_or_404(report_id)
+    data = request.get_json() or {}
+    provided_password = data.get('password', '')
+    if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+        return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
+    report.resolved = True
+    report.resolved_note = (data.get('note') or '').strip()[:500] or None
+    # If resolving a key report, clear the song flag too
+    if report.report_type == 'key':
+        open_key_reports = SongReport.query.filter_by(
+            song_db_id=report.song_db_id, report_type='key', resolved=False
+        ).count()
+        if open_key_reports == 0:
+            report.song.key_reported = False
+    db.session.commit()
+    return jsonify({'success': True})
+
+
+@app.route('/api/report/<int:report_id>', methods=['DELETE'])
+def delete_report(report_id):
+    """Admin: delete a report entirely."""
+    report = SongReport.query.get_or_404(report_id)
+    data = request.get_json() or {}
+    provided_password = data.get('password', '')
+    if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+        return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
+    db.session.delete(report)
+    db.session.commit()
+    return jsonify({'success': True})
+
+
+@app.route('/api/song/<int:song_id>/correct-key', methods=['POST'])
+def correct_key(song_id):
+    """Admin: update the key and clear key_reported flag + resolve open key reports."""
+    song = Song.query.get_or_404(song_id)
+    data = request.get_json() or {}
+    provided_password = data.get('password', '')
+    if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+        return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
+    raw_key = data.get('key', '').strip()
+    song.song_key = sanitize_input(raw_key, "song key") if raw_key else None
+    song.key_reported = False
+    SongReport.query.filter_by(song_db_id=song.id, report_type='key', resolved=False).update({'resolved': True})
+    db.session.commit()
+    return jsonify({'success': True, 'key': song.song_key})
+
+
+@app.route('/api/song/<int:song_id>/correct-lyrics', methods=['POST'])
+def correct_lyrics(song_id):
+    """Admin: apply word/chord text corrections to song_parts and submit a resolved report."""
+    song = Song.query.get_or_404(song_id)
+    data = request.get_json() or {}
+    provided_password = data.get('password', '')
+    if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+        return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
+
+    report_type = data.get('report_type', 'lyrics')   # 'lyrics' or 'chords'
+    corrections = data.get('corrections', [])          # [{partIdx, lineIdx, original, replacement}, ...]
+    reporter_name = data.get('reporter_name', '').strip()
+    user_message = data.get('message', '').strip()
+
+    if not corrections:
+        return jsonify({'success': False, 'message': 'Žiadne opravy.'}), 400
+
+    parts = json.loads(song.song_parts or '[]')
+    # build label→index map for fallback lookup
+    label_to_idx = {p.get('type', '').strip().lower(): i for i, p in enumerate(parts)}
+
+    applied = []
+    for c in corrections:
+        try:
+            original = str(c['original'])
+            replacement = str(c['replacement'])
+            line_idx = int(c['lineIdx'])
+        except (KeyError, ValueError, TypeError):
+            continue
+        # resolve partIdx – prefer explicit, fall back to partLabel search
+        if 'partIdx' in c:
+            part_idx = int(c['partIdx'])
+        else:
+            label = str(c.get('partLabel', '')).strip().lower()
+            part_idx = label_to_idx.get(label, -1)
+        if part_idx < 0 or part_idx >= len(parts):
+            continue
+        lines = parts[part_idx].get('lines', [])
+        if line_idx < 0 or line_idx >= len(lines):
+            continue
+        if report_type == 'chords':
+            # replace the nth occurrence of [original] → [replacement]
+            occ_idx = int(c.get('occurrenceIdx', 0))
+            old_chord = f'[{original}]'
+            new_chord = f'[{replacement}]'
+            line = lines[line_idx]
+            count = 0
+            pos = 0
+            segments = []
+            while True:
+                idx = line.find(old_chord, pos)
+                if idx == -1:
+                    segments.append(line[pos:])
+                    break
+                if count == occ_idx:
+                    segments.append(line[pos:idx])
+                    segments.append(new_chord)
+                    segments.append(line[idx + len(old_chord):])
+                    break
+                segments.append(line[pos:idx + len(old_chord)])
+                pos = idx + len(old_chord)
+                count += 1
+            parts[part_idx]['lines'][line_idx] = ''.join(segments)
+        else:
+            # word replacement (plain text, case-sensitive, whole-word aware)
+            import re as _re
+            pattern = _re.compile(_re.escape(original))
+            parts[part_idx]['lines'][line_idx] = pattern.sub(replacement, lines[line_idx], count=1)
+        applied.append(c)
+
+    if not applied:
+        return jsonify({'success': False, 'message': 'Žiadne zhody v texte.'}), 400
+
+    song.song_parts = json.dumps(parts, ensure_ascii=False)
+    song.update_search_text()
+
+    # Build message summary for the auto-created report
+    corr_lines = []
+    for c in applied:
+        occ_idx = int(c.get('occurrenceIdx', 0))
+        occ_note = f' (#{occ_idx + 1})' if occ_idx > 0 else ''
+        corr_lines.append(f'[{c.get("partLabel","?")} r.{int(c["lineIdx"])+1}] "{c["original"]}"{occ_note} → "{c["replacement"]}"')
+    full_message = '\n'.join(corr_lines)
+    if user_message:
+        full_message += '\n' + user_message
+
+    report = SongReport(
+        song_db_id=song.id,
+        report_type=report_type,
+        message=full_message,
+        reporter_name=reporter_name or 'admin',
+        created_at=datetime.now(),
+        resolved=True,
+        resolved_note='Opravené priamo adminom.',
+    )
+    db.session.add(report)
+    db.session.commit()
+    return jsonify({'success': True, 'applied': len(applied)})
+
+
+@app.route('/admin/reports')
+def admin_reports():
+    """Admin page: table of all song reports."""
+    type_filter = request.args.get('type', '')
+    status_filter = request.args.get('status', 'open')
+    query = SongReport.query.join(Song, SongReport.song_db_id == Song.id)
+    if type_filter:
+        query = query.filter(SongReport.report_type == type_filter)
+    if status_filter == 'open':
+        query = query.filter(SongReport.resolved == False)
+    elif status_filter == 'resolved':
+        query = query.filter(SongReport.resolved == True)
+    reports = query.order_by(SongReport.created_at.desc()).all()
+    type_counts = {}
+    for t in ('key', 'lyrics', 'chords', 'author', 'other'):
+        type_counts[t] = SongReport.query.filter_by(report_type=t, resolved=False).count()
+    total_open = SongReport.query.filter_by(resolved=False).count()
+    return render_template('admin_reports.html',
+                           reports=reports,
+                           type_filter=type_filter,
+                           status_filter=status_filter,
+                           type_counts=type_counts,
+                           total_open=total_open)
+
 
 @app.route('/song/<int:song_id>/toggle-admin-check', methods=['POST'])
 def toggle_admin_check(song_id):

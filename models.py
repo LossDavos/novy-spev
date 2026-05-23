@@ -27,6 +27,7 @@ class Song(db.Model):
     title_original = db.Column(db.String, nullable=True)
     author_original = db.Column(db.String, nullable=True)
     song_key = db.Column(db.String(10), nullable=True)
+    key_reported = db.Column(db.Boolean, default=False)
     categories = db.Column(db.String, nullable=True)
     # Store alternative titles as comma-separated string
     alternative_titles = db.Column(db.String, nullable=True)
@@ -200,6 +201,20 @@ event.listen(Song, 'before_insert', update_search_text_listener)
 event.listen(Song, 'before_update', update_search_text_listener)
 event.listen(Song, 'before_insert', set_created_at_listener)
 event.listen(Song, 'before_update', set_last_modified_listener)
+
+
+class SongReport(db.Model):
+    __tablename__ = 'song_report'
+    id = db.Column(db.Integer, primary_key=True)
+    song_db_id = db.Column(db.Integer, db.ForeignKey('song.id', ondelete='CASCADE'), nullable=False)
+    report_type = db.Column(db.String(20), nullable=False)
+    message = db.Column(db.Text, nullable=True)
+    reporter_name = db.Column(db.String(100), nullable=True)
+    created_at = db.Column(db.DateTime, nullable=False)
+    resolved = db.Column(db.Boolean, default=False, nullable=False)
+    resolved_note = db.Column(db.Text, nullable=True)
+
+    song = db.relationship('Song', backref=db.backref('reports', lazy='dynamic', passive_deletes=True))
 
 
 # ==============================
