@@ -1110,7 +1110,7 @@
       if (chordsShiftValue) {
         chordsShiftValue.textContent = String(shift);
       }
-      const currentKeyValue = getCurrentKey();
+      const currentKeyValue = getOriginalKey() || getCurrentKey();
       if (!currentKeyValue) {
         chordsTargetKey.textContent = '--';
       } else {
