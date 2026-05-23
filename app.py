@@ -2022,6 +2022,13 @@ def song_detail(song_id):
                          sheet_mscz=sheet_mscz,
                          is_edit=not is_new_song)
 
+@app.route('/api/song/<int:song_id>/parts', methods=['GET'])
+def get_song_parts(song_id):
+    """Return song_parts JSON for the admin resolve panel."""
+    song = Song.query.get_or_404(song_id)
+    parts = json.loads(song.song_parts or '[]')
+    return jsonify({'parts': parts})
+
 @app.route('/api/song/<int:song_id>/report', methods=['POST'])
 def submit_report(song_id):
     """Submit a report (wrong key / lyrics / chords / author / other)."""
