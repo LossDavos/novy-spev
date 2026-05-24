@@ -1,0 +1,2 @@
+{% from '_song_card.html' import song_card %}
+{% for song in songs %}{{ song_card(song, collapse_prefix='mobile-song') }}{% endfor %}

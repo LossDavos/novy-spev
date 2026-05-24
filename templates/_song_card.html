@@ -1,0 +1,180 @@
+{% macro song_card(song, collapse_prefix='song', extra_actions=None) %}
+{#
+  Canonical song card macro — used everywhere mobile cards appear.
+  Parameters:
+    song           — song object or dict with: id, song_id, title, author, version_name,
+                     categories, pdf_lyrics_path, pdf_chords_path,
+                     sheet_pdf_paths (list), mp3_paths (list or JSON string),
+                     sheet_pdf_paths_encoded, mp3_paths_encoded,
+                     printed, admin_checked
+    collapse_prefix — prefix for the Bootstrap collapse id (avoids id clashes across pages)
+    extra_actions   — optional extra HTML string injected inside the expandable section
+#}
+{% set mp3_list = song.mp3_paths if song.mp3_paths is iterable and song.mp3_paths is not string else [] %}
+{% set sheet_list = song.sheet_pdf_paths if song.sheet_pdf_paths is defined and song.sheet_pdf_paths is iterable and song.sheet_pdf_paths is not string else [] %}
+
+<div class="mobile-song-card song-row"
+     id="{{ collapse_prefix }}-{{ song.id }}"
+     data-categories="{{ song.categories|lower if song.categories else '' }}"
+     data-printed="{{ 'true' if song.printed else 'false' }}"
+     data-checked="{{ 'true' if song.admin_checked else 'false' }}"
+     data-search-content="{{ song.title|lower if song.title else '' }}">
+
+  <!-- Header: status badges + song info -->
+  <div class="mobile-song-header">
+    <div class="mobile-song-info">
+      <div class="d-flex align-items-start gap-3 mb-2">
+
+        <!-- Status icons (stacked left) -->
+        <div class="mobile-status-badges-left d-flex flex-column gap-1">
+          {% if song.printed %}
+            <span class="status-icon status-printed"
+                  data-bs-toggle="tooltip" data-bs-placement="top"
+                  data-bs-original-title="Vytlačené">
+              <i class="bi bi-printer-fill"></i>
+            </span>
+          {% endif %}
+          {% if song.admin_checked %}
+            <span class="status-icon status-checked"
+                  data-bs-toggle="tooltip" data-bs-placement="top"
+                  data-bs-original-title="Skontrolované administrátorom">
+              <i class="bi bi-check-circle-fill"></i>
+            </span>
+          {% endif %}
+        </div>
+
+        <!-- Song ID + title -->
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-start gap-2 mb-1">
+            <span class="mobile-song-id">{{ song.song_id }}</span>
+            <div class="mobile-song-title">{{ song.title }}</div>
+          </div>
+          {% if song.author %}
+            <div class="mobile-song-author">
+              <i class="bi bi-person me-1"></i>{{ song.author }}
+            </div>
+          {% endif %}
+          {% if song.version_name %}
+            <div class="text-muted small mt-1">
+              <i class="bi bi-tag me-1"></i>{{ song.version_name }}
+            </div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 4-button action grid -->
+  <div class="mobile-song-actions-grid">
+
+    <!-- 1. Slová -->
+    {% if song.pdf_lyrics_path %}
+      <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=0"
+         class="btn btn-outline-primary btn-sm"
+         title="Zobraziť text piesne (bez akordov)">
+        <i class="bi bi-file-text"></i>
+        <span class="action-label">Slová</span>
+      </a>
+    {% else %}
+      <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
+        <i class="bi bi-file-text"></i>
+        <span class="action-label">Slová</span>
+      </button>
+    {% endif %}
+
+    <!-- 2. Akordy -->
+    {% if song.pdf_chords_path %}
+      <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=1"
+         class="btn btn-outline-warning btn-sm"
+         title="Zobraziť akordy">
+        <i class="fa-solid fa-guitar"></i>
+        <span class="action-label">Akordy</span>
+      </a>
+    {% else %}
+      <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
+        <i class="fa-solid fa-guitar"></i>
+        <span class="action-label">Akordy</span>
+      </button>
+    {% endif %}
+
+    <!-- 3. Noty -->
+    {% if sheet_list|length > 0 %}
+      <button type="button"
+              class="btn btn-outline-danger btn-sm js-open-file-modal"
+              title="Zobraziť noty"
+              data-file-kind="sheet"
+              data-song-id="{{ song.id }}"
+              data-song-title="{{ song.title }}"
+              data-file-paths="{{ song.sheet_pdf_paths_encoded }}">
+        <i class="fa-solid fa-music"></i>
+        <span class="action-label">Noty</span>
+      </button>
+    {% else %}
+      <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
+        <i class="fa-solid fa-music"></i>
+        <span class="action-label">Noty</span>
+      </button>
+    {% endif %}
+
+    <!-- 4. MP3 -->
+    {% if mp3_list|length > 0 %}
+      <button type="button"
+              class="btn btn-success btn-sm js-open-file-modal"
+              title="Zobraziť MP3 súbory"
+              data-file-kind="mp3"
+              data-song-id="{{ song.id }}"
+              data-song-title="{{ song.title }}"
+              data-file-paths="{{ song.mp3_paths_encoded }}">
+        <i class="bi bi-volume-up-fill"></i>
+        <span class="action-label">MP3</span>
+      </button>
+    {% else %}
+      <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
+        <i class="bi bi-volume-mute"></i>
+        <span class="action-label">MP3</span>
+      </button>
+    {% endif %}
+
+  </div>
+
+  <!-- Three-dots expand toggle -->
+  <button class="mobile-expand-toggle"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#{{ collapse_prefix }}-collapse-{{ song.id }}"
+          aria-expanded="false"
+          title="Viac možností">
+    <i class="bi bi-three-dots-vertical"></i>
+  </button>
+
+  <div class="collapse mobile-expanded-content" id="{{ collapse_prefix }}-collapse-{{ song.id }}">
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{{ url_for('song_view', song_id=song.id) }}"
+           class="btn btn-outline-info btn-sm flex-fill">
+          <i class="bi bi-eye me-1"></i>Detaily
+        </a>
+        <a href="{{ url_for('song_detail', song_id=song.id) }}"
+           class="btn btn-outline-primary btn-sm flex-fill">
+          <i class="bi bi-pencil-square me-1"></i>Upraviť
+        </a>
+      </div>
+
+      {% if extra_actions %}
+        {{ extra_actions | safe }}
+      {% endif %}
+
+      {% if song.categories %}
+        <div class="mobile-status-badges mt-2">
+          <small class="text-muted">Kategórie:</small>
+          {% for category in song.categories.split(';;') %}
+            {% if category.strip() %}
+              <span class="badge bg-light text-dark">{{ category.strip() }}</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+  </div>
+
+</div>
+{% endmacro %}

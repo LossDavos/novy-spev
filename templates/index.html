@@ -42,6 +42,15 @@ body {
     <i class="bi bi-calendar-event me-2"></i>
     <strong>Udalosti</strong>
   </a>
+  <a href="{{ url_for('admin_login') }}" class="btn btn-outline-secondary btn-lg rounded-pill shadow-sm ms-2 position-relative">
+    <i class="bi bi-shield-lock me-2"></i>
+    <strong>Admin</strong>
+    {% if total_open_reports > 0 %}
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:.7rem">
+      {{ total_open_reports }}
+    </span>
+    {% endif %}
+  </a>
 
     <!-- Category Filters Section -->
     {% include 'category_filters.html' %}

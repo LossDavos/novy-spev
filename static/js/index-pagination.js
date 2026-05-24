@@ -661,7 +661,7 @@ function initializeMainPageLazyLoading() {
     tableBody.appendChild(row);
   }
 
-  // Render mobile card
+  // Render mobile card — must match _song_card.html macro output
   function renderMobileSong(song) {
     const card = document.createElement('div');
     card.className = 'mobile-song-card song-row';
@@ -671,22 +671,13 @@ function initializeMainPageLazyLoading() {
     card.setAttribute('data-checked', song.admin_checked ? 'true' : 'false');
     card.setAttribute('data-search-content', song.title ? song.title.toLowerCase() : '');
 
-    const mp3Count = song.mp3_paths ? song.mp3_paths.length : 0;
-    const audioIcon = mp3Count > 0 ?
-      `<span class="status-icon status-has-audio" data-bs-toggle="tooltip" data-bs-placement="top" title="${mp3Count} MP3 súborov">
-        <i class="bi bi-volume-up-fill"></i>
-      </span>` :
-      `<span class="status-icon status-no-audio" data-bs-toggle="tooltip" data-bs-placement="top" title="Žiadne MP3">
-        <i class="bi bi-volume-mute"></i>
-      </span>`;
-
     // Build categories for the expanded section
     let categoriesHtml = '';
     if (song.categories) {
       const categories = song.categories.split(';;').filter(c => c.trim());
       if (categories.length > 0) {
         categoriesHtml = `
-          <div class="mobile-status-badges">
+          <div class="mobile-status-badges mt-2">
             <small class="text-muted">Kategórie:</small>
             ${categories.map(cat => `<span class="badge bg-light text-dark">${escapeHtml(cat.trim())}</span>`).join('')}
           </div>
@@ -694,9 +685,9 @@ function initializeMainPageLazyLoading() {
       }
     }
 
-    // Build MP3 buttons/dropdowns for actions grid
+    // Build MP3 button
     let mp3Button = '';
-    if (mp3Count > 0) {
+    if (song.mp3_paths && song.mp3_paths.length > 0) {
       const encodedMp3Paths = encodeURIComponent(JSON.stringify(song.mp3_paths));
       mp3Button = `
         <button type="button"
@@ -707,14 +698,14 @@ function initializeMainPageLazyLoading() {
                 data-song-title="${escapeHtml(song.title || '')}"
                 data-file-paths="${encodedMp3Paths}">
           <i class="bi bi-volume-up-fill"></i>
-          <span class="action-label d-none d-lg-inline">MP3</span>
+          <span class="action-label">MP3</span>
         </button>
       `;
     } else {
       mp3Button = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
           <i class="bi bi-volume-mute"></i>
-          <span class="action-label d-none d-lg-inline">MP3</span>
+          <span class="action-label">MP3</span>
         </button>
       `;
     }
@@ -726,30 +717,28 @@ function initializeMainPageLazyLoading() {
       sheetButton = `
         <button type="button"
                 class="btn btn-outline-danger btn-sm js-open-file-modal"
-                title="Zobraziť notové súbory"
+                title="Zobraziť noty"
                 data-file-kind="sheet"
                 data-song-id="${song.id}"
                 data-song-title="${escapeHtml(song.title || '')}"
                 data-file-paths="${encodedSheetPaths}">
           <i class="fa-solid fa-music"></i>
-          <span class="action-label d-none d-lg-inline">Noty</span>
+          <span class="action-label">Noty</span>
         </button>
       `;
     } else {
       sheetButton = `
         <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
           <i class="fa-solid fa-music"></i>
-          <span class="action-label d-none d-lg-inline">Noty</span>
+          <span class="action-label">Noty</span>
         </button>
       `;
     }
 
     card.innerHTML = `
-      <!-- Main Song Info -->
       <div class="mobile-song-header">
         <div class="mobile-song-info">
           <div class="d-flex align-items-start gap-3 mb-2">
-            <!-- Status badges on the left, stacked vertically -->
             <div class="mobile-status-badges-left d-flex flex-column gap-1">
               ${song.printed ?
                 '<span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Vytlačené"><i class="bi bi-printer-fill"></i></span>' : ''
@@ -758,79 +747,61 @@ function initializeMainPageLazyLoading() {
                 '<span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Skontrolované administrátorom"><i class="bi bi-check-circle-fill"></i></span>' : ''
               }
             </div>
-
-            <!-- Song ID and Title side by side -->
             <div class="flex-grow-1">
               <div class="d-flex align-items-start gap-2 mb-1">
                 <span class="mobile-song-id">${escapeHtml(song.song_id || '')}</span>
                 <div class="mobile-song-title">${escapeHtml(song.title || '')}</div>
               </div>
+              ${song.author ? `<div class="mobile-song-author"><i class="bi bi-person me-1"></i>${escapeHtml(song.author)}</div>` : ''}
+              ${song.version_name ? `<div class="text-muted small mt-1"><i class="bi bi-tag me-1"></i>${escapeHtml(song.version_name)}</div>` : ''}
             </div>
           </div>
-
-          ${song.author ? `<div class="mobile-song-author text-secondary mb-1"><i class="bi bi-person me-1"></i>${escapeHtml(song.author)}</div>` : ''}
-          ${song.version_name ? `<div class="text-muted small"><i class="bi bi-tag me-1"></i>${escapeHtml(song.version_name)}</div>` : ''}
         </div>
       </div>
 
-      <!-- Essential Actions (Always Visible) - 4 evenly spaced buttons -->
       <div class="mobile-song-actions-grid">
-        <!-- 1. Slová (Lyrics) -->
         ${song.pdf_lyrics_path ?
           `<a href="/song/${song.id}/preview?chords=0" class="btn btn-outline-primary btn-sm" title="Zobraziť text piesne (bez akordov)">
             <i class="bi bi-file-text"></i>
-            <span class="action-label d-none d-lg-inline">Slová</span>
+            <span class="action-label">Slová</span>
           </a>` :
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
             <i class="bi bi-file-text"></i>
-            <span class="action-label d-none d-lg-inline">Slová</span>
+            <span class="action-label">Slová</span>
           </button>`
         }
-
-        <!-- 2. Akordy (Chords) -->
         ${song.pdf_chords_path ?
           `<a href="/song/${song.id}/preview?chords=1" class="btn btn-outline-warning btn-sm" title="Zobraziť akordy">
             <i class="fa-solid fa-guitar"></i>
-            <span class="action-label d-none d-lg-inline">Akordy</span>
+            <span class="action-label">Akordy</span>
           </a>` :
           `<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
             <i class="fa-solid fa-guitar"></i>
-            <span class="action-label d-none d-lg-inline">Akordy</span>
+            <span class="action-label">Akordy</span>
           </button>`
         }
-
-        <!-- 3. Noty (Sheet Music) -->
         ${sheetButton}
-
-        <!-- 4. MP3 -->
         ${mp3Button}
       </div>
 
-      <!-- Expandable Section for Additional Functionality -->
-      <div class="mobile-expandable">
-        <button class="mobile-expand-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-collapse-${song.id}" aria-expanded="false">
-          <i class="bi bi-chevron-down"></i>
-          Viac možností
-        </button>
-
-        <div class="collapse mobile-expanded-content" id="mobile-collapse-${song.id}">
-          <!-- Action Buttons -->
-          <div class="d-flex gap-2">
-            <!-- View -->
-            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm flex-fill" title="Detaily">
+      <button class="mobile-expand-toggle" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#mobile-song-collapse-${song.id}"
+              aria-expanded="false"
+              title="Viac možností">
+        <i class="bi bi-three-dots-vertical"></i>
+      </button>
+      <div class="collapse mobile-expanded-content" id="mobile-song-collapse-${song.id}">
+          <div class="d-flex gap-2 flex-wrap">
+            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm flex-fill">
               <i class="bi bi-eye me-1"></i>Detaily
             </a>
-
-            <!-- Edit -->
-            <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm flex-fill" title="Upraviť">
+            <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm flex-fill">
               <i class="bi bi-pencil-square me-1"></i>Upraviť
             </a>
           </div>
-
-          <!-- Categories -->
           ${categoriesHtml}
         </div>
-      </div>
     `;
 
     mobileContainer.appendChild(card);

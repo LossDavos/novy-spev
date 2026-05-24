@@ -264,70 +264,40 @@
   background: linear-gradient(135deg, #17a2b8 0%, #6610f2 100%) !important;
 }
 
-.mobile-expandable {
-  border-top: 1px solid #f0f0f0;
-  padding-top: 1rem;
-  margin-top: 1rem;
-  background: #fafafa;
-  border-radius: 12px;
-  padding: 1rem;
-  margin: 1rem -0.25rem 0;
-}
-
 .mobile-expand-toggle {
-  background: #ffffff;
-  border: 1px solid #e9ecef;
-  color: #6c757d;
-  font-size: 0.9rem;
-  padding: 0.6rem 1.2rem;
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: transparent;
+  border: none;
+  color: #adb5bd;
+  padding: 0.25rem 0.3rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  border-radius: 25px;
-  font-weight: 500;
-  width: 100%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border-radius: 6px;
+  line-height: 1;
+  font-size: 1.1rem;
+  transition: color 0.2s, background 0.2s;
+  z-index: 2;
 }
 
-.mobile-expand-toggle:hover {
-  background: #f8f9fa;
+.mobile-expand-toggle:hover,
+.mobile-expand-toggle[aria-expanded="true"] {
   color: #495057;
-  border-color: #dee2e6;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.mobile-expand-toggle.expanded {
-  background: #f1f3f4;
-  color: #495057;
-  border-color: #d1ecf1;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.mobile-expand-toggle .bi-chevron-down {
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 1rem;
-}
-
-.mobile-expand-toggle.expanded .bi-chevron-down {
-  transform: rotate(180deg);
+  background: #f0f0f0;
 }
 
 .mobile-expanded-content {
-  padding-top: 1rem;
-  display: none;
-  animation: fadeInUp 0.3s ease-out;
-  background: #ffffff;
+  animation: fadeInUp 0.2s ease-out;
+  background: #f8f9fa;
   border-radius: 8px;
-  padding: 1rem;
-  margin-top: 0.75rem;
-  border: 1px solid #f0f0f0;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border: 1px solid #e9ecef;
 }
 
 .mobile-expanded-content.show {
+  display: block;
+}
   display: block;
 }
 
@@ -661,8 +631,8 @@
 
   /* Improved touch targets */
   .mobile-expand-toggle {
-    min-height: 44px;
-    font-size: 0.85rem;
+    min-height: 32px;
+    min-width: 32px;
   }
 
   .mobile-files-grid {
@@ -798,9 +768,12 @@
                     </a>
 
                   {% else %}
-                    <!-- Multiple MP3 files - modal button -->
-                    <button type="button" class="btn btn-success btn-sm d-flex align-items-center gap-1"
-                            data-bs-toggle="modal" data-bs-target="#mp3Modal{{ song.id }}"
+                    <!-- Multiple MP3 files - shared modal button -->
+                    <button type="button" class="btn btn-success btn-sm d-flex align-items-center gap-1 js-open-file-modal"
+                            data-file-kind="mp3"
+                            data-song-id="{{ song.id }}"
+                            data-song-title="{{ song.title }}"
+                            data-file-paths="{{ song.mp3_paths_encoded }}"
                             title="{{ mp3_files|length }} MP3 súborov">
                       <i class="bi bi-music-note-list"></i>
                     </button>
@@ -924,166 +897,27 @@
 </div>
 
 <!-- Mobile Card Layout (hidden by default, shown on mobile) -->
+{% from '_song_card.html' import song_card %}
 <div class="mobile-songs-container d-block d-lg-none">
   {% for song in songs %}
-  {% set mp3_files = song.mp3_paths|parse_json %}
-  <div class="mobile-song-card song-row" id="mobile-song-{{ song.id }}" data-search-content="{{ song.title|lower if song.title else '' }}" data-categories="{{ song.categories|lower if song.categories else '' }}" data-printed="{{ 'true' if song.printed else 'false' }}" data-checked="{{ 'true' if song.admin_checked else 'false' }}">
-
-    <!-- Main Song Info -->
-    <div class="mobile-song-header">
-      <div class="mobile-song-info">
-        <!-- Song ID and Title -->
-        <div class="d-flex align-items-start justify-content-between mb-2">
-          <div class="flex-grow-1 me-3">
-            <div class="d-flex align-items-center gap-2 mb-2">
-              <span class="mobile-song-id">{{ song.song_id }}</span>
-              <div class="mobile-song-title flex-grow-1">{{ song.title }}</div>
-            </div>
-
-            {% if song.author %}
-            <div class="mobile-song-author">
-              <i class="bi bi-person me-1"></i>{{ song.author }}
-            </div>
-            {% endif %}
-
-            {% if song.version_name %}
-            <div class="text-muted small mt-1">
-              <i class="bi bi-tag me-1"></i>{{ song.version_name }}
-            </div>
-            {% endif %}
-          </div>
-
-          <!-- Status badges on the right, overlapping -->
-          <div class="mobile-status-badges-left">
-            {% if song.printed %}
-            <span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Vytlačené">
-              <i class="bi bi-printer-fill"></i>
-            </span>
-            {% endif %}
-
-            {% if song.admin_checked %}
-            <span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Skontrolované administrátorom">
-              <i class="bi bi-check-circle-fill"></i>
-            </span>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Essential Actions (Always Visible) - 4 evenly spaced buttons -->
-    <div class="mobile-song-actions-grid">
-      <!-- 1. Slová (Lyrics) -->
-      {% if song.pdf_lyrics_path %}
-      <a href="{{ url_for('serve_upload', filename=song.pdf_lyrics_path) }}" class="btn btn-outline-primary btn-sm" title="Stiahnuť slová" target="_blank">
-        <i class="bi bi-file-text"></i>
-      </a>
-      {% else %}
-      <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne slová">
-        <i class="bi bi-file-text"></i>
-      </button>
-      {% endif %}
-
-      <!-- 2. Akordy (Chords) -->
-      {% if song.pdf_chords_path %}
-      <a href="{{ url_for('serve_upload', filename=song.pdf_chords_path) }}" class="btn btn-outline-warning btn-sm" title="Stiahnuť akordy" target="_blank">
-        <i class="fa-solid fa-guitar"></i>
-      </a>
-      {% else %}
-      <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne akordy">
-        <i class="fa-solid fa-guitar"></i>
-      </button>
-      {% endif %}
-
-      <!-- 3. Noty (Sheet Music) -->
-      {% set sheet_pdfs = song.sheet_pdf_paths|parse_json %}
-      {% if sheet_pdfs|length > 0 %}
-        {% if sheet_pdfs|length == 1 %}
-        <a href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=sheet_pdfs[0].split('/')[-1]) }}" class="btn btn-outline-danger btn-sm" title="Stiahnuť noty" target="_blank">
-          <i class="fa-solid fa-music"></i>
+    {% set admin_buttons %}
+      <div class="d-flex gap-2 flex-wrap mt-2">
+        <a href="{{ url_for('song_view', song_id=song.id) }}" class="btn btn-outline-info btn-sm flex-fill">
+          <i class="bi bi-eye me-1"></i>Detaily
         </a>
-        {% else %}
-        <button type="button" class="btn btn-outline-danger btn-sm w-100" data-bs-toggle="modal" data-bs-target="#sheetModal{{ song.id }}">
-          <i class="fa-solid fa-music"></i>
-        </button>
-        {% endif %}
-      {% else %}
-        <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne noty">
-          <i class="fa-solid fa-music"></i>
-        </button>
-      {% endif %}
-
-      <!-- 4. MP3 -->
-      {% if mp3_files|length > 0 %}
-        {% if mp3_files|length == 1 %}
-        <a href="{{ mp3_files[0] | presigned_url }}" class="btn btn-success btn-sm" title="Prehrať MP3: {{ mp3_files[0].split('/')[-1] }}" target="_blank">
-          <i class="bi bi-volume-up-fill"></i>
-        </a>
-        {% else %}
-        <button type="button" class="btn btn-success btn-sm w-100" data-bs-toggle="modal" data-bs-target="#mp3Modal{{ song.id }}" title="{{ mp3_files|length }} MP3 súborov">
-          <i class="bi bi-volume-up-fill"></i>
-        </button>
-        {% endif %}
-      {% else %}
-        <button type="button" class="btn btn-outline-secondary btn-sm" disabled="" title="Žiadne MP3 súbory">
-          <i class="bi bi-volume-mute"></i>
-        </button>
-      {% endif %}
-    </div>
-
-    <!-- Expandable Section for Additional Functionality -->
-    <div class="mobile-expandable">
-      <button class="mobile-expand-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-collapse-{{ song.id }}" aria-expanded="false">
-        <i class="bi bi-chevron-down"></i>
-        Viac možností
-      </button>
-
-      <div class="collapse mobile-expanded-content" id="mobile-collapse-{{ song.id }}">
-
-        <!-- Action Buttons -->
-        <div class="mobile-files-grid">
-          <a href="{{ url_for('song_preview', song_id=song.id) }}" class="btn btn-outline-dark btn-sm">
-            <i class="bi bi-music-note-beamed me-1"></i>Nahlad
-          </a>
-
-          <a href="{{ url_for('song_view', song_id=song.id) }}" class="btn btn-outline-info btn-sm">
-            <i class="bi bi-eye me-1"></i>Detaily
-          </a>
-
-          <a href="{{ url_for('song_detail', song_id=song.id) }}" class="btn btn-outline-primary btn-sm">
-            <i class="bi bi-pencil-square me-1"></i>Upraviť
-          </a>
-
-          <!-- Generate TeX Button - Same as table -->
-          <form method="POST" action="{{ url_for('generate_tex', song_id=song.id) }}#mobile-song-{{ song.id }}" class="d-inline">
-            <button type="submit" class="btn btn-outline-warning btn-sm {% if song.admin_checked %}disabled{% endif %}" {% if song.admin_checked %}title="Admin already checked this song"{% endif %}>
-              <i class="bi bi-file-code"></i>TeX
-            </button>
-          </form>
-
-          <!-- Generate PDF Button - Same as table -->
-          <form method="GET" action="{{ url_for('generate_pdfs', song_id=song.id) }}#mobile-song-{{ song.id }}" class="d-inline">
-            <button type="submit" class="btn btn-primary btn-sm {% if not song.tex_path or song.admin_checked %}disabled{% endif %}" style="background-color: #9b59b6; border-color: #9b59b6;" {% if not song.tex_path %}title="First generate TeX files"{% endif %} {% if song.admin_checked %}title="Admin already checked this song"{% endif %}>
-              <i class="bi bi-file-pdf"></i>PDF
-            </button>
-          </form>
-        </div>
-
-        <!-- Categories -->
-        {% if song.categories %}
-        <div class="mobile-status-badges">
-          <small class="text-muted">Kategórie:</small>
-          {% for category in song.categories.split(';;') %}
-            {% if category.strip() %}
-          <span class="badge bg-light text-dark">{{ category.strip() }}</span>
-            {% endif %}
-          {% endfor %}
-        </div>
-        {% endif %}
-
+        <form method="POST" action="{{ url_for('generate_tex', song_id=song.id) }}#mobile-song-{{ song.id }}" class="flex-fill d-flex">
+          <button type="submit" class="btn btn-outline-warning btn-sm flex-fill {% if song.admin_checked %}disabled{% endif %}">
+            <i class="bi bi-file-code me-1"></i>TeX
+          </button>
+        </form>
+        <form method="GET" action="{{ url_for('generate_pdfs', song_id=song.id) }}#mobile-song-{{ song.id }}" class="flex-fill d-flex">
+          <button type="submit" class="btn btn-primary btn-sm flex-fill {% if not song.tex_path or song.admin_checked %}disabled{% endif %}" style="background-color:#9b59b6;border-color:#9b59b6;">
+            <i class="bi bi-file-pdf me-1"></i>PDF
+          </button>
+        </form>
       </div>
-    </div>
-  </div>
+    {% endset %}
+    {{ song_card(song, collapse_prefix='mobile-song', extra_actions=admin_buttons) }}
   {% endfor %}
 </div>
 
@@ -1250,63 +1084,100 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- Modals for file selection -->
-{% for song in songs %}
-  <!-- MP3 Files Modal -->
-  {% set mp3_files = song.mp3_paths|parse_json %}
-  {% if mp3_files|length > 1 %}
-  <div class="modal fade" id="mp3Modal{{ song.id }}" tabindex="-1" aria-labelledby="mp3ModalLabel{{ song.id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header bg-success text-white">
-          <h5 class="modal-title" id="mp3ModalLabel{{ song.id }}">
-            <i class="bi bi-music-note-list me-2"></i>MP3 Súbory - {{ song.title }}
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="list-group">
-            {% for mp3_file in mp3_files %}
-            <a href="{{ mp3_file | presigned_url }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
-              <i class="bi bi-play-circle-fill text-success fs-4"></i>
-              <span class="flex-grow-1">{{ mp3_file.split('/')[-1] }}</span>
-              <i class="bi bi-box-arrow-up-right text-muted"></i>
-            </a>
-            {% endfor %}
-          </div>
+<!-- Shared file selection modal (MP3 / Noty) -->
+<div class="modal fade" id="fileSelectionModal" tabindex="-1" aria-labelledby="fileSelectionModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white" id="fileSelectionModalHeader">
+        <h5 class="modal-title" id="fileSelectionModalTitle">
+          <i class="bi bi-music-note-list me-2" id="fileSelectionModalIcon"></i>
+          Súbory
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0" id="fileSelectionModalBody">
+        <div class="list-group list-group-flush">
+          <p class="text-muted mb-0">Žiadne súbory.</p>
         </div>
       </div>
     </div>
   </div>
-  {% endif %}
+</div>
 
-  <!-- Sheet Music Files Modal -->
-  {% set sheet_pdfs = song.sheet_pdf_paths|parse_json %}
-  {% if sheet_pdfs|length > 1 %}
-  <div class="modal fade" id="sheetModal{{ song.id }}" tabindex="-1" aria-labelledby="sheetModalLabel{{ song.id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="sheetModalLabel{{ song.id }}">
-            <i class="bi bi-file-music me-2"></i>Noty - {{ song.title }}
-          </h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="list-group">
-            {% for sheet_pdf in sheet_pdfs %}
-            <a href="{{ url_for('download_original_sheet', song_id=song.id, sheet_filename=sheet_pdf.split('/')[-1]) }}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
-              <i class="bi bi-file-pdf text-danger fs-4"></i>
-              <span class="flex-grow-1">{{ sheet_pdf.split('/')[-1] }}</span>
-              <i class="bi bi-box-arrow-up-right text-muted"></i>
-            </a>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endif %}
-{% endfor %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const fileSelectionModalEl = document.getElementById('fileSelectionModal');
+    const fileSelectionModalHeader = document.getElementById('fileSelectionModalHeader');
+    const fileSelectionModalIcon = document.getElementById('fileSelectionModalIcon');
+    const fileSelectionModalTitle = document.getElementById('fileSelectionModalTitle');
+    const fileSelectionModalBody = document.getElementById('fileSelectionModalBody');
+    const fileSelectionModal = fileSelectionModalEl ? new bootstrap.Modal(fileSelectionModalEl) : null;
+
+    function decodeFilePaths(encodedPaths) {
+      if (!encodedPaths) return [];
+      try {
+        const parsed = JSON.parse(decodeURIComponent(encodedPaths));
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function openFileListModal(kind, songId, encodedPaths, songTitle) {
+      if (!fileSelectionModal || !fileSelectionModalTitle || !fileSelectionModalBody || !fileSelectionModalHeader || !fileSelectionModalIcon) return;
+
+      const files = decodeFilePaths(encodedPaths);
+      const isMp3 = kind === 'mp3';
+
+      fileSelectionModalHeader.classList.remove('bg-success', 'bg-danger', 'text-white');
+      fileSelectionModalHeader.classList.add(isMp3 ? 'bg-success' : 'bg-danger', 'text-white');
+      fileSelectionModalIcon.className = isMp3 ? 'bi bi-music-note-list me-2' : 'bi bi-file-music me-2';
+
+      const cleanSongTitle = (songTitle || '').trim();
+      fileSelectionModalTitle.textContent = isMp3
+        ? `MP3 Súbory${cleanSongTitle ? ` - ${cleanSongTitle}` : ''}`
+        : `Noty${cleanSongTitle ? ` - ${cleanSongTitle}` : ''}`;
+
+      if (!files.length) {
+        fileSelectionModalBody.innerHTML = '<p class="text-muted mb-0">Žiadne súbory.</p>';
+        fileSelectionModal.show();
+        return;
+      }
+
+      const itemsHtml = files.map(filePath => {
+        const filename = filePath.split('/').pop() || filePath;
+        const href = isMp3
+          ? `/api/presigned_url?key=${encodeURIComponent(filePath)}`
+          : `/song/${songId}/download_stamped_sheet/${encodeURIComponent(filename)}`;
+
+        return `
+          <a href="${href}"
+             target="_blank"
+             class="list-group-item list-group-item-action d-flex align-items-center gap-3 w-100">
+            <i class="${isMp3 ? 'bi bi-play-circle-fill text-success fs-4' : 'bi bi-file-pdf text-danger fs-4'}"></i>
+            <span class="flex-grow-1 min-w-0 text-break">${filename}</span>
+            <i class="bi bi-box-arrow-up-right text-muted"></i>
+          </a>
+        `;
+      }).join('');
+
+      fileSelectionModalBody.innerHTML = `<div class="list-group list-group-flush w-100">${itemsHtml}</div>`;
+      fileSelectionModal.show();
+    }
+
+    document.addEventListener('click', function (event) {
+      const trigger = event.target.closest('.js-open-file-modal');
+      if (!trigger) return;
+
+      event.preventDefault();
+      openFileListModal(
+        trigger.getAttribute('data-file-kind'),
+        trigger.getAttribute('data-song-id'),
+        trigger.getAttribute('data-file-paths'),
+        trigger.getAttribute('data-song-title')
+      );
+    });
+  });
+</script>
 
 {% endblock %}

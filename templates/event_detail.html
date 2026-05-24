@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from '_song_card.html' import song_card %}
 {% block content %}
 
 {% include 'navbar.html' %}
@@ -28,100 +29,7 @@
         <div class="event-part-title">{{ section.name }}</div>
         <div class="event-part-cards">
           {% for song in section.songs %}
-            <div class="mobile-song-card song-row"
-                 data-printed="{{ 'true' if song.printed else 'false' }}"
-                 data-checked="{{ 'true' if song.admin_checked else 'false' }}">
-              <div class="mobile-song-header">
-                <div class="mobile-song-info">
-                  <div class="d-flex align-items-start gap-3 mb-2">
-                    <div class="mobile-status-badges-left d-flex flex-column gap-1">
-                      {% if song.printed %}
-                        <span class="status-icon status-printed" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Vytlačené"><i class="bi bi-printer-fill"></i></span>
-                      {% endif %}
-                      {% if song.admin_checked %}
-                        <span class="status-icon status-checked" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Skontrolované administrátorom"><i class="bi bi-check-circle-fill"></i></span>
-                      {% endif %}
-                    </div>
-
-                    <div class="flex-grow-1">
-                      <div class="d-flex align-items-start gap-2 mb-1">
-                        <span class="mobile-song-id">{{ song.song_id }}</span>
-                        <div class="mobile-song-title">{{ song.title }}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {% if song.author %}
-                    <div class="mobile-song-author text-secondary mb-1"><i class="bi bi-person me-1"></i>{{ song.author }}</div>
-                  {% endif %}
-                  {% if song.version_name %}
-                    <div class="text-muted small"><i class="bi bi-tag me-1"></i>{{ song.version_name }}</div>
-                  {% endif %}
-                </div>
-              </div>
-
-              <div class="mobile-song-actions-grid">
-                {% if song.pdf_lyrics_path %}
-                  <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=0" class="btn btn-outline-primary btn-sm" title="Zobraziť text piesne (bez akordov)">
-                    <i class="bi bi-file-text"></i>
-                    <span class="action-label d-none d-lg-inline">Slová</span>
-                  </a>
-                {% else %}
-                  <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne slová">
-                    <i class="bi bi-file-text"></i>
-                    <span class="action-label d-none d-lg-inline">Slová</span>
-                  </button>
-                {% endif %}
-
-                {% if song.pdf_chords_path %}
-                  <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=1" class="btn btn-outline-warning btn-sm" title="Zobraziť akordy">
-                    <i class="fa-solid fa-guitar"></i>
-                    <span class="action-label d-none d-lg-inline">Akordy</span>
-                  </a>
-                {% else %}
-                  <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne akordy">
-                    <i class="fa-solid fa-guitar"></i>
-                    <span class="action-label d-none d-lg-inline">Akordy</span>
-                  </button>
-                {% endif %}
-
-                {% if song.sheet_pdf_paths|length > 0 %}
-                  <button type="button"
-                          class="btn btn-outline-danger btn-sm js-open-file-modal"
-                          title="Zobraziť notové súbory"
-                          data-file-kind="sheet"
-                          data-song-id="{{ song.id }}"
-                          data-song-title="{{ song.title }}"
-                          data-file-paths="{{ song.sheet_pdf_paths_encoded }}">
-                    <i class="fa-solid fa-music"></i>
-                    <span class="action-label d-none d-lg-inline">Noty</span>
-                  </button>
-                {% else %}
-                  <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne noty">
-                    <i class="fa-solid fa-music"></i>
-                    <span class="action-label d-none d-lg-inline">Noty</span>
-                  </button>
-                {% endif %}
-
-                {% if song.mp3_paths|length > 0 %}
-                  <button type="button"
-                          class="btn btn-success btn-sm js-open-file-modal"
-                          title="Zobraziť MP3 súbory"
-                          data-file-kind="mp3"
-                          data-song-id="{{ song.id }}"
-                          data-song-title="{{ song.title }}"
-                          data-file-paths="{{ song.mp3_paths_encoded }}">
-                    <i class="bi bi-volume-up-fill"></i>
-                    <span class="action-label d-none d-lg-inline">MP3</span>
-                  </button>
-                {% else %}
-                  <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Žiadne MP3 súbory">
-                    <i class="bi bi-volume-mute"></i>
-                    <span class="action-label d-none d-lg-inline">MP3</span>
-                  </button>
-                {% endif %}
-              </div>
-            </div>
+            {{ song_card(song, collapse_prefix='event-song') }}
           {% else %}
             <div class="event-song-empty">Bez piesní</div>
           {% endfor %}
