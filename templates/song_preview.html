@@ -120,6 +120,7 @@
     <div class="report-body">
       <p class="report-song-name">{{ song.song_id }} – {{ song.title }}</p>
       <div class="report-type-grid" role="radiogroup" aria-label="Typ chyby">
+        {% set chords_available = show_chords and song.pdf_chords_path %}
         {% for val, icon, label in [
           ('key',    'bi-music-note',        'Nesprávna tónina'),
           ('lyrics', 'bi-file-text',         'Chyba v slovách'),
@@ -127,11 +128,17 @@
           ('author', 'bi-person',            'Nesprávny autor'),
           ('other',  'bi-three-dots',        'Iné'),
         ] %}
-        <label class="report-type-option">
-          <input type="radio" name="reportType" value="{{ val }}" {% if val == 'key' and song.key_reported %}checked{% elif loop.first and not song.key_reported %}checked{% endif %}>
+        {% set is_disabled = (val == 'chords' and not chords_available) %}
+        <label class="report-type-option{% if is_disabled %} report-type-disabled{% endif %}">
+          <input type="radio" name="reportType" value="{{ val }}"
+            {% if is_disabled %}disabled{% endif %}
+            {% if val == 'key' and song.key_reported %}checked
+            {% elif loop.first and not song.key_reported and not is_disabled %}checked
+            {% elif loop.first and not song.key_reported and is_disabled %}
+            {% endif %}>
           <span class="report-type-card">
             <i class="bi {{ icon }}"></i>
-            {{ label }}
+            {{ label }}{% if is_disabled %}<small class="d-block text-muted" style="font-size:0.65rem;margin-top:1px">Nedostupné</small>{% endif %}
           </span>
         </label>
         {% endfor %}
@@ -565,6 +572,9 @@
   box-shadow: 0 0 0 1px #dc3545;
 }
 .report-type-card:hover { border-color: #adb5bd; background: #f8f9fa; }
+.report-type-disabled .report-type-card {
+  opacity: 0.45; cursor: not-allowed; pointer-events: none;
+}
 .report-song-name {
   font-size: 0.85rem;
   color: #6c757d;
@@ -1296,8 +1306,8 @@
     const chordEls = Array.from(document.querySelectorAll('.song-preview-content sup'));
 
     if (!transposeUp || !transposeDown || !transposeKeyEl || chordEls.length === 0) {
-      return;
-    }
+      // No chords — skip transpose logic but continue to load report modal etc.
+    } else {
 
     const noteIndex = {
       C: 0, 'C#': 1, Db: 1,
@@ -1464,6 +1474,7 @@
 
     transposeUp.addEventListener('click', (e) => { e.stopPropagation(); applyTranspose(1); });
     transposeDown.addEventListener('click', (e) => { e.stopPropagation(); applyTranspose(-1); });
+    } // end transpose-available block
 
     // ── Report modal ──────────────────────────────────────────────────────────
     const SONG_ID = {{ song.id }};
@@ -1734,6 +1745,12 @@
       reportModal.setAttribute('aria-hidden', 'false');
       reportSubmitFeedback.textContent = '';
       reportSubmitFeedback.style.display = 'none';
+      // Ensure a non-disabled radio is checked
+      const checked = reportModal.querySelector('input[name="reportType"]:checked:not(:disabled)');
+      if (!checked) {
+        const first = reportModal.querySelector('input[name="reportType"]:not(:disabled)');
+        if (first) { first.checked = true; showSelectionUI(first.value); }
+      }
     }
     function closeReportModal() {
       reportModal.classList.remove('is-open');
