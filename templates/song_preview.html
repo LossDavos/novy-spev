@@ -139,6 +139,10 @@
       <div class="report-fields mt-2 pb-3">
         <!-- lyrics/chords selection section (injected by JS) -->
         <div id="reportSelectionWrap" style="display:none">
+          <div class="report-original-key-notice" id="reportOriginalKeyNotice" style="display:none">
+            <i class="bi bi-info-circle-fill"></i>
+            <span>Akordy sú zobrazené v pôvodnej tónine <strong id="reportOriginalKeyValue"></strong>, nie v aktuálne transponovanej.</span>
+          </div>
           <div class="report-selection-label">Vyber časť, potom klikni na chybné slovo / akord:</div>
           <div class="report-selection-hint"><i class="bi bi-info-circle"></i> Pre viac opráv pokračuj vo výbere</div>
           <!-- part pills -->
@@ -700,6 +704,29 @@
 .report-correction-del {
   margin-left: auto; background: none; border: none; cursor: pointer;
   color: #6c757d; padding: 0 2px; font-size: 1rem; line-height: 1; flex-shrink: 0;
+}
+.report-original-key-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  background: #fff8e1;
+  border: 1.5px solid #ffe082;
+  border-radius: 10px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.82rem;
+  color: #5d4037;
+  margin-bottom: 0.5rem;
+  line-height: 1.45;
+}
+.report-original-key-notice i {
+  color: #f59e0b;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+.report-original-key-notice span {
+  min-width: 0;
+  word-break: break-word;
 }
 .report-extra-toggle {
   width: 100%; display: flex; align-items: center; justify-content: space-between;
@@ -1679,9 +1706,20 @@
       });
     }
 
+    const reportOriginalKeyNotice = document.getElementById('reportOriginalKeyNotice');
+    const reportOriginalKeyValue = document.getElementById('reportOriginalKeyValue');
+
     function showSelectionUI(type) {
       const show = type === 'lyrics' || type === 'chords';
       reportSelectionWrap.style.display = show ? 'block' : 'none';
+      // Show notice only when chords mode and transposition is active
+      const originalKey = "{{ '' if song.key_reported else (song.song_key or '') }}";
+      if (type === 'chords' && transposeSteps !== 0 && originalKey) {
+        reportOriginalKeyValue.textContent = originalKey;
+        reportOriginalKeyNotice.style.display = 'flex';
+      } else {
+        reportOriginalKeyNotice.style.display = 'none';
+      }
       if (show) {
         buildPartPills();
         if (selectedPartIdx !== null) buildLines();
