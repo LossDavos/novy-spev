@@ -1655,7 +1655,38 @@ def songs_view(song_ids):
     songs_dict = {song.id: song for song in songs}
     ordered_songs = [songs_dict[sid] for sid in id_list if sid in songs_dict]
 
-    return render_template('songs_view.html', songs=ordered_songs, song_ids=song_ids)
+    from urllib.parse import quote
+    songs_data = []
+    for song in ordered_songs:
+        try:
+            mp3_paths = json.loads(song.mp3_paths or '[]')
+        except (json.JSONDecodeError, TypeError):
+            mp3_paths = []
+        try:
+            sheet_pdf_paths = json.loads(song.sheet_pdf_paths or '[]')
+        except (json.JSONDecodeError, TypeError):
+            sheet_pdf_paths = []
+        songs_data.append({
+            'id': song.id,
+            'song_id': song.song_id,
+            'title': song.title,
+            'author': song.author,
+            'author_original': song.author_original,
+            'version_name': song.version_name,
+            'alternative_titles': song.alternative_titles,
+            'categories': song.categories,
+            'printed': song.printed,
+            'admin_checked': song.admin_checked,
+            'pdf_lyrics_path': song.pdf_lyrics_path,
+            'pdf_chords_path': song.pdf_chords_path,
+            'tex_path': song.tex_path,
+            'mp3_paths': mp3_paths,
+            'sheet_pdf_paths': sheet_pdf_paths,
+            'mp3_paths_encoded': quote(json.dumps(mp3_paths)),
+            'sheet_pdf_paths_encoded': quote(json.dumps(sheet_pdf_paths)),
+        })
+
+    return render_template('songs_view.html', songs=songs_data, song_ids=song_ids)
 
 @app.route('/stitkovac')
 def songs_by_date():
@@ -2415,6 +2446,8 @@ def replace_chords_filter(text):
 def parse_json_filter(text):
     if not text:
         return []
+    if isinstance(text, list):
+        return text
     try:
         return json.loads(text)
     except (json.JSONDecodeError, TypeError):
