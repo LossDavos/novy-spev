@@ -136,12 +136,25 @@
 .ctx-tok-input:focus { box-shadow: 0 0 0 2px rgba(13,110,253,.2); }
 </style>
 
-<!-- sticky password bar -->
-<div id="pw-bar" class="py-2 px-3 mb-3 d-flex align-items-center gap-3 shadow-sm">
-  <i class="bi bi-shield-lock text-warning"></i>
-  <input id="adminPw" type="password" class="form-control form-control-sm" style="max-width:200px" placeholder="Admin heslo…">
+<!-- sticky admin bar -->
+<div id="pw-bar" class="py-2 px-3 mb-3 d-flex align-items-center gap-3 shadow-sm flex-wrap">
+  <i class="bi bi-shield-lock text-success"></i>
+  {% if not session_admin %}
+  <input id="adminPw" type="password" class="form-control form-control-sm" style="max-width:200px" placeholder="Admin heslo pre akcie…">
   <span id="pwStatus" class="badge bg-secondary">nezadané</span>
-  <span class="ms-auto text-muted small">Otvorených: <strong>{{ total_open }}</strong></span>
+  {% else %}
+  <input id="adminPw" type="hidden" value="">
+  <span id="pwStatus" class="badge bg-success">prihlásený ✓</span>
+  {% endif %}
+  <span class="ms-auto d-flex align-items-center gap-3 flex-wrap">
+    <span class="text-muted small">Otvorených: <strong>{{ total_open }}</strong></span>
+    <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">
+      <i class="bi bi-house me-1"></i>Spevník
+    </a>
+    <a href="{{ url_for('admin_logout') }}" class="btn btn-sm btn-outline-danger rounded-pill">
+      <i class="bi bi-box-arrow-right me-1"></i>Odhlásiť
+    </a>
+  </span>
 </div>
 
 <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-3">
@@ -251,10 +264,12 @@
 {% endif %}
 
 <script>
+  const SESSION_ADMIN = {{ 'true' if session_admin else 'false' }};
   const pwInput = document.getElementById('adminPw');
   const pwStatus = document.getElementById('pwStatus');
 
   async function verifyPw() {
+    if (SESSION_ADMIN) return true;  // already authenticated via session
     const pw = pwInput.value;
     if (!pw) { pwStatus.textContent = 'nezadané'; pwStatus.className = 'badge bg-secondary'; return false; }
     try {
@@ -267,8 +282,10 @@
       pwStatus.textContent = 'nesprávne ✗'; pwStatus.className = 'badge bg-danger'; return false;
     } catch { return false; }
   }
-  pwInput.addEventListener('change', verifyPw);
-  pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') verifyPw(); });
+  if (!SESSION_ADMIN) {
+    pwInput.addEventListener('change', verifyPw);
+    pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') verifyPw(); });
+  }
 
   function escHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -355,7 +372,7 @@
     const reportType = btn.dataset.type || '';
     const reportMessage = btn.dataset.message || '';
     const pw = pwInput.value;
-    if (!pw) { alert('Najprv zadaj heslo!'); pwInput.focus(); return; }
+    if (!SESSION_ADMIN && !pw) { alert('Najprv zadaj heslo!'); pwInput.focus(); return; }
 
     document.querySelectorAll('.resolve-panel-row').forEach(r => r.remove());
     document.querySelectorAll('.action-btn.resolving').forEach(b => { b.classList.remove('resolving'); b.disabled = false; });
@@ -702,7 +719,7 @@
   async function deleteReport(id, btn, panelRow, resolveBtn) {
     if (!panelRow && !confirm('Naozaj vymazať toto hlásenie?')) return;
     const pw = pwInput.value;
-    if (!pw) { alert('Najprv zadaj heslo!'); pwInput.focus(); return; }
+    if (!SESSION_ADMIN && !pw) { alert('Najprv zadaj heslo!'); pwInput.focus(); return; }
     btn.disabled = true;
     try {
       const res = await fetch(`/api/report/${id}`, {

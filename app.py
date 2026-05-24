@@ -9,7 +9,7 @@ import html
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory, send_file
+from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory, send_file, session
 from models import db, Song, Event, EventSection, EventSectionSong, SongReport
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
@@ -1567,13 +1567,16 @@ def index():
             'tex_path': song.tex_path
         })
 
+    total_open_reports = SongReport.query.filter_by(resolved=False).count()
+
     return render_template('index.html',
                          songs=songs_data,
                          total_songs=total_songs,
                          total_admin_checked=total_admin_checked,
                          total_printed=total_printed,
                          category_counts=category_counts,
-                         initial_batch_size=initial_batch_size)
+                         initial_batch_size=initial_batch_size,
+                         total_open_reports=total_open_reports)
 
 @app.route('/api/songs')
 def get_songs_paginated():
@@ -2092,7 +2095,7 @@ def resolve_report(report_id):
     report = SongReport.query.get_or_404(report_id)
     data = request.get_json() or {}
     provided_password = data.get('password', '')
-    if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+    if not is_admin_authorized(provided_password):
         return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
     report.resolved = True
     report.resolved_note = (data.get('note') or '').strip()[:500] or None
@@ -2113,7 +2116,7 @@ def delete_report(report_id):
     report = SongReport.query.get_or_404(report_id)
     data = request.get_json() or {}
     provided_password = data.get('password', '')
-    if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+    if not is_admin_authorized(provided_password):
         return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
     db.session.delete(report)
     db.session.commit()
@@ -2126,7 +2129,7 @@ def correct_key(song_id):
     song = Song.query.get_or_404(song_id)
     data = request.get_json() or {}
     provided_password = data.get('password', '')
-    if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+    if not is_admin_authorized(provided_password):
         return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
     raw_key = data.get('key', '').strip()
     song.song_key = sanitize_input(raw_key, "song key") if raw_key else None
@@ -2142,7 +2145,7 @@ def correct_lyrics(song_id):
     song = Song.query.get_or_404(song_id)
     data = request.get_json() or {}
     provided_password = data.get('password', '')
-    if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+    if not is_admin_authorized(provided_password):
         return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
 
     report_type = data.get('report_type', 'lyrics')   # 'lyrics' or 'chords'
@@ -2236,9 +2239,38 @@ def correct_lyrics(song_id):
     return jsonify({'success': True, 'applied': len(applied)})
 
 
+def is_admin_authorized(provided_password=''):
+    """Return True if the request is from a logged-in admin session or correct password."""
+    return session.get('is_admin') or (provided_password and provided_password == UPDATE_SONG_PASSWORD)
+
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    """Admin login page — sets a session flag on correct password."""
+    if session.get('is_admin'):
+        return redirect(url_for('admin_reports'))
+    error = None
+    if request.method == 'POST':
+        pw = request.form.get('password', '')
+        if pw and pw == UPDATE_SONG_PASSWORD:
+            session['is_admin'] = True
+            session.permanent = True
+            return redirect(url_for('admin_reports'))
+        error = 'Nesprávne heslo.'
+    return render_template('admin_login.html', error=error)
+
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('is_admin', None)
+    return redirect(url_for('index'))
+
+
 @app.route('/admin/reports')
 def admin_reports():
     """Admin page: table of all song reports."""
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
     type_filter = request.args.get('type', '')
     status_filter = request.args.get('status', 'open')
     query = SongReport.query.join(Song, SongReport.song_db_id == Song.id)
@@ -2258,7 +2290,8 @@ def admin_reports():
                            type_filter=type_filter,
                            status_filter=status_filter,
                            type_counts=type_counts,
-                           total_open=total_open)
+                           total_open=total_open,
+                           session_admin=True)
 
 
 @app.route('/song/<int:song_id>/toggle-admin-check', methods=['POST'])
@@ -2273,7 +2306,7 @@ def toggle_admin_check(song_id):
     
     # If trying to check (not uncheck) and it wasn't checked before, require password
     if new_state and not song.admin_checked:
-        if not provided_password or provided_password != UPDATE_SONG_PASSWORD:
+        if not is_admin_authorized(provided_password):
             return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
     
     # Update the state
