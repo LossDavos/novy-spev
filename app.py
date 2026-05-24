@@ -2405,7 +2405,8 @@ def replace_chords_filter(text):
         if optional:
             body = f"({body})"
 
-        return f"<sup class='chord' style='color:orange; font-size:1.1em'><strong>{body}</strong></sup>"
+        raw_escaped = chord_text.replace('&', '&amp;').replace('"', '&quot;')
+        return f"<sup class='chord' style='color:orange; font-size:1.1em' data-raw=\"{raw_escaped}\"><strong>{body}</strong></sup>"
 
     return Markup(re.sub(r"\[([^\]]+)\]", lambda m: render_chord_html(m.group(1)), text))
 

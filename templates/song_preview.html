@@ -1494,7 +1494,7 @@
           // Make chord sups clickable tokens; keep words as plain text
           const chordOccurrences = {};
           tmp.querySelectorAll('sup.chord').forEach(sup => {
-            const chordText = sup.textContent.trim();
+            const chordText = sup.dataset.raw || sup.textContent.trim();
             const occIdx = chordOccurrences[chordText] ?? 0;
             chordOccurrences[chordText] = occIdx + 1;
             const token = document.createElement('span');

@@ -123,6 +123,17 @@
 .ctx-fix-orig { color: #842029; font-weight: 600; }
 .ctx-fix-arrow { color: #6c757d; font-size: .82em; }
 .ctx-fix-repl { color: #155724; font-weight: 600; }
+/* Clickable chord tokens (chord reports only) */
+.ctx-chord-tok { cursor: pointer; border-radius: 3px; }
+.ctx-chord-tok .ctx-chord { text-decoration: underline dotted rgba(13,110,253,.5); text-underline-offset: 2px; }
+.ctx-chord-tok:hover .ctx-chord { background: rgba(13,110,253,.13); border-radius: 3px; }
+.ctx-chord-tok:hover::after { content: '✎'; font-size: .62em; vertical-align: super; color: #0d6efd; margin-left: 1px; }
+.ctx-chord-tok.editing { outline: 2px solid rgba(13,110,253,.5); outline-offset: 1px; border-radius: 3px; cursor: default; }
+.ctx-edit-hint { display: flex; align-items: center; gap: .4rem; font-size: .75rem; color: #6c757d; background: #f0f4ff; border: 1px solid #c9d9fb; border-radius: 6px; padding: .3rem .65rem; margin-bottom: .55rem; }
+.ctx-tok-orig-lbl { font-weight: 600; color: #0d6efd; font-size: .88em; }
+.ctx-tok-arrow { margin: 0 2px; color: #6c757d; font-size: .82em; }
+.ctx-tok-input { border: 1.5px solid #86b7fe; border-radius: 4px; padding: 0 5px; font-size: .85em; height: 1.6em; vertical-align: middle; outline: none; min-width: 50px; }
+.ctx-tok-input:focus { box-shadow: 0 0 0 2px rgba(13,110,253,.2); }
 </style>
 
 <!-- sticky password bar -->
@@ -264,9 +275,20 @@
   }
 
   // ---- Helpers for inline context rendering ----
-  function renderPlainLine(lineText, isChords) {
+  function renderPlainLine(lineText, isChords, partIdx, lineIdx) {
     if (!isChords) return escHtml(lineText);
-    return lineText.replace(/\[([^\]]+)\]/g, (_, ch) => `<span class="ctx-chord">[${escHtml(ch)}]</span>`);
+    // chord report: wrap each chord in a clickable token, escape plain text between
+    const occ = {};
+    let html = '', last = 0;
+    const re = /\[([^\]]+)\]/g; let m;
+    while ((m = re.exec(lineText)) !== null) {
+      if (m.index > last) html += escHtml(lineText.slice(last, m.index));
+      const ch = m[1], cnt = occ[ch] || 0; occ[ch] = cnt + 1;
+      html += `<span class="ctx-chord-tok" data-ch="${escHtml(ch)}" data-pidx="${partIdx}" data-lidx="${lineIdx}" data-oidx="${cnt}"><span class="ctx-chord">[${escHtml(ch)}]</span></span>`;
+      last = re.lastIndex;
+    }
+    if (last < lineText.length) html += escHtml(lineText.slice(last));
+    return html;
   }
 
   function renderFixWidget(c, corrItemsRef, isChord) {
@@ -277,6 +299,7 @@
       `<span class="ctx-fix-btns">` +
       `<button type="button" class="crb accept active" data-choice="accept" title="Prijať"><i class="bi bi-check-lg"></i></button>` +
       `<button type="button" class="crb decline" data-choice="decline" title="Zamietnuť"><i class="bi bi-x-lg"></i></button>` +
+      `<button type="button" class="crb edit" data-choice="edit" title="Upraviť náhradu"><i class="bi bi-pencil"></i></button>` +
       `</span>` +
       `<span class="ctx-fix-main">` +
       `<span class="ctx-fix-orig">${origDisplay}</span>` +
@@ -307,7 +330,7 @@
     return html;
   }
 
-  function renderChordHighlightLine(lineText, lineCors, corrItemsRef) {
+  function renderChordHighlightLine(lineText, lineCors, corrItemsRef, partIdx, lineIdx) {
     const chordOcc = {};
     let html = '', last = 0;
     const re = /\[([^\]]+)\]/g;
@@ -318,7 +341,8 @@
       const cnt = chordOcc[ch] || 0;
       chordOcc[ch] = cnt + 1;
       const cor = lineCors.find(c => c.original === ch && c.occurrenceIdx === cnt);
-      html += cor ? renderFixWidget(cor, corrItemsRef, true) : `<span class="ctx-chord">[${escHtml(ch)}]</span>`;
+      html += cor ? renderFixWidget(cor, corrItemsRef, true)
+        : `<span class="ctx-chord-tok" data-ch="${escHtml(ch)}" data-pidx="${partIdx}" data-lidx="${lineIdx}" data-oidx="${cnt}"><span class="ctx-chord">[${escHtml(ch)}]</span></span>`;
       last = re.lastIndex;
     }
     if (last < lineText.length) html += escHtml(lineText.slice(last));
@@ -354,7 +378,13 @@
       msgLines.forEach(line => {
         const m = line.match(/^\[(.+?)\]\s+"(.+?)"(\s+\(#\d+\))?\s+→\s+"(.+?)"$/);
         if (m) {
-          const c = { location: m[1], original: m[2], occNote: (m[3] || '').trim(), replacement: m[4] };
+          let orig = m[2], repl = m[4];
+          // Chords may be stored with brackets in the message (e.g. "[Am]") — strip them
+          if (reportType === 'chords') {
+            orig = orig.replace(/^\[|\]$/g, '');
+            repl = repl.replace(/^\[|\]$/g, '');
+          }
+          const c = { location: m[1], original: orig, occNote: (m[3] || '').trim(), replacement: repl };
           // Parse partIdx/lineIdx/occurrenceIdx
           const locNew = c.location.match(/^(.+?)\s+#(\d+)\s+r\.(\d+)$/);
           const locOld = c.location.match(/^(.+?),?\s+r\.(\d+)$/);
@@ -369,9 +399,9 @@
       extraNote = nonCorr.join('\n');
     }
 
-    // Fetch song parts if we have indexed corrections
+    // Fetch song parts (needed for context view and for adding extra corrections)
     let songParts = null;
-    if (corrItems.length > 0 && corrItems.some(c => c.partIdx !== null)) {
+    if ((reportType === 'lyrics' || reportType === 'chords') && songId) {
       try {
         const r = await fetch(`/api/song/${songId}/parts`);
         if (r.ok) { const d = await r.json(); songParts = d.parts; }
@@ -396,15 +426,17 @@
         const lines = part.lines || [];
         const linesHtml = lines.map((lineText, li) => {
           const lineCors = lineMap[li];
-          if (!lineCors) return `<div class="ctx-line ctx-line-dim">${renderPlainLine(lineText, reportType === 'chords')}</div>`;
+          if (!lineCors) return `<div class="ctx-line ctx-line-dim">${renderPlainLine(lineText, reportType === 'chords', pi, li)}</div>`;
           const hl = reportType === 'chords'
-            ? renderChordHighlightLine(lineText, lineCors, corrItems)
+            ? renderChordHighlightLine(lineText, lineCors, corrItems, pi, li)
             : renderLyricsHighlightLine(lineText, lineCors, corrItems);
           return `<div class="ctx-line">${hl}</div>`;
         }).join('');
         return `<div class="ctx-part"><div class="ctx-part-title">${escHtml(part.type || '?')}</div><div class="ctx-part-lines">${linesHtml}</div></div>`;
       });
-      if (partHtmls.length) innerHtml += `<div class="ctx-view">${partHtmls.join('')}</div>`;
+      if (partHtmls.length) innerHtml +=
+        (reportType === 'chords' ? `<div class="ctx-edit-hint"><i class="bi bi-pencil-fill" style="color:#0d6efd"></i> Klikni na akord pre pridanie ďalšej opravy</div>` : '') +
+        `<div class="ctx-view">${partHtmls.join('')}</div>`;
 
       // Fallback rows for corrections without a resolvable part
       const orphans = corrItems.filter(c => c.partIdx == null || !songParts[c.partIdx]);
@@ -457,10 +489,111 @@
     const confirmBtn = panelRow.querySelector('.rp-btn.confirm');
     if (extraNote) noteEl.value = extraNote;
 
+    // ---- Clickable chord tokens (chords report only) ----
+    const extraCorr = [];
+    if (reportType === 'chords' && songParts) {
+      panelRow.addEventListener('click', e => {
+        const tok = e.target.closest('.ctx-chord-tok');
+        if (!tok || tok.classList.contains('editing')) return;
+        e.stopPropagation();
+        const ch = tok.dataset.ch;
+        tok.classList.add('editing');
+        tok.innerHTML =
+          `<span class="ctx-tok-orig-lbl">[${escHtml(ch)}]</span>` +
+          `<span class="ctx-tok-arrow">→</span>` +
+          `<input type="text" class="ctx-tok-input" placeholder="Nový" size="${Math.max(ch.length + 1, 5)}">` +
+          `<button type="button" class="ctx-tok-ok crb accept" title="OK"><i class="bi bi-check-lg"></i></button>` +
+          `<button type="button" class="ctx-tok-cancel crb" title="Zrušiť"><i class="bi bi-x-lg"></i></button>`;
+        const input = tok.querySelector('.ctx-tok-input');
+        input.focus();
+        const revert = () => {
+          tok.classList.remove('editing');
+          tok.innerHTML = `<span class="ctx-chord">[${escHtml(ch)}]</span>`;
+        };
+        const commit = () => {
+          const repl = input.value.trim();
+          if (!repl) { input.focus(); return; }
+          const pi2 = parseInt(tok.dataset.pidx), li2 = parseInt(tok.dataset.lidx), oidx = parseInt(tok.dataset.oidx || '0');
+          const c = { partIdx: pi2, lineIdx: li2, original: ch, replacement: repl, occurrenceIdx: oidx, partLabel: songParts[pi2]?.type || '?', _declined: false };
+          extraCorr.push(c);
+          tok.className = 'ctx-fix is-accepted';
+          tok.removeAttribute('data-ch');
+          tok.innerHTML =
+            `<span class="ctx-fix-btns">` +
+            `<button type="button" class="crb accept active" data-choice="accept" title="Prijať"><i class="bi bi-check-lg"></i></button>` +
+            `<button type="button" class="crb decline" data-choice="decline" title="Odstrániť"><i class="bi bi-x-lg"></i></button>` +
+            `</span><span class="ctx-fix-main">` +
+            `<span class="ctx-fix-orig">[${escHtml(ch)}]</span><span class="ctx-fix-arrow">→</span><span class="ctx-fix-repl">[${escHtml(repl)}]</span></span>`;
+          tok.querySelectorAll('.crb').forEach(crb => {
+            crb.addEventListener('click', ev => {
+              ev.stopPropagation();
+              tok.querySelectorAll('.crb').forEach(x => x.classList.remove('active'));
+              crb.classList.add('active');
+              tok.classList.toggle('is-accepted', crb.dataset.choice === 'accept');
+              tok.classList.toggle('is-declined', crb.dataset.choice === 'decline');
+              c._declined = crb.dataset.choice === 'decline';
+            });
+          });
+        };
+        tok.querySelector('.ctx-tok-cancel').addEventListener('click', ev => { ev.stopPropagation(); revert(); });
+        tok.querySelector('.ctx-tok-ok').addEventListener('click', ev => { ev.stopPropagation(); commit(); });
+        input.addEventListener('keydown', ev => {
+          if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+          if (ev.key === 'Escape') { ev.preventDefault(); revert(); }
+        });
+        input.addEventListener('click', ev => ev.stopPropagation());
+      });
+    }
+
     // Wire inline ctx-fix toggles
     panelRow.querySelectorAll('.ctx-fix').forEach(widget => {
+      const idx = parseInt(widget.dataset.idx);
+      const c = corrItems[idx];
+      const isChord = widget.querySelector('.ctx-fix-orig')?.textContent.trim().startsWith('[');
       widget.querySelectorAll('.crb').forEach(crb => {
         crb.addEventListener('click', () => {
+          if (crb.dataset.choice === 'edit') {
+            // Show inline replacement editor
+            const replEl = widget.querySelector('.ctx-fix-repl');
+            const current = c.replacement;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'ctx-tok-input';
+            input.value = current;
+            input.style.minWidth = `${Math.max(current.length + 2, 6)}ch`;
+            const ok = document.createElement('button');
+            ok.type = 'button'; ok.className = 'crb accept'; ok.title = 'OK';
+            ok.innerHTML = '<i class="bi bi-check-lg"></i>';
+            const cancel = document.createElement('button');
+            cancel.type = 'button'; cancel.className = 'crb'; cancel.title = 'Zrušiť';
+            cancel.innerHTML = '<i class="bi bi-x-lg"></i>';
+            const btns = widget.querySelector('.ctx-fix-btns');
+            btns.style.display = 'none';
+            replEl.replaceWith(input);
+            input.after(ok, cancel);
+            input.focus(); input.select();
+            const revert = () => {
+              btns.style.display = '';
+              const newRepl = document.createElement('span');
+              newRepl.className = 'ctx-fix-repl';
+              newRepl.textContent = isChord ? `[${c.replacement}]` : c.replacement;
+              ok.remove(); cancel.remove();
+              input.replaceWith(newRepl);
+            };
+            const commit = () => {
+              const val = input.value.trim();
+              if (!val) { input.focus(); return; }
+              c.replacement = val;
+              revert();
+            };
+            ok.addEventListener('click', e => { e.stopPropagation(); commit(); });
+            cancel.addEventListener('click', e => { e.stopPropagation(); revert(); });
+            input.addEventListener('keydown', e => {
+              if (e.key === 'Enter') { e.preventDefault(); commit(); }
+              if (e.key === 'Escape') { e.preventDefault(); revert(); }
+            });
+            return;
+          }
           widget.querySelectorAll('.crb').forEach(x => x.classList.remove('active'));
           crb.classList.add('active');
           widget.classList.toggle('is-accepted', crb.dataset.choice === 'accept');
@@ -501,6 +634,7 @@
     confirmBtn.addEventListener('click', async () => {
       let note = noteEl.value.trim();
       const accepted = [], declined = [];
+      const noteParts = [];
 
       if (corrItems.length > 0) {
         // Collect choices: ctx-fix widgets (inline view) + corr-review-row (fallback)
@@ -514,27 +648,29 @@
           choices[i] = r2.querySelector('.crb.active')?.dataset.choice || 'accept';
         });
         corrItems.forEach((c, i) => (choices[i] === 'accept' ? accepted : declined).push(c));
-
-        const parts = [];
-        if (accepted.length) parts.push('Prijaté: ' + accepted.map(c => `"${c.original}"${c.occNote ? ' ' + c.occNote : ''} → "${c.replacement}"`).join(', '));
-        if (declined.length) parts.push('Zamietnuté: ' + declined.map(c => `"${c.original}"${c.occNote ? ' ' + c.occNote : ''}`).join(', '));
-        if (note) parts.push(note);
-        note = parts.join('\n');
+        if (accepted.length) noteParts.push('Prijaté: ' + accepted.map(c => `[${c.location}] "${c.original}"${c.occNote ? ' ' + c.occNote : ''} → "${c.replacement}"`).join(', '));
+        if (declined.length) noteParts.push('Zamietnuté: ' + declined.map(c => `[${c.location}] "${c.original}"${c.occNote ? ' ' + c.occNote : ''}`).join(', '));
       }
+
+      const userAdded = extraCorr.filter(c => !c._declined);
+      if (userAdded.length) noteParts.push('Pridané: ' + userAdded.map(c => `[${c.partLabel} r.${c.lineIdx+1}] "${c.original}" → "${c.replacement}"`).join(', '));
+      if (note) noteParts.push(note);
+      if (noteParts.length) note = noteParts.join('\n');
 
       confirmBtn.disabled = true;
 
-      // Apply accepted corrections
-      if (accepted.length > 0) {
-        const payload = accepted.map(c => {
-          const entry = { lineIdx: c.lineIdx, original: c.original, replacement: c.replacement, occurrenceIdx: c.occurrenceIdx };
-          if (c.partIdx !== null) entry.partIdx = c.partIdx; else entry.partLabel = c.partLabel;
-          return entry;
-        });
+      // Apply accepted corrections + admin-added chord extras
+      const applyPayload = accepted.map(c => {
+        const entry = { lineIdx: c.lineIdx, original: c.original, replacement: c.replacement, occurrenceIdx: c.occurrenceIdx };
+        if (c.partIdx !== null) entry.partIdx = c.partIdx; else entry.partLabel = c.partLabel;
+        return entry;
+      });
+      userAdded.forEach(c => applyPayload.push({ partIdx: c.partIdx, lineIdx: c.lineIdx, original: c.original, replacement: c.replacement, occurrenceIdx: c.occurrenceIdx }));
+      if (applyPayload.length > 0) {
         try {
           const applyRes = await fetch(`/api/song/${songId}/correct-lyrics`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password: pw, report_type: reportType, corrections: payload, message: '', reporter_name: 'admin (resolve)' }),
+            body: JSON.stringify({ password: pw, report_type: reportType, corrections: applyPayload, message: '', reporter_name: 'admin (resolve)' }),
           });
           const applyData = await applyRes.json();
           if (!applyData.success) { alert('Chyba pri ukladaní opráv: ' + (applyData.message || '')); confirmBtn.disabled = false; return; }
