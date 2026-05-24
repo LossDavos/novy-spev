@@ -582,18 +582,17 @@ function initializeFixedSearch() {
         ${mp3Button}
       </div>
 
-      <div class="mobile-expandable">
-        <button class="mobile-expand-toggle" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#mobile-song-collapse-${song.id}"
-                aria-expanded="false">
-          <i class="bi bi-chevron-down"></i>
-          Viac možností
-        </button>
-        <div class="collapse mobile-expanded-content" id="mobile-song-collapse-${song.id}">
+      <button class="mobile-expand-toggle" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#mobile-song-collapse-${song.id}"
+              aria-expanded="false"
+              title="Viac možností">
+        <i class="bi bi-three-dots-vertical"></i>
+      </button>
+      <div class="collapse mobile-expanded-content" id="mobile-song-collapse-${song.id}">
           <div class="d-flex gap-2 flex-wrap">
-            <a href="/song/${song.id}/preview" class="btn btn-outline-dark btn-sm flex-fill">
-              <i class="bi bi-music-note-beamed me-1"></i>Nahlad
+            <a href="/song/${song.id}/view" class="btn btn-outline-info btn-sm flex-fill">
+              <i class="bi bi-eye me-1"></i>Detaily
             </a>
             <a href="/song/${song.id}" class="btn btn-outline-primary btn-sm flex-fill">
               <i class="bi bi-pencil-square me-1"></i>Upraviť
@@ -601,7 +600,6 @@ function initializeFixedSearch() {
           </div>
           ${categoriesHtml}
         </div>
-      </div>
     `;
 
     return card;

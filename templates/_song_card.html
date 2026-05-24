@@ -138,22 +138,21 @@
 
   </div>
 
-  <!-- Expandable section -->
-  <div class="mobile-expandable">
-    <button class="mobile-expand-toggle"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#{{ collapse_prefix }}-collapse-{{ song.id }}"
-            aria-expanded="false">
-      <i class="bi bi-chevron-down"></i>
-      Viac možností
-    </button>
+  <!-- Three-dots expand toggle -->
+  <button class="mobile-expand-toggle"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#{{ collapse_prefix }}-collapse-{{ song.id }}"
+          aria-expanded="false"
+          title="Viac možností">
+    <i class="bi bi-three-dots-vertical"></i>
+  </button>
 
-    <div class="collapse mobile-expanded-content" id="{{ collapse_prefix }}-collapse-{{ song.id }}">
+  <div class="collapse mobile-expanded-content" id="{{ collapse_prefix }}-collapse-{{ song.id }}">
       <div class="d-flex gap-2 flex-wrap">
-        <a href="{{ url_for('song_preview', song_id=song.id) }}"
-           class="btn btn-outline-dark btn-sm flex-fill">
-          <i class="bi bi-music-note-beamed me-1"></i>Nahlad
+        <a href="{{ url_for('song_view', song_id=song.id) }}"
+           class="btn btn-outline-info btn-sm flex-fill">
+          <i class="bi bi-eye me-1"></i>Detaily
         </a>
         <a href="{{ url_for('song_detail', song_id=song.id) }}"
            class="btn btn-outline-primary btn-sm flex-fill">
@@ -175,7 +174,6 @@
           {% endfor %}
         </div>
       {% endif %}
-    </div>
   </div>
 
 </div>
