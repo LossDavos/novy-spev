@@ -118,7 +118,7 @@
       <button type="button" class="report-close" id="reportClose" aria-label="Zatvoriť"><i class="bi bi-x"></i></button>
     </div>
     <div class="report-body">
-      <p class="report-song-name text-muted small mb-3">{{ song.song_id }} – {{ song.title }}</p>
+      <p class="report-song-name text-muted small mb-2">{{ song.song_id }} – {{ song.title }}</p>
       <div class="report-type-grid" role="radiogroup" aria-label="Typ chyby">
         {% for val, icon, label in [
           ('key',    'bi-music-note',        'Nesprávna tónina'),
@@ -136,11 +136,11 @@
         </label>
         {% endfor %}
       </div>
-      <div class="report-fields mt-3">
-        <input type="text" id="reporterName" class="report-input" placeholder="Vaše meno (nepovinné)" maxlength="100">
+      <div class="report-fields mt-2 pb-3">
         <!-- lyrics/chords selection section (injected by JS) -->
         <div id="reportSelectionWrap" style="display:none">
           <div class="report-selection-label">Vyber časť, potom klikni na chybné slovo / akord:</div>
+          <div class="report-selection-hint"><i class="bi bi-info-circle"></i> Pre viac opráv pokračuj vo výbere</div>
           <!-- part pills -->
           <div class="report-part-pills" id="reportPartPills"></div>
           <!-- lines for selected part -->
@@ -157,7 +157,15 @@
           <!-- accumulated corrections list -->
           <ul class="report-corrections-list" id="reportCorrectionsList" style="display:none"></ul>
         </div>
-        <textarea id="reportMessage" class="report-input" placeholder="Popis chyby (nepovinné)…" rows="3" maxlength="500"></textarea>
+        <!-- collapsible extra info -->
+        <button type="button" class="report-extra-toggle" id="reportExtraToggle">
+          <span>Ďalšie informácie</span>
+          <i class="bi bi-chevron-down report-extra-chevron"></i>
+        </button>
+        <div class="report-extra-body" id="reportExtraBody" style="display:none">
+          <input type="text" id="reporterName" class="report-input" placeholder="Vaše meno (nepovinné)" maxlength="100">
+          <textarea id="reportMessage" class="report-input" placeholder="Popis chyby (nepovinné)…" rows="3" maxlength="500"></textarea>
+        </div>
       </div>
       <!-- admin key-correct section (shown only when type=key) -->
       <div class="report-admin-section" id="reportAdminKeySection" style="display:none">
@@ -183,7 +191,7 @@
       <button type="button" class="report-btn ghost" id="reportCancel">Zrušiť</button>
       <button type="button" class="report-btn primary" id="reportSubmit">Odoslať hlásenie</button>
     </div>
-    <div class="report-submit-feedback" id="reportSubmitFeedback"></div>
+    <div class="report-submit-feedback" id="reportSubmitFeedback" style="display:none"></div>
   </div>
 </div>
 
@@ -481,13 +489,32 @@
   background: #fff;
   border-radius: 20px 20px 0 0;
   width: 100%; max-width: 520px;
-  padding: 1.5rem 1.5rem 2rem;
+  padding: 0;
   box-shadow: 0 -8px 30px rgba(0,0,0,0.18);
-  max-height: 92vh; overflow-y: auto;
+  max-height: 92vh;
+  display: flex; flex-direction: column;
+}
+.report-header {
+  flex-shrink: 0;
+  padding: 1.25rem 1.5rem 0.75rem;
+}
+.report-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 0 1.5rem;
+  overscroll-behavior: contain;
+}
+.report-footer {
+  flex-shrink: 0;
+  padding: 0.6rem 1.5rem 0.75rem;
+}
+.report-submit-feedback {
+  flex-shrink: 0;
+  padding: 0 1.5rem 0.5rem;
+  font-size: 0.85rem; text-align: center;
 }
 .report-header {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 0.75rem;
 }
 .report-header h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
 .report-close {
@@ -537,7 +564,7 @@
 }
 .report-admin-feedback { font-size: 0.8rem; margin-top: 0.35rem; min-height: 1rem; }
 .report-footer {
-  display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem;
+  display: flex; gap: 0.5rem; justify-content: flex-end; border-top: 1px solid #f0f0f0;
 }
 .report-btn {
   padding: 0.5rem 1.2rem; border-radius: 10px; border: none;
@@ -545,11 +572,16 @@
 }
 .report-btn.primary { background: #dc3545; color: #fff; }
 .report-btn.ghost { background: #e9ecef; color: #495057; }
-.report-submit-feedback { font-size: 0.85rem; text-align: center; margin-top: 0.5rem; min-height: 1.2rem; }
+/* .report-submit-feedback base styles defined above */
 
 /* Selection UI */
 .report-selection-label {
-  font-size: 0.8rem; font-weight: 600; color: #495057; margin-bottom: 0.4rem;
+  font-size: 0.8rem; font-weight: 600; color: #495057; margin-bottom: 0.2rem;
+}
+.report-selection-hint {
+  font-size: 0.75rem; color: #6c757d;
+  margin-bottom: 0.4rem;
+  display: flex; align-items: center; gap: 0.3rem;
 }
 .report-part-pills {
   display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem;
@@ -629,7 +661,22 @@
   margin-left: auto; background: none; border: none; cursor: pointer;
   color: #6c757d; padding: 0 2px; font-size: 1rem; line-height: 1; flex-shrink: 0;
 }
-.report-correction-del:hover { color: #dc3545; }
+.report-extra-toggle {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 10px;
+  padding: 0.45rem 0.75rem; font-size: 0.82rem; color: #6c757d;
+  cursor: pointer; font-weight: 600; transition: background 0.15s;
+}
+.report-extra-toggle:hover { background: #e9ecef; }
+.report-extra-toggle.is-open { border-radius: 10px 10px 0 0; border-bottom-color: transparent; }
+.report-extra-chevron { transition: transform 0.2s; font-size: 0.75rem; }
+.report-extra-toggle.is-open .report-extra-chevron { transform: rotate(180deg); }
+.report-extra-body {
+  display: flex; flex-direction: column; gap: 0.5rem;
+  border: 1px solid #dee2e6; border-top: none;
+  border-radius: 0 0 10px 10px; padding: 0.6rem 0.75rem 0.5rem;
+  background: #fdfdfd;
+}
 
 .transpose-popover-wrap {
   position: relative;
@@ -1098,6 +1145,68 @@
     font-size: 1.5em !important;
   }
 }
+
+@media (max-width: 480px) {
+  /* Report panel — full-width bottom sheet */
+  .report-panel {
+    border-radius: 16px 16px 0 0;
+    max-height: 78dvh;
+    max-height: 78vh;
+  }
+  .report-header { padding: 1rem 1rem 0.6rem; }
+  .report-body { padding: 0 1rem; }
+  .report-footer { padding: 0.6rem 1rem 0.75rem; }
+
+  /* Type cards: 5 options in one scrollable row instead of cramped grid */
+  .report-type-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+  }
+  .report-type-card {
+    padding: 0.45rem 0.25rem;
+    font-size: 0.72rem;
+    border-radius: 10px;
+  }
+  .report-type-card i { font-size: 1.05rem; }
+
+  /* Lines box shorter so keyboard doesn't bury it */
+  .report-lines-wrap {
+    max-height: 100px;
+  }
+
+  /* Replace row: stack when very narrow */
+  .report-replace-row {
+    gap: 0.3rem;
+  }
+  .report-input-sm { min-width: 60px; }
+  .report-btn-add { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+
+  /* Correction items: keep them readable */
+  .report-correction-item {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+    gap: 0.25rem;
+  }
+
+  /* Admin section: stack inputs vertically */
+  .report-admin-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .report-admin-row .report-input-sm { min-width: unset; width: 100%; }
+  .report-admin-save { align-self: flex-end; }
+
+  /* Footer buttons full-width */
+  .report-footer {
+    gap: 0.4rem;
+  }
+  .report-btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.55rem 0.5rem;
+    font-size: 0.85rem;
+  }
+}
 </style>
 
 <script>
@@ -1554,6 +1663,7 @@
       reportModal.classList.add('is-open');
       reportModal.setAttribute('aria-hidden', 'false');
       reportSubmitFeedback.textContent = '';
+      reportSubmitFeedback.style.display = 'none';
     }
     function closeReportModal() {
       reportModal.classList.remove('is-open');
@@ -1562,9 +1672,20 @@
       clearPendingSelection();
       clearAllCorrections();
       reportLinesWrap.style.display = 'none';
+      // collapse extra info
+      document.getElementById('reportExtraToggle').classList.remove('is-open');
+      document.getElementById('reportExtraBody').style.display = 'none';
     }
 
     reportFab.addEventListener('click', openReportModal);
+
+    // Extra info toggle
+    const reportExtraToggle = document.getElementById('reportExtraToggle');
+    const reportExtraBody = document.getElementById('reportExtraBody');
+    reportExtraToggle.addEventListener('click', () => {
+      const open = reportExtraToggle.classList.toggle('is-open');
+      reportExtraBody.style.display = open ? 'flex' : 'none';
+    });
     reportClose.addEventListener('click', closeReportModal);
     reportCancel.addEventListener('click', closeReportModal);
     reportModal.addEventListener('click', (e) => { if (e.target.dataset.close) closeReportModal(); });
@@ -1608,15 +1729,18 @@
         if (data.success) {
           reportSubmitFeedback.style.color = '#198754';
           reportSubmitFeedback.textContent = '✓ Hlásenie odoslané, ďakujeme!';
+          reportSubmitFeedback.style.display = '';
           if (type === 'key') reportFab.classList.add('has-reports');
           setTimeout(closeReportModal, 1400);
         } else {
           reportSubmitFeedback.style.color = '#dc3545';
           reportSubmitFeedback.textContent = data.message || 'Chyba pri odosielaní.';
+          reportSubmitFeedback.style.display = '';
         }
       } catch {
         reportSubmitFeedback.style.color = '#dc3545';
         reportSubmitFeedback.textContent = 'Sieťová chyba.';
+        reportSubmitFeedback.style.display = '';
       }
       reportSubmit.disabled = false;
     });
