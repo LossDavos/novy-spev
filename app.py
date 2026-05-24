@@ -76,7 +76,7 @@ def add_security_headers(response):
         "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; "
         "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
         "img-src 'self' data: https:; "
-        "connect-src 'self'; "
+        "connect-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
         "frame-ancestors 'none';"
     )
     # Prevent MIME type sniffing
@@ -218,6 +218,7 @@ def send_edit_notification_email(song, form_data):
             'version_name': ('version_name', 'Verzia', lambda x: x.strip() if x else None),
             'title_original': ('title_original', 'Pôvodný názov', lambda x: x.strip()),
             'author_original': ('author_original', 'Pôvodný autor', lambda x: x.strip()),
+            'song_key': ('song_key', 'Tonina', lambda x: x.strip() if x else None),
         }
         
         # Check simple fields
@@ -899,6 +900,226 @@ def generate_tex(song_id):
 
     flash("TeX file generated successfully!", "success")
     return redirect(url_for('song_view', song_id=song_id))
+
+
+def load_song_tex_content(song):
+    if song.tex_path and storage().file_exists(song.tex_path):
+        if config.USE_S3_STORAGE:
+            try:
+                s3_backend = storage()
+                response = s3_backend.s3_client.get_object(Bucket=s3_backend.bucket, Key=song.tex_path)
+                return response['Body'].read().decode('utf-8')
+            except Exception as exc:
+                raise RuntimeError(f"Failed to load TeX from S3: {exc}")
+
+        local_storage = storage()
+        if hasattr(local_storage, 'get_absolute_path'):
+            tex_path = local_storage.get_absolute_path(song.tex_path)
+            if tex_path and os.path.exists(tex_path):
+                with open(tex_path, 'r', encoding='utf-8') as handle:
+                    return handle.read()
+
+    return generate_latex_content(song)
+
+
+def parse_key_root(key_value):
+    if not key_value:
+        return None
+    match = re.match(r'^([A-Ha-h])([#b]?)(.*)$', key_value.strip())
+    if not match:
+        return None
+    letter, accidental, rest = match.groups()
+    return {
+        'root': f"{letter.upper()}{accidental}",
+        'accidental': accidental,
+        'rest': rest
+    }
+
+
+def calculate_transpose_steps(base_key, target_key):
+    note_index = {
+        'C': 0, 'C#': 1, 'Db': 1,
+        'D': 2, 'D#': 3, 'Eb': 3,
+        'E': 4,
+        'F': 5, 'F#': 6, 'Gb': 6,
+        'G': 7, 'G#': 8, 'Ab': 8,
+        'A': 9, 'A#': 10, 'Bb': 10,
+        'B': 11, 'H': 11
+    }
+
+    base = parse_key_root(base_key)
+    target = parse_key_root(target_key)
+    if not base or not target:
+        return None
+    base_index = note_index.get(base['root'])
+    target_index = note_index.get(target['root'])
+    if base_index is None or target_index is None:
+        return None
+    return target_index - base_index
+
+
+def transpose_chord_value(chord, steps):
+    if chord is None:
+        return chord
+    raw = chord.strip()
+    if not raw:
+        return raw
+
+    optional = raw.startswith('(') and raw.endswith(')') and len(raw) > 2
+    inner = raw[1:-1].strip() if optional else raw
+
+    note_index = {
+        'C': 0, 'C#': 1, 'Db': 1,
+        'D': 2, 'D#': 3, 'Eb': 3,
+        'E': 4,
+        'F': 5, 'F#': 6, 'Gb': 6,
+        'G': 7, 'G#': 8, 'Ab': 8,
+        'A': 9, 'A#': 10, 'Bb': 10,
+        'B': 11, 'H': 11
+    }
+    notes_sharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    notes_flat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+
+    def normalize_rest(rest):
+        rest_value = rest.strip()
+        rest_lower = rest_value.lower()
+        if rest_lower == 'sus2':
+            return '2'
+        if rest_lower == 'sus4':
+            return '4'
+        return rest_value
+
+    def transpose_part(part):
+        match = re.match(r'^([A-Ha-h])([#b]?)(.*)$', part)
+        if not match:
+            return part
+        letter, accidental, rest = match.groups()
+        rest = normalize_rest(rest)
+        rest_lower = rest.lower()
+        is_minor = letter.islower()
+        if rest_lower.startswith('min'):
+            is_minor = True
+            rest = rest[3:]
+        elif rest_lower.startswith('m') and not rest_lower.startswith('maj'):
+            is_minor = True
+            rest = rest[1:]
+
+        root_key = f"{letter.upper()}{accidental}"
+        idx = note_index.get(root_key)
+        if idx is None:
+            return part
+        next_index = (idx + steps + 12) % 12
+        prefer_flats = accidental == 'b'
+        next_root = notes_flat[next_index] if prefer_flats else notes_sharp[next_index]
+        if is_minor:
+            next_root = next_root.lower()
+        return f"{next_root}{rest}"
+
+    parts = [p.strip() for p in inner.split('/')]
+    transposed_parts = [transpose_part(p) for p in parts if p]
+    combined = '/'.join(transposed_parts) if transposed_parts else inner
+    return f"({combined})" if optional else combined
+
+
+def transpose_latex_chords(latex_text, steps):
+    if steps == 0:
+        return latex_text
+    def unescape_chord_arg(value):
+        return (value
+            .replace('\\textbackslash ', '\\')
+            .replace('\\textasciitilde{}', '~')
+            .replace('\\textasciicircum{}', '^')
+            .replace('\\#', '#')
+            .replace('\\&', '&')
+            .replace('\\%', '%')
+            .replace('\\$', '$')
+            .replace('\\_', '_')
+            .replace('\\{', '{')
+            .replace('\\}', '}')
+        )
+    def escape_chord_arg(value):
+        return (value
+            .replace('\\', '\\textbackslash ')
+            .replace('&', '\\&')
+            .replace('%', '\\%')
+            .replace('$', '\\$')
+            .replace('#', '\\#')
+            .replace('_', '\\_')
+            .replace('{', '\\{')
+            .replace('}', '\\}')
+            .replace('~', '\\textasciitilde{}')
+            .replace('^', '\\textasciicircum{}')
+        )
+    def replace_chord(match):
+        raw_value = unescape_chord_arg(match.group(1))
+        transposed = transpose_chord_value(raw_value, steps)
+        return f"\\chord{{{escape_chord_arg(transposed)}}}"
+    return re.sub(r'\\chord\{([^}]+)\}', replace_chord, latex_text)
+
+
+def render_latex_to_pdf(latex_text):
+    engine = None
+    for candidate in ('xelatex', 'lualatex', 'pdflatex'):
+        if shutil.which(candidate):
+            engine = candidate
+            break
+    if engine is None:
+        raise RuntimeError('No LaTeX engine found (xelatex/lualatex/pdflatex).')
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        tex_path = os.path.join(temp_dir, 'song.tex')
+        with open(tex_path, 'w', encoding='utf-8') as handle:
+            handle.write(latex_text)
+
+        preamble_src = os.path.join(BASE_DIR, 'preamble.tex')
+        shutil.copy(preamble_src, os.path.join(temp_dir, 'preamble.tex'))
+
+        fonts_src = os.path.join(BASE_DIR, 'static', 'fonts')
+        fonts_dest = os.path.join(temp_dir, 'fonts')
+        if os.path.isdir(fonts_src):
+            shutil.copytree(fonts_src, fonts_dest)
+
+        command = [engine, '-interaction=nonstopmode', '-halt-on-error', 'song.tex']
+        for _ in range(2):
+            result = subprocess.run(
+                command,
+                cwd=temp_dir,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                check=False
+            )
+            if result.returncode != 0:
+                raise RuntimeError(f"XeLaTeX failed: {result.stdout}")
+
+        pdf_path = os.path.join(temp_dir, 'song.pdf')
+        with open(pdf_path, 'rb') as handle:
+            return handle.read()
+
+
+@app.route('/song/<int:song_id>/download_chords_pdf')
+def download_chords_pdf(song_id):
+    song = Song.query.get_or_404(song_id)
+    try:
+        steps = int(request.args.get('shift_steps', '0'))
+    except ValueError:
+        return jsonify({'error': 'Invalid shift_steps'}), 400
+
+    try:
+        latex_text = load_song_tex_content(song)
+        transposed_latex = transpose_latex_chords(latex_text, steps)
+        pdf_data = render_latex_to_pdf(transposed_latex)
+    except Exception as exc:
+        return jsonify({'error': str(exc)}), 500
+
+    base_name = secure_filename(song.song_id or song.title or f"song_{song.id}")
+    filename = f"{base_name}_chords.pdf"
+    return send_file(
+        io.BytesIO(pdf_data),
+        mimetype='application/pdf',
+        as_attachment=True,
+        download_name=filename
+    )
 
 
 # ============================================================================
@@ -1662,6 +1883,7 @@ def song_detail(song_id):
 
             song.title_original = sanitize_input(request.form.get('title_original', ''), "original title")
             song.author_original = sanitize_input(request.form.get('author_original', ''), "original author")
+            song.song_key = sanitize_input(request.form.get('song_key', ''), "song key") if request.form.get('song_key') and request.form.get('song_key').strip() else None
 
             # Reset admin_checked when song is edited (requires re-verification)
             song.admin_checked = False
@@ -1863,6 +2085,19 @@ def song_view(song_id):
 
     return render_template('song_view.html', song=song, data=data, mp3s=mp3s, midis=midis, sheet_pdfs=sheet_pdfs, sheet_mscz=sheet_mscz)
 
+@app.route('/song/<int:song_id>/preview')
+def song_preview(song_id):
+    """Minimal, styled preview of lyrics with enlarged chords."""
+    song = Song.query.get_or_404(song_id)
+
+    try:
+        data = json.loads(song.song_parts or '[]')
+    except (json.JSONDecodeError, TypeError):
+        data = []
+
+    show_chords = request.args.get('chords', '1') != '0'
+    return render_template('song_preview.html', song=song, data=data, back_url=request.referrer, show_chords=show_chords)
+
 @app.route('/song/delete/<int:song_id>', methods=['POST'])
 def delete_song(song_id):
     # Check if password is provided and correct
@@ -1882,7 +2117,89 @@ def delete_song(song_id):
 # Template filter for chord rendering
 @app.template_filter('replace_chords')
 def replace_chords_filter(text):
-    return Markup(re.sub(r"\[([^\]]+)\]", r"<sup style='color:orange; font-size:1.1em'><strong>\1</strong></sup>", text))
+    def format_chord_display(chord_text):
+        raw = chord_text.strip()
+        if not raw:
+            return raw
+
+        optional = raw.startswith('(') and raw.endswith(')') and len(raw) > 2
+        inner = raw[1:-1].strip() if optional else raw
+        inner = inner.replace('\\', '/')
+
+        def normalize_part(part):
+            match = re.match(r'^([A-Ha-h])([#b]?)(.*)$', part)
+            if not match:
+                return part
+            letter, accidental, rest = match.groups()
+            is_lower = letter.islower()
+            letter = letter.upper()
+            rest = rest.strip()
+            rest_lower = rest.lower()
+
+            if rest in ('2', '4'):
+                rest = rest
+            elif rest_lower == 'sus2':
+                rest = '2'
+            elif rest_lower == 'sus4':
+                rest = '4'
+
+            is_minor = False
+            if rest_lower.startswith('min'):
+                is_minor = True
+                rest = rest[3:]
+            elif rest_lower.startswith('m') and not rest_lower.startswith('maj'):
+                is_minor = True
+                rest = rest[1:]
+
+            if is_minor:
+                letter = letter.lower()
+            elif is_lower:
+                letter = letter.lower()
+
+            root = f"{letter}{accidental}"
+            return f"{root}{rest}"
+
+        parts = [p.strip() for p in inner.split('/')]
+        normalized_parts = [normalize_part(p) for p in parts if p]
+        normalized = '/'.join(normalized_parts) if normalized_parts else inner
+
+        if optional:
+            normalized = f"({normalized})"
+        return normalized
+
+    def render_chord_html(chord_text):
+        formatted = format_chord_display(chord_text)
+        optional = formatted.startswith('(') and formatted.endswith(')') and len(formatted) > 2
+        inner = formatted[1:-1] if optional else formatted
+
+        def split_root(chord_part):
+            match = re.match(r'^([A-Ha-h])([#b]?)(.*)$', chord_part)
+            if not match:
+                return chord_part, ''
+            letter, accidental, rest = match.groups()
+            return f"{letter}{accidental}", rest
+
+        parts = [p.strip() for p in inner.split('/')]
+        html_parts = []
+        for part in parts:
+            root, rest = split_root(part)
+            root_html = f"<span class='chord-root' style='font-size:1em'>{root}</span>"
+            ext_html = ''
+            if rest:
+                ext_html = (
+                    "<span class='chord-ext' "
+                    "style='font-size:0.6em; vertical-align:super'>"
+                    f"{rest}</span>"
+                )
+            html_parts.append(f"{root_html}{ext_html}")
+
+        body = '/'.join(html_parts)
+        if optional:
+            body = f"({body})"
+
+        return f"<sup class='chord' style='color:orange; font-size:1.1em'><strong>{body}</strong></sup>"
+
+    return Markup(re.sub(r"\[([^\]]+)\]", lambda m: render_chord_html(m.group(1)), text))
 
 # Template filter for JSON parsing
 @app.template_filter('parse_json')
