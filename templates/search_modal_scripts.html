@@ -47,40 +47,41 @@ function initializeFixedSearch() {
     }
   });
 
+  // Build search params from current state
+  function buildSearchParams(searchTerm, extraLimit) {
+    const params = new URLSearchParams({ limit: extraLimit || '1000' });
+    if (searchTerm) params.set('q', searchTerm);
+    if (typeof window.activeFilters !== 'undefined' && window.activeFilters && window.activeFilters.size > 0) {
+      params.append('categories', Array.from(window.activeFilters).join(','));
+    }
+    if (typeof window.activeStatusFilters !== 'undefined' && window.activeStatusFilters && window.activeStatusFilters.size > 0) {
+      if (window.activeStatusFilters.has('unchecked')) params.append('unchecked', 'true');
+      if (window.activeStatusFilters.has('unprinted')) params.append('printed', 'false');
+    }
+    return params;
+  }
+
   // Perform live search and update main song list
   async function performLiveSearch(searchTerm) {
     try {
-      const params = new URLSearchParams({
-        q: searchTerm,
-        limit: '1000' // Get more results for main list
-      });
+      const params = buildSearchParams(searchTerm);
 
-      // Include active category filters from main page
-      if (typeof window.activeFilters !== 'undefined' && window.activeFilters && window.activeFilters.size > 0) {
-        params.append('categories', Array.from(window.activeFilters).join(','));
-      }
+      // Fetch JSON (for table + count) and server-rendered cards in parallel
+      const [jsonResp, htmlResp] = await Promise.all([
+        fetch(`/api/search?${params}`),
+        fetch(`/api/search_cards?${params}`)
+      ]);
+      const data = await jsonResp.json();
+      const cardsHtml = await htmlResp.text();
 
-      // Include active status filters from main page
-      if (typeof window.activeStatusFilters !== 'undefined' && window.activeStatusFilters && window.activeStatusFilters.size > 0) {
-        if (window.activeStatusFilters.has('unchecked')) {
-          params.append('unchecked', 'true');
-        }
-        if (window.activeStatusFilters.has('unprinted')) {
-          params.append('printed', 'false');
-        }
-      }
-
-      const response = await fetch(`/api/search?${params}`);
-      const data = await response.json();
-
-      updateMainSongList(data.results, searchTerm);
+      updateMainSongList(data.results, searchTerm, cardsHtml);
     } catch (error) {
       console.error('Live search error:', error);
     }
   }
 
   // Update main song list with search results
-  function updateMainSongList(results, searchTerm) {
+  function updateMainSongList(results, searchTerm, cardsHtml) {
     const tableBody = document.getElementById('songsTableBody');
     const mobileContainer = document.getElementById('mobileSongsContainer');
 
@@ -157,11 +158,17 @@ function initializeFixedSearch() {
       // Add to table
       const row = createTableRow(song);
       tableBody.appendChild(row);
-
-      // Add to mobile container
-      const card = createMobileCard(song);
-      mobileContainer.appendChild(card);
     });
+
+    // Mobile container: use server-rendered HTML if provided, else fall back to JS
+    if (cardsHtml !== undefined) {
+      mobileContainer.innerHTML = cardsHtml;
+    } else {
+      results.forEach(song => {
+        const card = createMobileCard(song);
+        mobileContainer.appendChild(card);
+      });
+    }
 
     // Update results count in search bar
     if (resultsCount) {
@@ -205,32 +212,16 @@ function initializeFixedSearch() {
   // Perform search with only filters (no search term)
   async function performFilterOnlySearch() {
     try {
-      const params = new URLSearchParams({
-        limit: '1000' // Get more results for main list
-      });
-
-      // Include active category filters
-      if (window.activeFilters && window.activeFilters.size > 0) {
-        params.append('categories', Array.from(window.activeFilters).join(','));
-      }
-
-      // Include active status filters
-      if (window.activeStatusFilters && window.activeStatusFilters.size > 0) {
-        if (window.activeStatusFilters.has('unchecked')) {
-          params.append('unchecked', 'true');
-        }
-        if (window.activeStatusFilters.has('unprinted')) {
-          params.append('printed', 'false');
-        }
-      }
-
-      const response = await fetch(`/api/search?${params}`);
-      const data = await response.json();
-
-      updateMainSongList(data.results, ''); // Empty search term since we're just filtering
+      const params = buildSearchParams('');
+      const [jsonResp, htmlResp] = await Promise.all([
+        fetch(`/api/search?${params}`),
+        fetch(`/api/search_cards?${params}`)
+      ]);
+      const data = await jsonResp.json();
+      const cardsHtml = await htmlResp.text();
+      updateMainSongList(data.results, '', cardsHtml);
     } catch (error) {
       console.error('Filter-only search error:', error);
-      // Fallback to original list if error
       resetToOriginalList();
     }
   }

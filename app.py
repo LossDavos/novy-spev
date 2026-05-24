@@ -2531,6 +2531,72 @@ def get_songs():
 
     return jsonify([{'song_id': sid, 'title': title} for sid, title in combined])
 
+@app.route('/api/search_cards')
+def search_cards_html():
+    """Returns server-rendered HTML cards for search results (uses _song_card.html macro)"""
+    from unidecode import unidecode
+    from urllib.parse import quote
+    import re
+
+    query = request.args.get('q', '').strip()
+    printed_filter = request.args.get('printed')
+    unchecked_filter = request.args.get('unchecked')
+    categories_filter = request.args.get('categories')
+    limit = min(int(request.args.get('limit', 50)), 200)
+    offset = max(int(request.args.get('offset', 0)), 0)
+
+    query_obj = Song.query
+
+    if query:
+        query_no_chords = re.sub(r'\[[^\]]*\]', '', query)
+        normalized_query = unidecode(query_no_chords.lower()).replace(",", " ").replace(".", " ").replace("-", " ").replace("_", " ").replace(";", " ").strip()
+        normalized_query = re.sub(r'\s+', ' ', normalized_query)
+        query_obj = query_obj.filter(Song.search_text.like(f'%{normalized_query}%'))
+
+    if printed_filter == 'true':
+        query_obj = query_obj.filter(Song.printed == True)
+    elif printed_filter == 'false':
+        query_obj = query_obj.filter(Song.printed == False)
+
+    if unchecked_filter == 'true':
+        query_obj = query_obj.filter(Song.admin_checked == False)
+
+    if categories_filter:
+        for cat in [c.strip().lower() for c in categories_filter.split(',') if c.strip()]:
+            query_obj = query_obj.filter(Song.categories.ilike(f'%{cat}%'))
+
+    songs = query_obj.order_by(Song.song_id).offset(offset).limit(limit).all()
+
+    songs_data = []
+    for song in songs:
+        try:
+            mp3_paths = json.loads(song.mp3_paths or '[]')
+        except (json.JSONDecodeError, TypeError):
+            mp3_paths = []
+        try:
+            sheet_pdf_paths = json.loads(song.sheet_pdf_paths or '[]')
+        except (json.JSONDecodeError, TypeError):
+            sheet_pdf_paths = []
+        songs_data.append({
+            'id': song.id,
+            'song_id': song.song_id,
+            'title': song.title,
+            'author': song.author,
+            'version_name': song.version_name,
+            'categories': song.categories,
+            'printed': song.printed,
+            'admin_checked': song.admin_checked,
+            'pdf_lyrics_path': song.pdf_lyrics_path,
+            'pdf_chords_path': song.pdf_chords_path,
+            'mp3_paths': mp3_paths,
+            'sheet_pdf_paths': sheet_pdf_paths,
+            'mp3_paths_encoded': quote(json.dumps(mp3_paths)),
+            'sheet_pdf_paths_encoded': quote(json.dumps(sheet_pdf_paths)),
+        })
+
+    html = render_template('_search_cards_fragment.html', songs=songs_data)
+    return html, 200, {'Content-Type': 'text/html; charset=utf-8'}
+
 @app.route('/api/search')
 def search_songs():
     """Fast server-side search endpoint with pagination"""
