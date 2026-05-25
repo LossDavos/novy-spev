@@ -10,13 +10,14 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import Flask, request, redirect, render_template, url_for, flash, jsonify, send_from_directory, send_file, session
-from models import db, Song, Event, EventSection, EventSectionSong, SongReport
+from models import db, Song, Event, EventSection, EventSectionSong, SongReport, SongChangeLog
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from datetime import datetime
 import sqlite3
 from markupsafe import Markup, escape
 import re
+import difflib
 from sqlalchemy import case
 from pathlib import Path
 from generate_tex import generate_latex_content
@@ -736,7 +737,7 @@ def presigned_url_filter(key, expires_in=3600):
         return ""
 
 
-def update_multi_file_paths(current_paths, new_files, song_id, subfolder='', force_replace=False):
+def update_multi_file_paths(current_paths, new_files, song_id, subfolder='', force_replace=False, replacements_out=None):
     """
     Upload multiple files and update path list
     
@@ -770,6 +771,8 @@ def update_multi_file_paths(current_paths, new_files, song_id, subfolder='', for
                                 skipped_files.append(file.filename)
                     else:
                         print(f"[Upload] Path already in list: {path}")
+                        if force_replace and already_existed and replacements_out is not None:
+                            replacements_out.append(secure_filename(file.filename))
                         if not force_replace:
                             skipped_files.append(file.filename)
                 else:
@@ -1908,6 +1911,40 @@ def song_detail(song_id):
         if not provided_password or provided_password != EDIT_SONG_PASSWORD:
             flash("Nesprávne heslo pre uloženie zmien!", "error")
             return redirect(url_for('song_detail', song_id=song.id if not is_new_song else 'new'))
+
+        # Snapshot old values before any mutation (for changelog)
+        _FIELD_LABELS = {
+            'title': 'Názov', 'author': 'Autor', 'version_name': 'Verzia',
+            'title_original': 'Orig. názov', 'author_original': 'Orig. autor',
+            'song_key': 'Tónina', 'categories': 'Kategórie',
+            'alternative_titles': 'Alt. názvy', 'song_parts': 'Text piesne',
+        }
+        _FILE_LABELS = {
+            'pdf_lyrics_path': 'PDF slová', 'pdf_chords_path': 'PDF akordy',
+            'tex_path': 'TeX', 'mp3_paths': 'MP3',
+            'midi_paths': 'MIDI', 'sheet_pdf_paths': 'Noty PDF',
+            'sheet_mscz_paths': 'Noty MSCZ',
+        }
+        if not is_new_song:
+            _snap = {
+                'title': song.title or '', 'author': song.author or '',
+                'version_name': song.version_name or '',
+                'title_original': song.title_original or '',
+                'author_original': song.author_original or '',
+                'song_key': song.song_key or '',
+                'categories': song.categories or '',
+                'alternative_titles': song.alternative_titles or '',
+                'song_parts': song.song_parts or '',
+                'pdf_lyrics_path': song.pdf_lyrics_path or '',
+                'pdf_chords_path': song.pdf_chords_path or '',
+                'tex_path': song.tex_path or '',
+                'mp3_paths': song.mp3_paths or '[]',
+                'midi_paths': song.midi_paths or '[]',
+                'sheet_pdf_paths': song.sheet_pdf_paths or '[]',
+                'sheet_mscz_paths': song.sheet_mscz_paths or '[]',
+            }
+        else:
+            _snap = None
         
         try:
             # Update song fields - SANITIZE ALL TEXT INPUTS TO PREVENT XSS
@@ -1961,6 +1998,9 @@ def song_detail(song_id):
         # Check if user confirmed to replace existing files
         force_replace = request.form.get('force_replace') == 'true'
 
+        # Track same-name file replacements (path unchanged but file content replaced)
+        _replaced_same_name = []  # list of {'field': ..., 'filename': ...}
+
         # Handle file uploads (works for both new and existing songs)
         def handle_file_update(current_path, file, field_name):
             """Update single file (PDF, TeX, etc.)"""
@@ -1972,6 +2012,10 @@ def song_detail(song_id):
                 if current_path and current_path == new_path and not force_replace:
                     flash(f"File '{filename}' already exists (skipped). Use 'Replace Existing Files' option to override.", "warning")
                     return current_path
+
+                # Track force-replace with same filename (path won't change → invisible to diff)
+                if current_path and current_path == new_path and force_replace:
+                    _replaced_same_name.append({'field': field_name, 'filename': filename})
                 
                 # Delete old file if it exists and is different
                 if current_path and current_path != new_path:
@@ -1990,10 +2034,15 @@ def song_detail(song_id):
         song.pdf_chords_path = handle_file_update(song.pdf_chords_path, request.files.get('pdf_chords'), 'pdf_chords')
 
         # Handle multiple files (MP3s, MIDIs, sheet PDFs, MuseScore files)
-        song.mp3_paths = update_multi_file_paths(song.mp3_paths, request.files.getlist('mp3s'), song.id, 'mp3s', force_replace=force_replace)
-        song.midi_paths = update_multi_file_paths(song.midi_paths, request.files.getlist('midis'), song.id, 'midis', force_replace=force_replace)
-        song.sheet_pdf_paths = update_multi_file_paths(song.sheet_pdf_paths, request.files.getlist('sheet_pdfs'), song.id, 'sheets', force_replace=force_replace)
-        song.sheet_mscz_paths = update_multi_file_paths(song.sheet_mscz_paths, request.files.getlist('sheet_mscz'), song.id, 'mscz', force_replace=force_replace)
+        _mp3_rep, _midi_rep, _sheet_rep, _mscz_rep = [], [], [], []
+        song.mp3_paths = update_multi_file_paths(song.mp3_paths, request.files.getlist('mp3s'), song.id, 'mp3s', force_replace=force_replace, replacements_out=_mp3_rep)
+        song.midi_paths = update_multi_file_paths(song.midi_paths, request.files.getlist('midis'), song.id, 'midis', force_replace=force_replace, replacements_out=_midi_rep)
+        song.sheet_pdf_paths = update_multi_file_paths(song.sheet_pdf_paths, request.files.getlist('sheet_pdfs'), song.id, 'sheets', force_replace=force_replace, replacements_out=_sheet_rep)
+        song.sheet_mscz_paths = update_multi_file_paths(song.sheet_mscz_paths, request.files.getlist('sheet_mscz'), song.id, 'mscz', force_replace=force_replace, replacements_out=_mscz_rep)
+        for _fn in _mp3_rep:   _replaced_same_name.append({'field': 'mp3_paths',        'filename': _fn})
+        for _fn in _midi_rep:  _replaced_same_name.append({'field': 'midi_paths',       'filename': _fn})
+        for _fn in _sheet_rep: _replaced_same_name.append({'field': 'sheet_pdf_paths',  'filename': _fn})
+        for _fn in _mscz_rep:  _replaced_same_name.append({'field': 'sheet_mscz_paths', 'filename': _fn})
 
         if 'associated_song_id' in request.form:
             associated_song_id = request.form['associated_song_id']
@@ -2031,6 +2080,94 @@ def song_detail(song_id):
 
             flash("Associated song not found", 'error')
             return redirect(url_for('song_view', song_id=song.id))
+
+        # Build and save changelog entry
+        try:
+            field_changes = []
+            file_changes = []
+            if _snap is None:
+                # New song — record all non-empty fields as "added"
+                for f, lbl in _FIELD_LABELS.items():
+                    val = (getattr(song, f) or '')
+                    if f == 'song_parts':
+                        parts_data = json.loads(val) if val else []
+                        if parts_data:
+                            field_changes.append({'field': f, 'label': lbl, 'old': '', 'new': f'{len(parts_data)} čast(í)'})
+                    elif val:
+                        field_changes.append({'field': f, 'label': lbl, 'old': '', 'new': val})
+                for f, lbl in _FILE_LABELS.items():
+                    val = getattr(song, f) or ''
+                    if f.endswith('_paths'):
+                        for p in json.loads(val if val != '' else '[]'):
+                            file_changes.append({'filename': p.split('/')[-1], 'action': 'added', 'type': lbl})
+                    elif val:
+                        file_changes.append({'filename': val.split('/')[-1], 'action': 'added', 'type': lbl})
+            else:
+                # Existing song — diff
+                for f, lbl in _FIELD_LABELS.items():
+                    old_val = _snap.get(f, '')
+                    new_val = getattr(song, f) or ''
+                    if f == 'song_parts':
+                        if old_val != new_val:
+                            def _flatten_parts(parts_json):
+                                lines = []
+                                try:
+                                    for part in json.loads(parts_json or '[]'):
+                                        lines.append(f"[{part.get('type','?')}]")
+                                        lines.extend(part.get('lines', []))
+                                except Exception:
+                                    pass
+                                return lines
+                            old_lines = _flatten_parts(old_val)
+                            new_lines = _flatten_parts(new_val)
+                            raw = list(difflib.unified_diff(old_lines, new_lines, lineterm='', n=0))
+                            diff_entries = []
+                            for dl in raw:
+                                if dl.startswith('+++') or dl.startswith('---') or dl.startswith('@@'):
+                                    continue
+                                if dl.startswith('+'):
+                                    diff_entries.append({'t': '+', 'text': dl[1:]})
+                                elif dl.startswith('-'):
+                                    diff_entries.append({'t': '-', 'text': dl[1:]})
+                            if diff_entries:
+                                field_changes.append({'field': 'song_parts', 'label': lbl,
+                                                      'diff': diff_entries[:80]})
+                    elif old_val != new_val:
+                        field_changes.append({'field': f, 'label': lbl, 'old': old_val, 'new': new_val})
+                for f, lbl in _FILE_LABELS.items():
+                    if f.endswith('_paths'):
+                        old_set = set(json.loads(_snap.get(f, '[]') or '[]'))
+                        new_set = set(json.loads(getattr(song, f) or '[]'))
+                        for p in new_set - old_set:
+                            file_changes.append({'filename': p.split('/')[-1], 'action': 'added', 'type': lbl})
+                        for p in old_set - new_set:
+                            file_changes.append({'filename': p.split('/')[-1], 'action': 'removed', 'type': lbl})
+                    else:
+                        old_val = _snap.get(f, '')
+                        new_val = getattr(song, f) or ''
+                        if old_val != new_val:
+                            fname_old = old_val.split('/')[-1] if old_val else ''
+                            fname_new = new_val.split('/')[-1] if new_val else ''
+                            if fname_new:
+                                file_changes.append({'filename': fname_new, 'action': 'added', 'type': lbl})
+                            if fname_old:
+                                file_changes.append({'filename': fname_old, 'action': 'removed', 'type': lbl})
+                # Same-name replacements (path unchanged → invisible to set diff above)
+                for rep in _replaced_same_name:
+                    lbl = _FILE_LABELS.get(rep['field'], rep['field'])
+                    file_changes.append({'filename': rep['filename'], 'action': 'replaced', 'type': lbl})
+
+            if field_changes or file_changes or _snap is None:
+                log = SongChangeLog(
+                    song_db_id=song.id,
+                    changed_at=datetime.utcnow(),
+                    is_new_song=(_snap is None),
+                    field_changes=json.dumps(field_changes, ensure_ascii=False),
+                    file_changes=json.dumps(file_changes, ensure_ascii=False),
+                )
+                db.session.add(log)
+        except Exception:
+            pass  # changelog errors must not block the save
 
         db.session.commit()
         if is_new_song:
@@ -2244,18 +2381,66 @@ def is_admin_authorized(provided_password=''):
     return session.get('is_admin') or (provided_password and provided_password == UPDATE_SONG_PASSWORD)
 
 
+@app.route('/admin')
+def admin_index():
+    """Admin home page."""
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    total_open = SongReport.query.filter_by(resolved=False).count()
+    type_counts = {}
+    for t in ('key', 'lyrics', 'chords', 'author', 'other'):
+        type_counts[t] = SongReport.query.filter_by(report_type=t, resolved=False).count()
+    pending_songs = Song.query.filter_by(admin_checked=False).count()
+    return render_template('admin_index.html',
+                           total_open=total_open,
+                           type_counts=type_counts,
+                           pending_songs=pending_songs)
+
+
+@app.route('/admin/songs')
+def admin_songs():
+    """Admin: list songs needing review (admin_checked=False)."""
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    songs = Song.query.filter_by(admin_checked=False)\
+                      .order_by(Song.last_modified.desc().nullslast(), Song.id.desc()).all()
+    # Attach changelogs since last approval per song
+    changelogs = {}
+    for song in songs:
+        cutoff = song.last_approved_at
+        logs = song.changelogs.all()
+        if cutoff:
+            logs = [l for l in logs if l.changed_at > cutoff]
+        changelogs[song.id] = logs  # newest first
+    return render_template('admin_songs.html', songs=songs, changelogs=changelogs)
+
+
+@app.route('/admin/songs/approved')
+def admin_songs_approved():
+    """Admin: list changelog entries for approved songs, newest first, only if they have logs."""
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    # Fetch all changelog entries for approved songs, ordered newest first
+    logs = (SongChangeLog.query
+            .join(Song, SongChangeLog.song_db_id == Song.id)
+            .filter(Song.admin_checked == True)
+            .order_by(SongChangeLog.changed_at.desc())
+            .all())
+    return render_template('admin_songs_approved.html', logs=logs)
+
+
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     """Admin login page — sets a session flag on correct password."""
     if session.get('is_admin'):
-        return redirect(url_for('admin_reports'))
+        return redirect(url_for('admin_index'))
     error = None
     if request.method == 'POST':
         pw = request.form.get('password', '')
         if pw and pw == UPDATE_SONG_PASSWORD:
             session['is_admin'] = True
             session.permanent = True
-            return redirect(url_for('admin_reports'))
+            return redirect(url_for('admin_index'))
         error = 'Nesprávne heslo.'
     return render_template('admin_login.html', error=error)
 
@@ -2311,6 +2496,8 @@ def toggle_admin_check(song_id):
     
     # Update the state
     song.admin_checked = new_state
+    if new_state:
+        song.last_approved_at = datetime.utcnow()
     db.session.commit()
     
     return jsonify({
@@ -2481,6 +2668,15 @@ def parse_json_filter(text):
         return []
     if isinstance(text, list):
         return text
+    try:
+        return json.loads(text)
+    except (json.JSONDecodeError, TypeError):
+        return []
+
+@app.template_filter('from_json')
+def from_json_filter(text):
+    if not text:
+        return []
     try:
         return json.loads(text)
     except (json.JSONDecodeError, TypeError):

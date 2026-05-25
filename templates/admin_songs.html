@@ -1,0 +1,255 @@
+{% extends "layout.html" %}
+{% block title %}Admin – Zmeny piesní{% endblock %}
+{% block content %}
+<style>
+.admin-nav {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.6rem 1rem; background: #fff; border-bottom: 1px solid #dee2e6;
+  position: sticky; top: 0; z-index: 100;
+}
+.song-review-row {
+  background: #fff; border: 1.5px solid #dee2e6; border-radius: 14px;
+  padding: 1rem 1.1rem; margin-bottom: .75rem;
+}
+.song-review-row.approved { opacity: .45; border-color: #c3e6cb; background: #f0fff4; }
+.srr-top { display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+.srr-info { flex: 1; min-width: 200px; }
+.srr-meta { font-size: .78rem; color: #6c757d; margin-top: .25rem; }
+.srr-badges { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .4rem; }
+.srr-actions { display: flex; gap: .5rem; flex-shrink: 0; flex-wrap: wrap; align-items: center; }
+.badge-new    { background: #d4edda; color: #155724; border-radius: 20px; padding: .15rem .55rem; font-size: .75rem; font-weight: 600; }
+.badge-edited { background: #fff3cd; color: #856404; border-radius: 20px; padding: .15rem .55rem; font-size: .75rem; font-weight: 600; }
+.approve-btn {
+  padding: .3rem .9rem; border-radius: 20px; border: 1.5px solid #28a745;
+  background: #fff; color: #28a745; font-weight: 600; font-size: .85rem; cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.approve-btn:hover { background: #28a745; color: #fff; }
+.approve-btn:disabled { opacity: .5; cursor: default; }
+.approved-lbl { color: #28a745; font-size: .85rem; font-weight: 600; }
+/* Changelog */
+.changelog-toggle {
+  font-size: .8rem; color: #6c757d; background: none; border: none;
+  padding: 0; cursor: pointer; margin-top: .5rem;
+  display: inline-flex; align-items: center; gap: .3rem;
+}
+.changelog-toggle:hover { color: #495057; }
+.changelog-body {
+  margin-top: .6rem; display: none;
+  border-top: 1px solid #e9ecef; padding-top: .6rem;
+}
+.changelog-entry {
+  margin-bottom: .6rem; padding: .5rem .75rem;
+  background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;
+}
+.changelog-entry-header {
+  font-size: .75rem; color: #6c757d; margin-bottom: .35rem;
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+}
+.changelog-diff-table { width: 100%; font-size: .82rem; border-collapse: collapse; }
+.changelog-diff-table td { padding: .18rem .4rem; vertical-align: top; }
+.diff-label { color: #6c757d; font-weight: 600; white-space: nowrap; width: 110px; }
+.diff-old { color: #842029; background: #fdf0f0; border-radius: 4px; word-break: break-all; }
+.diff-new { color: #0f5132; background: #f0fdf4; border-radius: 4px; word-break: break-all; }
+.diff-arrow { color: #adb5bd; padding: 0 .3rem; }
+.file-chip {
+  display: inline-flex; align-items: center; gap: .25rem;
+  padding: .12rem .45rem; border-radius: 12px; font-size: .75rem; font-weight: 600;
+  margin: .1rem;
+}
+.file-added    { background: #d4edda; color: #155724; }
+.file-removed  { background: #f8d7da; color: #842029; }
+.file-replaced { background: #fff3cd; color: #664d03; }
+/* Lyrics diff */
+.lyrics-diff {
+  font-family: monospace; font-size: .8rem; line-height: 1.5;
+  max-height: 260px; overflow-y: auto;
+  border: 1px solid #e9ecef; border-radius: 6px; padding: .3rem .5rem;
+  background: #fff;
+}
+.ldiff-line { white-space: pre-wrap; word-break: break-all; padding: .05rem .2rem; border-radius: 3px; }
+.ldiff-add { background: #f0fff4; color: #155724; }
+.ldiff-rem { background: #fdf0f0; color: #842029; }
+.ldiff-sign { font-weight: 700; margin-right: .35rem; }
+</style>
+
+<!-- admin top bar -->
+<div class="admin-nav shadow-sm">
+  <a href="{{ url_for('admin_index') }}" class="text-muted text-decoration-none d-flex align-items-center gap-1">
+    <i class="bi bi-chevron-left"></i> Admin
+  </a>
+  <i class="bi bi-pencil-square text-warning ms-1"></i>
+  <strong>Zmeny piesní</strong>
+  <a href="{{ url_for('admin_songs_approved') }}" class="btn btn-sm btn-outline-success rounded-pill ms-2">
+    <i class="bi bi-check-circle me-1"></i>Schválené
+  </a>
+  <span class="ms-auto d-flex gap-2">
+    <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-secondary rounded-pill">
+      <i class="bi bi-house me-1"></i>Spevník
+    </a>
+    <a href="{{ url_for('admin_logout') }}" class="btn btn-sm btn-outline-danger rounded-pill">
+      <i class="bi bi-box-arrow-right me-1"></i>Odhlásiť
+    </a>
+  </span>
+</div>
+
+<div class="container" style="max-width:900px; padding-top:1.5rem; padding-bottom:3rem">
+  <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
+    <h4 class="mb-0"><i class="bi bi-pencil-square me-2 text-warning"></i>Zmeny piesní</h4>
+    {% if songs %}
+    <span class="badge bg-warning text-dark">{{ songs|length }} čaká na kontrolu</span>
+    {% endif %}
+  </div>
+
+  {% if not songs %}
+  <div class="text-center py-5 text-muted">
+    <i class="bi bi-check-circle-fill text-success" style="font-size:2.5rem"></i>
+    <p class="mt-2 mb-0">Žiadne piesne nečakajú na schválenie.</p>
+  </div>
+  {% else %}
+  <div id="songReviewList">
+  {% for song in songs %}
+  {% set logs = changelogs.get(song.id, []) %}
+  <div class="song-review-row" id="srr-{{ song.id }}">
+    <div class="srr-top">
+      <div class="srr-info">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <span class="fw-bold text-muted">{{ song.song_id }}{% if song.version_name %} <span class="fw-normal">({{ song.version_name }})</span>{% endif %}</span>
+          <span class="fw-semibold">{{ song.title }}</span>
+          {% if logs and logs[0].is_new_song %}
+          <span class="badge-new"><i class="bi bi-plus-circle me-1"></i>Nová</span>
+          {% else %}
+          <span class="badge-edited"><i class="bi bi-pencil me-1"></i>Upravená</span>
+          {% endif %}
+        </div>
+        <div class="srr-meta">
+          {% if song.author %}<span class="me-2"><i class="bi bi-person me-1"></i>{{ song.author }}</span>{% endif %}
+          {% if song.last_modified %}
+          <span class="me-2"><i class="bi bi-clock me-1"></i>{{ song.last_modified.strftime('%d.%m.%Y %H:%M') }}</span>
+          {% elif song.created_at %}
+          <span class="me-2"><i class="bi bi-clock me-1"></i>{{ song.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+          {% endif %}
+          {% if song.song_key %}<span class="me-2"><i class="bi bi-music-note me-1"></i>{{ song.song_key }}</span>{% endif %}
+        </div>
+        {% if song.categories %}
+        <div class="srr-badges">
+          {% for cat in song.categories.split(';;') %}{% if cat.strip() %}
+          <span class="badge bg-light text-dark border" style="font-size:.72rem">{{ cat.strip() }}</span>
+          {% endif %}{% endfor %}
+        </div>
+        {% endif %}
+
+        {# Changelog toggle #}
+        {% if logs %}
+        <button class="changelog-toggle" onclick="toggleChangelog(this, 'cl-{{ song.id }}')">
+          <i class="bi bi-clock-history"></i>
+          {{ logs|length }} zmena{% if logs|length > 1 %}y/zmien{% endif %} — zobraziť
+        </button>
+        <div class="changelog-body" id="cl-{{ song.id }}">
+          {% for log in logs %}
+          <div class="changelog-entry">
+            <div class="changelog-entry-header">
+              <i class="bi bi-{% if log.is_new_song %}plus-circle text-success{% else %}pencil text-warning{% endif %}"></i>
+              {% if log.is_new_song %}<strong>Nová pieseň</strong>{% else %}<strong>Úprava</strong>{% endif %}
+              <span>{{ log.changed_at.strftime('%d.%m.%Y %H:%M') if log.changed_at else '' }}</span>
+            </div>
+            {% set fc = log.field_changes | from_json if log.field_changes else [] %}
+            {% set fic = log.file_changes | from_json if log.file_changes else [] %}
+            {% if fc %}
+            <table class="changelog-diff-table mb-1">
+              {% for ch in fc %}
+              {% if ch.diff is defined %}
+              <tr>
+                <td class="diff-label" style="vertical-align:top">{{ ch.label }}</td>
+                <td colspan="3">
+                  <div class="lyrics-diff">
+                    {% for dl in ch.diff %}
+                    <div class="ldiff-line ldiff-{{ 'add' if dl.t == '+' else 'rem' }}"><span class="ldiff-sign">{{ dl.t }}</span>{{ dl.text }}</div>
+                    {% endfor %}
+                  </div>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td class="diff-label">{{ ch.label }}</td>
+                {% if ch.old %}
+                <td class="diff-old">{{ ch.old[:120] }}{% if ch.old|length > 120 %}…{% endif %}</td>
+                <td class="diff-arrow">→</td>
+                {% endif %}
+                <td class="diff-new">{{ ch.new[:120] }}{% if ch.new|length > 120 %}…{% endif %}</td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+            </table>
+            {% endif %}
+            {% if fic %}
+            <div>
+              {% for f in fic %}
+              <span class="file-chip file-{{ f.action }}">
+                <i class="bi bi-{% if f.action == 'added' %}plus-lg{% elif f.action == 'removed' %}dash-lg{% else %}arrow-repeat{% endif %}"></i>
+                {{ f.type }}: {{ f.filename }}
+              </span>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted small mt-1 mb-0"><i class="bi bi-info-circle me-1"></i>Žiadny zaznamenaný log (staršia úprava)</p>
+        {% endif %}
+      </div>
+      <div class="srr-actions">
+        <a href="{{ url_for('song_view', song_id=song.id) }}" target="_blank"
+           class="btn btn-sm btn-outline-secondary rounded-pill">
+          <i class="bi bi-eye me-1"></i>Zobraziť
+        </a>
+        <a href="{{ url_for('song_detail', song_id=song.id) }}" target="_blank"
+           class="btn btn-sm btn-outline-primary rounded-pill">
+          <i class="bi bi-pencil me-1"></i>Upraviť
+        </a>
+        <button class="approve-btn" data-id="{{ song.id }}"
+                onclick="approveSong(this, {{ song.id }})">
+          <i class="bi bi-check-lg me-1"></i>Schváliť
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<script>
+function toggleChangelog(btn, id) {
+  const body = document.getElementById(id);
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  btn.querySelector('i').className = open ? 'bi bi-clock-history' : 'bi bi-chevron-up';
+  btn.childNodes[btn.childNodes.length - 1].textContent = open ? ' zobraziť' : ' skryť';
+}
+
+async function approveSong(btn, songId) {
+  btn.disabled = true;
+  try {
+    const res = await fetch(`/song/${songId}/toggle-admin-check`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ checked: true, password: '' })
+    });
+    const d = await res.json();
+    if (d.success) {
+      const row = document.getElementById(`srr-${songId}`);
+      row.classList.add('approved');
+      btn.outerHTML = `<span class="approved-lbl"><i class="bi bi-check-circle-fill me-1"></i>Schválená</span>`;
+    } else {
+      alert(d.message || 'Chyba!');
+      btn.disabled = false;
+    }
+  } catch {
+    alert('Sieťová chyba');
+    btn.disabled = false;
+  }
+}
+</script>
+{% endblock %}

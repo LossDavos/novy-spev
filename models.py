@@ -34,6 +34,7 @@ class Song(db.Model):
     song_parts = db.Column(db.Text, nullable=False)
     # checked = db.Column(db.Boolean, default=False)
     admin_checked = db.Column(db.Boolean, default=False)
+    last_approved_at = db.Column(db.DateTime, nullable=True)
     printed = db.Column(db.Boolean, default=False)
 
     pdf_lyrics_path = db.Column(db.String(200))
@@ -215,6 +216,22 @@ class SongReport(db.Model):
     resolved_note = db.Column(db.Text, nullable=True)
 
     song = db.relationship('Song', backref=db.backref('reports', lazy='dynamic', passive_deletes=True))
+
+
+class SongChangeLog(db.Model):
+    __tablename__ = 'song_changelog'
+    id = db.Column(db.Integer, primary_key=True)
+    song_db_id = db.Column(db.Integer, db.ForeignKey('song.id', ondelete='CASCADE'), nullable=False)
+    changed_at = db.Column(db.DateTime, nullable=False)
+    is_new_song = db.Column(db.Boolean, default=False)
+    # JSON list of {field, label, old, new} for text fields
+    field_changes = db.Column(db.Text, nullable=True)
+    # JSON list of {filename, action: 'added'|'removed', type} for file changes
+    file_changes = db.Column(db.Text, nullable=True)
+
+    song = db.relationship('Song', backref=db.backref('changelogs', lazy='dynamic',
+                                                        order_by='SongChangeLog.changed_at.desc()',
+                                                        passive_deletes=True))
 
 
 # ==============================
