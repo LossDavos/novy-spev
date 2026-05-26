@@ -20,6 +20,17 @@
      data-checked="{{ 'true' if song.admin_checked else 'false' }}"
      data-search-content="{{ song.title|lower if song.title else '' }}">
 
+  {% if song.transpose is defined and (song.transpose or song.capo|default(0)) %}
+    <div class="song-card-tc-badges">
+      {% if song.transpose %}
+        <span class="song-tc-badge song-t-badge">T{% if song.transpose > 0 %}+{% endif %}{{ song.transpose }}</span>
+      {% endif %}
+      {% if song.capo|default(0) %}
+        <span class="song-tc-badge song-c-badge">{{ song.capo | roman }}</span>
+      {% endif %}
+    </div>
+  {% endif %}
+
   <!-- Header: status badges + song info -->
   <div class="mobile-song-header">
     <div class="mobile-song-info">
@@ -70,7 +81,7 @@
 
     <!-- 1. Slová -->
     {% if song.pdf_lyrics_path %}
-      <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=0"
+      <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=0{% if song.ess_id is defined and song.ess_id %}&ess_id={{ song.ess_id }}{% elif song.transpose is defined and song.transpose %}&transpose={{ song.transpose }}{% if song.capo is defined and song.capo %}&capo={{ song.capo }}{% endif %}{% elif song.capo is defined and song.capo %}&capo={{ song.capo }}{% endif %}"
          class="btn btn-outline-primary btn-sm"
          title="Zobraziť text piesne (bez akordov)">
         <i class="bi bi-file-text"></i>
@@ -85,7 +96,7 @@
 
     <!-- 2. Akordy -->
     {% if song.pdf_chords_path %}
-      <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=1"
+      <a href="{{ url_for('song_preview', song_id=song.id) }}?chords=1{% if song.ess_id is defined and song.ess_id %}&ess_id={{ song.ess_id }}{% elif song.transpose is defined and song.transpose %}&transpose={{ song.transpose }}{% if song.capo is defined and song.capo %}&capo={{ song.capo }}{% endif %}{% elif song.capo is defined and song.capo %}&capo={{ song.capo }}{% endif %}"
          class="btn btn-outline-warning btn-sm"
          title="Zobraziť akordy">
         <i class="fa-solid fa-guitar"></i>
@@ -150,7 +161,7 @@
 
   <div class="collapse mobile-expanded-content" id="{{ collapse_prefix }}-collapse-{{ song.id }}">
       <div class="d-flex gap-2 flex-wrap">
-        <a href="{{ url_for('song_view', song_id=song.id) }}"
+        <a href="{{ url_for('song_view', song_id=song.id) }}{% if song.transpose is defined and (song.transpose or song.capo|default(0)) %}?transpose={{ song.transpose|default(0) }}&capo={{ song.capo|default(0) }}{% endif %}"
            class="btn btn-outline-info btn-sm flex-fill">
           <i class="bi bi-eye me-1"></i>Detaily
         </a>
@@ -159,6 +170,17 @@
           <i class="bi bi-pencil-square me-1"></i>Upraviť
         </a>
       </div>
+
+      {% if song.transpose is defined and (song.transpose or song.capo|default(0)) %}
+        <div class="d-flex gap-2 mt-2 flex-wrap">
+          {% if song.transpose %}
+            <span class="badge bg-primary"><i class="bi bi-music-note-beamed me-1"></i>Transponovať {% if song.transpose > 0 %}+{% endif %}{{ song.transpose }}</span>
+          {% endif %}
+          {% if song.capo|default(0) %}
+            <span class="badge bg-success"><i class="bi bi-music-note me-1"></i>Capo {{ song.capo | roman }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
 
       {% if extra_actions %}
         {{ extra_actions | safe }}

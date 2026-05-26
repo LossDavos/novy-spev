@@ -1278,23 +1278,36 @@ def events_list():
     return render_template('events_list.html', events=events)
 
 
-def build_section_form_data(section_names, section_songs, section_names_custom=None):
+def build_section_form_data(section_names, section_songs, section_names_custom=None, section_song_settings_list=None):
     section_data = []
     section_names_custom = section_names_custom or []
+    section_song_settings_list = section_song_settings_list or []
     for index, (name, songs_text) in enumerate(zip(section_names, section_songs)):
         custom_name = section_names_custom[index] if index < len(section_names_custom) else ''
+        settings_json = section_song_settings_list[index] if index < len(section_song_settings_list) else '[]'
+        try:
+            song_settings = json.loads(settings_json or '[]')
+        except (json.JSONDecodeError, TypeError):
+            song_settings = []
         song_items = []
         songs, _ = parse_section_song_ids(songs_text)
-        for song in songs:
+        for song_index, song in enumerate(songs):
             label = f"{song.song_id} — {song.title}"
             if song.version_name:
                 label = f"{label} ({song.version_name})"
-            song_items.append({'id': song.id, 'label': label})
+            s = song_settings[song_index] if song_index < len(song_settings) else {}
+            song_items.append({
+                'id': song.id,
+                'label': label,
+                'transpose': int(s.get('transpose', 0) or 0),
+                'capo': int(s.get('capo', 0) or 0)
+            })
         section_data.append({
             'name': name,
             'custom_name': custom_name,
             'songs': song_items,
-            'songs_text': songs_text
+            'songs_text': songs_text,
+            'settings': [{'transpose': s['transpose'], 'capo': s['capo']} for s in song_items]
         })
     return section_data
 
@@ -1310,7 +1323,11 @@ def build_section_data_from_event(event):
                 label = f"{label} ({song.song_version_name})"
             song_items.append({
                 'id': song.song_db_id,
-                'label': label
+                'label': label,
+                'transpose': song.transpose or 0,
+                'capo': song.capo or 0,
+                'ess_id': song.id,
+                'event_id': event.id
             })
         section_name = section.name
         custom_name = ''
@@ -1322,7 +1339,8 @@ def build_section_data_from_event(event):
             'name': section_name,
             'custom_name': custom_name,
             'songs': song_items,
-            'songs_text': ''
+            'songs_text': '',
+            'settings': [{'transpose': s['transpose'], 'capo': s['capo']} for s in song_items]
         })
     return section_data
 
@@ -1336,16 +1354,17 @@ def save_event_from_form(event=None):
     section_names = request.form.getlist('section_name')
     section_names_custom = request.form.getlist('section_name_custom')
     section_songs = request.form.getlist('section_song_ids')
+    section_song_settings_list = request.form.getlist('section_song_settings')
 
     if not title or not event_time_str or not place:
         flash('Vyplňte názov, dátum/čas a miesto.', 'error')
-        return None, build_section_form_data(section_names, section_songs, section_names_custom)
+        return None, build_section_form_data(section_names, section_songs, section_names_custom, section_song_settings_list)
 
     try:
         event_time = datetime.fromisoformat(event_time_str)
     except ValueError:
         flash('Neplatný dátum alebo čas.', 'error')
-        return None, build_section_form_data(section_names, section_songs, section_names_custom)
+        return None, build_section_form_data(section_names, section_songs, section_names_custom, section_song_settings_list)
 
     invalid_tokens = []
     sections_payload = []
@@ -1357,16 +1376,33 @@ def save_event_from_form(event=None):
         songs, errors = parse_section_song_ids(songs_text)
         if errors:
             invalid_tokens.extend(errors)
+        settings_json = section_song_settings_list[index] if index < len(section_song_settings_list) else '[]'
+        try:
+            song_settings = json.loads(settings_json or '[]')
+        except (json.JSONDecodeError, TypeError):
+            song_settings = []
         if name_clean or songs:
+            # Deduplicate songs within the same section (keep first occurrence)
+            seen_ids = set()
+            deduped = []
+            deduped_settings = []
+            for i, s in enumerate(songs):
+                if s.id not in seen_ids:
+                    seen_ids.add(s.id)
+                    deduped.append(s)
+                    deduped_settings.append(song_settings[i] if i < len(song_settings) else {})
+            if len(deduped) < len(songs):
+                flash(f'Duplicitné piesne boli odstránené zo sekcie „{name_clean or "Sekcia"}".', 'warning')
             sections_payload.append({
                 'name': name_clean or 'Sekcia',
-                'songs': songs,
+                'songs': deduped,
+                'settings': deduped_settings,
                 'raw_text': songs_text
             })
 
     if invalid_tokens:
         flash(f"Neznáme piesne: {', '.join(invalid_tokens)}", 'error')
-        return None, build_section_form_data(section_names, section_songs, section_names_custom)
+        return None, build_section_form_data(section_names, section_songs, section_names_custom, section_song_settings_list)
 
     if event is None:
         event = Event(title=title, event_time=event_time, place=place, notes=notes)
@@ -1377,21 +1413,64 @@ def save_event_from_form(event=None):
         event.place = place
         event.notes = notes
 
-    event.sections.clear()
+    # Smart update: preserve existing EventSectionSong IDs so URLs stay stable.
+    # Build lookup of existing sections by position, and existing songs by (section_pos, song_pos).
+    existing_sections = {s.position: s for s in event.sections}
+    existing_songs = {}
+    for sec in event.sections:
+        for ess in EventSectionSong.query.filter_by(section_id=sec.id).all():
+            existing_songs[(sec.position, ess.position)] = ess
+
+    needed_section_positions = set(range(len(sections_payload)))
+    # Delete sections (and their songs via cascade) that are no longer needed
+    for pos, sec in list(existing_sections.items()):
+        if pos not in needed_section_positions:
+            db.session.delete(sec)
+
     db.session.flush()
 
     for section_index, payload in enumerate(sections_payload):
-        section = EventSection(event=event, name=payload['name'], position=section_index)
-        db.session.add(section)
+        sec = existing_sections.get(section_index)
+        if sec:
+            sec.name = payload['name']
+            sec.position = section_index
+        else:
+            sec = EventSection(event=event, name=payload['name'], position=section_index)
+            db.session.add(sec)
+            db.session.flush()  # get sec.id
+
+        needed_song_positions = set(range(len(payload['songs'])))
+        # Delete songs at positions no longer needed
+        for (sp, ep), ess in list(existing_songs.items()):
+            if sp == section_index and ep not in needed_song_positions:
+                db.session.delete(ess)
+
         for song_index, song in enumerate(payload['songs']):
-            db.session.add(EventSectionSong(
-                section=section,
-                position=song_index,
-                song_db_id=song.id,
-                song_code=song.song_id,
-                song_title=song.title,
-                song_version_name=song.version_name
-            ))
+            s_settings = payload.get('settings', [])
+            s = s_settings[song_index] if song_index < len(s_settings) else {}
+            t = int(s.get('transpose', 0) or 0)
+            c = int(s.get('capo', 0) or 0)
+            ess = existing_songs.get((section_index, song_index))
+            if ess:
+                ess.section_id = sec.id
+                ess.position = song_index
+                ess.song_db_id = song.id
+                ess.song_code = song.song_id
+                ess.song_title = song.title
+                ess.song_version_name = song.version_name
+                ess.transpose = t
+                ess.capo = c
+            else:
+                db.session.add(EventSectionSong(
+                    section=sec,
+                    position=song_index,
+                    song_db_id=song.id,
+                    song_code=song.song_id,
+                    song_title=song.title,
+                    song_version_name=song.version_name,
+                    transpose=t,
+                    capo=c
+                ))
 
     db.session.commit()
     return event, None
@@ -1470,7 +1549,11 @@ def event_view(event_id):
                     'mp3_paths': mp3_paths,
                     'sheet_pdf_paths': sheet_pdf_paths,
                     'mp3_paths_encoded': quote(json.dumps(mp3_paths)),
-                    'sheet_pdf_paths_encoded': quote(json.dumps(sheet_pdf_paths))
+                    'sheet_pdf_paths_encoded': quote(json.dumps(sheet_pdf_paths)),
+                    'transpose': esong.transpose or 0,
+                    'capo': esong.capo or 0,
+                    'ess_id': esong.id,
+                    'event_id': event_id
                 })
             else:
                 section_songs.append({
@@ -1486,7 +1569,11 @@ def event_view(event_id):
                     'mp3_paths': [],
                     'sheet_pdf_paths': [],
                     'mp3_paths_encoded': quote(json.dumps([])),
-                    'sheet_pdf_paths_encoded': quote(json.dumps([]))
+                    'sheet_pdf_paths_encoded': quote(json.dumps([])),
+                    'transpose': esong.transpose or 0,
+                    'capo': esong.capo or 0,
+                    'ess_id': esong.id,
+                    'event_id': event_id
                 })
 
         sections_data.append({
@@ -1504,6 +1591,97 @@ def event_delete(event_id):
     db.session.commit()
     flash('Udalosť bola odstránená.', 'success')
     return redirect(url_for('events_list'))
+
+
+@app.route('/api/event-section-song/<int:ess_id>', methods=['PATCH'])
+def api_update_event_section_song(ess_id):
+    from flask import jsonify
+    ess = EventSectionSong.query.get_or_404(ess_id)
+    data = request.get_json(silent=True) or {}
+    if 'transpose' in data:
+        try:
+            ess.transpose = int(data['transpose'])
+        except (ValueError, TypeError):
+            return jsonify({'error': 'Invalid transpose'}), 400
+    if 'capo' in data:
+        try:
+            ess.capo = int(data['capo'])
+        except (ValueError, TypeError):
+            return jsonify({'error': 'Invalid capo'}), 400
+    db.session.commit()
+    return jsonify({'ok': True, 'transpose': ess.transpose, 'capo': ess.capo})
+
+
+@app.route('/api/events-for-picker')
+def api_events_for_picker():
+    """Return upcoming/recent events with their sections (and songs) for the add-to-event picker."""
+    events = Event.query.order_by(Event.event_time.desc()).limit(20).all()
+    result = []
+    for ev in events:
+        sections = []
+        for s in ev.sections:
+            songs = EventSectionSong.query.filter_by(section_id=s.id).order_by(EventSectionSong.position).all()
+            sections.append({
+                'id': s.id,
+                'name': s.name,
+                'songs': [{'title': ess.song_title, 'code': ess.song_code} for ess in songs]
+            })
+        result.append({
+            'id': ev.id,
+            'title': ev.title,
+            'event_time': ev.event_time.strftime('%d.%m.%Y %H:%M'),
+            'place': ev.place,
+            'sections': sections,
+        })
+    return jsonify(result)
+
+
+@app.route('/api/event-section/<int:section_id>/add-song', methods=['POST'])
+def api_add_song_to_section(section_id):
+    """Insert a song into an event section at a given position."""
+    section = EventSection.query.get_or_404(section_id)
+    data = request.get_json(silent=True) or {}
+    song_id = data.get('song_id')
+    if not song_id:
+        return jsonify({'error': 'song_id required'}), 400
+    song = Song.query.get(int(song_id))
+    if not song:
+        return jsonify({'error': 'Song not found'}), 404
+    # Check if song already in this section
+    existing = EventSectionSong.query.filter_by(section_id=section.id, song_db_id=song.id).first()
+    if existing:
+        overwrite = data.get('overwrite', False)
+        if overwrite:
+            existing.transpose = int(data.get('transpose', 0) or 0)
+            existing.capo = int(data.get('capo', 0) or 0)
+            db.session.commit()
+            return jsonify({'ok': True, 'ess_id': existing.id, 'already_present': True, 'overwritten': True})
+        return jsonify({'ok': True, 'ess_id': existing.id, 'already_present': True, 'overwritten': False,
+                        'existing_transpose': existing.transpose, 'existing_capo': existing.capo})
+    # Determine insert position
+    all_songs = EventSectionSong.query.filter_by(section_id=section.id).order_by(EventSectionSong.position).all()
+    insert_at = data.get('insert_at')  # 0-based index; None = end
+    if insert_at is None:
+        insert_pos = (all_songs[-1].position + 1) if all_songs else 0
+    else:
+        insert_pos = int(insert_at)
+        # Shift existing songs at or after insert_pos
+        for ess in all_songs:
+            if ess.position >= insert_pos:
+                ess.position += 1
+    ess = EventSectionSong(
+        section=section,
+        position=insert_pos,
+        song_db_id=song.id,
+        song_code=song.song_id,
+        song_title=song.title,
+        song_version_name=song.version_name,
+        transpose=int(data.get('transpose', 0) or 0),
+        capo=int(data.get('capo', 0) or 0),
+    )
+    db.session.add(ess)
+    db.session.commit()
+    return jsonify({'ok': True, 'ess_id': ess.id, 'already_present': False})
 
 
 # ============================================================================
@@ -2542,7 +2720,15 @@ def song_view(song_id):
     sheet_pdfs = json.loads(song.sheet_pdf_paths or '[]')
     sheet_mscz = json.loads(song.sheet_mscz_paths or '[]')
 
-    return render_template('song_view.html', song=song, data=data, mp3s=mp3s, midis=midis, sheet_pdfs=sheet_pdfs, sheet_mscz=sheet_mscz)
+    try:
+        view_transpose = int(request.args.get('transpose', '0'))
+    except ValueError:
+        view_transpose = 0
+    try:
+        view_capo = int(request.args.get('capo', '0'))
+    except ValueError:
+        view_capo = 0
+    return render_template('song_view.html', song=song, data=data, mp3s=mp3s, midis=midis, sheet_pdfs=sheet_pdfs, sheet_mscz=sheet_mscz, view_transpose=view_transpose, view_capo=view_capo)
 
 @app.route('/song/<int:song_id>/preview')
 def song_preview(song_id):
@@ -2555,7 +2741,30 @@ def song_preview(song_id):
         data = []
 
     show_chords = request.args.get('chords', '1') != '0'
-    return render_template('song_preview.html', song=song, data=data, back_url=request.referrer, show_chords=show_chords)
+    try:
+        ess_id = int(request.args.get('ess_id', '0')) or None
+    except ValueError:
+        ess_id = None
+
+    if ess_id:
+        ess = EventSectionSong.query.get(ess_id)
+        if ess:
+            initial_transpose = ess.transpose or 0
+            initial_capo = ess.capo or 0
+        else:
+            ess_id = None
+            initial_transpose = 0
+            initial_capo = 0
+    else:
+        try:
+            initial_transpose = int(request.args.get('transpose', '0'))
+        except ValueError:
+            initial_transpose = 0
+        try:
+            initial_capo = int(request.args.get('capo', '0'))
+        except ValueError:
+            initial_capo = 0
+    return render_template('song_preview.html', song=song, data=data, back_url=request.referrer, show_chords=show_chords, initial_transpose=initial_transpose, initial_capo=initial_capo, ess_id=ess_id)
 
 @app.route('/song/delete/<int:song_id>', methods=['POST'])
 def delete_song(song_id):
@@ -2681,6 +2890,22 @@ def from_json_filter(text):
         return json.loads(text)
     except (json.JSONDecodeError, TypeError):
         return []
+
+@app.template_filter('roman')
+def roman_numeral_filter(n):
+    try:
+        n = int(n)
+    except (TypeError, ValueError):
+        return str(n)
+    if n <= 0 or n > 39:
+        return str(n)
+    vals = [(10,'X'),(9,'IX'),(5,'V'),(4,'IV'),(1,'I')]
+    result = ''
+    for v, s in vals:
+        while n >= v:
+            result += s
+            n -= v
+    return result
 
 @app.route('/api/check-delete-password', methods=['POST'])
 def check_delete_password():

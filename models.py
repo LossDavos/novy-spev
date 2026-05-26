@@ -290,6 +290,10 @@ class EventSectionSong(db.Model):
     song_title = db.Column(db.String(300), nullable=False)
     song_version_name = db.Column(db.String(100), nullable=True)
 
+    # Transpose and capo settings for this song in the event
+    transpose = db.Column(db.Integer, default=0, nullable=False)
+    capo = db.Column(db.Integer, default=0, nullable=False)
+
 
 def set_event_created_at_listener(mapper, connection, target):
     from datetime import datetime

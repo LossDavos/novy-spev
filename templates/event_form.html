@@ -67,6 +67,7 @@
           <input type="hidden" name="section_name" value="{{ section.name }}">
           <input type="hidden" name="section_name_custom" value="{{ section.custom_name }}">
           <input type="hidden" name="section_song_ids" value="{{ section.songs | map(attribute='id') | join(',') }}">
+          <input type="hidden" name="section_song_settings" value='{{ section.settings | default([]) | tojson }}'>
         </div>
       {% endfor %}
     </div>
@@ -83,7 +84,7 @@
           </div>
           <ol class="mb-0">
             {% for song in section.songs %}
-              <li>{{ song.label }}</li>
+              <li class="d-flex align-items-center justify-content-between gap-2">{{ song.label }}<span class="d-flex gap-1 ms-auto flex-shrink-0">{% if song.transpose is defined and song.transpose %}<span class="song-tc-badge song-t-badge">T{% if song.transpose > 0 %}+{% endif %}{{ song.transpose }}</span>{% endif %}{% if song.capo is defined and song.capo %}<span class="song-tc-badge song-c-badge">{{ song.capo | roman }}</span>{% endif %}</span></li>
             {% else %}
               <li class="text-muted">Bez piesní</li>
             {% endfor %}
@@ -166,11 +167,56 @@
     const modalCreateSection = document.getElementById('modalCreateSection');
     let activeEditSection = null;
 
-    function buildSongChip(id, label, onRemove) {
+    // Close chip expand controls when clicking outside
+    document.addEventListener('click', function() {
+      document.querySelectorAll('.chip-ctrl.is-expanded').forEach(c => c.classList.remove('is-expanded'));
+    });
+
+    function toRoman(n) {
+      if (!n || n <= 0) return '—';
+      const vals = [[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+      let r = '';
+      for (const [v, s] of vals) { while (n >= v) { r += s; n -= v; } }
+      return r;
+    }
+
+    function buildSongChip(id, label, transpose, capo, onRemove) {
       const chip = document.createElement('span');
       chip.className = 'song-chip';
       chip.dataset.id = id;
-      chip.innerHTML = `<span class="drag-handle">⠿</span>${label} <button type="button" class="btn btn-sm btn-link remove-song">&times;</button>`;
+      chip.dataset.transpose = parseInt(transpose) || 0;
+      chip.dataset.capo = parseInt(capo) || 0;
+      chip.innerHTML = `<span class="drag-handle">&#x2807;</span><span class="song-chip-label">${label}</span><span class="chip-ctrl chip-t-ctrl"><span class="chip-ctrl-wrap"><button type="button" class="chip-ctrl-btn chip-t-up"><i class="bi bi-chevron-up"></i></button></span><span class="chip-ctrl-val chip-t-val">${parseInt(transpose)||0}</span><span class="chip-ctrl-wrap"><button type="button" class="chip-ctrl-btn chip-t-dn"><i class="bi bi-chevron-down"></i></button></span></span><span class="chip-ctrl chip-c-ctrl"><span class="chip-ctrl-wrap"><button type="button" class="chip-ctrl-btn chip-c-up"><i class="bi bi-chevron-up"></i></button></span><span class="chip-ctrl-val chip-c-val">${toRoman(parseInt(capo)||0)}</span><span class="chip-ctrl-wrap"><button type="button" class="chip-ctrl-btn chip-c-dn"><i class="bi bi-chevron-down"></i></button></span></span><button type="button" class="btn btn-sm btn-link remove-song">&times;</button>`;
+      chip.querySelector('.chip-t-val').addEventListener('click', function(e) {
+        e.stopPropagation();
+        chip.querySelector('.chip-c-ctrl').classList.remove('is-expanded');
+        chip.querySelector('.chip-t-ctrl').classList.toggle('is-expanded');
+      });
+      chip.querySelector('.chip-c-val').addEventListener('click', function(e) {
+        e.stopPropagation();
+        chip.querySelector('.chip-t-ctrl').classList.remove('is-expanded');
+        chip.querySelector('.chip-c-ctrl').classList.toggle('is-expanded');
+      });
+      chip.querySelector('.chip-t-up').addEventListener('click', function(e) {
+        e.stopPropagation();
+        chip.dataset.transpose = parseInt(chip.dataset.transpose) + 1;
+        chip.querySelector('.chip-t-val').textContent = chip.dataset.transpose;
+      });
+      chip.querySelector('.chip-t-dn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        chip.dataset.transpose = parseInt(chip.dataset.transpose) - 1;
+        chip.querySelector('.chip-t-val').textContent = chip.dataset.transpose;
+      });
+      chip.querySelector('.chip-c-up').addEventListener('click', function(e) {
+        e.stopPropagation();
+        chip.dataset.capo = Math.min(11, (parseInt(chip.dataset.capo) || 0) + 1);
+        chip.querySelector('.chip-c-val').textContent = toRoman(parseInt(chip.dataset.capo));
+      });
+      chip.querySelector('.chip-c-dn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        chip.dataset.capo = Math.max(0, (parseInt(chip.dataset.capo) || 0) - 1);
+        chip.querySelector('.chip-c-val').textContent = toRoman(parseInt(chip.dataset.capo));
+      });
       chip.querySelector('.remove-song').addEventListener('click', function () {
         chip.remove();
         if (onRemove) onRemove();
@@ -184,10 +230,11 @@
       const name = sectionEl.querySelector('input[name="section_name"]').value;
       const custom = sectionEl.querySelector('input[name="section_name_custom"]').value;
       const ids = sectionEl.querySelector('input[name="section_song_ids"]').value;
-      return { name, custom, ids };
+      const settings = sectionEl.querySelector('input[name="section_song_settings"]')?.value || '[]';
+      return { name, custom, ids, settings };
     }
 
-    function writeSectionInputs(index, name, custom, ids) {
+    function writeSectionInputs(index, name, custom, ids, settings) {
       let sectionEl = sectionsContainer.querySelector(`[data-index="${index}"]`);
       if (!sectionEl) {
         sectionEl = document.createElement('div');
@@ -197,12 +244,15 @@
           <input type="hidden" name="section_name" value="">
           <input type="hidden" name="section_name_custom" value="">
           <input type="hidden" name="section_song_ids" value="">
+          <input type="hidden" name="section_song_settings" value="[]">
         `;
         sectionsContainer.appendChild(sectionEl);
       }
       sectionEl.querySelector('input[name="section_name"]').value = name;
       sectionEl.querySelector('input[name="section_name_custom"]').value = custom;
       sectionEl.querySelector('input[name="section_song_ids"]').value = ids;
+      const settingsInput = sectionEl.querySelector('input[name="section_song_settings"]');
+      if (settingsInput) settingsInput.value = settings || '[]';
     }
 
     function updatePreviewSection(sectionEl, name, custom, songs) {
@@ -222,7 +272,14 @@
       }
       songs.forEach(song => {
         const li = document.createElement('li');
-        li.textContent = song.label;
+        li.className = 'd-flex align-items-center justify-content-between gap-2';
+        const t = parseInt(song.transpose) || 0;
+        const c = parseInt(song.capo) || 0;
+        let badges = '';
+        if (t) badges += `<span class="song-tc-badge song-t-badge">T${t>0?'+':''}${t}</span>`;
+        if (c) badges += `<span class="song-tc-badge song-c-badge">${toRoman(c)}</span>`;
+        li.innerHTML = `<span>${song.label}</span>${badges ? `<span class="d-flex gap-1 ms-auto flex-shrink-0">${badges}</span>` : ''}`;
+        list.appendChild(li);
         list.appendChild(li);
       });
     }
@@ -269,7 +326,7 @@
       if (!songId) return;
       const existing = modalSelectedSongs.querySelector(`[data-id="${songId}"]`);
       if (existing) return;
-      const chip = buildSongChip(songId, label, null);
+      const chip = buildSongChip(songId, label, 0, 0, null);
       modalSelectedSongs.appendChild(chip);
       modalSongSearch.value = '';
       modalResults = [];
@@ -346,19 +403,23 @@
     modalCreateSection.addEventListener('click', function () {
       const name = modalSectionSelect.value;
       const custom = modalSectionCustom.value.trim();
-      const songs = Array.from(modalSelectedSongs.querySelectorAll('.song-chip')).map(chip => ({
+      const chips = Array.from(modalSelectedSongs.querySelectorAll('.song-chip'));
+      const songs = chips.map(chip => ({
         id: chip.dataset.id,
-        label: chip.textContent.replace('×', '').replace('⠿', '').trim()
+        label: chip.querySelector('.song-chip-label')?.textContent?.trim() || '',
+        transpose: parseInt(chip.dataset.transpose) || 0,
+        capo: parseInt(chip.dataset.capo) || 0
       }));
       const ids = songs.map(song => song.id).join(',');
+      const settings = JSON.stringify(songs.map(s => ({transpose: s.transpose, capo: s.capo})));
 
       if (activeEditSection) {
         const index = activeEditSection.dataset.index;
-        writeSectionInputs(index, name, custom, ids);
+        writeSectionInputs(index, name, custom, ids, settings);
         updatePreviewSection(activeEditSection, name, custom, songs);
       } else {
         const index = sectionsContainer.children.length;
-        writeSectionInputs(index, name, custom, ids);
+        writeSectionInputs(index, name, custom, ids, settings);
         const preview = document.createElement('div');
         preview.className = 'event-preview-section';
         preview.dataset.index = index;
@@ -389,6 +450,7 @@
       activeEditSection = null;
 
       if (addSectionModal) {
+        document.activeElement?.blur();
         addSectionModal.hide();
       }
     });
@@ -420,7 +482,7 @@
       toggleModalCustom();
       modalSelectedSongs.innerHTML = '';
       songs.forEach(song => {
-        const chip = buildSongChip(song.id, song.label, null);
+        const chip = buildSongChip(song.id, song.label, song.transpose || 0, song.capo || 0, null);
         modalSelectedSongs.appendChild(chip);
       });
 

@@ -7,25 +7,14 @@
         <div class="preview-title-row">
           <span class="preview-song-id badge">{{ song.song_id }}</span>
           <h1 class="preview-title">{{ song.title }}</h1>
-          {% if song.version_name %}
-          <span class="preview-version">{{ song.version_name }}</span>
-          {% endif %}
         </div>
         <div class="preview-meta-row">
           {% set display_author = song.author if song.author else "Neznámy" %}
+          <span class="preview-version">{% if song.version_name %}{{ song.version_name }}{% endif %}</span>
           {% if display_author == "Neznámy" and song.author_original %}
-          <span class="preview-meta">
-            <span class="meta-label">Autor:</span>
-            <span class="meta-value">{{ song.author_original }}</span>
-          </span>
+          <span class="meta-value">{{ song.author_original }}</span>
           {% else %}
-          <span class="preview-meta">
-            <span class="meta-label">Autor:</span>
-            <span class="meta-value">
-              {{ display_author }}
-              {% if song.author_original %} ({{ song.author_original }}){% endif %}
-            </span>
-          </span>
+          <span class="meta-value">{{ display_author }}{% if song.author_original %} ({{ song.author_original }}){% endif %}</span>
           {% endif %}
         </div>
       </div>
@@ -55,10 +44,79 @@
             </button>
           </div>
         </div>
+        <span class="preview-action-divider"></span>
+        <div class="position-relative" id="keySettingsWrap">
+          <button class="preview-action-btn" type="button" id="keySettingsBtn" title="Tónina a Capo">
+            <i class="bi bi-music-note-list"></i>
+          </button>
+          <div class="ks-popover" id="keySettingsPopover" aria-hidden="true">
+            <div class="ks-orig-row">
+              <span class="ks-orig-label">Pôv. tónina</span>
+              <span class="ks-orig-key">{{ song.song_key if song.song_key else '—' }}</span>
+            </div>
+            <div class="ks-sep"></div>
+            <div class="ks-ctrl-row">
+              <span class="ks-ctrl-label">Tónina</span>
+              <div class="ks-ctrl">
+                <button class="ks-step-btn" type="button" id="ksTransposeDown"><i class="bi bi-dash"></i></button>
+                <span class="ks-val" id="ksTransposeVal">—</span>
+                <button class="ks-step-btn" type="button" id="ksTransposeUp"><i class="bi bi-plus"></i></button>
+              </div>
+            </div>
+            <div class="ks-ctrl-row">
+              <span class="ks-ctrl-label">Capo</span>
+              <div class="ks-ctrl">
+                <button class="ks-step-btn" type="button" id="ksCapoDown"><i class="bi bi-dash"></i></button>
+                <span class="ks-val ks-roman" id="ksCapoVal">—</span>
+                <button class="ks-step-btn" type="button" id="ksCapoUp"><i class="bi bi-plus"></i></button>
+              </div>
+            </div>
+            {% if ess_id %}
+            <div class="ks-sep"></div>
+            <button class="ks-save-btn" type="button" id="ksSaveBtn">
+              <i class="bi bi-floppy me-1"></i>Uložiť do udalosti
+            </button>
+            <span class="ks-save-status" id="ksSaveStatus"></span>
+            {% else %}
+            <div class="ks-sep"></div>
+            <button class="ks-save-btn" type="button" id="ksAddToEventBtn">
+              <i class="bi bi-calendar-plus me-1"></i>Pridať do udalosti
+            </button>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <div id="heroCapoBadge" class="hero-capo-badge" aria-hidden="true" style="display:none"></div>
 </section>
+
+{% if not ess_id %}
+<!-- Add-to-event modal -->
+<div class="ate-backdrop" id="ateBackdrop" style="display:none"></div>
+<div class="ate-modal" id="ateModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="ateModalTitle">
+  <div class="ate-modal-header">
+    <span id="ateModalTitle"><i class="bi bi-calendar-plus me-2"></i>Pridať do udalosti</span>
+    <button class="ate-close" type="button" id="ateClose" aria-label="Zavrieť"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <div class="ate-modal-body">
+    <div id="ateLoading" class="ate-loading"><i class="bi bi-hourglass-split"></i> Načítavam…</div>
+    <div id="ateContent" style="display:none">
+      <label class="ate-label">Udalosť</label>
+      <select id="ateEventSelect" class="ate-select"></select>
+      <label class="ate-label mt">Časť programu</label>
+      <select id="ateSectionSelect" class="ate-select"></select>
+      <label class="ate-label mt" id="atePosLabel">Poradie <span style="font-weight:400;text-transform:none;letter-spacing:0">— pretáhni ✦ na miesto</span></label>
+      <div id="ateOrderList" class="ate-order-list"></div>
+    </div>
+    <div id="ateError" class="ate-error" style="display:none"></div>
+  </div>
+  <div class="ate-modal-footer">
+    <span class="ate-result" id="ateResult"></span>
+    <button class="ate-confirm-btn" type="button" id="ateConfirm">Pridať</button>
+  </div>
+</div>
+{% endif %}
 
 <section class="song-preview-content">
   {% if data %}
@@ -87,6 +145,7 @@
 </section>
 
 <div class="transpose-widget" id="transposeWidget">
+  <span class="transpose-steps-badge" id="transposeStepsBadge" style="display:none"></span>
   <div class="transpose-expand-wrap">
     <button class="transpose-btn" type="button" id="transposeUp" title="Transpozicia hore" aria-label="Transpozicia hore">
       <i class="bi bi-chevron-up"></i>
@@ -94,6 +153,7 @@
   </div>
   <div class="transpose-key {% if song.key_reported %}key-reported{% endif %}" id="transposeKey"
        data-base-key="{{ '' if song.key_reported else (song.song_key if song.song_key else '') }}"
+       data-initial-transpose="{{ initial_transpose | default(0) }}"
        data-song-id="{{ song.id }}">
     {{ '0' if song.key_reported else (song.song_key if song.song_key else '0') }}
   </div>
@@ -106,7 +166,7 @@
 
 <!-- report button (bottom-left) -->
 <button class="report-fab" id="reportFab" title="Nahlásiť chybu v piesni" aria-label="Nahlásiť chybu">
-  <i class="bi bi-flag{% if song.key_reported %}-fill{% endif %}"></i>
+  <i class="bi bi-flag-fill"></i>
 </button>
 
 <!-- report modal -->
@@ -269,10 +329,28 @@
     linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
   color: #fff;
   position: relative;
+  overflow: visible;
+}
+
+.hero-capo-badge {
+  position: absolute;
+  bottom: -0.7rem;
+  right: 1.25rem;
+  background: #dcfce7;
+  color: #15803d;
+  border-radius: 999px;
+  padding: 2px 12px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 1;
+  line-height: 1.8;
 }
 
 .preview-hero-inner {
   position: relative;
+  z-index: 2;
 }
 
 .preview-song-id {
@@ -294,13 +372,15 @@
 .preview-version {
   font-size: 0.95rem;
   opacity: 0.85;
-  margin-left: 0.5rem;
 }
 
 .preview-header-main {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+  padding-right: 3.25rem;
 }
 
 .preview-title-row {
@@ -312,16 +392,27 @@
 
 .preview-meta-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  row-gap: 0.2rem;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 0.95rem;
+  font-style: italic;
+  opacity: 0.85;
+  width: 100%;
+}
+
+.preview-meta-row .meta-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: auto;
 }
 
 .preview-meta {
   font-size: 0.95rem;
-  display: inline-flex;
-  gap: 0.35rem;
-  align-items: baseline;
+  display: inline;
 }
 
 .meta-label {
@@ -345,6 +436,10 @@
   padding: 0.25rem;
   gap: 0;
   backdrop-filter: blur(6px);
+  position: absolute;
+  top: -0.2rem;
+  right: -0.2rem;
+  align-self: flex-start;
 }
 
 .preview-action-btn {
@@ -382,6 +477,7 @@
   right: 24px;
   bottom: 24px;
   z-index: 1050;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -460,6 +556,22 @@
   opacity: 0.6;
 }
 
+.transpose-steps-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: #fff;
+  color: #3730a3;
+  border-radius: 999px;
+  padding: 2px 7px;
+  line-height: 1.5;
+  white-space: nowrap;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.18);
+  pointer-events: none;
+}
+
 /* Key report / correct actions - replaced by report-fab */
 .report-fab {
   position: fixed;
@@ -471,7 +583,7 @@
   border-radius: 50%;
   border: none;
   background: rgba(255,255,255,0.92);
-  color: #6c757d;
+  color: #dc3545;
   font-size: 1rem;
   display: inline-flex;
   align-items: center;
@@ -1012,7 +1124,7 @@
 .song-preview-content {
   display: grid;
   gap: 0;
-  padding-bottom: var(--pinned-offset, 0px);
+  padding-bottom: calc(var(--pinned-offset, 0px) + 3rem);
 }
 
 .preview-part {
@@ -1189,24 +1301,12 @@
     padding: 1.5rem;
   }
 
-  .preview-header-main {
-    padding-right: 3.25rem;
-  }
-
-  .preview-actions {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    margin-left: 0;
-    align-self: flex-start;
-  }
-
   .preview-title-row {
     gap: 0.4rem;
   }
 
   .preview-meta-row {
-    gap: 0.5rem;
+    /* single line, truncation handled by base style */
   }
 
   .preview-lines {
@@ -1276,6 +1376,222 @@
     padding: 0.65rem 0.5rem;
   }
 }
+
+/* ── Key settings popover ─────────────────────────── */
+.ks-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border-radius: 16px;
+  padding: 0.75rem 0.9rem;
+  min-width: 215px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.07);
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  z-index: 1070;
+}
+.ks-popover.is-open { display: flex; }
+.ks-orig-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.15rem 0.1rem 0.5rem;
+}
+.ks-orig-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #9ca3af;
+}
+.ks-orig-key {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: -0.01em;
+}
+.ks-sep {
+  height: 1px;
+  background: #f1f3f5;
+  margin: 0 -0.2rem 0.2rem;
+}
+.ks-ctrl-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 0.1rem;
+  gap: 0.5rem;
+}
+.ks-ctrl-label {
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  flex: 1;
+}
+.ks-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #f3f4f6;
+  border-radius: 999px;
+  padding: 0.18rem 0.28rem;
+}
+.ks-step-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: #e5e7eb;
+  color: #374151;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  padding: 0;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.ks-step-btn:hover { background: #d1d5db; transform: scale(1.1); }
+.ks-step-btn:active { transform: scale(0.93); }
+.ks-val {
+  font-weight: 800;
+  font-size: 0.92rem;
+  min-width: 34px;
+  text-align: center;
+  color: #111827;
+  font-family: "Poppins", sans-serif;
+  user-select: none;
+}
+.ks-roman { letter-spacing: 0.05em; }
+.ks-save-btn {
+  width: 100%;
+  margin-top: 0.15rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  border: none;
+  background: #111827;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition: background 0.15s, opacity 0.15s;
+}
+.ks-save-btn:hover { background: #374151; }
+.ks-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ks-save-status {
+  display: block;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  min-height: 1.2em;
+  margin-top: 0.2rem;
+}
+.ks-save-ok { color: #15803d; }
+.ks-save-err { color: #dc2626; }
+
+/* ── Add-to-event modal ─────────────────────────────────────────────────── */
+.ate-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 2000;
+}
+.ate-modal {
+  position: fixed; z-index: 2001;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: #fff; border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  width: min(380px, 94vw);
+  display: flex; flex-direction: column;
+}
+.ate-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.1rem 0.75rem;
+  font-weight: 700; font-size: 0.95rem; border-bottom: 1px solid #f0f0f0;
+}
+.ate-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 1rem; color: #6c757d; padding: 0.2rem 0.4rem; border-radius: 6px;
+}
+.ate-close:hover { background: #f3f4f6; }
+.ate-modal-body { padding: 1rem 1.1rem; }
+.ate-label { display: block; font-size: 0.75rem; font-weight: 700; color: #6c757d; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.ate-label.mt { margin-top: 0.85rem; }
+.ate-select {
+  width: 100%; padding: 0.5rem 0.65rem; border-radius: 8px;
+  border: 1.5px solid #e5e7eb; font-size: 0.88rem; outline: none;
+  background: #f9fafb;
+}
+.ate-select:focus { border-color: #6366f1; }
+.ate-loading { text-align: center; color: #6c757d; font-size: 0.9rem; padding: 0.5rem 0; }
+.ate-error { color: #dc2626; font-size: 0.85rem; }
+.ate-modal-footer {
+  padding: 0.75rem 1.1rem 1rem;
+  border-top: 1px solid #f0f0f0;
+  display: flex; align-items: center; justify-content: flex-end; gap: 0.75rem;
+}
+.ate-result { font-size: 0.8rem; font-weight: 700; flex: 1; }
+.ate-result.ok { color: #15803d; }
+.ate-result.err { color: #dc2626; }
+.ate-confirm-btn {
+  padding: 0.45rem 1.1rem; border-radius: 8px; border: none;
+  background: #111827; color: #fff; font-size: 0.85rem; font-weight: 700;
+  cursor: pointer; transition: background 0.15s;
+}
+.ate-confirm-btn:hover { background: #374151; }
+.ate-confirm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.ate-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 0.15rem;
+  user-select: none;
+}
+.ate-order-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  font-size: 0.82rem;
+  color: #374151;
+}
+.ate-order-row.ate-new-song {
+  background: #eff6ff;
+  border-color: #6366f1;
+  color: #1e1b4b;
+  font-weight: 700;
+  cursor: grab;
+}
+.ate-order-row.ate-new-song:active { cursor: grabbing; }
+.ate-order-row .ate-drag-handle {
+  font-size: 1rem;
+  color: #6366f1;
+  cursor: grab;
+  flex-shrink: 0;
+}
+.ate-order-row .ate-row-num {
+  min-width: 1.2em;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+.ate-order-row.sortable-ghost {
+  opacity: 0.35;
+  background: #e0e7ff;
+}
 </style>
 
 <script>
@@ -1304,6 +1620,9 @@
     const transposeDown = document.getElementById('transposeDown');
     const transposeKeyEl = document.getElementById('transposeKey');
     const chordEls = Array.from(document.querySelectorAll('.song-preview-content sup'));
+
+    let _applyTranspose = null;
+    let transposeSteps = 0;
 
     if (!transposeUp || !transposeDown || !transposeKeyEl || chordEls.length === 0) {
       // No chords — skip transpose logic but continue to load report modal etc.
@@ -1446,16 +1765,48 @@
       transposeKeyEl.textContent = nextKey;
     }
 
-    let transposeSteps = 0;
+    transposeSteps = parseInt(transposeKeyEl.dataset.initialTranspose) || 0;
+
+    {% if not ess_id %}
+    // Restore from sessionStorage if available (no ess_id — not bound to event)
+    const _ssKey = 'preview_tc_' + transposeKeyEl.dataset.songId;
+    try {
+      const _stored = sessionStorage.getItem(_ssKey);
+      if (_stored) {
+        const _parsed = JSON.parse(_stored);
+        if (typeof _parsed.t === 'number') transposeSteps = _parsed.t;
+      }
+    } catch(e) {}
+    {% endif %}
+
+    function _saveToSession() {
+      {% if not ess_id %}
+      try { sessionStorage.setItem(_ssKey, JSON.stringify({ t: transposeSteps, c: capoSteps })); } catch(e) {}
+      {% endif %}
+    }
+
+    const transposeStepsBadge = document.getElementById('transposeStepsBadge');
+    function updateTransposeStepsBadge() {
+      if (!transposeStepsBadge) return;
+      if (transposeSteps === 0) {
+        transposeStepsBadge.style.display = 'none';
+      } else {
+        transposeStepsBadge.textContent = transposeSteps > 0 ? `+${transposeSteps}` : `${transposeSteps}`;
+        transposeStepsBadge.style.display = '';
+      }
+    }
 
     function applyTranspose(stepDelta) {
       transposeSteps += stepDelta;
       updateChords(transposeSteps);
       updateKey(transposeSteps);
+      updateTransposeStepsBadge();
+      _saveToSession();
     }
 
     updateChords(transposeSteps);
     updateKey(transposeSteps);
+    updateTransposeStepsBadge();
 
     const transposeWidget = document.getElementById('transposeWidget');
     const transposeKey2 = document.getElementById('transposeKey');
@@ -1472,9 +1823,307 @@
       });
     }
 
-    transposeUp.addEventListener('click', (e) => { e.stopPropagation(); applyTranspose(1); });
-    transposeDown.addEventListener('click', (e) => { e.stopPropagation(); applyTranspose(-1); });
+    transposeUp.addEventListener('click', (e) => { e.stopPropagation(); applyTranspose(1); const el = document.getElementById('ksTransposeVal'); const k = document.getElementById('transposeKey'); if (el && k) el.textContent = k.textContent.trim(); updateTransposeStepsBadge(); });
+    transposeDown.addEventListener('click', (e) => { e.stopPropagation(); applyTranspose(-1); const el = document.getElementById('ksTransposeVal'); const k = document.getElementById('transposeKey'); if (el && k) el.textContent = k.textContent.trim(); updateTransposeStepsBadge(); });
+    _applyTranspose = applyTranspose;
     } // end transpose-available block
+
+    // ── Key settings popover ─────────────────────────────────────────────────
+    const keySettingsWrap = document.getElementById('keySettingsWrap');
+    const keySettingsBtnEl = document.getElementById('keySettingsBtn');
+    const keySettingsPopover = document.getElementById('keySettingsPopover');
+    const ksTransposeUpBtn = document.getElementById('ksTransposeUp');
+    const ksTransposeDownBtn = document.getElementById('ksTransposeDown');
+    const ksTransposeValEl = document.getElementById('ksTransposeVal');
+    const ksCapoUpBtn = document.getElementById('ksCapoUp');
+    const ksCapoDownBtn = document.getElementById('ksCapoDown');
+    const ksCapoValEl = document.getElementById('ksCapoVal');
+
+    let capoSteps = {{ initial_capo | default(0) }};
+
+    {% if not ess_id %}
+    // Restore capo from sessionStorage
+    try {
+      const _ssKey2 = 'preview_tc_' + (document.getElementById('transposeKey') || {}).dataset?.songId;
+      const _stored2 = _ssKey2 ? sessionStorage.getItem(_ssKey2) : null;
+      if (_stored2) {
+        const _p2 = JSON.parse(_stored2);
+        if (typeof _p2.c === 'number') capoSteps = _p2.c;
+      }
+    } catch(e) {}
+    {% endif %}
+
+    function toRoman(n) {
+      if (!n || n <= 0) return '—';
+      const vals = [[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+      let r = '';
+      for (const [v, s] of vals) { while (n >= v) { r += s; n -= v; } }
+      return r;
+    }
+
+    function syncKsTransposeVal() {
+      if (!ksTransposeValEl) return;
+      const keyEl = document.getElementById('transposeKey');
+      ksTransposeValEl.textContent = keyEl ? keyEl.textContent.trim() : '—';
+    }
+
+    function syncKsCapoVal() {
+      if (!ksCapoValEl) return;
+      ksCapoValEl.textContent = toRoman(capoSteps);
+      const badge = document.getElementById('heroCapoBadge');
+      if (badge) {
+        if (capoSteps > 0) {
+          badge.textContent = 'capo ' + toRoman(capoSteps);
+          badge.style.display = '';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+    }
+
+    if (ksTransposeUpBtn) ksTransposeUpBtn.addEventListener('click', () => { if (_applyTranspose) { _applyTranspose(1); syncKsTransposeVal(); } });
+    if (ksTransposeDownBtn) ksTransposeDownBtn.addEventListener('click', () => { if (_applyTranspose) { _applyTranspose(-1); syncKsTransposeVal(); } });
+    if (ksCapoUpBtn) ksCapoUpBtn.addEventListener('click', () => { capoSteps = Math.min(11, capoSteps + 1); syncKsCapoVal(); _saveToSession(); });
+    if (ksCapoDownBtn) ksCapoDownBtn.addEventListener('click', () => { capoSteps = Math.max(0, capoSteps - 1); syncKsCapoVal(); _saveToSession(); });
+
+    if (keySettingsBtnEl && keySettingsPopover) {
+      keySettingsBtnEl.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = keySettingsPopover.classList.contains('is-open');
+        if (!isOpen) { syncKsTransposeVal(); syncKsCapoVal(); }
+        keySettingsPopover.classList.toggle('is-open', !isOpen);
+        keySettingsPopover.setAttribute('aria-hidden', String(isOpen));
+      });
+      document.addEventListener('click', (e) => {
+        if (keySettingsWrap && !keySettingsWrap.contains(e.target)) {
+          keySettingsPopover.classList.remove('is-open');
+          keySettingsPopover.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
+
+    syncKsCapoVal();
+
+    {% if ess_id %}
+    // ── Save to event ─────────────────────────────────────────────────────────
+    const ksSaveBtn = document.getElementById('ksSaveBtn');
+    const ksSaveStatus = document.getElementById('ksSaveStatus');
+    if (ksSaveBtn) {
+      ksSaveBtn.addEventListener('click', async () => {
+        ksSaveBtn.disabled = true;
+        ksSaveStatus.textContent = '';
+        try {
+          const res = await fetch('/api/event-section-song/{{ ess_id }}', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ transpose: transposeSteps, capo: capoSteps })
+          });
+          if (res.ok) {
+            ksSaveStatus.textContent = '✓ Uložené';
+            ksSaveStatus.className = 'ks-save-status ks-save-ok';
+          } else {
+            ksSaveStatus.textContent = '✗ Chyba';
+            ksSaveStatus.className = 'ks-save-status ks-save-err';
+          }
+        } catch {
+          ksSaveStatus.textContent = '✗ Chyba';
+          ksSaveStatus.className = 'ks-save-status ks-save-err';
+        } finally {
+          ksSaveBtn.disabled = false;
+          setTimeout(() => { ksSaveStatus.textContent = ''; }, 3000);
+        }
+      });
+    }
+    {% endif %}
+
+    {% if not ess_id %}
+    // ── Add to event modal ────────────────────────────────────────────────────
+    const ksAddToEventBtn = document.getElementById('ksAddToEventBtn');
+    const ateBackdrop = document.getElementById('ateBackdrop');
+    const ateModal = document.getElementById('ateModal');
+    const ateClose = document.getElementById('ateClose');
+    const ateLoading = document.getElementById('ateLoading');
+    const ateContent = document.getElementById('ateContent');
+    const ateError = document.getElementById('ateError');
+    const ateEventSelect = document.getElementById('ateEventSelect');
+    const ateSectionSelect = document.getElementById('ateSectionSelect');
+    const ateConfirm = document.getElementById('ateConfirm');
+    const ateResult = document.getElementById('ateResult');
+
+    let _ateEvents = [];
+
+    const ateOrderList = document.getElementById('ateOrderList');
+    let _ateSortable = null;
+
+    function ateFillOrderList() {
+      const evId = parseInt(ateEventSelect.value);
+      const ev = _ateEvents.find(e => e.id === evId);
+      const secId = parseInt(ateSectionSelect.value);
+      const sec = ev ? ev.sections.find(s => s.id === secId) : null;
+      const songs = sec ? sec.songs : [];
+
+      if (_ateSortable) { _ateSortable.destroy(); _ateSortable = null; }
+      ateOrderList.innerHTML = '';
+
+      // Existing songs
+      songs.forEach((s, i) => {
+        const row = document.createElement('div');
+        row.className = 'ate-order-row';
+        row.dataset.existing = '1';
+        row.innerHTML = `<span class="ate-row-num">${i + 1}</span><span>${s.code ? `<b>${s.code}</b> — ` : ''}${s.title}</span>`;
+        ateOrderList.appendChild(row);
+      });
+
+      // New song row (draggable)
+      const newRow = document.createElement('div');
+      newRow.className = 'ate-order-row ate-new-song';
+      newRow.dataset.newSong = '1';
+      newRow.innerHTML = `<span class="ate-drag-handle">&#x2726;</span><span>{{ song.song_id }} — {{ song.title }}</span>`;
+      ateOrderList.appendChild(newRow);
+
+      if (songs.length > 0) {
+        _ateSortable = new Sortable(ateOrderList, {
+          handle: '.ate-drag-handle',
+          animation: 150,
+          ghostClass: 'sortable-ghost',
+          filter: '[data-existing]',
+          onMove(evt) {
+            // prevent dragging existing rows
+            if (evt.dragged.dataset.existing) return false;
+          },
+          onEnd() { updateRowNumbers(); }
+        });
+      }
+    }
+
+    function updateRowNumbers() {
+      let idx = 1;
+      ateOrderList.querySelectorAll('.ate-order-row').forEach(row => {
+        const num = row.querySelector('.ate-row-num');
+        if (num) num.textContent = idx++;
+      });
+    }
+
+    function getInsertAt() {
+      const rows = Array.from(ateOrderList.querySelectorAll('.ate-order-row'));
+      return rows.findIndex(r => r.dataset.newSong === '1');
+    }
+
+    function ateFillSections() {
+      const evId = parseInt(ateEventSelect.value);
+      const ev = _ateEvents.find(e => e.id === evId);
+      if (!ev) { ateSectionSelect.innerHTML = ''; if (ateOrderList) ateOrderList.innerHTML = ''; return; }
+      ateSectionSelect.innerHTML = ev.sections.length
+        ? ev.sections.map(s => `<option value="${s.id}">${s.name}</option>`).join('')
+        : '<option value="" disabled>Žiadne časti</option>';
+      ateFillOrderList();
+    }
+
+    function ateClose_() {
+      ateBackdrop.style.display = 'none';
+      ateModal.style.display = 'none';
+    }
+
+    function ateOpen() {
+      keySettingsPopover.classList.remove('is-open');
+      keySettingsPopover.setAttribute('aria-hidden', 'true');
+      ateBackdrop.style.display = '';
+      ateModal.style.display = '';
+      ateLoading.style.display = '';
+      ateContent.style.display = 'none';
+      ateError.style.display = 'none';
+      ateResult.textContent = '';
+      ateResult.className = 'ate-result';
+      ateConfirm.disabled = false;
+      ateConfirm.textContent = 'Pridať';
+      ateConfirm.dataset.overwrite = '0';
+      fetch('/api/events-for-picker')
+        .then(r => r.json())
+        .then(data => {
+          _ateEvents = data;
+          ateLoading.style.display = 'none';
+          if (!data.length) {
+            ateError.textContent = 'Žiadne udalosti.';
+            ateError.style.display = '';
+            return;
+          }
+          ateEventSelect.innerHTML = data.map(ev =>
+            `<option value="${ev.id}">${ev.title} — ${ev.event_time}</option>`
+          ).join('');
+          ateFillSections();
+          ateContent.style.display = '';
+        })
+        .catch(() => {
+          ateLoading.style.display = 'none';
+          ateError.textContent = 'Nepodarilo sa načítať udalosti.';
+          ateError.style.display = '';
+        });
+    }
+
+    if (ksAddToEventBtn) ksAddToEventBtn.addEventListener('click', ateOpen);
+    if (ateClose) ateClose.addEventListener('click', ateClose_);
+    if (ateBackdrop) ateBackdrop.addEventListener('click', ateClose_);
+    if (ateEventSelect) ateEventSelect.addEventListener('change', ateFillSections);
+    if (ateSectionSelect) ateSectionSelect.addEventListener('change', () => {
+      ateResult.textContent = '';
+      ateResult.className = 'ate-result';
+      ateConfirm.textContent = 'Pridať';
+      ateConfirm.dataset.overwrite = '0';
+      ateConfirm.disabled = false;
+      ateFillOrderList();
+    });
+
+    if (ateConfirm) {
+      ateConfirm.addEventListener('click', async () => {
+        const sectionId = ateSectionSelect.value;
+        if (!sectionId) return;
+        ateConfirm.disabled = true;
+        ateResult.textContent = '';
+        const overwrite = ateConfirm.dataset.overwrite === '1';
+        const insertAt = getInsertAt();
+        try {
+          const res = await fetch(`/api/event-section/${sectionId}/add-song`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ song_id: {{ song.id }}, transpose: transposeSteps, capo: capoSteps, overwrite, insert_at: insertAt })
+          });
+          const json = await res.json();
+          if (res.ok && json.ok) {
+            if (json.already_present && !json.overwritten) {
+              // Check if config differs
+              const sameConfig = json.existing_transpose === transposeSteps && json.existing_capo === capoSteps;
+              if (sameConfig) {
+                ateResult.textContent = '✓ Pieseň je už v tejto časti';
+                ateResult.className = 'ate-result ok';
+                setTimeout(ateClose_, 1500);
+              } else {
+                // Prompt overwrite
+                ateResult.innerHTML = `Pieseň je tu už s T<b>${json.existing_transpose > 0 ? '+' : ''}${json.existing_transpose}</b> Capo <b>${json.existing_capo}</b>. Prepísať na aktuálne nastavenia?`;
+                ateResult.className = 'ate-result err';
+                ateConfirm.textContent = 'Prepísať';
+                ateConfirm.dataset.overwrite = '1';
+                ateConfirm.disabled = false;
+              }
+            } else {
+              ateResult.textContent = json.overwritten ? '✓ Nastavenia prepísané' : '✓ Pridané';
+              ateResult.className = 'ate-result ok';
+              ateConfirm.dataset.overwrite = '0';
+              ateConfirm.textContent = 'Pridať';
+              setTimeout(ateClose_, 1500);
+            }
+          } else {
+            ateResult.textContent = '✗ ' + (json.error || 'Chyba');
+            ateResult.className = 'ate-result err';
+            ateConfirm.disabled = false;
+          }
+        } catch {
+          ateResult.textContent = '✗ Chyba spojenia';
+          ateResult.className = 'ate-result err';
+          ateConfirm.disabled = false;
+        }
+      });
+    }
+    {% endif %}
 
     // ── Report modal ──────────────────────────────────────────────────────────
     const SONG_ID = {{ song.id }};

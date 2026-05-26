@@ -29,6 +29,23 @@
 
 <!-- Header Section -->
 <div class="song-view-header mb-4">
+  {% if view_transpose is defined and (view_transpose or view_capo) %}
+    <div class="alert alert-info d-flex align-items-center gap-2 mb-3">
+      <i class="bi bi-music-note-beamed fs-5"></i>
+      <div>
+        <strong>Nastavenia z udalosti:</strong>
+        {% if view_transpose %}
+          <span class="ms-2"><i class="bi bi-arrow-left-right me-1"></i>Transpon&#225;cia: <strong>{% if view_transpose > 0 %}+{% endif %}{{ view_transpose }}</strong></span>
+        {% endif %}
+        {% if view_capo %}
+          <span class="ms-2"><i class="bi bi-music-note me-1"></i>Capo: <strong>{{ view_capo }}</strong></span>
+        {% endif %}
+        <a href="{{ url_for('song_preview', song_id=song.id, chords=1) }}{% if view_transpose %}&amp;transpose={{ view_transpose }}{% endif %}{% if view_capo %}&amp;capo={{ view_capo }}{% endif %}" class="btn btn-sm btn-primary ms-3">
+          <i class="bi bi-eye me-1"></i>Otvori&#357; s transpon&#225;ciou
+        </a>
+      </div>
+    </div>
+  {% endif %}
   <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
     <!-- Song Status Badges -->
     <div class="d-flex gap-1 flex-wrap justify-content-center order-1 order-md-2 w-100 w-md-auto mb-2 mb-md-0">
