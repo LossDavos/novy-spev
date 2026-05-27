@@ -53,6 +53,19 @@
 .resolve-choices {
   display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: .75rem;
 }
+.key-fix-row {
+  display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  margin-bottom: .75rem; padding: .6rem .75rem;
+  background: #f0f4ff; border-radius: 8px; border: 1.5px solid #c7d7f5;
+}
+.key-fix-label { font-size: .9rem; color: #374151; }
+.key-fix-arrow { font-size: 1rem; color: #6c757d; }
+.key-fix-input {
+  border: 1.5px solid #86b7fe; border-radius: 6px;
+  padding: .35rem .65rem; font-size: .95rem; font-weight: 600;
+  width: 100px; outline: none;
+}
+.key-fix-input:focus { box-shadow: 0 0 0 3px rgba(13,110,253,.15); }
 .resolve-choice {
   flex: 1; min-width: 130px; padding: .55rem .8rem;
   border-radius: 8px; border: 2px solid transparent;
@@ -389,6 +402,13 @@
     panelRow.innerHTML = `<td colspan="${colspan}"><div class="resolve-panel"><div class="text-muted small py-1">Načítavam…</div></div></td>`;
     row.after(panelRow);
 
+    // Parse key report message: "Aktuálna tónina: G → Navrhovaná: Am"
+    let parsedCurrentKey = '', parsedSuggestedKey = '';
+    if (reportType === 'key' && reportMessage) {
+      const km = reportMessage.match(/Aktu[áa]lna t[óo]nina:\s*([^\n→]+?)(?:\s*→\s*Navrhovan[áa]:\s*([^\n]+))?$/);
+      if (km) { parsedCurrentKey = (km[1] || '').trim(); parsedSuggestedKey = (km[2] || '').trim(); }
+    }
+
     // Parse structured corrections from message
     const corrItems = [];
     let extraNote = '';
@@ -487,11 +507,19 @@
         `</div></div>`
       ).join('') + '</div>';
     } else {
-      innerHtml =
-        `<div class="resolve-choices">` +
-        `<button type="button" class="resolve-choice accept" data-note="Opravené."><i class="bi bi-check-lg"></i> Prijať – opravené</button>` +
-        `<button type="button" class="resolve-choice decline" data-note="Zamietnuté – pravdepodobne nie je chyba."><i class="bi bi-x-lg"></i> Zamietnuť – nie je chyba</button>` +
-        `</div>`;
+      innerHtml = reportType === 'key'
+        ? `<div class="key-fix-row">`
+          + `<span class="key-fix-label">Aktuálna tónina: <strong>${escHtml(parsedCurrentKey || '—')}</strong></span>`
+          + `<span class="key-fix-arrow">→</span>`
+          + `<input type="text" class="key-fix-input" id="adminKeyInput" placeholder="Správna tónina…" value="${escHtml(parsedSuggestedKey)}" maxlength="10">`
+          + `</div>`
+          + `<div class="resolve-choices">`
+          + `<button type="button" class="resolve-choice decline" data-note="Zamietnuté – pravdepodobne nie je chyba."><i class="bi bi-x-lg"></i> Zamietnuť – nie je chyba</button>`
+          + `</div>`
+        : `<div class="resolve-choices">`
+          + `<button type="button" class="resolve-choice accept" data-note="Opravené."><i class="bi bi-check-lg"></i> Prijať – opravené</button>`
+          + `<button type="button" class="resolve-choice decline" data-note="Zamietnuté – pravdepodobne nie je chyba."><i class="bi bi-x-lg"></i> Zamietnuť – nie je chyba</button>`
+          + `</div>`;
     }
 
     innerHtml +=
@@ -680,6 +708,26 @@
       confirmBtn.disabled = true;
 
       // Apply accepted corrections + admin-added chord extras
+      // For key reports: apply key correction first
+      if (reportType === 'key') {
+        const keyInput = panelRow.querySelector('#adminKeyInput');
+        const declined = panelRow.querySelector('.resolve-choice.decline.active');
+        if (!declined && keyInput) {
+          const newKey = keyInput.value.trim();
+          if (newKey) {
+            try {
+              const kr = await fetch(`/api/song/${songId}/correct-key`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pw, key: newKey })
+              });
+              const kd = await kr.json();
+              if (!kd.success) { alert('Chyba pri ukladaní tóniny: ' + (kd.message || '')); confirmBtn.disabled = false; return; }
+              if (!noteParts.length) noteParts.push(`Tónina opravená: ${parsedCurrentKey || '—'} → ${newKey}`);
+            } catch { alert('Sieťová chyba pri ukladaní tóniny'); confirmBtn.disabled = false; return; }
+          }
+        }
+        note = noteParts.join('\n') || note;
+      }
       const applyPayload = accepted.map(c => {
         const entry = { lineIdx: c.lineIdx, original: c.original, replacement: c.replacement, occurrenceIdx: c.occurrenceIdx };
         if (c.partIdx !== null) entry.partIdx = c.partIdx; else entry.partLabel = c.partLabel;

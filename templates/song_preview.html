@@ -152,7 +152,7 @@
     </button>
   </div>
   <div class="transpose-key {% if song.key_reported %}key-reported{% endif %}" id="transposeKey"
-       data-base-key="{{ '' if song.key_reported else (song.song_key if song.song_key else '') }}"
+       data-base-key="{{ song.song_key if song.song_key else '' }}"
        data-initial-transpose="{{ initial_transpose | default(0) }}"
        data-song-id="{{ song.id }}">
     {{ '0' if song.key_reported else (song.song_key if song.song_key else '0') }}
@@ -204,6 +204,15 @@
         {% endfor %}
       </div>
       <div class="report-fields mt-2 pb-3">
+        <!-- key suggestion row -->
+        <div id="reportKeyWrap" style="display:none">
+          <label class="report-selection-label" style="margin-bottom:0.4rem">Správna tónina</label>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center">
+            <input type="text" id="reportSuggestedKey" class="report-input report-input-sm" placeholder="napr. Am, G, F#m…" maxlength="10" autocomplete="off" style="max-width:120px">
+            <input type="password" id="reportKeyAdminPw" class="report-input report-input-sm" placeholder="Admin heslo (okamžitá zmena)…" style="max-width:220px">
+          </div>
+          <div class="report-admin-feedback" id="reportKeyAdminFeedback" style="margin-top:0.3rem"></div>
+        </div>
         <!-- lyrics/chords selection section (injected by JS) -->
         <div id="reportSelectionWrap" style="display:none">
           <div class="report-original-key-notice" id="reportOriginalKeyNotice" style="display:none">
@@ -237,16 +246,6 @@
           <input type="text" id="reporterName" class="report-input" placeholder="Vaše meno (nepovinné)" maxlength="100">
           <textarea id="reportMessage" class="report-input" placeholder="Popis chyby (nepovinné)…" rows="3" maxlength="500"></textarea>
         </div>
-      </div>
-      <!-- admin key-correct section (shown only when type=key) -->
-      <div class="report-admin-section" id="reportAdminKeySection" style="display:none">
-        <div class="report-admin-label"><i class="bi bi-shield-lock"></i> Opraviť tóninu (admin)</div>
-        <div class="report-admin-row">
-          <input type="text" id="reportCorrectKey" class="report-input report-input-sm" placeholder="Nová tónina…" maxlength="10">
-          <input type="password" id="reportAdminPassword" class="report-input report-input-sm" placeholder="Admin heslo…">
-          <button type="button" class="report-admin-save" id="reportAdminSaveKey">Uložiť</button>
-        </div>
-        <div class="report-admin-feedback" id="reportAdminFeedback"></div>
       </div>
       <!-- admin lyrics/chords-correct section (shown when type=lyrics or chords and corrections exist) -->
       <div class="report-admin-section" id="reportAdminLyricsSection" style="display:none">
@@ -712,8 +711,12 @@
 }
 .report-admin-label {
   font-size: 0.78rem; font-weight: 700; color: #6c757d;
-  margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em;
   display: flex; align-items: center; gap: 0.35rem;
+}
+.report-admin-current {
+  font-size: 0.82rem; color: #495057; margin-bottom: 0.5rem;
+  font-style: italic;
 }
 .report-admin-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
 .report-admin-save {
@@ -2133,11 +2136,6 @@
     const reportCancel = document.getElementById('reportCancel');
     const reportSubmit = document.getElementById('reportSubmit');
     const reportSubmitFeedback = document.getElementById('reportSubmitFeedback');
-    const reportAdminKeySection = document.getElementById('reportAdminKeySection');
-    const reportCorrectKey = document.getElementById('reportCorrectKey');
-    const reportAdminPassword = document.getElementById('reportAdminPassword');
-    const reportAdminSaveKey = document.getElementById('reportAdminSaveKey');
-    const reportAdminFeedback = document.getElementById('reportAdminFeedback');
     const reportAdminLyricsSection = document.getElementById('reportAdminLyricsSection');
     const reportAdminLyricsPassword = document.getElementById('reportAdminLyricsPassword');
     const reportAdminSaveLyrics = document.getElementById('reportAdminSaveLyrics');
@@ -2372,6 +2370,7 @@
     function showSelectionUI(type) {
       const show = type === 'lyrics' || type === 'chords';
       reportSelectionWrap.style.display = show ? 'block' : 'none';
+      document.getElementById('reportKeyWrap').style.display = type === 'key' ? 'block' : 'none';
       // Show notice only when chords mode and transposition is active
       const originalKey = "{{ '' if song.key_reported else (song.song_key or '') }}";
       if (type === 'chords' && transposeSteps !== 0 && originalKey) {
@@ -2408,6 +2407,10 @@
       clearPendingSelection();
       clearAllCorrections();
       reportLinesWrap.style.display = 'none';
+      document.getElementById('reportSuggestedKey').value = '';
+      document.getElementById('reportKeyAdminPw').value = '';
+      document.getElementById('reportKeyAdminFeedback').textContent = '';
+      document.getElementById('reportKeyWrap').style.display = 'none';
       // collapse extra info
       document.getElementById('reportExtraToggle').classList.remove('is-open');
       document.getElementById('reportExtraBody').style.display = 'none';
@@ -2426,10 +2429,9 @@
     reportCancel.addEventListener('click', closeReportModal);
     reportModal.addEventListener('click', (e) => { if (e.target.dataset.close) closeReportModal(); });
 
-    // Show admin key-correct section only when type=key is selected
+    // Show key wrap / selection UI when type changes
     reportModal.querySelectorAll('input[name="reportType"]').forEach((radio) => {
       radio.addEventListener('change', () => {
-        reportAdminKeySection.style.display = radio.value === 'key' ? 'block' : 'none';
         selectedPartIdx = null;
         clearPendingSelection();
         clearAllCorrections();
@@ -2441,7 +2443,6 @@
     // Set initial visibility
     const checkedType = reportModal.querySelector('input[name="reportType"]:checked');
     if (checkedType) {
-      reportAdminKeySection.style.display = checkedType.value === 'key' ? 'block' : 'none';
       showSelectionUI(checkedType.value);
     }
 
@@ -2451,10 +2452,50 @@
       const userMessage = document.getElementById('reportMessage').value.trim();
       const reporter_name = document.getElementById('reporterName').value.trim();
       const corrMsg = buildCorrectionMessage();
-      const message = corrMsg
+      let message = corrMsg
         ? (userMessage ? `${corrMsg}\n${userMessage}` : corrMsg)
         : userMessage;
+      const suggestedKey = type === 'key' ? (document.getElementById('reportSuggestedKey').value || '').trim() : '';
+      const keyAdminPw = type === 'key' ? (document.getElementById('reportKeyAdminPw').value || '').trim() : '';
+      if (type === 'key') {
+        const currentKey = transposeKeyEl.dataset.baseKey || '—';
+        const keyPrefix = suggestedKey
+          ? `Aktuálna tónina: ${currentKey} → Navrhovaná: ${suggestedKey}`
+          : `Aktuálna tónina: ${currentKey}`;
+        message = message ? `${keyPrefix}\n${message}` : keyPrefix;
+      }
       reportSubmit.disabled = true;
+      const feedbackEl = document.getElementById('reportKeyAdminFeedback');
+      // If admin password provided for key report → apply immediately
+      if (type === 'key' && keyAdminPw && suggestedKey) {
+        try {
+          const kr = await fetch(`/api/song/${SONG_ID}/correct-key`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: suggestedKey, password: keyAdminPw }),
+          });
+          const kd = await kr.json();
+          if (!kd.success) {
+            feedbackEl.style.color = '#dc3545';
+            feedbackEl.textContent = kd.message || 'Chyba pri zmene tóniny!';
+            reportSubmit.disabled = false;
+            return;
+          }
+          // Update widget live
+          transposeKeyEl.dataset.baseKey = kd.key;
+          transposeKeyEl.textContent = kd.key;
+          transposeKeyEl.classList.remove('key-reported');
+          const chordsModal = document.getElementById('chordsDownloadModal');
+          if (chordsModal) chordsModal.dataset.originalKey = kd.key;
+          const chordsOrig = document.getElementById('chordsOriginalKey');
+          if (chordsOrig) chordsOrig.textContent = kd.key;
+          message += `\nAdmin: okamžite zmenená na ${kd.key}`;
+        } catch {
+          feedbackEl.style.color = '#dc3545';
+          feedbackEl.textContent = 'Sieťová chyba.';
+          reportSubmit.disabled = false;
+          return;
+        }
+      }
       try {
         const res = await fetch(`/api/song/${SONG_ID}/report`, {
           method: 'POST',
@@ -2464,9 +2505,11 @@
         const data = await res.json();
         if (data.success) {
           reportSubmitFeedback.style.color = '#198754';
-          reportSubmitFeedback.textContent = '✓ Hlásenie odoslané, ďakujeme!';
+          reportSubmitFeedback.textContent = (type === 'key' && keyAdminPw && suggestedKey)
+            ? `✓ Tónina zmenená na ${suggestedKey} a hlásenie uložené!`
+            : '✓ Hlásenie odoslané, ďakujeme!';
           reportSubmitFeedback.style.display = '';
-          if (type === 'key') reportFab.classList.add('has-reports');
+          if (type === 'key' && !(keyAdminPw && suggestedKey)) reportFab.classList.add('has-reports');
           setTimeout(closeReportModal, 1400);
         } else {
           reportSubmitFeedback.style.color = '#dc3545';
@@ -2536,7 +2579,8 @@
         const data = await res.json();
         if (data.success) {
           reportAdminFeedback.style.color = '#198754';
-          reportAdminFeedback.textContent = `✓ Tónina zmenená na ${data.key}`;
+          const oldKey = transposeKeyEl.dataset.baseKey || '—';
+          reportAdminFeedback.textContent = `✓ Tónina zmenená: ${oldKey} → ${data.key}`;
           // Update the transpose widget live
           transposeKeyEl.dataset.baseKey = data.key;
           transposeKeyEl.textContent = data.key;

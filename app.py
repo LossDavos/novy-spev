@@ -2441,15 +2441,23 @@ def delete_report(report_id):
 @app.route('/api/song/<int:song_id>/correct-key', methods=['POST'])
 def correct_key(song_id):
     """Admin: update the key and clear key_reported flag + resolve open key reports."""
+    from datetime import datetime
     song = Song.query.get_or_404(song_id)
     data = request.get_json() or {}
     provided_password = data.get('password', '')
     if not is_admin_authorized(provided_password):
         return jsonify({'success': False, 'message': 'Nesprávne heslo!'}), 403
     raw_key = data.get('key', '').strip()
+    old_key = song.song_key or ''
     song.song_key = sanitize_input(raw_key, "song key") if raw_key else None
     song.key_reported = False
     SongReport.query.filter_by(song_db_id=song.id, report_type='key', resolved=False).update({'resolved': True})
+    log = SongChangeLog(
+        song_db_id=song.id,
+        changed_at=datetime.utcnow(),
+        field_changes=json.dumps([{'field': 'song_key', 'label': 'Tónina', 'old': old_key, 'new': song.song_key or ''}]),
+    )
+    db.session.add(log)
     db.session.commit()
     return jsonify({'success': True, 'key': song.song_key})
 
