@@ -152,8 +152,8 @@
     </button>
   </div>
   <div class="transpose-key {% if song.key_reported %}key-reported{% endif %}" id="transposeKey"
-       data-base-key="{{ song.song_key if song.song_key else '' }}"
-       data-initial-transpose="{{ initial_transpose | default(0) }}"
+       data-base-key="{{ '' if song.key_reported else (song.song_key if song.song_key else '') }}"
+      data-enharmonic-preference="auto"
        data-song-id="{{ song.id }}">
     {{ '0' if song.key_reported else (song.song_key if song.song_key else '0') }}
   </div>
@@ -1643,6 +1643,10 @@
 
     const notesSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     const notesFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    const FLAT_KEYS = new Set(['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb']);
+    const SHARP_KEYS = new Set(['G', 'D', 'A', 'E', 'B', 'F#']);
+    const ENHARMONIC_PREF_STORAGE_KEY = 'transposeEnharmonicPreference';
+    const ENHARMONIC_PREF_VALUES = new Set(['auto', 'sharps', 'flats']);
 
     function parseRoot(chordPart) {
       const match = chordPart.match(/^([A-Ha-h])([#b]?)(.*)$/);
@@ -1666,7 +1670,98 @@
       return preferFlats ? notesFlat[nextIndex] : notesSharp[nextIndex];
     }
 
-    function transposeChord(chord, steps) {
+    function normalizeEnharmonicPreference(value) {
+      if (!value) {
+        return null;
+      }
+      const normalized = String(value).trim().toLowerCase();
+      return ENHARMONIC_PREF_VALUES.has(normalized) ? normalized : null;
+    }
+
+    function getEnharmonicPreferenceMode() {
+      let stored = null;
+      try {
+        stored = normalizeEnharmonicPreference(localStorage.getItem(ENHARMONIC_PREF_STORAGE_KEY));
+      } catch (e) {
+        stored = null;
+      }
+      if (stored) {
+        return stored;
+      }
+      const fromData = normalizeEnharmonicPreference(
+        transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.enharmonicPreference : null
+      );
+      return fromData || 'auto';
+    }
+
+    function getAmbiguousPreferFlats(parsedKey) {
+      const mode = getEnharmonicPreferenceMode();
+      if (mode === 'flats') {
+        return true;
+      }
+      if (mode === 'sharps') {
+        return false;
+      }
+      return parsedKey.accidental === 'b';
+    }
+
+    function getPreferFlatsForTargetKey(sourceKey, steps) {
+      if (!sourceKey) {
+        return null;
+      }
+      const parsed = parseRoot(sourceKey.trim());
+      if (!parsed) {
+        return null;
+      }
+      const idx = noteIndex[parsed.root];
+      if (idx === undefined) {
+        return null;
+      }
+      const targetIdx = (idx + steps + 12) % 12;
+      if (targetIdx === 1 || targetIdx === 6) {
+        return getAmbiguousPreferFlats(parsed);
+      }
+      const targetSharp = notesSharp[targetIdx];
+      const targetFlat = notesFlat[targetIdx];
+      if (FLAT_KEYS.has(targetFlat)) {
+        return true;
+      }
+      if (SHARP_KEYS.has(targetSharp)) {
+        return false;
+      }
+      return parsed.accidental === 'b';
+    }
+
+    function setTransposeEnharmonicPreference(mode) {
+      const normalized = normalizeEnharmonicPreference(mode);
+      if (!normalized) {
+        return false;
+      }
+      if (transposeKeyEl && transposeKeyEl.dataset) {
+        transposeKeyEl.dataset.enharmonicPreference = normalized;
+      }
+      try {
+        localStorage.setItem(ENHARMONIC_PREF_STORAGE_KEY, normalized);
+      } catch (e) {
+        // Ignore storage failures (private mode, disabled storage, etc.)
+      }
+      updateChords(transposeSteps);
+      updateKey(transposeSteps);
+      if (typeof updateTargetKey === 'function') {
+        updateTargetKey();
+      }
+      return true;
+    }
+
+    window.setTransposeEnharmonicPreference = setTransposeEnharmonicPreference;
+    window.getTransposeEnharmonicPreference = getEnharmonicPreferenceMode;
+
+    function getGlobalPreferFlats(steps) {
+      const baseKey = transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.baseKey : '';
+      return getPreferFlatsForTargetKey(baseKey, steps);
+    }
+
+    function transposeChord(chord, steps, preferFlatsGlobal) {
       if (!chord) {
         return chord;
       }
@@ -1683,7 +1778,9 @@
       if (!mainParsed) {
         return chord;
       }
-      const preferFlatsMain = mainParsed.accidental === 'b' || mainParsed.root === 'B';
+      const preferFlatsMain = preferFlatsGlobal === null
+        ? (mainParsed.accidental === 'b')
+        : preferFlatsGlobal;
       let mainRoot = transposeRoot(mainParsed.root, steps, preferFlatsMain);
       if (mainParsed.isLower) {
         mainRoot = mainRoot.toLowerCase();
@@ -1698,7 +1795,9 @@
       if (!bassParsed) {
         return `${mainTransposed}/${bass}`;
       }
-      const preferFlatsBass = bassParsed.accidental === 'b' || bassParsed.root === 'B';
+      const preferFlatsBass = preferFlatsGlobal === null
+        ? (bassParsed.accidental === 'b')
+        : preferFlatsGlobal;
       let bassRoot = transposeRoot(bassParsed.root, steps, preferFlatsBass);
       if (bassParsed.isLower) {
         bassRoot = bassRoot.toLowerCase();
@@ -1741,12 +1840,13 @@
     }
 
     function updateChords(steps) {
+      const preferFlatsGlobal = getGlobalPreferFlats(steps);
       chordEls.forEach((el) => {
         if (!el.dataset.baseChord) {
           el.dataset.baseChord = el.textContent.trim();
         }
         const base = el.dataset.baseChord;
-        const nextChord = transposeChord(base, steps);
+        const nextChord = transposeChord(base, steps, preferFlatsGlobal);
         setChordText(el, nextChord);
       });
     }
@@ -1758,12 +1858,15 @@
         return;
       }
       const baseTrimmed = baseKey.trim();
-      const preferFlatsKey = baseTrimmed.includes('b') || baseTrimmed === 'B';
       const parsed = parseRoot(baseTrimmed);
       if (!parsed) {
         transposeKeyEl.textContent = baseTrimmed;
         return;
       }
+      const preferFlatsKeyFromTarget = getGlobalPreferFlats(steps);
+      const preferFlatsKey = preferFlatsKeyFromTarget === null
+        ? (parsed.accidental === 'b')
+        : preferFlatsKeyFromTarget;
       const nextKey = transposeRoot(parsed.root, steps, preferFlatsKey) + parsed.rest;
       transposeKeyEl.textContent = nextKey;
     }
@@ -2666,7 +2769,10 @@
         if (!parsed) {
           chordsTargetKey.textContent = currentKeyValue;
         } else {
-          const preferFlatsKey = parsed.accidental === 'b' || parsed.root === 'B';
+          const preferFlatsKeyFromTarget = getPreferFlatsForTargetKey(currentKeyValue, shift);
+          const preferFlatsKey = preferFlatsKeyFromTarget === null
+            ? (parsed.accidental === 'b')
+            : preferFlatsKeyFromTarget;
           let nextRoot = transposeRoot(parsed.root, shift, preferFlatsKey);
           if (parsed.isLower) {
             nextRoot = nextRoot.toLowerCase();
