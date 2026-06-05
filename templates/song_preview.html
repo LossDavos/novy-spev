@@ -154,6 +154,8 @@
   <div class="transpose-key {% if song.key_reported %}key-reported{% endif %}" id="transposeKey"
        data-base-key="{{ '' if song.key_reported else (song.song_key if song.song_key else '') }}"
       data-enharmonic-preference="auto"
+      data-initial-transpose="{{ initial_transpose | default(0) }}"
+      data-initial-capo="{{ initial_capo | default(0) }}"
        data-song-id="{{ song.id }}">
     {{ '0' if song.key_reported else (song.song_key if song.song_key else '0') }}
   </div>
