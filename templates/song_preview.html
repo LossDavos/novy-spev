@@ -2563,43 +2563,6 @@
       reportAdminSaveLyrics.disabled = false;
     });
 
-    // Admin: correct key directly from modal
-    reportAdminSaveKey.addEventListener('click', async () => {
-      const key = reportCorrectKey.value.trim();
-      const pw = reportAdminPassword.value;
-      if (!key) { reportCorrectKey.focus(); return; }
-      if (!pw) { reportAdminPassword.focus(); return; }
-      reportAdminSaveKey.disabled = true;
-      try {
-        const res = await fetch(`/api/song/${SONG_ID}/correct-key`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key, password: pw }),
-        });
-        const data = await res.json();
-        if (data.success) {
-          reportAdminFeedback.style.color = '#198754';
-          const oldKey = transposeKeyEl.dataset.baseKey || '—';
-          reportAdminFeedback.textContent = `✓ Tónina zmenená: ${oldKey} → ${data.key}`;
-          // Update the transpose widget live
-          transposeKeyEl.dataset.baseKey = data.key;
-          transposeKeyEl.textContent = data.key;
-          transposeKeyEl.classList.remove('key-reported');
-          reportFab.classList.remove('has-reports');
-          const modal = document.getElementById('chordsDownloadModal');
-          if (modal) modal.dataset.originalKey = data.key;
-          if (chordsOriginalKeyDisplay) chordsOriginalKeyDisplay.textContent = data.key;
-          setTimeout(closeReportModal, 1200);
-        } else {
-          reportAdminFeedback.style.color = '#dc3545';
-          reportAdminFeedback.textContent = data.message || 'Chyba!';
-        }
-      } catch {
-        reportAdminFeedback.style.color = '#dc3545';
-        reportAdminFeedback.textContent = 'Sieťová chyba.';
-      }
-      reportAdminSaveKey.disabled = false;
-    });
     // ── End report modal ──────────────────────────────────────────────────────
 
     const transposeMore = document.getElementById('transposeMore');
