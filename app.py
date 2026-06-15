@@ -151,6 +151,31 @@ DEFAULT_EVENT_SECTIONS = [
     "Ine"
 ]
 
+DEFAULT_EVENT_SECTION_ORDER = {name: index for index, name in enumerate(DEFAULT_EVENT_SECTIONS) if name != "Ine"}
+
+
+def sort_event_sections(sections):
+    """Sort default sections canonically while preserving custom section placement slots."""
+    indexed_sections = list(enumerate(sections))
+    locked_sections = [
+        (original_index, section)
+        for original_index, section in indexed_sections
+        if (section.get('name') or '').strip() in DEFAULT_EVENT_SECTION_ORDER
+    ]
+    locked_sections.sort(key=lambda item: (DEFAULT_EVENT_SECTION_ORDER[(item[1].get('name') or '').strip()], item[0]))
+
+    result = []
+    locked_index = 0
+    for _, section in indexed_sections:
+        section_name = (section.get('name') or '').strip()
+        if section_name in DEFAULT_EVENT_SECTION_ORDER:
+            result.append(locked_sections[locked_index][1])
+            locked_index += 1
+        else:
+            # Custom/flexible sections keep exact user-selected placement.
+            result.append(section)
+    return result
+
 
 def resolve_song_identifier(token):
     """Resolve a user-provided token to a Song object."""
@@ -1314,7 +1339,11 @@ def build_section_form_data(section_names, section_songs, section_names_custom=N
 
 def build_section_data_from_event(event):
     section_data = []
-    for section in event.sections:
+    sections = sort_event_sections([
+        {'name': section.name, 'section': section} for section in event.sections
+    ])
+    for section_entry in sections:
+        section = section_entry['section']
         songs = EventSectionSong.query.filter_by(section_id=section.id).order_by(EventSectionSong.position).all()
         song_items = []
         for song in songs:
@@ -1403,6 +1432,8 @@ def save_event_from_form(event=None):
     if invalid_tokens:
         flash(f"Neznáme piesne: {', '.join(invalid_tokens)}", 'error')
         return None, build_section_form_data(section_names, section_songs, section_names_custom, section_song_settings_list)
+
+    sections_payload = sort_event_sections(sections_payload)
 
     if event is None:
         event = Event(title=title, event_time=event_time, place=place, notes=notes)
@@ -1511,7 +1542,11 @@ def event_view(event_id):
     event = Event.query.get_or_404(event_id)
 
     song_ids = []
-    for section in event.sections:
+    sections = sort_event_sections([
+        {'name': section.name, 'section': section} for section in event.sections
+    ])
+    for section_entry in sections:
+        section = section_entry['section']
         for esong in section.songs:
             song_ids.append(esong.song_db_id)
 
@@ -1522,7 +1557,8 @@ def event_view(event_id):
 
     from urllib.parse import quote
     sections_data = []
-    for section in event.sections:
+    for section_entry in sections:
+        section = section_entry['section']
         section_songs = []
         for esong in section.songs:
             song = songs_by_id.get(esong.song_db_id)
@@ -1619,7 +1655,11 @@ def api_events_for_picker():
     result = []
     for ev in events:
         sections = []
-        for s in ev.sections:
+        sorted_sections = sort_event_sections([
+            {'name': section.name, 'section': section} for section in ev.sections
+        ])
+        for section_entry in sorted_sections:
+            s = section_entry['section']
             songs = EventSectionSong.query.filter_by(section_id=s.id).order_by(EventSectionSong.position).all()
             sections.append({
                 'id': s.id,

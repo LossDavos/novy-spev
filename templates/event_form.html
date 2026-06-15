@@ -59,7 +59,7 @@
       </button>
     </div>
 
-    <p class="text-muted">Vyberte časť liturgie z rozbaľovacieho zoznamu a pridajte piesne cez vyhľadávací výber.</p>
+    <p class="text-muted">Vyberte časť liturgie z rozbaľovacieho zoznamu a pridajte piesne cez vyhľadávací výber. Vlastné sekcie môžete presúvať šípkami.</p>
 
     <div id="sectionsContainer" class="d-none">
       {% for section in section_data %}
@@ -78,6 +78,8 @@
           <div class="d-flex justify-content-between align-items-center mb-2">
             <strong>{{ section.custom_name if section.name == '__custom__' else section.name }}</strong>
             <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary move-section-up" title="Posunúť vyššie"><i class="bi bi-arrow-up"></i></button>
+              <button type="button" class="btn btn-sm btn-outline-secondary move-section-down" title="Posunúť nižšie"><i class="bi bi-arrow-down"></i></button>
               <button type="button" class="btn btn-sm btn-outline-primary edit-section">Upraviť</button>
               <button type="button" class="btn btn-sm btn-outline-danger remove-section">Odstrániť</button>
             </div>
@@ -280,8 +282,56 @@
         if (c) badges += `<span class="song-tc-badge song-c-badge">${toRoman(c)}</span>`;
         li.innerHTML = `<span>${song.label}</span>${badges ? `<span class="d-flex gap-1 ms-auto flex-shrink-0">${badges}</span>` : ''}`;
         list.appendChild(li);
-        list.appendChild(li);
       });
+      refreshSectionControls();
+    }
+
+    function isMovableSection(sectionEl) {
+      const name = (sectionEl?.dataset?.name || '').trim();
+      return name === '__custom__' || name === 'Ine';
+    }
+
+    function refreshSectionControls() {
+      const sections = Array.from(sectionsPreview.querySelectorAll('.event-preview-section'));
+      sections.forEach((sectionEl, index) => {
+        const upBtn = sectionEl.querySelector('.move-section-up');
+        const downBtn = sectionEl.querySelector('.move-section-down');
+        if (!upBtn || !downBtn) return;
+        const movable = isMovableSection(sectionEl);
+        upBtn.classList.toggle('d-none', !movable);
+        downBtn.classList.toggle('d-none', !movable);
+        if (!movable) {
+          upBtn.disabled = true;
+          downBtn.disabled = true;
+          return;
+        }
+        upBtn.disabled = index === 0;
+        downBtn.disabled = index === sections.length - 1;
+      });
+    }
+
+    function moveSection(sectionEl, direction) {
+      if (!sectionEl || !isMovableSection(sectionEl)) return;
+      const targetPreview = direction < 0 ? sectionEl.previousElementSibling : sectionEl.nextElementSibling;
+      if (!targetPreview) return;
+
+      const sectionIndex = sectionEl.dataset.index;
+      const targetIndex = targetPreview.dataset.index;
+      const sectionInput = sectionsContainer.querySelector(`[data-index="${sectionIndex}"]`);
+      const targetInput = sectionsContainer.querySelector(`[data-index="${targetIndex}"]`);
+
+      if (direction < 0) {
+        sectionsPreview.insertBefore(sectionEl, targetPreview);
+        if (sectionInput && targetInput) {
+          sectionsContainer.insertBefore(sectionInput, targetInput);
+        }
+      } else {
+        sectionsPreview.insertBefore(targetPreview, sectionEl);
+        if (sectionInput && targetInput) {
+          sectionsContainer.insertBefore(targetInput, sectionInput);
+        }
+      }
+      refreshSectionControls();
     }
 
     function toggleModalCustom() {
@@ -427,6 +477,8 @@
           <div class="d-flex justify-content-between align-items-center mb-2">
             <strong></strong>
             <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary move-section-up" title="Posunúť vyššie"><i class="bi bi-arrow-up"></i></button>
+              <button type="button" class="btn btn-sm btn-outline-secondary move-section-down" title="Posunúť nižšie"><i class="bi bi-arrow-down"></i></button>
               <button type="button" class="btn btn-sm btn-outline-primary edit-section">Upraviť</button>
               <button type="button" class="btn btn-sm btn-outline-danger remove-section">Odstrániť</button>
             </div>
@@ -456,6 +508,20 @@
     });
 
     sectionsPreview.addEventListener('click', function (event) {
+      const moveUpButton = event.target.closest('.move-section-up');
+      if (moveUpButton) {
+        const sectionEl = moveUpButton.closest('.event-preview-section');
+        moveSection(sectionEl, -1);
+        return;
+      }
+
+      const moveDownButton = event.target.closest('.move-section-down');
+      if (moveDownButton) {
+        const sectionEl = moveDownButton.closest('.event-preview-section');
+        moveSection(sectionEl, 1);
+        return;
+      }
+
       const removeButton = event.target.closest('.remove-section');
       if (removeButton) {
         const sectionEl = removeButton.closest('.event-preview-section');
@@ -464,6 +530,7 @@
         const inputEl = sectionsContainer.querySelector(`[data-index="${index}"]`);
         if (inputEl) inputEl.remove();
         sectionEl.remove();
+        refreshSectionControls();
         return;
       }
 
@@ -510,6 +577,8 @@
         modalSelectedSongs.innerHTML = '';
       }
     });
+
+    refreshSectionControls();
   });
 </script>
 
