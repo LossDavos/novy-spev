@@ -27,6 +27,8 @@ class Song(db.Model):
     title_original = db.Column(db.String, nullable=True)
     author_original = db.Column(db.String, nullable=True)
     song_key = db.Column(db.String(10), nullable=True)
+    enharmonic_preference = db.Column(db.String(10), nullable=False, default='auto')
+    part_enharmonic_preferences = db.Column(db.Text, nullable=True)
     key_reported = db.Column(db.Boolean, default=False)
     categories = db.Column(db.String, nullable=True)
     # Store alternative titles as comma-separated string
@@ -293,6 +295,8 @@ class EventSectionSong(db.Model):
     # Transpose and capo settings for this song in the event
     transpose = db.Column(db.Integer, default=0, nullable=False)
     capo = db.Column(db.Integer, default=0, nullable=False)
+    enharmonic_preference = db.Column(db.String(10), nullable=True)
+    part_enharmonic_preferences = db.Column(db.Text, nullable=True)
 
 
 def set_event_created_at_listener(mapper, connection, target):

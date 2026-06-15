@@ -64,6 +64,14 @@
               </div>
             </div>
             <div class="ks-ctrl-row">
+              <span class="ks-ctrl-label">Akordy</span>
+              <select class="ks-select" id="ksEnharmonicMode" aria-label="Preferovať krížiky alebo béčka">
+                <option value="auto">Auto</option>
+                <option value="sharps">Krížiky</option>
+                <option value="flats">Béčka</option>
+              </select>
+            </div>
+            <div class="ks-ctrl-row">
               <span class="ks-ctrl-label">Capo</span>
               <div class="ks-ctrl">
                 <button class="ks-step-btn" type="button" id="ksCapoDown"><i class="bi bi-dash"></i></button>
@@ -82,6 +90,10 @@
             <button class="ks-save-btn" type="button" id="ksAddToEventBtn">
               <i class="bi bi-calendar-plus me-1"></i>Pridať do udalosti
             </button>
+            <button class="ks-save-btn" type="button" id="ksSaveSongPrefsBtn" style="margin-top:0.35rem;background:#2563eb;">
+              <i class="bi bi-save2 me-1"></i>Uložiť ako predvolené
+            </button>
+            <span class="ks-save-status" id="ksSaveSongPrefsStatus"></span>
             {% endif %}
           </div>
         </div>
@@ -120,10 +132,13 @@
 
 <section class="song-preview-content">
   {% if data %}
+    {% set part_pref_map = initial_part_enharmonic_preferences if initial_part_enharmonic_preferences else {} %}
     {% for part in data %}
-    <article class="preview-part part-{{ part.type | lower | replace(' ', '-') }}">
+    {% set part_pref = part_pref_map.get(loop.index0|string, 'auto') %}
+    <article class="preview-part part-{{ part.type | lower | replace(' ', '-') }}" data-part-index="{{ loop.index0 }}" data-enharmonic-preference="{{ part_pref }}">
       <header class="preview-part-header">
         <span class="preview-part-title">{{ part.type }}</span>
+        <button class="part-enharmonic-toggle" type="button" data-mode="{{ part_pref }}" title="Akordy: Auto" aria-label="Preferencia akordov pre časť">A</button>
         <button class="preview-pin" type="button" aria-label="Pripnut" title="Pripnut">
           <i class="bi bi-pin-angle"></i>
         </button>
@@ -153,7 +168,7 @@
   </div>
   <div class="transpose-key {% if song.key_reported %}key-reported{% endif %}" id="transposeKey"
        data-base-key="{{ '' if song.key_reported else (song.song_key if song.song_key else '') }}"
-      data-enharmonic-preference="auto"
+      data-enharmonic-preference="{{ initial_enharmonic_preference | default('auto') }}"
       data-initial-transpose="{{ initial_transpose | default(0) }}"
       data-initial-capo="{{ initial_capo | default(0) }}"
        data-song-id="{{ song.id }}">
@@ -1158,6 +1173,26 @@
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  margin-right: auto;
+}
+
+.part-enharmonic-toggle {
+  height: 24px;
+  min-width: 30px;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0 0.5rem;
+  margin-right: 0.35rem;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.22);
+  line-height: 1;
+}
+
+.part-enharmonic-toggle.mode-sharps,
+.part-enharmonic-toggle.mode-flats {
+  background: rgba(255, 255, 255, 0.35);
 }
 
 .preview-pin {
@@ -1446,6 +1481,22 @@
   border-radius: 999px;
   padding: 0.18rem 0.28rem;
 }
+.ks-select {
+  appearance: none;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #111827;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  min-width: 108px;
+}
+.ks-select:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
 .ks-step-btn {
   width: 26px;
   height: 26px;
@@ -1647,8 +1698,9 @@
     const notesFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
     const FLAT_KEYS = new Set(['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb']);
     const SHARP_KEYS = new Set(['G', 'D', 'A', 'E', 'B', 'F#']);
-    const ENHARMONIC_PREF_STORAGE_KEY = 'transposeEnharmonicPreference';
+    const ENHARMONIC_PREF_STORAGE_KEY = 'transposeEnharmonicPreference_' + (transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.songId : 'global');
     const ENHARMONIC_PREF_VALUES = new Set(['auto', 'sharps', 'flats']);
+    const partEnharmonicButtons = Array.from(document.querySelectorAll('.part-enharmonic-toggle'));
 
     function parseRoot(chordPart) {
       const match = chordPart.match(/^([A-Ha-h])([#b]?)(.*)$/);
@@ -1681,6 +1733,12 @@
     }
 
     function getEnharmonicPreferenceMode() {
+      const fromData = normalizeEnharmonicPreference(
+        transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.enharmonicPreference : null
+      );
+      if (fromData) {
+        return fromData;
+      }
       let stored = null;
       try {
         stored = normalizeEnharmonicPreference(localStorage.getItem(ENHARMONIC_PREF_STORAGE_KEY));
@@ -1690,10 +1748,7 @@
       if (stored) {
         return stored;
       }
-      const fromData = normalizeEnharmonicPreference(
-        transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.enharmonicPreference : null
-      );
-      return fromData || 'auto';
+      return 'auto';
     }
 
     function getAmbiguousPreferFlats(parsedKey) {
@@ -1731,7 +1786,10 @@
       if (SHARP_KEYS.has(targetSharp)) {
         return false;
       }
-      return parsed.accidental === 'b';
+      if (parsed.accidental) {
+        return parsed.accidental === 'b';
+      }
+      return steps < 0;
     }
 
     function setTransposeEnharmonicPreference(mode) {
@@ -1757,6 +1815,81 @@
 
     window.setTransposeEnharmonicPreference = setTransposeEnharmonicPreference;
     window.getTransposeEnharmonicPreference = getEnharmonicPreferenceMode;
+
+    function modeLabel(mode) {
+      if (mode === 'sharps') {
+        return '♯';
+      }
+      if (mode === 'flats') {
+        return '♭';
+      }
+      return 'A';
+    }
+
+    function modeTitle(mode) {
+      if (mode === 'sharps') {
+        return 'Akordy: Krížiky';
+      }
+      if (mode === 'flats') {
+        return 'Akordy: Béčka';
+      }
+      return 'Akordy: Auto';
+    }
+
+    function setPartEnharmonicMode(buttonEl, mode) {
+      if (!buttonEl) {
+        return;
+      }
+      const normalized = normalizeEnharmonicPreference(mode) || 'auto';
+      buttonEl.dataset.mode = normalized;
+      buttonEl.textContent = modeLabel(normalized);
+      buttonEl.title = modeTitle(normalized);
+      buttonEl.classList.toggle('mode-sharps', normalized === 'sharps');
+      buttonEl.classList.toggle('mode-flats', normalized === 'flats');
+      const partEl = buttonEl.closest('.preview-part');
+      if (partEl && partEl.dataset) {
+        partEl.dataset.enharmonicPreference = normalized;
+      }
+    }
+
+    function getPartPreferenceMap() {
+      const result = {};
+      partEnharmonicButtons.forEach((buttonEl) => {
+        const partEl = buttonEl.closest('.preview-part');
+        const partIndex = partEl && partEl.dataset ? partEl.dataset.partIndex : null;
+        if (!partIndex) {
+          return;
+        }
+        const mode = normalizeEnharmonicPreference(buttonEl.dataset.mode) || 'auto';
+        if (mode !== 'auto') {
+          result[partIndex] = mode;
+        }
+      });
+      return result;
+    }
+
+    function restorePartPreferenceMap(prefMap) {
+      if (!prefMap || typeof prefMap !== 'object') {
+        return;
+      }
+      partEnharmonicButtons.forEach((buttonEl) => {
+        const partEl = buttonEl.closest('.preview-part');
+        const partIndex = partEl && partEl.dataset ? partEl.dataset.partIndex : null;
+        const mode = partIndex && prefMap[partIndex] ? prefMap[partIndex] : 'auto';
+        setPartEnharmonicMode(buttonEl, mode);
+      });
+    }
+
+    partEnharmonicButtons.forEach((buttonEl) => {
+      setPartEnharmonicMode(buttonEl, buttonEl.dataset.mode || 'auto');
+      buttonEl.addEventListener('click', () => {
+        const currentMode = normalizeEnharmonicPreference(buttonEl.dataset.mode) || 'auto';
+        const nextMode = currentMode === 'auto' ? 'sharps' : (currentMode === 'sharps' ? 'flats' : 'auto');
+        setPartEnharmonicMode(buttonEl, nextMode);
+        updateChords(transposeSteps);
+        _saveToSession();
+      });
+    });
 
     function getGlobalPreferFlats(steps) {
       const baseKey = transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.baseKey : '';
@@ -1848,7 +1981,14 @@
           el.dataset.baseChord = el.textContent.trim();
         }
         const base = el.dataset.baseChord;
-        const nextChord = transposeChord(base, steps, preferFlatsGlobal);
+        const partEl = el.closest('.preview-part');
+        const partMode = normalizeEnharmonicPreference(
+          partEl && partEl.dataset ? partEl.dataset.enharmonicPreference : null
+        ) || 'auto';
+        const preferFlatsForChord = partMode === 'flats'
+          ? true
+          : (partMode === 'sharps' ? false : preferFlatsGlobal);
+        const nextChord = transposeChord(base, steps, preferFlatsForChord);
         setChordText(el, nextChord);
       });
     }
@@ -1874,6 +2014,7 @@
     }
 
     transposeSteps = parseInt(transposeKeyEl.dataset.initialTranspose) || 0;
+    let _restoredPartPrefs = null;
 
     {% if not ess_id %}
     // Restore from sessionStorage if available (no ess_id — not bound to event)
@@ -1883,13 +2024,16 @@
       if (_stored) {
         const _parsed = JSON.parse(_stored);
         if (typeof _parsed.t === 'number') transposeSteps = _parsed.t;
+        if (_parsed.p && typeof _parsed.p === 'object') _restoredPartPrefs = _parsed.p;
       }
     } catch(e) {}
     {% endif %}
 
+    restorePartPreferenceMap(_restoredPartPrefs);
+
     function _saveToSession() {
       {% if not ess_id %}
-      try { sessionStorage.setItem(_ssKey, JSON.stringify({ t: transposeSteps, c: capoSteps })); } catch(e) {}
+      try { sessionStorage.setItem(_ssKey, JSON.stringify({ t: transposeSteps, c: capoSteps, p: getPartPreferenceMap() })); } catch(e) {}
       {% endif %}
     }
 
@@ -1943,9 +2087,12 @@
     const ksTransposeUpBtn = document.getElementById('ksTransposeUp');
     const ksTransposeDownBtn = document.getElementById('ksTransposeDown');
     const ksTransposeValEl = document.getElementById('ksTransposeVal');
+    const ksEnharmonicModeEl = document.getElementById('ksEnharmonicMode');
     const ksCapoUpBtn = document.getElementById('ksCapoUp');
     const ksCapoDownBtn = document.getElementById('ksCapoDown');
     const ksCapoValEl = document.getElementById('ksCapoVal');
+    const ksSaveSongPrefsBtn = document.getElementById('ksSaveSongPrefsBtn');
+    const ksSaveSongPrefsStatus = document.getElementById('ksSaveSongPrefsStatus');
 
     let capoSteps = {{ initial_capo | default(0) }};
 
@@ -1991,8 +2138,54 @@
 
     if (ksTransposeUpBtn) ksTransposeUpBtn.addEventListener('click', () => { if (_applyTranspose) { _applyTranspose(1); syncKsTransposeVal(); } });
     if (ksTransposeDownBtn) ksTransposeDownBtn.addEventListener('click', () => { if (_applyTranspose) { _applyTranspose(-1); syncKsTransposeVal(); } });
+    if (ksEnharmonicModeEl) {
+      ksEnharmonicModeEl.value = getEnharmonicPreferenceMode();
+      ksEnharmonicModeEl.addEventListener('change', () => {
+        setTransposeEnharmonicPreference(ksEnharmonicModeEl.value);
+        _saveToSession();
+      });
+    }
     if (ksCapoUpBtn) ksCapoUpBtn.addEventListener('click', () => { capoSteps = Math.min(11, capoSteps + 1); syncKsCapoVal(); _saveToSession(); });
     if (ksCapoDownBtn) ksCapoDownBtn.addEventListener('click', () => { capoSteps = Math.max(0, capoSteps - 1); syncKsCapoVal(); _saveToSession(); });
+    if (ksSaveSongPrefsBtn) {
+      ksSaveSongPrefsBtn.addEventListener('click', async () => {
+        ksSaveSongPrefsBtn.disabled = true;
+        if (ksSaveSongPrefsStatus) {
+          ksSaveSongPrefsStatus.textContent = '';
+          ksSaveSongPrefsStatus.className = 'ks-save-status';
+        }
+        try {
+          const res = await fetch('/api/song/{{ song.id }}/preview-preferences', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              enharmonic_preference: getEnharmonicPreferenceMode(),
+              part_enharmonic_preferences: getPartPreferenceMap()
+            })
+          });
+          if (!res.ok) {
+            throw new Error('save_failed');
+          }
+          if (ksSaveSongPrefsStatus) {
+            ksSaveSongPrefsStatus.textContent = '✓ Uložené ako predvolené';
+            ksSaveSongPrefsStatus.className = 'ks-save-status ks-save-ok';
+          }
+        } catch (_) {
+          if (ksSaveSongPrefsStatus) {
+            ksSaveSongPrefsStatus.textContent = '✗ Chyba pri ukladaní';
+            ksSaveSongPrefsStatus.className = 'ks-save-status ks-save-err';
+          }
+        } finally {
+          ksSaveSongPrefsBtn.disabled = false;
+          if (ksSaveSongPrefsStatus) {
+            setTimeout(() => {
+              ksSaveSongPrefsStatus.textContent = '';
+              ksSaveSongPrefsStatus.className = 'ks-save-status';
+            }, 3000);
+          }
+        }
+      });
+    }
 
     if (keySettingsBtnEl && keySettingsPopover) {
       keySettingsBtnEl.addEventListener('click', (e) => {
@@ -2024,7 +2217,12 @@
           const res = await fetch('/api/event-section-song/{{ ess_id }}', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ transpose: transposeSteps, capo: capoSteps })
+            body: JSON.stringify({
+              transpose: transposeSteps,
+              capo: capoSteps,
+              enharmonic_preference: getEnharmonicPreferenceMode(),
+              part_enharmonic_preferences: getPartPreferenceMap()
+            })
           });
           if (res.ok) {
             ksSaveStatus.textContent = '✓ Uložené';
@@ -2881,7 +3079,17 @@
       chordsConfirm.addEventListener('click', () => {
         const songId = chordsModal.dataset.songId;
         const shiftSteps = parseInt(chordsShiftInput.value, 10) || 0;
-        const url = `/song/${songId}/download_chords_pdf?shift_steps=${encodeURIComponent(shiftSteps)}`;
+        const enharmonicPreference = (typeof window.getTransposeEnharmonicPreference === 'function')
+          ? window.getTransposeEnharmonicPreference()
+          : 'auto';
+        const partPrefs = (typeof getPartPreferenceMap === 'function')
+          ? getPartPreferenceMap()
+          : {};
+        const essId = {{ ess_id if ess_id else 'null' }};
+        let url = `/song/${songId}/download_chords_pdf?shift_steps=${encodeURIComponent(shiftSteps)}&enharmonic_preference=${encodeURIComponent(enharmonicPreference)}&part_enharmonic_preferences=${encodeURIComponent(JSON.stringify(partPrefs))}`;
+        if (essId) {
+          url += `&ess_id=${encodeURIComponent(essId)}`;
+        }
         window.open(url, '_blank');
         closeChordsModal();
       });

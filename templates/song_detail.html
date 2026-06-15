@@ -119,6 +119,17 @@
       <input class="form-control" name="song_key" value="{{ song.song_key if song.song_key }}" placeholder="C, Am, Dm, F#...">
     </div>
 
+    <div class="mb-3">
+      <label>Preferencia akordov (predvolené)</label>
+      <select class="form-select" name="enharmonic_preference">
+        {% set enh_pref = song.enharmonic_preference if song.enharmonic_preference else 'auto' %}
+        <option value="auto" {% if enh_pref == 'auto' %}selected{% endif %}>Auto</option>
+        <option value="sharps" {% if enh_pref == 'sharps' %}selected{% endif %}>Krížiky (♯)</option>
+        <option value="flats" {% if enh_pref == 'flats' %}selected{% endif %}>Béčka (♭)</option>
+      </select>
+      <small class="text-muted">Použije sa pri náhľade piesne, ak ju neprepíše nastavenie udalosti.</small>
+    </div>
+
     <div class="mb-4">
   <label class="form-label fw-semibold mb-3">
     <i class="bi bi-tags-fill text-primary me-2"></i>
@@ -802,6 +813,7 @@
 
 <div id="parts-container">
   <div id="sortable-parts">
+        {% set part_pref_map = song_part_enharmonic_preferences if song_part_enharmonic_preferences else {} %}
         {% for part in data %}
           <div class="card p-3 mb-3 part-card part-{{ part.type | lower | replace(' ', '-') }}" data-part-index="{{ loop.index0 }}">
             <div class="d-flex align-items-start mb-2">
@@ -814,6 +826,16 @@
                 {% for pt in part_types %}
                   <option value="{{ pt }}" {% if part.type == pt %}selected{% endif %}>{{ pt }}</option>
                 {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-2">
+              <label>Preferencia akordov (táto časť)</label>
+              {% set part_mode = part_pref_map.get(loop.index0|string, 'auto') %}
+              <select class="form-select" name="part_enharmonic_preference_{{ loop.index0 }}">
+                <option value="auto" {% if part_mode == 'auto' %}selected{% endif %}>Auto</option>
+                <option value="sharps" {% if part_mode == 'sharps' %}selected{% endif %}>Krížiky (♯)</option>
+                <option value="flats" {% if part_mode == 'flats' %}selected{% endif %}>Béčka (♭)</option>
               </select>
             </div>
 
@@ -1811,7 +1833,7 @@ if (deleteBtn) {
       document.querySelectorAll('.part-card').forEach((card, index) => {
         card.dataset.partIndex = index;
         // Update name attributes of inputs if needed
-        card.querySelectorAll('[name^="part_type_"], [name^="part_lines_"]').forEach(input => {
+        card.querySelectorAll('[name^="part_type_"], [name^="part_lines_"], [name^="part_enharmonic_preference_"]').forEach(input => {
           input.name = input.name.replace(/_\d+/, `_${index}`);
         });
       });
@@ -1850,6 +1872,14 @@ document.getElementById('add-part').addEventListener('click', () => {
         <button type="button" class="btn btn-danger btn-sm delete-part" style="margin-top: 24px;">
           <i class="bi bi-trash"></i> Delete
         </button>
+      </div>
+      <div class="mb-2">
+        <label>Preferencia akordov (táto časť)</label>
+        <select class="form-select" name="part_enharmonic_preference_${partIndex}">
+          <option value="auto" selected>Auto</option>
+          <option value="sharps">Krížiky (♯)</option>
+          <option value="flats">Béčka (♭)</option>
+        </select>
       </div>
       <div class="mb-2">
         <label>Lines (chords and lyrics)</label>
@@ -2020,7 +2050,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Reindex part names when order changes
         document.querySelectorAll('.part-card').forEach((card, index) => {
           card.dataset.partIndex = index;
-          card.querySelectorAll('[name^="part_type_"], [name^="part_lines_"]').forEach(input => {
+          card.querySelectorAll('[name^="part_type_"], [name^="part_lines_"], [name^="part_enharmonic_preference_"]').forEach(input => {
             input.name = input.name.replace(/_(\d+)/, `_${index}`);
           });
         });

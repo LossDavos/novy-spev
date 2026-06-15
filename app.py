@@ -964,6 +964,34 @@ def parse_key_root(key_value):
     }
 
 
+def normalize_enharmonic_preference(value, default='auto'):
+    normalized = (value or '').strip().lower()
+    if normalized in ('auto', 'sharps', 'flats'):
+        return normalized
+    return default
+
+
+def normalize_part_enharmonic_preferences(raw_value):
+    if not raw_value:
+        return {}
+    parsed = raw_value
+    if isinstance(raw_value, str):
+        try:
+            parsed = json.loads(raw_value)
+        except (json.JSONDecodeError, TypeError):
+            return {}
+    if not isinstance(parsed, dict):
+        return {}
+
+    normalized = {}
+    for key, value in parsed.items():
+        mode = normalize_enharmonic_preference(value, default='')
+        if not mode or mode == 'auto':
+            continue
+        normalized[str(key)] = mode
+    return normalized
+
+
 def calculate_transpose_steps(base_key, target_key):
     note_index = {
         'C': 0, 'C#': 1, 'Db': 1,
@@ -986,7 +1014,52 @@ def calculate_transpose_steps(base_key, target_key):
     return target_index - base_index
 
 
-def transpose_chord_value(chord, steps):
+def get_prefer_flats_for_target_key(base_key, steps, enharmonic_preference='auto'):
+    note_index = {
+        'C': 0, 'C#': 1, 'Db': 1,
+        'D': 2, 'D#': 3, 'Eb': 3,
+        'E': 4,
+        'F': 5, 'F#': 6, 'Gb': 6,
+        'G': 7, 'G#': 8, 'Ab': 8,
+        'A': 9, 'A#': 10, 'Bb': 10,
+        'B': 11, 'H': 11
+    }
+    notes_sharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    notes_flat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+    flat_keys = {'F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb'}
+    sharp_keys = {'G', 'D', 'A', 'E', 'B', 'F#'}
+
+    mode = normalize_enharmonic_preference(enharmonic_preference, default='auto')
+    if mode == 'flats':
+        return True
+    if mode == 'sharps':
+        return False
+
+    parsed = parse_key_root(base_key)
+    if not parsed:
+        return steps < 0
+
+    idx = note_index.get(parsed['root'])
+    if idx is None:
+        return steps < 0
+
+    target_idx = (idx + steps + 12) % 12
+    target_sharp = notes_sharp[target_idx]
+    target_flat = notes_flat[target_idx]
+
+    if target_flat in flat_keys:
+        return True
+    if target_sharp in sharp_keys:
+        return False
+
+    # Neutral/ambiguous fallback: keep source accidental flavor when present,
+    # otherwise prefer flats when transposing downward.
+    if parsed['accidental']:
+        return parsed['accidental'] == 'b'
+    return steps < 0
+
+
+def transpose_chord_value(chord, steps, prefer_flats_global=None):
     if chord is None:
         return chord
     raw = chord.strip()
@@ -1037,7 +1110,7 @@ def transpose_chord_value(chord, steps):
         if idx is None:
             return part
         next_index = (idx + steps + 12) % 12
-        prefer_flats = accidental == 'b'
+        prefer_flats = (accidental == 'b') if prefer_flats_global is None else prefer_flats_global
         next_root = notes_flat[next_index] if prefer_flats else notes_sharp[next_index]
         if is_minor:
             next_root = next_root.lower()
@@ -1049,9 +1122,15 @@ def transpose_chord_value(chord, steps):
     return f"({combined})" if optional else combined
 
 
-def transpose_latex_chords(latex_text, steps):
+def transpose_latex_chords(latex_text, steps, base_key=None, enharmonic_preference='auto'):
     if steps == 0:
         return latex_text
+
+    def resolve_prefer_flats(mode):
+        return get_prefer_flats_for_target_key(base_key, steps, enharmonic_preference=mode)
+
+    prefer_flats_global = resolve_prefer_flats(enharmonic_preference)
+
     def unescape_chord_arg(value):
         return (value
             .replace('\\textbackslash ', '\\')
@@ -1080,9 +1159,118 @@ def transpose_latex_chords(latex_text, steps):
         )
     def replace_chord(match):
         raw_value = unescape_chord_arg(match.group(1))
-        transposed = transpose_chord_value(raw_value, steps)
+        transposed = transpose_chord_value(raw_value, steps, prefer_flats_global=prefer_flats_global)
         return f"\\chord{{{escape_chord_arg(transposed)}}}"
+
     return re.sub(r'\\chord\{([^}]+)\}', replace_chord, latex_text)
+
+
+def transpose_latex_chords_with_part_preferences(
+    latex_text,
+    steps,
+    base_key=None,
+    enharmonic_preference='auto',
+    part_enharmonic_preferences=None,
+):
+    if steps == 0:
+        return latex_text
+
+    part_prefs = normalize_part_enharmonic_preferences(part_enharmonic_preferences)
+    if not part_prefs:
+        return transpose_latex_chords(
+            latex_text,
+            steps,
+            base_key=base_key,
+            enharmonic_preference=enharmonic_preference,
+        )
+
+    def unescape_chord_arg(value):
+        return (value
+            .replace('\\textbackslash ', '\\')
+            .replace('\\textasciitilde{}', '~')
+            .replace('\\textasciicircum{}', '^')
+            .replace('\\#', '#')
+            .replace('\\&', '&')
+            .replace('\\%', '%')
+            .replace('\\$', '$')
+            .replace('\\_', '_')
+            .replace('\\{', '{')
+            .replace('\\}', '}')
+        )
+
+    def escape_chord_arg(value):
+        return (value
+            .replace('\\', '\\textbackslash ')
+            .replace('&', '\\&')
+            .replace('%', '\\%')
+            .replace('$', '\\$')
+            .replace('#', '\\#')
+            .replace('_', '\\_')
+            .replace('{', '\\{')
+            .replace('}', '\\}')
+            .replace('~', '\\textasciitilde{}')
+            .replace('^', '\\textasciicircum{}')
+        )
+
+    def transpose_block_content(block_content, prefer_flats):
+        def replace_chord(match):
+            raw_value = unescape_chord_arg(match.group(1))
+            transposed = transpose_chord_value(raw_value, steps, prefer_flats_global=prefer_flats)
+            return f"\\chord{{{escape_chord_arg(transposed)}}}"
+
+        return re.sub(r'\\chord\{([^}]+)\}', replace_chord, block_content)
+
+    block_start_pattern = re.compile(r'\\[A-Za-z]+block\{')
+    output = []
+    cursor = 0
+    block_index = 0
+
+    while True:
+        match = block_start_pattern.search(latex_text, cursor)
+        if not match:
+            output.append(latex_text[cursor:])
+            break
+
+        output.append(latex_text[cursor:match.end()])
+        content_start = match.end()
+
+        depth = 1
+        i = content_start
+        while i < len(latex_text) and depth > 0:
+            if latex_text[i] == '{':
+                depth += 1
+            elif latex_text[i] == '}':
+                depth -= 1
+            i += 1
+
+        if depth != 0:
+            # Unbalanced braces: fall back to global transposition for safety.
+            return transpose_latex_chords(
+                latex_text,
+                steps,
+                base_key=base_key,
+                enharmonic_preference=enharmonic_preference,
+            )
+
+        content_end = i - 1
+        block_content = latex_text[content_start:content_end]
+
+        block_mode = normalize_enharmonic_preference(
+            part_prefs.get(str(block_index)),
+            default=enharmonic_preference,
+        )
+        prefer_flats = get_prefer_flats_for_target_key(
+            base_key,
+            steps,
+            enharmonic_preference=block_mode,
+        )
+        output.append(transpose_block_content(block_content, prefer_flats))
+        output.append('}')
+
+        block_index += 1
+        cursor = i
+
+    return ''.join(output)
 
 
 def render_latex_to_pdf(latex_text):
@@ -1133,9 +1321,40 @@ def download_chords_pdf(song_id):
     except ValueError:
         return jsonify({'error': 'Invalid shift_steps'}), 400
 
+    song_pref = normalize_enharmonic_preference(song.enharmonic_preference, default='auto')
+    request_pref = normalize_enharmonic_preference(
+        request.args.get('enharmonic_preference'),
+        default=song_pref
+    )
+    request_part_prefs = normalize_part_enharmonic_preferences(request.args.get('part_enharmonic_preferences'))
+
+    if not request_part_prefs:
+        request_part_prefs = normalize_part_enharmonic_preferences(song.part_enharmonic_preferences)
+
+    ess_id = request.args.get('ess_id')
+    if ess_id:
+        try:
+            ess = EventSectionSong.query.get(int(ess_id))
+        except (ValueError, TypeError):
+            ess = None
+        if ess:
+            if request.args.get('enharmonic_preference') in (None, ''):
+                request_pref = normalize_enharmonic_preference(
+                    ess.enharmonic_preference,
+                    default=request_pref,
+                )
+            if not request_part_prefs:
+                request_part_prefs = normalize_part_enharmonic_preferences(ess.part_enharmonic_preferences)
+
     try:
         latex_text = load_song_tex_content(song)
-        transposed_latex = transpose_latex_chords(latex_text, steps)
+        transposed_latex = transpose_latex_chords_with_part_preferences(
+            latex_text,
+            steps,
+            base_key=song.song_key,
+            enharmonic_preference=request_pref,
+            part_enharmonic_preferences=request_part_prefs,
+        )
         pdf_data = render_latex_to_pdf(transposed_latex)
     except Exception as exc:
         return jsonify({'error': str(exc)}), 500
@@ -1644,8 +1863,19 @@ def api_update_event_section_song(ess_id):
             ess.capo = int(data['capo'])
         except (ValueError, TypeError):
             return jsonify({'error': 'Invalid capo'}), 400
+    if 'enharmonic_preference' in data:
+        ess.enharmonic_preference = normalize_enharmonic_preference(data.get('enharmonic_preference'), default='auto')
+    if 'part_enharmonic_preferences' in data:
+        part_prefs = normalize_part_enharmonic_preferences(data.get('part_enharmonic_preferences'))
+        ess.part_enharmonic_preferences = json.dumps(part_prefs, ensure_ascii=False) if part_prefs else None
     db.session.commit()
-    return jsonify({'ok': True, 'transpose': ess.transpose, 'capo': ess.capo})
+    return jsonify({
+        'ok': True,
+        'transpose': ess.transpose,
+        'capo': ess.capo,
+        'enharmonic_preference': ess.enharmonic_preference or 'auto',
+        'part_enharmonic_preferences': normalize_part_enharmonic_preferences(ess.part_enharmonic_preferences)
+    })
 
 
 @app.route('/api/events-for-picker')
@@ -1709,6 +1939,7 @@ def api_add_song_to_section(section_id):
         for ess in all_songs:
             if ess.position >= insert_pos:
                 ess.position += 1
+    song_part_prefs = normalize_part_enharmonic_preferences(song.part_enharmonic_preferences)
     ess = EventSectionSong(
         section=section,
         position=insert_pos,
@@ -1718,6 +1949,8 @@ def api_add_song_to_section(section_id):
         song_version_name=song.version_name,
         transpose=int(data.get('transpose', 0) or 0),
         capo=int(data.get('capo', 0) or 0),
+        enharmonic_preference=normalize_enharmonic_preference(song.enharmonic_preference, default='auto'),
+        part_enharmonic_preferences=json.dumps(song_part_prefs, ensure_ascii=False) if song_part_prefs else None,
     )
     db.session.add(ess)
     db.session.commit()
@@ -2134,7 +2367,8 @@ def song_detail(song_id):
         _FIELD_LABELS = {
             'title': 'Názov', 'author': 'Autor', 'version_name': 'Verzia',
             'title_original': 'Orig. názov', 'author_original': 'Orig. autor',
-            'song_key': 'Tónina', 'categories': 'Kategórie',
+            'song_key': 'Tónina', 'enharmonic_preference': 'Preferencia akordov', 'categories': 'Kategórie',
+            'part_enharmonic_preferences': 'Preferencia akordov pre časti',
             'alternative_titles': 'Alt. názvy', 'song_parts': 'Text piesne',
         }
         _FILE_LABELS = {
@@ -2150,6 +2384,8 @@ def song_detail(song_id):
                 'title_original': song.title_original or '',
                 'author_original': song.author_original or '',
                 'song_key': song.song_key or '',
+                'enharmonic_preference': song.enharmonic_preference or 'auto',
+                'part_enharmonic_preferences': song.part_enharmonic_preferences or '',
                 'categories': song.categories or '',
                 'alternative_titles': song.alternative_titles or '',
                 'song_parts': song.song_parts or '',
@@ -2173,6 +2409,7 @@ def song_detail(song_id):
             song.title_original = sanitize_input(request.form.get('title_original', ''), "original title")
             song.author_original = sanitize_input(request.form.get('author_original', ''), "original author")
             song.song_key = sanitize_input(request.form.get('song_key', ''), "song key") if request.form.get('song_key') and request.form.get('song_key').strip() else None
+            song.enharmonic_preference = normalize_enharmonic_preference(request.form.get('enharmonic_preference', 'auto'), default='auto')
 
             # Reset admin_checked when song is edited (requires re-verification)
             song.admin_checked = False
@@ -2204,6 +2441,16 @@ def song_detail(song_id):
                 else:
                     break
             song.song_parts = json.dumps(parts, ensure_ascii=False)
+
+            part_prefs = {}
+            for idx, _part in enumerate(parts):
+                mode = normalize_enharmonic_preference(
+                    request.form.get(f'part_enharmonic_preference_{idx}'),
+                    default='auto'
+                )
+                if mode != 'auto':
+                    part_prefs[str(idx)] = mode
+            song.part_enharmonic_preferences = json.dumps(part_prefs, ensure_ascii=False) if part_prefs else None
         except ValueError as e:
             flash(str(e), "error")
             return redirect(url_for('song_detail', song_id=song.id if not is_new_song else 'new'))
@@ -2401,10 +2648,12 @@ def song_detail(song_id):
     midis = json.loads(song.midi_paths or '[]')
     sheet_pdfs = json.loads(song.sheet_pdf_paths or '[]')
     sheet_mscz = json.loads(song.sheet_mscz_paths or '[]')
+    song_part_enharmonic_preferences = normalize_part_enharmonic_preferences(song.part_enharmonic_preferences)
 
     return render_template('song_detail.html',
                          song=song,
                          data=data,
+                         song_part_enharmonic_preferences=song_part_enharmonic_preferences,
                          mp3s=mp3s,
                          midis=midis,
                          sheet_pdfs=sheet_pdfs,
@@ -2442,6 +2691,24 @@ def submit_report(song_id):
     db.session.add(report)
     db.session.commit()
     return jsonify({'success': True})
+
+
+@app.route('/api/song/<int:song_id>/preview-preferences', methods=['PATCH'])
+def update_song_preview_preferences(song_id):
+    song = Song.query.get_or_404(song_id)
+    data = request.get_json(silent=True) or {}
+    song.enharmonic_preference = normalize_enharmonic_preference(
+        data.get('enharmonic_preference'),
+        default='auto'
+    )
+    part_prefs = normalize_part_enharmonic_preferences(data.get('part_enharmonic_preferences'))
+    song.part_enharmonic_preferences = json.dumps(part_prefs, ensure_ascii=False) if part_prefs else None
+    db.session.commit()
+    return jsonify({
+        'success': True,
+        'enharmonic_preference': song.enharmonic_preference,
+        'part_enharmonic_preferences': part_prefs
+    })
 
 
 @app.route('/api/report/<int:report_id>/resolve', methods=['POST'])
@@ -2789,16 +3056,28 @@ def song_preview(song_id):
         data = []
 
     show_chords = request.args.get('chords', '1') != '0'
+    song_enharmonic_preference = normalize_enharmonic_preference(song.enharmonic_preference, default='auto')
+    song_part_enharmonic_preferences = normalize_part_enharmonic_preferences(song.part_enharmonic_preferences)
     try:
         ess_id = int(request.args.get('ess_id', '0')) or None
     except ValueError:
         ess_id = None
+
+    initial_enharmonic_preference = song_enharmonic_preference
+    initial_part_enharmonic_preferences = song_part_enharmonic_preferences
 
     if ess_id:
         ess = EventSectionSong.query.get(ess_id)
         if ess:
             initial_transpose = ess.transpose or 0
             initial_capo = ess.capo or 0
+            initial_enharmonic_preference = normalize_enharmonic_preference(
+                ess.enharmonic_preference or song_enharmonic_preference,
+                default=song_enharmonic_preference
+            )
+            initial_part_enharmonic_preferences = normalize_part_enharmonic_preferences(
+                ess.part_enharmonic_preferences or song.part_enharmonic_preferences
+            )
         else:
             ess_id = None
             initial_transpose = 0
@@ -2812,7 +3091,18 @@ def song_preview(song_id):
             initial_capo = int(request.args.get('capo', '0'))
         except ValueError:
             initial_capo = 0
-    return render_template('song_preview.html', song=song, data=data, back_url=request.referrer, show_chords=show_chords, initial_transpose=initial_transpose, initial_capo=initial_capo, ess_id=ess_id)
+    return render_template(
+        'song_preview.html',
+        song=song,
+        data=data,
+        back_url=request.referrer,
+        show_chords=show_chords,
+        initial_transpose=initial_transpose,
+        initial_capo=initial_capo,
+        initial_enharmonic_preference=initial_enharmonic_preference,
+        initial_part_enharmonic_preferences=initial_part_enharmonic_preferences,
+        ess_id=ess_id
+    )
 
 @app.route('/song/delete/<int:song_id>', methods=['POST'])
 def delete_song(song_id):
