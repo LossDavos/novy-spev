@@ -992,6 +992,27 @@ def normalize_part_enharmonic_preferences(raw_value):
     return normalized
 
 
+def infer_enharmonic_preference_from_key(song_key):
+    parsed = parse_key_root(song_key)
+    if not parsed:
+        return 'auto'
+    root = parsed['root']
+    sharp_keys = {'G', 'D', 'A', 'E', 'B', 'F#', 'C#'}
+    flat_keys = {'F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Cb'}
+    if root in sharp_keys:
+        return 'sharps'
+    if root in flat_keys:
+        return 'flats'
+    return 'auto'
+
+
+def resolve_enharmonic_preference(mode, song_key=None):
+    normalized = normalize_enharmonic_preference(mode, default='auto')
+    if normalized != 'auto':
+        return normalized
+    return infer_enharmonic_preference_from_key(song_key)
+
+
 def calculate_transpose_steps(base_key, target_key):
     note_index = {
         'C': 0, 'C#': 1, 'Db': 1,
@@ -1015,48 +1036,9 @@ def calculate_transpose_steps(base_key, target_key):
 
 
 def get_prefer_flats_for_target_key(base_key, steps, enharmonic_preference='auto'):
-    note_index = {
-        'C': 0, 'C#': 1, 'Db': 1,
-        'D': 2, 'D#': 3, 'Eb': 3,
-        'E': 4,
-        'F': 5, 'F#': 6, 'Gb': 6,
-        'G': 7, 'G#': 8, 'Ab': 8,
-        'A': 9, 'A#': 10, 'Bb': 10,
-        'B': 11, 'H': 11
-    }
-    notes_sharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-    notes_flat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
-    flat_keys = {'F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb'}
-    sharp_keys = {'G', 'D', 'A', 'E', 'B', 'F#'}
+    mode = resolve_enharmonic_preference(enharmonic_preference, song_key=base_key)
+    return mode == 'flats'
 
-    mode = normalize_enharmonic_preference(enharmonic_preference, default='auto')
-    if mode == 'flats':
-        return True
-    if mode == 'sharps':
-        return False
-
-    parsed = parse_key_root(base_key)
-    if not parsed:
-        return steps < 0
-
-    idx = note_index.get(parsed['root'])
-    if idx is None:
-        return steps < 0
-
-    target_idx = (idx + steps + 12) % 12
-    target_sharp = notes_sharp[target_idx]
-    target_flat = notes_flat[target_idx]
-
-    if target_flat in flat_keys:
-        return True
-    if target_sharp in sharp_keys:
-        return False
-
-    # Neutral/ambiguous fallback: keep source accidental flavor when present,
-    # otherwise prefer flats when transposing downward.
-    if parsed['accidental']:
-        return parsed['accidental'] == 'b'
-    return steps < 0
 
 
 def transpose_chord_value(chord, steps, prefer_flats_global=None):
@@ -1321,11 +1303,13 @@ def download_chords_pdf(song_id):
     except ValueError:
         return jsonify({'error': 'Invalid shift_steps'}), 400
 
-    song_pref = normalize_enharmonic_preference(song.enharmonic_preference, default='auto')
-    request_pref = normalize_enharmonic_preference(
+    song_pref = resolve_enharmonic_preference(song.enharmonic_preference, song.song_key)
+    request_pref = resolve_enharmonic_preference(
         request.args.get('enharmonic_preference'),
-        default=song_pref
+        song.song_key
     )
+    if request.args.get('enharmonic_preference') in (None, ''):
+        request_pref = song_pref
     request_part_prefs = normalize_part_enharmonic_preferences(request.args.get('part_enharmonic_preferences'))
 
     if not request_part_prefs:
@@ -1339,9 +1323,9 @@ def download_chords_pdf(song_id):
             ess = None
         if ess:
             if request.args.get('enharmonic_preference') in (None, ''):
-                request_pref = normalize_enharmonic_preference(
+                request_pref = resolve_enharmonic_preference(
                     ess.enharmonic_preference,
-                    default=request_pref,
+                    song.song_key,
                 )
             if not request_part_prefs:
                 request_part_prefs = normalize_part_enharmonic_preferences(ess.part_enharmonic_preferences)
@@ -3056,7 +3040,7 @@ def song_preview(song_id):
         data = []
 
     show_chords = request.args.get('chords', '1') != '0'
-    song_enharmonic_preference = normalize_enharmonic_preference(song.enharmonic_preference, default='auto')
+    song_enharmonic_preference = resolve_enharmonic_preference(song.enharmonic_preference, song.song_key)
     song_part_enharmonic_preferences = normalize_part_enharmonic_preferences(song.part_enharmonic_preferences)
     try:
         ess_id = int(request.args.get('ess_id', '0')) or None
@@ -3071,9 +3055,9 @@ def song_preview(song_id):
         if ess:
             initial_transpose = ess.transpose or 0
             initial_capo = ess.capo or 0
-            initial_enharmonic_preference = normalize_enharmonic_preference(
+            initial_enharmonic_preference = resolve_enharmonic_preference(
                 ess.enharmonic_preference or song_enharmonic_preference,
-                default=song_enharmonic_preference
+                song.song_key
             )
             initial_part_enharmonic_preferences = normalize_part_enharmonic_preferences(
                 ess.part_enharmonic_preferences or song.part_enharmonic_preferences

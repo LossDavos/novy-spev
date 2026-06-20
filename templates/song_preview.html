@@ -66,7 +66,6 @@
             <div class="ks-ctrl-row">
               <span class="ks-ctrl-label">Akordy</span>
               <select class="ks-select" id="ksEnharmonicMode" aria-label="Preferovať krížiky alebo béčka">
-                <option value="auto">Auto</option>
                 <option value="sharps">Krížiky</option>
                 <option value="flats">Béčka</option>
               </select>
@@ -1696,10 +1695,7 @@
 
     const notesSharp = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     const notesFlat = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-    const FLAT_KEYS = new Set(['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb']);
-    const SHARP_KEYS = new Set(['G', 'D', 'A', 'E', 'B', 'F#']);
     const ENHARMONIC_PREF_STORAGE_KEY = 'transposeEnharmonicPreference_' + (transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.songId : 'global');
-    const ENHARMONIC_PREF_VALUES = new Set(['auto', 'sharps', 'flats']);
     const partEnharmonicButtons = Array.from(document.querySelectorAll('.part-enharmonic-toggle'));
 
     function parseRoot(chordPart) {
@@ -1724,87 +1720,37 @@
       return preferFlats ? notesFlat[nextIndex] : notesSharp[nextIndex];
     }
 
-    function normalizeEnharmonicPreference(value) {
-      if (!value) {
-        return null;
-      }
-      const normalized = String(value).trim().toLowerCase();
-      return ENHARMONIC_PREF_VALUES.has(normalized) ? normalized : null;
-    }
-
+    // preference is always 'sharps' or 'flats'; 'auto'/missing falls back to global
     function getEnharmonicPreferenceMode() {
-      const fromData = normalizeEnharmonicPreference(
-        transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.enharmonicPreference : null
-      );
-      if (fromData) {
+      const fromData = transposeKeyEl && transposeKeyEl.dataset
+        ? transposeKeyEl.dataset.enharmonicPreference
+        : null;
+      if (fromData === 'sharps' || fromData === 'flats') {
         return fromData;
       }
-      let stored = null;
       try {
-        stored = normalizeEnharmonicPreference(localStorage.getItem(ENHARMONIC_PREF_STORAGE_KEY));
-      } catch (e) {
-        stored = null;
-      }
-      if (stored) {
-        return stored;
-      }
-      return 'auto';
+        const stored = localStorage.getItem(ENHARMONIC_PREF_STORAGE_KEY);
+        if (stored === 'sharps' || stored === 'flats') {
+          return stored;
+        }
+      } catch (e) {}
+      return 'sharps'; // safe default
     }
 
-    function getAmbiguousPreferFlats(parsedKey) {
-      const mode = getEnharmonicPreferenceMode();
-      if (mode === 'flats') {
-        return true;
-      }
-      if (mode === 'sharps') {
-        return false;
-      }
-      return parsedKey.accidental === 'b';
-    }
-
-    function getPreferFlatsForTargetKey(sourceKey, steps) {
-      if (!sourceKey) {
-        return null;
-      }
-      const parsed = parseRoot(sourceKey.trim());
-      if (!parsed) {
-        return null;
-      }
-      const idx = noteIndex[parsed.root];
-      if (idx === undefined) {
-        return null;
-      }
-      const targetIdx = (idx + steps + 12) % 12;
-      if (targetIdx === 1 || targetIdx === 6) {
-        return getAmbiguousPreferFlats(parsed);
-      }
-      const targetSharp = notesSharp[targetIdx];
-      const targetFlat = notesFlat[targetIdx];
-      if (FLAT_KEYS.has(targetFlat)) {
-        return true;
-      }
-      if (SHARP_KEYS.has(targetSharp)) {
-        return false;
-      }
-      if (parsed.accidental) {
-        return parsed.accidental === 'b';
-      }
-      return steps < 0;
+    function getGlobalPreferFlats() {
+      return getEnharmonicPreferenceMode() === 'flats';
     }
 
     function setTransposeEnharmonicPreference(mode) {
-      const normalized = normalizeEnharmonicPreference(mode);
-      if (!normalized) {
+      if (mode !== 'sharps' && mode !== 'flats') {
         return false;
       }
       if (transposeKeyEl && transposeKeyEl.dataset) {
-        transposeKeyEl.dataset.enharmonicPreference = normalized;
+        transposeKeyEl.dataset.enharmonicPreference = mode;
       }
       try {
-        localStorage.setItem(ENHARMONIC_PREF_STORAGE_KEY, normalized);
-      } catch (e) {
-        // Ignore storage failures (private mode, disabled storage, etc.)
-      }
+        localStorage.setItem(ENHARMONIC_PREF_STORAGE_KEY, mode);
+      } catch (e) {}
       updateChords(transposeSteps);
       updateKey(transposeSteps);
       if (typeof updateTargetKey === 'function') {
@@ -1840,7 +1786,7 @@
       if (!buttonEl) {
         return;
       }
-      const normalized = normalizeEnharmonicPreference(mode) || 'auto';
+      const normalized = (mode === 'sharps' || mode === 'flats') ? mode : 'auto';
       buttonEl.dataset.mode = normalized;
       buttonEl.textContent = modeLabel(normalized);
       buttonEl.title = modeTitle(normalized);
@@ -1860,8 +1806,8 @@
         if (!partIndex) {
           return;
         }
-        const mode = normalizeEnharmonicPreference(buttonEl.dataset.mode) || 'auto';
-        if (mode !== 'auto') {
+        const mode = buttonEl.dataset.mode;
+        if (mode === 'sharps' || mode === 'flats') {
           result[partIndex] = mode;
         }
       });
@@ -1883,7 +1829,7 @@
     partEnharmonicButtons.forEach((buttonEl) => {
       setPartEnharmonicMode(buttonEl, buttonEl.dataset.mode || 'auto');
       buttonEl.addEventListener('click', () => {
-        const currentMode = normalizeEnharmonicPreference(buttonEl.dataset.mode) || 'auto';
+        const currentMode = buttonEl.dataset.mode;
         const nextMode = currentMode === 'auto' ? 'sharps' : (currentMode === 'sharps' ? 'flats' : 'auto');
         setPartEnharmonicMode(buttonEl, nextMode);
         updateChords(transposeSteps);
@@ -1891,10 +1837,6 @@
       });
     });
 
-    function getGlobalPreferFlats(steps) {
-      const baseKey = transposeKeyEl && transposeKeyEl.dataset ? transposeKeyEl.dataset.baseKey : '';
-      return getPreferFlatsForTargetKey(baseKey, steps);
-    }
 
     function transposeChord(chord, steps, preferFlatsGlobal) {
       if (!chord) {
@@ -1913,10 +1855,7 @@
       if (!mainParsed) {
         return chord;
       }
-      const preferFlatsMain = preferFlatsGlobal === null
-        ? (mainParsed.accidental === 'b')
-        : preferFlatsGlobal;
-      let mainRoot = transposeRoot(mainParsed.root, steps, preferFlatsMain);
+      let mainRoot = transposeRoot(mainParsed.root, steps, preferFlatsGlobal);
       if (mainParsed.isLower) {
         mainRoot = mainRoot.toLowerCase();
       }
@@ -1930,10 +1869,7 @@
       if (!bassParsed) {
         return `${mainTransposed}/${bass}`;
       }
-      const preferFlatsBass = preferFlatsGlobal === null
-        ? (bassParsed.accidental === 'b')
-        : preferFlatsGlobal;
-      let bassRoot = transposeRoot(bassParsed.root, steps, preferFlatsBass);
+      let bassRoot = transposeRoot(bassParsed.root, steps, preferFlatsGlobal);
       if (bassParsed.isLower) {
         bassRoot = bassRoot.toLowerCase();
       }
@@ -1975,16 +1911,14 @@
     }
 
     function updateChords(steps) {
-      const preferFlatsGlobal = getGlobalPreferFlats(steps);
+      const preferFlatsGlobal = getGlobalPreferFlats();
       chordEls.forEach((el) => {
         if (!el.dataset.baseChord) {
           el.dataset.baseChord = el.textContent.trim();
         }
         const base = el.dataset.baseChord;
         const partEl = el.closest('.preview-part');
-        const partMode = normalizeEnharmonicPreference(
-          partEl && partEl.dataset ? partEl.dataset.enharmonicPreference : null
-        ) || 'auto';
+        const partMode = partEl && partEl.dataset ? partEl.dataset.enharmonicPreference : 'auto';
         const preferFlatsForChord = partMode === 'flats'
           ? true
           : (partMode === 'sharps' ? false : preferFlatsGlobal);
@@ -2005,10 +1939,7 @@
         transposeKeyEl.textContent = baseTrimmed;
         return;
       }
-      const preferFlatsKeyFromTarget = getGlobalPreferFlats(steps);
-      const preferFlatsKey = preferFlatsKeyFromTarget === null
-        ? (parsed.accidental === 'b')
-        : preferFlatsKeyFromTarget;
+      const preferFlatsKey = getGlobalPreferFlats();
       const nextKey = transposeRoot(parsed.root, steps, preferFlatsKey) + parsed.rest;
       transposeKeyEl.textContent = nextKey;
     }
@@ -2969,10 +2900,10 @@
         if (!parsed) {
           chordsTargetKey.textContent = currentKeyValue;
         } else {
-          const preferFlatsKeyFromTarget = getPreferFlatsForTargetKey(currentKeyValue, shift);
-          const preferFlatsKey = preferFlatsKeyFromTarget === null
+          const preferFlatsGlobal = getGlobalPreferFlats();
+          const preferFlatsKey = preferFlatsGlobal === null
             ? (parsed.accidental === 'b')
-            : preferFlatsKeyFromTarget;
+            : preferFlatsGlobal;
           let nextRoot = transposeRoot(parsed.root, shift, preferFlatsKey);
           if (parsed.isLower) {
             nextRoot = nextRoot.toLowerCase();
